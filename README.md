@@ -7,4 +7,4 @@ Set of common structure for Pluginus under the RIPE context.
 Initial consumers should include:
 
 * [RIPE Retail](https://github.com/ripe-tech/ripe-retail)
-* [RIPE White](https://github.com/ripe-tech/ripe-white)
+* [RIPE Commons](https://github.com/ripe-tech/ripe-white)
