@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="543" height="77" viewBox="0 0 543 77">
+    <defs>
+        <ellipse id="b" cx="10.208" cy="4.278" rx="10.208" ry="4.278"/>
+        <filter id="a" width="295.9%" height="567.5%" x="-98%" y="-116.9%" filterUnits="objectBoundingBox">
+            <feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.905712183 0 0 0 0 0.905712183 0 0 0 0 0.905712183 0 0 0 1 0"/>
+        </filter>
+        <ellipse id="d" cx="513.792" cy="4.278" rx="10.208" ry="4.278"/>
+        <filter id="c" width="295.9%" height="567.5%" x="-98%" y="-116.9%" filterUnits="objectBoundingBox">
+            <feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.905882353 0 0 0 0 0.905882353 0 0 0 0 0.905882353 0 0 0 1 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(9)">
+        <ellipse cx="262" cy="69.3" fill="#EEEEEF" rx="17.013" ry="7.7"/>
+        <g>
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#EEEEEF" xlink:href="#b"/>
+        </g>
+        <g>
+            <use fill="#000" filter="url(#c)" xlink:href="#d"/>
+            <use fill="#EEEEEF" xlink:href="#d"/>
+        </g>
+        <path stroke="#EEEEEF" stroke-width="1.7" d="M510.641 4.942C486.602 28.898 397.658 69.3 258.597 69.3 165.89 69.3 82.007 47.847 6.95 4.942"/>
+    </g>
+</svg>

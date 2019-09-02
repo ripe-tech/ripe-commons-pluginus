@@ -1,0 +1,18 @@
+{
+    "ripe_commons.size.select_size": "Select Size",
+    "ripe_commons.size.size": "Size",
+    "ripe_commons.modal.cancel": "Cancel",
+    "ripe_commons.modal.select": "Select",
+    "ripe_commons.modal.apply": "Apply",
+    "ripe_commons.personalization.personalization": "Add Personalization",
+    "ripe_commons.personalization.add_initials": "Add Personalization",
+    "ripe_commons.size.male": "Male",
+    "ripe_commons.size.female": "Female",
+    "ripe_commons.size.male.small": "M",
+    "ripe_commons.size.female.small": "F",
+    "ripe_commons.pickers.undo": "Undo",
+    "ripe_commons.pickers.back": "Do you want to go back?",
+    "ripe_commons.pickers.limited": "This option is limited to specific material or colour combinations.",
+    "ripe_commons.holder.holder.label": "DRAG",
+    "ripe_commons.holder.holder-second-label.label": "3D"
+}

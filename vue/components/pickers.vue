@@ -1,0 +1,901 @@
+<template>
+    <div
+        class="pickers"
+        v-bind:class="{ 'multiple-materials': multipleMaterials, loading: loading }"
+        ref="pickersContainer"
+    >
+        <div class="background" />
+        <ul class="parts-container" ref="partsPicker">
+            <li
+                class="part button button-part"
+                v-bind:class="{ active: activePart === part }"
+                v-for="(materials, part) in filteredOptions"
+                v-bind:key="part"
+                v-on:click="showSwatches(part)"
+            >
+                <p>{{ localeModel(part) }}</p>
+                <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
+                    <img v-bind:src="partSwatch(part)" />
+                </div>
+                <p class="no-part" v-else-if="isOptional(part)">
+                    {{ localeModel(part, "no_" + part) }}
+                </p>
+            </li>
+            <slot />
+        </ul>
+        <transition
+            name="fade"
+            v-on:after-enter="onMaterialsChanged"
+            v-on:after-leave="onMaterialsChanged"
+        >
+            <ul
+                class="materials-container"
+                v-bind:class="{ hidden: !multipleMaterials && activeMaterial != null }"
+                v-show="activePart != null"
+                ref="materialsPicker"
+            >
+                <li
+                    class="material button button-material"
+                    v-bind:class="{ active: activeMaterial === material }"
+                    v-bind:data-material="material"
+                    v-for="(colors, material) in materialOptions"
+                    v-bind:key="material"
+                    v-on:click="selectMaterial(material)"
+                >
+                    <p>{{ localeModel(activePart, material) }}</p>
+                </li>
+            </ul>
+        </transition>
+        <ul class="colors-container" v-show="activeMaterial != null" ref="colorsPicker">
+            <span>
+                <li
+                    class="color button button-color"
+                    v-bind:data-index="colorOption.index"
+                    v-bind:data-material="colorOption.material"
+                    v-bind:data-color="colorOption.color"
+                    v-bind:class="{
+                        active: isSelected(colorOption),
+                        optional: isOptional(activePart),
+                        no_option: colorOption.color.startsWith('no_')
+                    }"
+                    v-for="colorOption in colorOptions"
+                    v-bind:key="colorOption.material + '_' + colorOption.color"
+                    v-on:click="colorClicked(colorOption)"
+                >
+                    <div class="swatch">
+                        <img
+                            v-bind:src="colorSwatch(colorOption.material, colorOption.color)"
+                            v-if="colorOption.color.startsWith('no_') === false"
+                        />
+                        <div class="border" />
+                    </div>
+                    <p>{{ colorOptionText(colorOption) }}</p>
+                </li>
+            </span>
+        </ul>
+        <div class="message-undo-container">
+            <div class="message-undo" v-bind:class="{ visible: allowUndo }">
+                <a class="button button-undo" v-on:click="undo()">
+                    {{ "ripe_commons.pickers.undo" | locale }}
+                </a>
+                <span>
+                    {{ "ripe_commons.pickers.limited" | locale }}
+                    {{ "ripe_commons.pickers.back" | locale }}
+                </span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.pickers {
+    margin: 0px auto 0px auto;
+    padding: 0px 0px 16px 0px;
+    text-align: center;
+    width: 100%;
+}
+
+.pickers > .parts-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0px auto 0px auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.pickers > .parts-container::after {
+    border: 1px solid #eeeeef;
+    box-sizing: border-box;
+    content: "";
+    display: block;
+    position: relative;
+    top: -2px;
+    z-index: 0;
+}
+
+body.tablet .parts-container,
+body.mobile .parts-container {
+    margin: 0px;
+}
+
+.pickers > .parts-container::-webkit-scrollbar {
+    display: none;
+}
+
+.pickers > .parts-container > .part {
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px;
+    position: relative;
+    transition: border-bottom-color 0.1s ease-in-out;
+    vertical-align: top;
+    z-index: 1;
+}
+
+.pickers > .parts-container > .part:hover {
+    border-bottom-color: #c7c7c7;
+}
+
+.pickers > .parts-container > .part.active {
+    border-bottom-color: #333333;
+}
+
+.pickers > .parts-container > .part > p {
+    color: #6d6d6d;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0;
+}
+
+.pickers > .parts-container > .part > .swatch {
+    border: solid 1px #9299a3;
+    border-radius: 50% 50% 50% 50%;
+    display: inline-block;
+    float: right;
+    height: 22px;
+    margin: 3px 0px 0px 6px;
+    overflow: hidden;
+    width: 22px;
+}
+
+.pickers > .parts-container > .part > .swatch:first-child {
+    margin-left: 0px;
+}
+
+.pickers > .parts-container > .part > .swatch > img {
+    margin-left: -4px;
+    margin-top: -4px;
+}
+
+.pickers > .parts-container > .part > .no-part {
+    color: #4d545f;
+    font-size: 0px;
+    line-height: 18px;
+    margin: 0px 0px 0px 0px;
+    text-transform: capitalize;
+}
+
+.pickers > .materials-container {
+    display: none;
+}
+
+.pickers.multiple-materials > .materials-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0px auto 0px auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.pickers.multiple-materials > .materials-container::-webkit-scrollbar {
+    display: none;
+}
+
+.pickers.multiple-materials > .materials-container > .material {
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    margin: 0px 5px 0px 5px;
+    padding: 0px 5px 0px 5px;
+    text-align: center;
+    transition: background-color 0.1s ease-in-out;
+    vertical-align: middle;
+}
+
+.pickers.multiple-materials > .materials-container > .material:hover {
+    background-color: #e2e0e0c4;
+}
+
+body.mobile .pickers.multiple-materials > .materials-container > .material.active {
+    background-color: #333333;
+}
+
+body.mobile .pickers.multiple-materials > .materials-container > .material {
+    background-color: #e2e0e0c4;
+    border-radius: 4px;
+    height: 60px;
+    line-height: 30px;
+    margin: 0px 3px 0px 0px;
+    padding: 0px 10px 0px 10px;
+}
+
+.pickers.multiple-materials > .materials-container > .material > p {
+    color: #9b9b9b;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+body.mobile .pickers.multiple-materials > .materials-container > .material > p {
+    color: #333333;
+    height: 60px;
+    line-height: 60px;
+}
+
+.pickers.multiple-materials > .materials-container > .material.active > p {
+    color: #ffffff;
+}
+
+body.mobile .pickers.multiple-materials > .materials-container > .material.active > p {
+    color: #ffffff;
+}
+
+.pickers.multiple-materials > .materials-container > .material.active {
+    background-color: #333333;
+}
+
+.pickers > .colors-container {
+    color: #9b9b9b;
+    height: 130px;
+    margin: 0px 0px 0px 0px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.pickers > .colors-container::-webkit-scrollbar {
+    display: none;
+}
+
+.pickers > .colors-container > span {
+    display: block;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0px 20px 0px 20px;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+}
+
+.pickers > .colors-container > span::-webkit-scrollbar {
+    background: transparent;
+    height: 0px;
+}
+
+.pickers > .colors-container .color {
+    cursor: pointer;
+    display: inline-block;
+    opacity: 1;
+    position: relative;
+    transition: opacity 0.1s ease-in-out;
+    user-select: none;
+    vertical-align: top;
+    width: 100px;
+}
+
+.pickers.multiple-materials > .colors-container .color {
+    margin: 5px 0px 5px 0px;
+}
+
+.pickers.multiple-materials > .colors-container .color[data-index="0"] {
+    border-left: 1px solid #eaeaec;
+    box-sizing: border-box;
+    margin-left: 18px;
+    padding-left: 36px;
+    width: 118px;
+}
+
+.pickers.multiple-materials > .colors-container .color[data-index="0"]:first-child {
+    border-left-color: transparent;
+    margin-left: 0px;
+    padding: 0px 0px 0px 0px;
+    width: 100px;
+}
+
+.pickers > .colors-container .color.list-enter-active {
+    opacity: 0;
+    position: absolute;
+}
+
+.pickers > .colors-container .color.list-leave-active {
+    opacity: 0;
+}
+
+.pickers > .colors-container .color > p {
+    font-size: 14px;
+    margin: 100px 0px 0px 0px;
+    text-transform: capitalize;
+    white-space: normal;
+}
+
+.pickers.multiple-materials > .colors-container .color > p {
+    box-sizing: border-box;
+    margin-top: 80px;
+    padding: 0px 10px 0px 10px;
+}
+
+.pickers.multiple-materials > .colors-container .color.active > p {
+    font-weight: 600;
+}
+
+.pickers.multiple-materials > .colors-container .color[data-index="0"] > p {
+    margin-left: -18px;
+}
+
+.pickers.multiple-materials > .colors-container .color[data-index="0"]:first-child > p {
+    margin-left: 0px;
+}
+
+.pickers > .colors-container .color > .swatch {
+    border: solid 2px #eaeaec;
+    border-radius: 50% 50% 50% 50%;
+    height: 58px;
+    left: 0px;
+    margin: 20px auto 0px auto;
+    overflow: hidden;
+    padding: 0px 0px 0px 0px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    transform: scale(1, 1);
+    transition: transform 0.125s ease-in-out, border-width 0.125s ease-in-out;
+    width: 58px;
+}
+
+.pickers.multiple-materials > .colors-container .color > .swatch {
+    margin-top: 0px;
+}
+
+.pickers.multiple-materials > .colors-container .color[data-index="0"] > .swatch {
+    left: 18px;
+}
+
+.pickers.multiple-materials > .colors-container .color:first-child > .swatch {
+    left: 0px;
+}
+
+.pickers > .colors-container .color:hover > .swatch,
+.pickers > .colors-container .color.active > .swatch {
+    border-width: 0px;
+    transform: scale(1.13, 1.13);
+}
+
+.pickers > .colors-container .color.active.no_option > .swatch {
+    border-width: 2px;
+}
+
+.pickers > .colors-container .color > .swatch > img {
+    height: 78px;
+    margin-left: -4px;
+    margin-top: -4px;
+}
+
+.pickers > .colors-container .color > .swatch > .border {
+    border: 0px solid #ffffff;
+    border-radius: 50% 50% 50% 50%;
+    bottom: 3px;
+    height: 44px;
+    left: 3px;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    transition: border-width 0.125s ease-in-out;
+    width: 44px;
+}
+
+.pickers > .colors-container .color:hover > .swatch > .border,
+.pickers > .colors-container .color.active > .swatch > .border {
+    border-width: 4px;
+}
+
+.pickers .message-undo-container {
+    overflow: hidden;
+}
+
+.pickers .message-undo {
+    background-color: #ececec;
+    border-radius: 5px;
+    display: block;
+    font-size: 11px;
+    line-height: 14px;
+    margin: 0px auto 0px auto;
+    max-width: 580px;
+    padding: 10px 20px 10px 30px;
+    text-align: left;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.pickers .message-undo.visible {
+    transform: translateY(0px);
+}
+
+.pickers .message-undo .button.button-undo {
+    cursor: pointer;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-top: -10px;
+    padding: 10px 10px 10px 10px;
+    text-decoration: underline;
+}
+</style>
+
+<script>
+import { localeMixin } from "../mixins";
+
+export const pickers = {
+    mixins: [localeMixin],
+    data: function() {
+        return {
+            activePart: null,
+            activeMaterial: null,
+            activeColor: null,
+            multipleMaterials: false,
+            loading: false,
+            allowUndo: false,
+            swatches: {},
+            choices: {}
+        };
+    },
+    props: {
+        /**
+         * Responsible for establishing if the app shows all colors or just
+         * the colors of the selected material. 'False' will show all colors,
+         * regardless of the material.
+         */
+        colorToggle: {
+            type: Boolean,
+            default: false
+        }
+    },
+    computed: {
+        parts() {
+            return this.$store.getters.getParts();
+        },
+        options() {
+            return this.$store.state.options;
+        },
+        defaults() {
+            return this.$store.state.defaults;
+        },
+        filteredOptions() {
+            const choices = {};
+            for (const [part, partValue] of Object.entries(this.choices)) {
+                if (!partValue.available) continue;
+                const materials = {};
+                for (const [material, materialValue] of Object.entries(partValue.materials)) {
+                    if (!materialValue.available) continue;
+                    const colors = [];
+                    for (const [color, colorValue] of Object.entries(materialValue.colors)) {
+                        if (!colorValue.available) continue;
+                        colors.push(color);
+                    }
+                    if (Object.keys(colors).length === 0) continue;
+                    materials[material] = colors;
+                }
+                if (Object.keys(materials).length === 0) continue;
+                choices[part] = materials;
+            }
+            return choices;
+        },
+        materialOptions() {
+            return this.activePart ? this.filteredOptions[this.activePart] : null;
+        },
+        colorOptions() {
+            if (!this.activeMaterial) {
+                return null;
+            } else if (this.multipleMaterials === false || this.colorToggle === true) {
+                return this.materialColors(this.activeMaterial);
+            } else {
+                return this.partColors(this.activePart);
+            }
+        },
+        currentColor() {
+            return this.parts[this.activePart] || {};
+        },
+        sync() {
+            return this.$store.state.sync || {};
+        }
+    },
+    watch: {
+        parts() {
+            this.updateSwatches();
+        },
+        options() {
+            this.updateSwatches();
+            const parts = Object.keys(this.options);
+            this.activePart = parts[0];
+            for (const part of parts) {
+                const materials = this.options[part];
+                if (Object.keys(materials).length > 1) {
+                    this.multipleMaterials = true;
+                    return;
+                }
+            }
+            this.multipleMaterials = false;
+        },
+        activePart(part, oldPart) {
+            if (!part) {
+                return;
+            }
+            const current = this.parts[this.activePart];
+            const materials = Object.keys(this.materialOptions);
+            const materialSelected = current && current.material;
+            const material = materialSelected ? current.material : materials[0];
+            this.selectMaterial(material, false);
+        },
+        activeMaterial(material) {
+            const current = this.parts[this.activePart];
+            if (current && material === current.material) {
+                this.activeColor = current.color;
+            }
+        }
+    },
+    mounted: function() {
+        this.$store.watch(this.$store.getters.getParts, parts => {
+            const current = parts[this.activePart];
+            if (current && (!this.activeMaterial || this.activeMaterial === current.material)) {
+                this.activeMaterial = current.material;
+                this.activeColor = current.color;
+            }
+        });
+        this.$bus.bind("pre_config", () => {
+            this.loading = true;
+            this.activePart = null;
+            this.activeMaterial = null;
+            this.activeColor = null;
+            this.$forceUpdate();
+        });
+        this.$bus.bind("post_config", () => {
+            this.loading = false;
+        });
+        this.$bus.bind("choices", choices => {
+            this.choices = choices;
+            this.$forceUpdate();
+        });
+        this.$bus.bind("selected_part", part => {
+            this.activePart = part;
+        });
+        this.$bus.bind("restrictions", (changes, newPart) => {
+            this.allowUndo = changes.length > 0;
+        });
+        const colorsPicker = this.$refs.colorsPicker;
+        colorsPicker.addEventListener("touchstart", () => colorsPicker.classList.add("drag"));
+        colorsPicker.addEventListener("touchend", () => colorsPicker.classList.remove("drag"));
+        colorsPicker.addEventListener("touchcancel", () => colorsPicker.classList.remove("drag"));
+        const scrollElement = colorsPicker.querySelector("span");
+        scrollElement.addEventListener(
+            "scroll",
+            () => {
+                if (colorsPicker.classList.contains("drag") === false) {
+                    return false;
+                }
+                const colorButtons = scrollElement.querySelectorAll(".button-color");
+                let centerColor = null;
+                const maxOffset = scrollElement.scrollWidth - scrollElement.clientWidth;
+                let targetOffset = scrollElement.scrollLeft + scrollElement.clientWidth / 2;
+                targetOffset = scrollElement.scrollLeft === 0 ? 0 : targetOffset;
+                targetOffset = targetOffset >= maxOffset ? maxOffset : targetOffset;
+                let offset = null;
+                for (const color of colorButtons) {
+                    const colorOffset = Math.abs(targetOffset - color.offsetLeft);
+                    if (centerColor === null || colorOffset < offset) {
+                        centerColor = color;
+                        offset = colorOffset;
+                    } else if (colorOffset > offset) {
+                        break;
+                    }
+                }
+                if (centerColor === null) {
+                    return;
+                }
+                const material = centerColor.getAttribute("data-material");
+                this.selectMaterial(material, false);
+                this.scrollMaterials(material);
+            },
+            false
+        );
+    },
+    methods: {
+        configName(part) {
+            return part.split("_").join(" ");
+        },
+        getColorSwatchURL(material, color) {
+            return this.$ripe._getSwatchURL({ material, color });
+        },
+        getPartSwatchURL(part) {
+            const currentPart = this.parts[part] || {};
+            return this.getColorSwatchURL(currentPart.material, currentPart.color);
+        },
+        colorSwatch(material, color) {
+            return this.swatches[`${material}:${color}`];
+        },
+        partSwatch(part) {
+            return this.swatches[part];
+        },
+        isOptional(part) {
+            const defaultPart = this.defaults[part] || {};
+            return Boolean(defaultPart.optional);
+        },
+        colorOptionText(colorOption) {
+            const optional = this.isOptional(this.activePart);
+            const multiple = this.colorOptions.length > 1;
+
+            if (optional && !multiple) {
+                return this.localeModel(this.activePart, colorOption.material);
+            }
+
+            return this.localeModel(this.activePart, colorOption.material, colorOption.color);
+        },
+        selectedColor(part) {
+            return this.parts[part];
+        },
+        isSelected(colorOption) {
+            return (
+                (!this.currentColor.color && colorOption.color.startsWith("no_")) ||
+                (this.currentColor.material === colorOption.material &&
+                    this.currentColor.color === colorOption.color)
+            );
+        },
+        updateSwatches() {
+            const swatches = {};
+            for (const part in this.options) {
+                swatches[part] = this.getPartSwatchURL(part);
+                const materials = this.options[part];
+                for (const material in materials) {
+                    const colors = materials[material];
+                    for (const color of colors) {
+                        swatches[`${material}:${color}`] = this.getColorSwatchURL(material, color);
+                    }
+                }
+            }
+            this.swatches = swatches;
+        },
+        showSwatches(part) {
+            this.activePart = part;
+            this.$bus.trigger("highlight_part", part);
+            this.onMaterialsChanged();
+            this.onColorsChanged();
+        },
+        selectSwatch() {
+            const removeOptional = this.activeColor.startsWith("no_");
+            const material = removeOptional ? null : this.activeMaterial;
+            const color = removeOptional ? null : this.activeColor;
+
+            // triggers both the action to change the part on the current model
+            // and the action to run a lowlight on the part (hide mask)
+            this.$bus.trigger("part_change", this.activePart, material, color);
+            this.$bus.trigger("lowlight_part", this.activePart, material, color);
+
+            // runs the update swatches operation so that they are properly updatd
+            // in according to the swatches selectedion
+            this.updateSwatches();
+            this.isOptional(this.activePart) && this.$nextTick(() => this.$forceUpdate());
+        },
+        partColors(part) {
+            const colors = [];
+            const partColors = this.filteredOptions[part];
+            const isOptional = this.isOptional(part);
+            for (const material in partColors) {
+                const materialColors = partColors[material];
+                let index = 0;
+                for (const color of materialColors) {
+                    colors.push({
+                        material: material,
+                        color: color,
+                        index: index
+                    });
+                    index++;
+                }
+                isOptional &&
+                    colors.push({
+                        material: "no_" + part,
+                        color: "no_" + part,
+                        index: index
+                    });
+            }
+            return colors;
+        },
+        materialColors(material) {
+            const colors = [];
+            let index = 0;
+            const materialColors = this.materialOptions[material];
+            for (const color of materialColors) {
+                colors.push({
+                    material: material,
+                    color: color,
+                    index: index
+                });
+                index++;
+            }
+            this.isOptional(this.activePart) &&
+                colors.push({
+                    material: material,
+                    color: "no_" + this.activePart,
+                    index: index
+                });
+            return colors;
+        },
+        /**
+         * Scrolls the current picker's materials container to the target
+         * material defined as string, optionally using a smooth based transition.
+         *
+         * @param {String} material The name of the material to scroll to.
+         * @param {Boolean} smooth If the transition should be performed
+         * using a smooth strategy.
+         */
+        scrollMaterials(material, smooth = true) {
+            if (this.multipleMaterials === false || this.colorToggle === true) {
+                return false;
+            }
+            const materialsPicker = this.$refs.materialsPicker;
+            const materialButton = materialsPicker.querySelector(
+                '.button-material[data-material="' + material + '"]'
+            );
+            materialsPicker.style.scrollBehavior = smooth ? null : "auto";
+            materialsPicker.scrollLeft = materialButton
+                ? materialButton.clientWidth / 2 +
+                  materialButton.offsetLeft -
+                  materialsPicker.clientWidth / 2
+                : 0;
+            materialsPicker.style.scrollBehavior = smooth ? "auto" : null;
+        },
+        /**
+         * Centers the active color inside its scrollable container.
+         */
+        centerActiveColor() {
+            const colorsPicker = this.$refs.colorsPicker;
+            const scrollableElement = colorsPicker.querySelector("span");
+
+            const part = this.parts[this.activePart];
+
+            if (!part) {
+                return;
+            }
+
+            if (part && part.material !== this.activeMaterial) {
+                scrollableElement.scrollLeft = 0;
+                return;
+            }
+
+            debugger;
+
+            const colors = colorsPicker.querySelectorAll(".button-color");
+
+            let scrollActiveColor = 0;
+            for (const _color of colors) {
+                // ignore all elements being transitioned out
+                if (_color.dataset.material !== this.activeMaterial) {
+                    continue;
+                }
+
+                const style = getComputedStyle(_color);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                if (_color.dataset.color === part.color) {
+                    scrollActiveColor += (_color.offsetWidth + marginLeft + marginRight) / 2;
+                    break;
+                }
+
+                // offset width doesn't account for the margins, so we must sum them explicitly
+                scrollActiveColor += _color.offsetWidth + marginLeft + marginRight;
+            }
+
+            const padding = parseFloat(getComputedStyle(scrollableElement).paddingLeft);
+            const scrollableElementWidth = scrollableElement.clientWidth - padding;
+
+            scrollableElement.scrollLeft =
+                scrollActiveColor - scrollableElementWidth / 2 + padding / 2;
+        },
+        /**
+         * Scrolls the color's container to the defined material and optionally
+         * a specific color.
+         *
+         * If a smooth transition should be ensured for the scroll operation.
+         *
+         * @param {String} material The name of the material to scroll to.
+         * @param {String} color The name of the color to scroll to.
+         * @param {Boolean} smooth If the smoth transition should be ensured.
+         */
+        scrollColors(material, color, smooth = true) {
+            if (this.multipleMaterials === false) {
+                return false;
+            }
+            if (this.colorToggle) {
+                this.centerActiveColor();
+                return;
+            }
+            const colorsPicker = this.$refs.colorsPicker;
+            const colors = colorsPicker.querySelectorAll(".button-color");
+
+            // initializes the counter of pixels for the (new) scroll left position
+            // to be applied to the scroll element
+            let scrollLeft = 0;
+
+            // searches the selected material, summing the offsets until the requested
+            // material (and optionally collor) is found
+            for (const _color of colors) {
+                const style = getComputedStyle(_color);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                if (
+                    _color.dataset.material === material &&
+                    (!color || _color.dataset.color === color)
+                ) {
+                    if (_color.dataset.index === "0") {
+                        scrollLeft += marginLeft;
+                    }
+                    break;
+                }
+                // offset width doesn't account for the margins, so we must sum them explicitly
+                scrollLeft += _color.offsetWidth + marginLeft + marginRight;
+            }
+            const scrollElement = colorsPicker.querySelector("span");
+            scrollElement.style.scrollBehavior = smooth === false ? "auto" : null;
+            scrollElement.scrollLeft = scrollLeft;
+            scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
+            return true;
+        },
+        onMaterialsChanged() {
+            this.scrollMaterials(this.activeMaterial, false);
+            this.scrollColors(this.activeMaterial, null, false);
+        },
+        onColorsChanged() {
+            requestAnimationFrame(() => {
+                this.scrollMaterials(this.activeMaterial, false);
+                this.scrollColors(this.activeMaterial, null, false);
+            });
+        },
+        selectMaterial(material, scroll) {
+            scroll = scroll === undefined ? this.multipleMaterials : scroll;
+            const materialChanged = this.activeMaterial !== material;
+            this.activeMaterial = material;
+            scroll &&
+                requestAnimationFrame(() => {
+                    this.scrollMaterials(material);
+                    if (this.colorToggle && materialChanged) {
+                        this.scrollColors(material);
+                    } else {
+                        this.scrollColors(material);
+                    }
+                });
+        },
+        colorClicked(option) {
+            if (this.isSelected(option)) return;
+            this.selectMaterial(option.material);
+            this.activeColor = option.color;
+            this.selectSwatch();
+        },
+        undo() {
+            this.$bus.trigger("undo");
+        }
+    }
+};
+
+export default pickers;
+</script>
