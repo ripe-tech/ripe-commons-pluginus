@@ -27,4 +27,10 @@ const hasPlugin = function(name) {
 };
 
 export { Plugin, registerPlugin, unregisterPlugin, getPlugin, hasPlugin };
-export default { Plugin, registerPlugin, unregisterPlugin, getPlugin, hasPlugin };
+export default {
+    Plugin,
+    registerPlugin,
+    unregisterPlugin,
+    getPlugin,
+    hasPlugin
+};

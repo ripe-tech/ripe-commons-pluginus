@@ -9,7 +9,9 @@ const localePlugin = {
             return localePlugin.toLocale(value, defaultValue);
         });
 
-        Object.defineProperty(Vue.prototype, "$locale", { value: localePlugin });
+        Object.defineProperty(Vue.prototype, "$locale", {
+            value: localePlugin
+        });
     }
 };
 

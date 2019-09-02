@@ -10,7 +10,13 @@ class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
      * that contain both the contents and the locale type.
      */
     static getLocales() {
-        return [{ name: "config", locale: "en_us", content: configEnUs }];
+        return [
+            {
+                name: "config",
+                locale: "en_us",
+                content: configEnUs
+            }
+        ];
     }
 
     async load() {

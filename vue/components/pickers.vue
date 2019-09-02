@@ -783,8 +783,6 @@ export const pickers = {
                 return;
             }
 
-            debugger;
-
             const colors = colorsPicker.querySelectorAll(".button-color");
 
             let scrollActiveColor = 0;

@@ -218,7 +218,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         );
         const locale = RipeCommonsMainPlugin._field("locale", query, ripeOptions.locale || "en_us");
         const flag = RipeCommonsMainPlugin._field("flag", query, ripeOptions.flag || null);
-        const initials = RipeCommonsMainPlugin._field("initials", query, ripeOptions.initials || "");
+        const initials = RipeCommonsMainPlugin._field(
+            "initials",
+            query,
+            ripeOptions.initials || ""
+        );
         const engraving = RipeCommonsMainPlugin._field(
             "engraving",
             query,
@@ -327,7 +331,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(
                     this.$store.getters.getModelState,
                     modelState => manager.trigger("model_changed", modelState),
-                    { deep: true }
+                    {
+                        deep: true
+                    }
                 );
             }
         });

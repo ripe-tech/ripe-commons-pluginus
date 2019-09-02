@@ -6,7 +6,13 @@ const localeMixin = {
     },
     methods: {
         localeModel(part, material, color, options) {
-            options = Object.assign({ part: part, material: material }, options);
+            options = Object.assign(
+                {
+                    part: part,
+                    material: material
+                },
+                options
+            );
             if (!this.__localeModel) {
                 return options.defaultValue || "";
             }
@@ -19,7 +25,12 @@ const localeMixin = {
             }
         },
         localeModelProperty(name, type, options) {
-            options = Object.assign({ type: type }, options);
+            options = Object.assign(
+                {
+                    type: type
+                },
+                options
+            );
             if (!this.__localeModel) {
                 return options.defaultValue || "";
             }

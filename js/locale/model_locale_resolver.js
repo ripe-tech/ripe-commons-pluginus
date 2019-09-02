@@ -33,7 +33,10 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         material && color && value.push(`colors.${material}.${color}`);
         color && value.push(`colors.${color}`);
         value = value.concat(suffixes);
-        return this.localeModel(value, { locale: locale, defaultValue: defaultValue });
+        return this.localeModel(value, {
+            locale: locale,
+            defaultValue: defaultValue
+        });
     }
 
     localeMaterial(
@@ -45,7 +48,10 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         part && material && value.push(`materials.${part}.${material}`);
         material && value.push(`materials.${material}`);
         value = value.concat(suffixes);
-        return this.localeModel(value, { locale: locale, defaultValue: defaultValue });
+        return this.localeModel(value, {
+            locale: locale,
+            defaultValue: defaultValue
+        });
     }
 
     localePart(part, { locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}) {
@@ -53,7 +59,10 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         value = value.concat(prefixes);
         part && value.push(`parts.${part}`);
         value = value.concat(suffixes);
-        return this.localeModel(value, { locale: locale, defaultValue: defaultValue });
+        return this.localeModel(value, {
+            locale: locale,
+            defaultValue: defaultValue
+        });
     }
 
     localeProperty(
@@ -65,11 +74,20 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         name && value.push(`properties.${name}`);
         type && name && value.push(`properties.${type}.${name}`);
         value = value.concat(suffixes);
-        return this.localeModel(value, { locale: locale, defaultValue: defaultValue });
+        return this.localeModel(value, {
+            locale: locale,
+            defaultValue: defaultValue
+        });
     }
 
     localeModel(value, { locale = null, defaultValue = null, ...options } = {}) {
-        options = Object.assign({ locale: locale, defaultValue: defaultValue }, options);
+        options = Object.assign(
+            {
+                locale: locale,
+                defaultValue: defaultValue
+            },
+            options
+        );
         return this._toLocale(value, this.brand, this.model, options);
     }
 

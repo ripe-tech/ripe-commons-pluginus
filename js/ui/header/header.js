@@ -3,7 +3,10 @@ import { header } from "./header.vue";
 
 class HeaderPlugin extends RipeCommonsPlugin {
     getCapabilities() {
-        return [RipeCommonsCapability.new("component"), RipeCommonsCapability.new("component-header")];
+        return [
+            RipeCommonsCapability.new("component"),
+            RipeCommonsCapability.new("component-header")
+        ];
     }
 
     async getComponent() {

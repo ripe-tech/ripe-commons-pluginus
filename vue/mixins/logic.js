@@ -1,6 +1,8 @@
 const logicMixin = {
     inject: {
-        manager: { default: null }
+        manager: {
+            default: null
+        }
     },
     computed: {
         config() {
