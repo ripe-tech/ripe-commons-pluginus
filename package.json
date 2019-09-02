@@ -7,13 +7,13 @@
         "ripe",
         "pluginus"
     ],
-    "homepage": "https://github.com/ripe-tech/ripe-components-vue#readme",
+    "homepage": "https://github.com/ripe-tech/ripe-commons-pluginus#readme",
     "bugs": {
-        "url": "https://github.com/ripe-tech/ripe-components-vue/issues"
+        "url": "https://github.com/ripe-tech/ripe-commons-pluginus/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ripe-tech/ripe-components-vue.git"
+        "url": "git+https://github.com/ripe-tech/ripe-commons-pluginus.git"
     },
     "license": "Apache-2.0",
     "author": "Platforme",
@@ -28,7 +28,7 @@
         "vue/**/*.js",
         "vue/**/*.vue"
     ],
-    "main": "dist/ripe-components-vue.min.js",
+    "main": "dist/ripe-commons-pluginus.min.js",
     "scripts": {
         "build": "webpack --mode production --config webpack.config.js",
         "build-dev": "webpack --mode development --config webpack.config.js",
