@@ -1,0 +1,60 @@
+{
+    "name": "ripe-commons-pluginus",
+    "version": "0.1.0",
+    "description": "RIPE Commons for Pluginus",
+    "keywords": [
+        "commons",
+        "ripe",
+        "pluginus"
+    ],
+    "homepage": "https://github.com/ripe-tech/ripe-components-vue#readme",
+    "bugs": {
+        "url": "https://github.com/ripe-tech/ripe-components-vue/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ripe-tech/ripe-components-vue.git"
+    },
+    "license": "Apache-2.0",
+    "author": "Platforme",
+    "files": [
+        "index.js",
+        "LICENSE",
+        "dist/**/*",
+        "js/**/*.js",
+        "res/**/*.ico",
+        "res/**/*.png",
+        "test/**/*.js",
+        "vue/**/*.js",
+        "vue/**/*.vue"
+    ],
+    "main": "dist/ripe-components-vue.min.js",
+    "scripts": {
+        "build": "webpack --mode production --config webpack.config.js",
+        "build-dev": "webpack --mode development --config webpack.config.js",
+        "dev": "webpack-dev-server --config webpack.config.js --mode development --watch --hot",
+        "lint": "eslint \"./**/*.{js,vue}\"",
+        "lint-all": "npm run lint && npm run stylelint",
+        "lint-fix": "eslint \"./**/*.{js,vue}\" --fix",
+        "prettier": "prettier \"./**/*.{js,vue,json}\" --write",
+        "pretty": "npm run prettier && npm run lint-fix && npm run stylelint-fix",
+        "storybook": "start-storybook -p 9001 -c .storybook",
+        "stylelint": "stylelint \"./**/*.{css,scss,vue}\"",
+        "stylelint-fix": "stylelint \"./**/*.{css,scss,vue}\" --fix",
+        "test": "mocha --recursive",
+        "upgrade": "npx sort-package-json && ncu -u",
+        "watch": "webpack --config webpack.config.js --mode development --watch",
+        "webpack": "webpack --config webpack.config.js"
+    },
+    "dependencies": {
+        "loaders.css": "^0.1.2",
+        "pluginus": "^0.2.6",        
+        "vue": "^2.6.10",
+        "vue-global-events": "^1.1.2"
+    },
+    "devDependencies": {
+        "babel-preset-vue": "^2.0.2",
+        "url-loader": "^2.1.0",
+        "uxf-webpack": "^0.2.14"
+    }
+}
