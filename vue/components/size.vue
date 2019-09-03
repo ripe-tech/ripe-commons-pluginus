@@ -178,6 +178,8 @@ export const size = {
         });
 
         this.$bus.bind("post_config", async config => {
+            // in case there's no valid config for this post operation
+            // returns control flow immediately, should not happen
             if (!config) {
                 return;
             }
