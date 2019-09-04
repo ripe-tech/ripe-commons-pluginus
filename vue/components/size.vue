@@ -32,96 +32,11 @@
 .size.disabled {
     background-color: transparent;
     border-color: transparent;
-    opacity: 0.3;
     pointer-events: none;
-}
-
-.button.button-primary {
-    cursor: pointer;
-}
-
-.button.button-cancel {
-    cursor: pointer;
-}
-
-.size > .button.button-size {
-    border: solid 1px #333333;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 50px;
-    line-height: 52px;
-    opacity: 0.5;
-    padding: 0px 10px 0 10px;
-    width: 215px;
-}
-
-.size > .button.button-size:hover {
-    opacity: 1;
-    -webkit-transition: opacity 0.4s;
-    -o-transition: opacity 0.4s;
-    -ms-transition: opacity 0.4s;
-    -moz-transition: opacity 0.4s;
-    -khtml-transition: opacity 0.4s;
-    transition: opcity 0.4s;
 }
 
 .size .modal.modal-size .modal-container {
     padding: 40px 80px 40px 80px;
-}
-
-.size {
-    display: inline-block;
-    text-align: center;
-}
-
-body.tablet .size {
-    bottom: 0px;
-    display: inline-block;
-    padding-bottom: 34px;
-    width: 100%;
-}
-
-body.tablet .size.disabled {
-    bottom: 0px;
-    display: inline-block;
-    padding-bottom: 34px;
-    width: 100%;
-}
-
-.size.disabled:hover {
-    opacity: 1;
-    -webkit-transition: opacity 0.4s;
-    -o-transition: opacity 0.4s;
-    -ms-transition: opacity 0.4s;
-    -moz-transition: opacity 0.4s;
-    -khtml-transition: opacity 0.4s;
-    transition: opacity 0.4s;
-}
-
-body.mobile .size.disabled > .button.button-size > span {
-    display: none;
-}
-
-body.mobile .size > .button.button-size > span {
-    display: none;
-}
-
-body.mobile .size > .button.button-size {
-    background: url("~./assets/cut.svg") no-repeat center;
-    background-color: #fafafa;
-    height: 50px;
-    padding: 0px;
-    width: 50px;
-}
-
-.size > .button.button-size > span {
-    color: #333333;
-    display: inline;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 12px;
-    margin: 0px 0px 12px 0px;
 }
 </style>
 

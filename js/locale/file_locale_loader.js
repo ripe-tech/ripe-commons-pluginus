@@ -1,5 +1,5 @@
 import { RipeCommonsCapability, RipeCommonsPlugin } from "../abstract";
-import configEnUs from "../../../bundles/config.en_us";
+import configEnUs from "../../bundles/config.en_us";
 
 class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
     /**

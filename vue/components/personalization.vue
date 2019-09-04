@@ -40,75 +40,7 @@
 .personalization.disabled {
     background-color: transparent;
     border-color: transparent;
-    opacity: 0.3;
     pointer-events: none;
-}
-
-body.mobile .personalization .modal-container {
-    width: 100%;
-}
-
-.personalization .button.button-personalization:hover {
-    opacity: 1;
-    -webkit-transition: opacity 0.8s;
-    -o-transition: opacity 0.8s;
-    -ms-transition: opacity 0.8s;
-    -moz-transition: opacity 0.8s;
-    -khtml-transition: opacity 0.8s;
-    transition: opacity 0.8s;
-}
-
-body.tablet .personalization {
-    bottom: 0px;
-    display: inline-block;
-    margin: 0px auto 0px auto;
-    width: 100%;
-}
-
-.button.button-cancel:hover {
-    cursor: pointer;
-}
-
-.button.button-apply:hover {
-    cursor: pointer;
-}
-
-.button.button-personalization > p {
-    display: none;
-}
-
-.personalization .button.button-personalization {
-    border: solid 1px #333333;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 50px;
-    line-height: 52px;
-    opacity: 0.5;
-    padding: 0px 10px 0 10px;
-    width: 215px;
-}
-
-body.mobile .button.button-personalization {
-    background: url("~./assets/personalize-icon.svg") no-repeat center;
-    background-color: #fafafa;
-    height: 50px;
-    padding: 0px;
-    width: 50px;
-}
-
-body.mobile .button.button-personalization > p {
-    display: none;
-}
-
-body.mobile .button.button-personalization > h3 {
-    display: none;
-}
-
-.personalization .button.button-personalization > h3 {
-    color: #333333;
-    font-size: 16px;
-    margin: 0px 0px 12px 0px;
 }
 
 .personalization >>> .tabs {

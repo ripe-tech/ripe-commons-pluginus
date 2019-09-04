@@ -28,24 +28,6 @@
     opacity: 0;
 }
 
-.error {
-    background: #ffffff;
-    border: 1px solid #eeeeee;
-    box-shadow: 0px 0px 36px -15px #aaaaaa;
-    box-sizing: border-box;
-    color: #333333;
-    font-size: 13px;
-    font-weight: 600;
-    left: 0;
-    padding: 10px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-    white-space: normal;
-    width: 100%;
-}
-
 .holder {
     bottom: 5px;
     position: absolute;

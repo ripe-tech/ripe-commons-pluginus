@@ -1,5 +1,5 @@
 <script>
-import { components } from "../../../../vue";
+import { components } from "../../../vue";
 
 export const baseSize = {
     extends: components.sizeForm.referenceMulti

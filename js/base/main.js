@@ -4,7 +4,7 @@ import { Ripe } from "ripe-sdk";
 import Vue from "vue";
 import GlobalEvents from "vue-global-events";
 
-import { components, plugins, mixins, store } from "../../../vue";
+import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 class RipeCommonsMainPlugin extends RipeCommonsPlugin {
@@ -102,7 +102,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     getCapabilities() {
-        return [RipeCommonsCapability.new("start")];
+        return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
     async setModel(options = null) {
@@ -155,14 +155,26 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
     }
 
-    _loadVue() {
-        // register the vue components so that they can initialized
-        // from the templates, only after this call can the templates
-        // use these components safely
+    _getExtraComponents() {
+        return {};
+    }
+
+    _installComponents(components) {
         for (const name in components) {
             const component = components[name];
             Vue.component(name, component);
         }
+    }
+
+    _loadVue() {
+        // register the vue components so that they can initialized
+        // from the templates, only after this call can the templates
+        // use these components safely
+        this._installComponents(components);
+        const extraComponents = this._getExtraComponents();
+
+        // the more specific components should override the latter
+        this._installComponents(extraComponents);
 
         // registers the store and utils mixins so they are set on
         // all components, this applies directly on component creation
@@ -344,7 +356,5 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         throw new Error("_getRipeOptions is not implemented.");
     }
 }
-
-RipeCommonsMainPlugin.register();
 
 export { RipeCommonsMainPlugin };
