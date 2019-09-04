@@ -241,8 +241,8 @@ export const personalization = {
             // retrieves the first plugin (best candidate) and retrieves its
             // personalization component setting it as the form component for
             // this specific personalization scenario
-            let plugin = plugins[0];
-            let form = await plugin.getPersonalizationComponent();
+            const plugin = plugins[0];
+            const form = await plugin.getPersonalizationComponent();
 
             // increments the cache invalidation counter, internal hack to enable
             // proper computation of computed values
@@ -389,7 +389,7 @@ export const personalization = {
 
             // if the groups are not declared then checks if a group named
             // "main" is defined and returns its values
-            const mainGroup = initialsExtra["main"];
+            const mainGroup = initialsExtra.main;
             if (mainGroup) {
                 return mainGroup;
             }
@@ -398,7 +398,7 @@ export const personalization = {
             // group with initials defined
             const keys = Object.keys(initialsExtra).sort();
             for (const key of keys) {
-                let group = initialsExtra[key];
+                const group = initialsExtra[key];
                 if (group.initials.length) {
                     return group;
                 }

@@ -35,7 +35,7 @@ class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
                 model: name,
                 locale: currentLocale
             });
-            for (let key in result) {
+            for (const key in result) {
                 localePlugin.setLocaleValue(key, result[key], currentLocale);
             }
         });

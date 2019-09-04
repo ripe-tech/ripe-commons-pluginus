@@ -202,7 +202,7 @@ export const size = {
 
             // retrieves its personalization component setting it as the form
             // component for this specific personalization scenario
-            let form = await plugin.getSizeComponent();
+            const form = await plugin.getSizeComponent();
 
             // increments the cache invalidation counter, internal hack to enable
             // proper computation of computed values

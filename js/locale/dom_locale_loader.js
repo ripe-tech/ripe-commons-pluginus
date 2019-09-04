@@ -16,13 +16,13 @@ class DomLocaleLoaderPlugin extends RipeCommonsPlugin {
 
     _loadFromDOM(targetId) {
         targetId = targetId || "locale";
-        let localeBundle = {};
-        let localeE = document.getElementById(targetId);
+        const localeBundle = {};
+        const localeE = document.getElementById(targetId);
         if (!localeE) {
             return null;
         }
-        let locale = localeE.getAttribute("data-locale");
-        let localeKeys = localeE ? JSON.parse(localeE.textContent) : {};
+        const locale = localeE.getAttribute("data-locale");
+        const localeKeys = localeE ? JSON.parse(localeE.textContent) : {};
         localeBundle[locale] = localeKeys;
         return localeBundle;
     }

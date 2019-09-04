@@ -167,7 +167,7 @@ export const configurator = {
         });
 
         this.configurator.bind("loaded", () => {
-            let frame = `${this.configurator.view}-${this.configurator.position}`;
+            const frame = `${this.configurator.view}-${this.configurator.position}`;
             this.frame = frame;
             this.loading = false;
             this.$store.commit("current_frame", frame);

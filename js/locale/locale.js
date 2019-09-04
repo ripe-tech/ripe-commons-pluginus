@@ -29,12 +29,12 @@ class LocalePlugin extends RipeCommonsPlugin {
 
     getLocaleValue(key, defaultValue, locale) {
         locale = locale || this.locale;
-        let localeKeys = this.localeMap[locale] || {};
+        const localeKeys = this.localeMap[locale] || {};
         return localeKeys[key] || defaultValue;
     }
 
     hasLocale(key, locale) {
-        let keys = this.localeMap[locale] || {};
+        const keys = this.localeMap[locale] || {};
         return key in keys;
     }
 
@@ -48,7 +48,7 @@ class LocalePlugin extends RipeCommonsPlugin {
     }
 
     setLocaleValue(key, value, locale) {
-        let localeKeys = this.localeMap[locale] || {};
+        const localeKeys = this.localeMap[locale] || {};
         localeKeys[key] = value;
         this.localeMap[locale] = localeKeys;
         this.owner.trigger("locale", key, value, locale);
@@ -56,35 +56,35 @@ class LocalePlugin extends RipeCommonsPlugin {
 
     setLocaleMap(localeMap, prefix = "") {
         prefix = prefix.length === 0 || prefix.endsWith(".") ? prefix : `${prefix}.`;
-        for (let locale in localeMap) {
-            let bundle = localeMap[locale];
-            for (let key in bundle) {
+        for (const locale in localeMap) {
+            const bundle = localeMap[locale];
+            for (const key in bundle) {
                 this.setLocaleValue(`${prefix}${key}`, bundle[key], locale);
             }
         }
     }
 
     unsetLocaleValue(key, locale) {
-        let localeKeys = this.localeMap[locale] || {};
+        const localeKeys = this.localeMap[locale] || {};
         delete localeKeys[key];
     }
 
     unsetLocaleMap(localeMap, prefix = "") {
         prefix = prefix.length === 0 || prefix.endsWith(".") ? prefix : `${prefix}.`;
-        for (let locale in localeMap) {
-            let bundle = localeMap[locale];
-            for (let key in bundle) {
+        for (const locale in localeMap) {
+            const bundle = localeMap[locale];
+            for (const key in bundle) {
                 this.unsetLocaleValue(`${prefix}.${key}`, locale);
             }
         }
     }
 
     async _loadLocales() {
-        let locales = {};
-        for (let plugin of this.loaderPlugins) {
-            let localeBundle = await plugin.loadLocale();
-            for (let locale in localeBundle) {
-                let bundle = localeBundle[locale];
+        const locales = {};
+        for (const plugin of this.loaderPlugins) {
+            const localeBundle = await plugin.loadLocale();
+            for (const locale in localeBundle) {
+                const bundle = localeBundle[locale];
                 locales[locale] = Object.assign({}, locales[locale], bundle);
             }
         }

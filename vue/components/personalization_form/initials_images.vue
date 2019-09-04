@@ -46,7 +46,7 @@ export const initialsImages = {
     },
     mounted: function() {
         const initialsImages = this.$refs.initialsImages || [];
-        for (let initialsImage of initialsImages) {
+        for (const initialsImage of initialsImages) {
             const image = this.$ripe.bindImage(initialsImage, {
                 showInitials: true,
                 initialsBuilder: this.initialsBuilder

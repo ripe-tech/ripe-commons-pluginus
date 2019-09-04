@@ -112,19 +112,19 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             hack = false
         } = {}
     ) {
-        let values = Array.isArray(value) ? value : [value];
+        const values = Array.isArray(value) ? value : [value];
         if (values.length === 0) {
             throw new Error("No values present to be localized");
         }
 
         locale = locale || this.localePlugin.getLocale();
-        let language = locale.split("_", 1)[0];
+        const language = locale.split("_", 1)[0];
         if (hack) {
             value = values[-1].rsplit(".", 1)[-1];
             return this.localePlugin.toLocale(value, defaultValue, locale, fallback);
         }
 
-        let locales = this.localePlugin.getSupportedLocales();
+        const locales = this.localePlugin.getSupportedLocales();
         if (locales.includes(locale)) {
         } else if (locales.includes(language)) {
             locale = language;
@@ -132,17 +132,17 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             locale = locales[0];
         }
 
-        let prefixes = [`${brand}.${model}`, brand];
-        for (let value of values) {
-            let permutations = this._permutations(value);
-            for (let _prefix of prefixes) {
-                for (let _value of permutations) {
-                    let valueFqn = `${prefix}.${_prefix}.${_value}`;
-                    let hasLocale = this.localePlugin.hasLocale(valueFqn, locale);
+        const prefixes = [`${brand}.${model}`, brand];
+        for (const value of values) {
+            const permutations = this._permutations(value);
+            for (const _prefix of prefixes) {
+                for (const _value of permutations) {
+                    const valueFqn = `${prefix}.${_prefix}.${_value}`;
+                    const hasLocale = this.localePlugin.hasLocale(valueFqn, locale);
                     if (!hasLocale) {
                         continue;
                     }
-                    let result = this.localePlugin.toLocale(valueFqn, null, locale, fallback);
+                    const result = this.localePlugin.toLocale(valueFqn, null, locale, fallback);
                     if (result) {
                         return result;
                     }
@@ -151,14 +151,14 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         }
 
         if (compatibility) {
-            for (let value of values) {
-                let permutations = this._permutations(value);
-                for (let _value of permutations) {
-                    let hasLocale = this.localePlugin.hasLocale(_value, locale);
+            for (const value of values) {
+                const permutations = this._permutations(value);
+                for (const _value of permutations) {
+                    const hasLocale = this.localePlugin.hasLocale(_value, locale);
                     if (!hasLocale) {
                         continue;
                     }
-                    let result = this.localePlugin.toLocale(_value, null, locale, fallback);
+                    const result = this.localePlugin.toLocale(_value, null, locale, fallback);
                     if (result) {
                         return result;
                     }
@@ -170,11 +170,11 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     }
 
     _permutations(value) {
-        let valueP = value.split(".");
-        let permutations = [];
+        const valueP = value.split(".");
+        const permutations = [];
         for (let index = valueP.length; index > 1; index--) {
-            let parts = valueP.slice(1, index - 1);
-            let partsS = parts.length ? parts.join(".") + "." : "";
+            const parts = valueP.slice(1, index - 1);
+            const partsS = parts.length ? parts.join(".") + "." : "";
             permutations.push(`${valueP[0]}.${partsS}${valueP[valueP.length - 1]}`);
         }
         return permutations;

@@ -1,7 +1,7 @@
 const localeMixin = {
     computed: {
         __localeModel() {
-            return this.manager.pluginsName["ModelLocaleResolverPlugin"];
+            return this.manager.pluginsName.ModelLocaleResolverPlugin;
         }
     },
     methods: {
