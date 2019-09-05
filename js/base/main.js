@@ -55,6 +55,28 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         this._loadOptions();
 
+        // in case there's a valid product id defined that we should resolve
+        // it and update the current options with its resolved values
+        if (!(this.options.brand && this.options.model) && this.options.product_id) {
+            let model = null;
+            const isQuery = this.options.product_id.startsWith("query:");
+            const isDku = this.options.product_id.startsWith("dku:");
+            const isProductId = !isQuery && !isDku;
+            if (isQuery) {
+                model = new Ripe()._queryToSpec(this.options.product_id.slice(6));
+                console.log("query", model);
+            } else if (isDku) {
+                model = await new Ripe().configDku(this.options.product_id.slice(4));
+                console.log("dku", model);
+            } else if (isProductId) {
+                model = await new Ripe().configResolveP(this.options.product_id);
+                console.log("pid", model);
+            } else {
+                throw Error("No valid product ID structure");
+            }
+            this.options = Object.assign(this.options, model);
+        }
+
         // initializes the ripe object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
@@ -70,25 +92,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // the vue app and starts it
         this._loadVue();
         this.app = this._initVueApp(this.appElement);
-
-        // in case there's a valid product id defined that we should resolve
-        // it and update the current options with its resolved values
-        if (!(this.options.brand && this.options.model) && this.options.product_id) {
-            let model = null;
-            const isQuery = this.options.product_id.startsWith("query:");
-            const isDku = this.options.product_id.startsWith("dku:");
-            const isProductId = !isQuery && !isDku;
-            if (isQuery) {
-                model = this.ripe._queryToSpec(this.options.product_id.slice(6));
-            } else if (isDku) {
-                model = await this.ripe.configDku(this.options.product_id.slice(4));
-            } else if (isProductId) {
-                model = await this.ripe.configResolveP(this.options.product_id);
-            } else {
-                throw Error("No valid product ID structure");
-            }
-            this.options = Object.assign(this.options, model);
-        }
 
         // runs the setting of the model according to the currently set
         // options (initial bootstrap operation)
@@ -111,6 +114,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (options === null) options = this.options;
 
         try {
+            options.product_id = null;
+            console.log("config", options);
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);
@@ -199,95 +204,12 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.component("global-events", GlobalEvents);
     }
 
+    _getStore() {
+        return store;
+    }
+
     _loadOptions(validate = true) {
-        // retrieves the reference to the object containing the
-        // RIPE static options to be used (according to domain)
-        const ripeOptions = this._getRipeOptions();
-
-        const query = new URLSearchParams(window.location.search);
-
-        const productId = RipeCommonsMainPlugin._field("product_id", query);
-        const brand = RipeCommonsMainPlugin._field("brand", query);
-        const model = RipeCommonsMainPlugin._field("model", query);
-        const variant = RipeCommonsMainPlugin._field("variant", query);
-        const dku = RipeCommonsMainPlugin._field("dku", query);
-
-        const parts = {};
-        const partParams = query.getAll("p");
-        partParams.forEach(partParam => {
-            const [name, material, color] = partParam.split(":");
-            parts[name] = {
-                material: material,
-                color: color
-            };
-        });
-
-        const country = RipeCommonsMainPlugin._field("country", query, ripeOptions.country || "us");
-        const currency = RipeCommonsMainPlugin._field(
-            "currency",
-            query,
-            ripeOptions.currency || "USD"
-        );
-        const locale = RipeCommonsMainPlugin._field("locale", query, ripeOptions.locale || "en_us");
-        const flag = RipeCommonsMainPlugin._field("flag", query, ripeOptions.flag || null);
-        const initials = RipeCommonsMainPlugin._field(
-            "initials",
-            query,
-            ripeOptions.initials || ""
-        );
-        const engraving = RipeCommonsMainPlugin._field(
-            "engraving",
-            query,
-            ripeOptions.engraving || null
-        );
-        const initialsExtra = RipeCommonsMainPlugin._field(
-            "initials_extra",
-            query,
-            ripeOptions.initialsExtra || [],
-            true
-        );
-        const parsedInitialsExtra = new Ripe()._parseExtraS(initialsExtra);
-
-        // constructs the object with the URL (query) provided options and
-        // then merges it with the static RIPE options to be used
-        const urlOptions = {
-            product_id: productId,
-            brand: brand,
-            model: model,
-            variant: variant,
-            dku: dku,
-            parts: parts,
-            country: country,
-            currency: currency,
-            locale: locale,
-            flag: flag,
-            initials: initials,
-            engraving: engraving,
-            initialsExtra: parsedInitialsExtra
-        };
-        this.options = Object.assign(ripeOptions, urlOptions);
-
-        this.localePlugin.setLocale(this.options.locale);
-
-        store.commit("ripe_url", this.options.url);
-        store.commit("currency", this.options.currency);
-        store.commit("country", this.options.country);
-        store.commit("locale", this.options.locale);
-        store.commit("flag", this.options.flag);
-        store.commit("personalization", {
-            initials: initials,
-            engraving: engraving,
-            initialsExtra: parsedInitialsExtra
-        });
-
-        const previous = RipeCommonsMainPlugin._field("previous", query);
-        const next = RipeCommonsMainPlugin._field("next", query);
-        const labelPrevious = RipeCommonsMainPlugin._field("label_previous", query);
-        const labelNext = RipeCommonsMainPlugin._field("label_next", query);
-        store.commit("previous", previous);
-        store.commit("next", next);
-        store.commit("labelPrevious", labelPrevious);
-        store.commit("labelNext", labelNext);
+        throw new Error("_loadOptions is not implemented.");
     }
 
     _initVueApp(element) {
@@ -349,11 +271,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
             }
         });
-        return app;
-    }
 
-    _getRipeOptions() {
-        throw new Error("_getRipeOptions is not implemented.");
+        return app;
     }
 }
 

@@ -88,8 +88,7 @@ export const configurator = {
         },
         size: {
             type: Number,
-            required: true,
-            default: 1000
+            default: null
         },
         /**
          * The time accepted for the holder to appear on the display
@@ -209,6 +208,9 @@ export const configurator = {
          * available container size (defined by parent).
          */
         resize(size) {
+            if (!size || !this.configurator) {
+                return;
+            }
             this.configurator.resize(size);
         }
     },
