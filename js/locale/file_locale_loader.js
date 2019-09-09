@@ -38,6 +38,6 @@ class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
     }
 }
 
-FileLocaleLoaderPlugin.register();
+FileLocaleLoaderPlugin.register(global.manager);
 
 export { FileLocaleLoaderPlugin };

@@ -14,7 +14,7 @@ const banner = [
 config.entry = "./index.js";
 config.output.path = path.join(__dirname, "dist");
 config.output.filename = "ripe-commons-pluginus.min.js?[hash]";
-config.output.library = "RipeCommonsPluginus";
+config.output.library = "RipeWhite";
 config.output.publicPath = "/";
 
 config.externals = config.externals || {};

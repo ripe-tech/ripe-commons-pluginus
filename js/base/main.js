@@ -64,13 +64,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             const isProductId = !isQuery && !isDku;
             if (isQuery) {
                 model = new Ripe()._queryToSpec(this.options.product_id.slice(6));
-                console.log("query", model);
             } else if (isDku) {
                 model = await new Ripe().configDku(this.options.product_id.slice(4));
-                console.log("dku", model);
             } else if (isProductId) {
                 model = await new Ripe().configResolveP(this.options.product_id);
-                console.log("pid", model);
             } else {
                 throw Error("No valid product ID structure");
             }
@@ -114,8 +111,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (options === null) options = this.options;
 
         try {
-            options.product_id = null;
-            console.log("config", options);
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);

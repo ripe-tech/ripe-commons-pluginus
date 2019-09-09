@@ -28,6 +28,6 @@ class DomLocaleLoaderPlugin extends RipeCommonsPlugin {
     }
 }
 
-DomLocaleLoaderPlugin.register();
+DomLocaleLoaderPlugin.register(global.manager);
 
 export { DomLocaleLoaderPlugin };
