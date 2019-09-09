@@ -86,7 +86,12 @@
     width: 100%;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
+.personalization
+    >>> .keyboard.special
+    .keyboard-row
+    .keyboard-key.special
+    .image-container
+    .border {
     border: solid 2px #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
@@ -97,7 +102,12 @@
     width: calc(100% - 4px);
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special.active .image-container .border {
+.personalization
+    >>> .keyboard.special
+    .keyboard-row
+    .keyboard-key.special.active
+    .image-container
+    .border {
     border-color: #ffffff;
     height: calc(100% - 10px);
     left: 3px;
