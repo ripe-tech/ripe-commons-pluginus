@@ -88,85 +88,23 @@
 </template>
 
 <style scoped>
-.pickers {
-    margin: 0px auto 0px auto;
-    padding: 0px 0px 16px 0px;
-    text-align: center;
-    width: 100%;
-}
-
-.pickers > .parts-container {
-    box-sizing: border-box;
-    display: inline-block;
-    margin: 0px auto 0px auto;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.pickers > .parts-container::after {
-    border: 1px solid #eeeeef;
-    box-sizing: border-box;
-    content: "";
-    display: block;
-    position: relative;
-    top: -2px;
-    z-index: 0;
-}
-
-body.tablet .parts-container,
-body.mobile .parts-container {
-    margin: 0px;
-}
-
-.pickers > .parts-container::-webkit-scrollbar {
-    display: none;
-}
-
 .pickers > .parts-container > .part {
-    border-bottom: 2px solid transparent;
     cursor: pointer;
     display: inline-block;
-    margin-right: 15px;
-    padding: 5px;
-    position: relative;
-    transition: border-bottom-color 0.1s ease-in-out;
     vertical-align: top;
-    z-index: 1;
-}
-
-.pickers > .parts-container > .part:hover {
-    border-bottom-color: #c7c7c7;
-}
-
-.pickers > .parts-container > .part.active {
-    border-bottom-color: #333333;
 }
 
 .pickers > .parts-container > .part > p {
     color: #6d6d6d;
-    display: inline-block;
     font-size: 15px;
     font-weight: 600;
-    line-height: 30px;
-    margin: 0;
 }
 
 .pickers > .parts-container > .part > .swatch {
-    border: solid 1px #9299a3;
     border-radius: 50% 50% 50% 50%;
-    display: inline-block;
-    float: right;
     height: 22px;
-    margin: 3px 0px 0px 6px;
     overflow: hidden;
     width: 22px;
-}
-
-.pickers > .parts-container > .part > .swatch:first-child {
-    margin-left: 0px;
 }
 
 .pickers > .parts-container > .part > .swatch > img {
@@ -176,98 +114,9 @@ body.mobile .parts-container {
 
 .pickers > .parts-container > .part > .no-part {
     color: #4d545f;
-    font-size: 0px;
     line-height: 18px;
     margin: 0px 0px 0px 0px;
     text-transform: capitalize;
-}
-
-.pickers > .materials-container {
-    display: none;
-}
-
-.pickers.multiple-materials > .materials-container {
-    box-sizing: border-box;
-    display: inline-block;
-    margin: 0px auto 0px auto;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.pickers.multiple-materials > .materials-container::-webkit-scrollbar {
-    display: none;
-}
-
-.pickers.multiple-materials > .materials-container > .material {
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 30px;
-    margin: 0px 5px 0px 5px;
-    padding: 0px 5px 0px 5px;
-    text-align: center;
-    transition: background-color 0.1s ease-in-out;
-    vertical-align: middle;
-}
-
-.pickers.multiple-materials > .materials-container > .material:hover {
-    background-color: #e2e0e0c4;
-}
-
-body.mobile .pickers.multiple-materials > .materials-container > .material.active {
-    background-color: #333333;
-}
-
-body.mobile .pickers.multiple-materials > .materials-container > .material {
-    background-color: #e2e0e0c4;
-    border-radius: 4px;
-    height: 60px;
-    line-height: 30px;
-    margin: 0px 3px 0px 0px;
-    padding: 0px 10px 0px 10px;
-}
-
-.pickers.multiple-materials > .materials-container > .material > p {
-    color: #9b9b9b;
-    font-size: 12px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0px;
-    text-transform: uppercase;
-    vertical-align: middle;
-}
-
-body.mobile .pickers.multiple-materials > .materials-container > .material > p {
-    color: #333333;
-    height: 60px;
-    line-height: 60px;
-}
-
-.pickers.multiple-materials > .materials-container > .material.active > p {
-    color: #ffffff;
-}
-
-body.mobile .pickers.multiple-materials > .materials-container > .material.active > p {
-    color: #ffffff;
-}
-
-.pickers.multiple-materials > .materials-container > .material.active {
-    background-color: #333333;
-}
-
-.pickers > .colors-container {
-    color: #9b9b9b;
-    height: 130px;
-    margin: 0px 0px 0px 0px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-}
-
-.pickers > .colors-container::-webkit-scrollbar {
-    display: none;
 }
 
 .pickers > .colors-container > span {
@@ -276,7 +125,6 @@ body.mobile .pickers.multiple-materials > .materials-container > .material.activ
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0px 20px 0px 20px;
-    scroll-behavior: smooth;
     white-space: nowrap;
 }
 
@@ -294,10 +142,6 @@ body.mobile .pickers.multiple-materials > .materials-container > .material.activ
     user-select: none;
     vertical-align: top;
     width: 100px;
-}
-
-.pickers.multiple-materials > .colors-container .color {
-    margin: 5px 0px 5px 0px;
 }
 
 .pickers.multiple-materials > .colors-container .color[data-index="0"] {
@@ -332,9 +176,7 @@ body.mobile .pickers.multiple-materials > .materials-container > .material.activ
 }
 
 .pickers.multiple-materials > .colors-container .color > p {
-    box-sizing: border-box;
     margin-top: 80px;
-    padding: 0px 10px 0px 10px;
 }
 
 .pickers.multiple-materials > .colors-container .color.active > p {

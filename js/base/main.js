@@ -4,7 +4,7 @@ import { Ripe } from "ripe-sdk";
 import Vue from "vue";
 import GlobalEvents from "vue-global-events";
 
-import { components, plugins, mixins, store } from "../../../vue";
+import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 class RipeCommonsMainPlugin extends RipeCommonsPlugin {
@@ -102,7 +102,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     getCapabilities() {
-        return [RipeCommonsCapability.new("start")];
+        return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
     async setModel(options = null) {
@@ -155,14 +155,23 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
     }
 
-    _loadVue() {
-        // register the vue components so that they can initialized
-        // from the templates, only after this call can the templates
-        // use these components safely
+    _getExtraComponents() {
+        return {};
+    }
+
+    _installComponents(components) {
         for (const name in components) {
             const component = components[name];
             Vue.component(name, component);
         }
+    }
+
+    _loadVue() {
+        // register the vue components so that they can initialized
+        // from the templates, only after this call can the templates
+        // use these components safely
+        this._installComponents(components);
+        this._installComponents(this._getExtraComponents());
 
         // registers the store and utils mixins so they are set on
         // all components, this applies directly on component creation
@@ -187,95 +196,12 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.component("global-events", GlobalEvents);
     }
 
+    _getStore() {
+        return store;
+    }
+
     _loadOptions(validate = true) {
-        // retrieves the reference to the object containing the
-        // RIPE static options to be used (according to domain)
-        const ripeOptions = this._getRipeOptions();
-
-        const query = new URLSearchParams(window.location.search);
-
-        const productId = RipeCommonsMainPlugin._field("product_id", query);
-        const brand = RipeCommonsMainPlugin._field("brand", query);
-        const model = RipeCommonsMainPlugin._field("model", query);
-        const variant = RipeCommonsMainPlugin._field("variant", query);
-        const dku = RipeCommonsMainPlugin._field("dku", query);
-
-        const parts = {};
-        const partParams = query.getAll("p");
-        partParams.forEach(partParam => {
-            const [name, material, color] = partParam.split(":");
-            parts[name] = {
-                material: material,
-                color: color
-            };
-        });
-
-        const country = RipeCommonsMainPlugin._field("country", query, ripeOptions.country || "us");
-        const currency = RipeCommonsMainPlugin._field(
-            "currency",
-            query,
-            ripeOptions.currency || "USD"
-        );
-        const locale = RipeCommonsMainPlugin._field("locale", query, ripeOptions.locale || "en_us");
-        const flag = RipeCommonsMainPlugin._field("flag", query, ripeOptions.flag || null);
-        const initials = RipeCommonsMainPlugin._field(
-            "initials",
-            query,
-            ripeOptions.initials || ""
-        );
-        const engraving = RipeCommonsMainPlugin._field(
-            "engraving",
-            query,
-            ripeOptions.engraving || null
-        );
-        const initialsExtra = RipeCommonsMainPlugin._field(
-            "initials_extra",
-            query,
-            ripeOptions.initialsExtra || [],
-            true
-        );
-        const parsedInitialsExtra = new Ripe()._parseExtraS(initialsExtra);
-
-        // constructs the object with the URL (query) provided options and
-        // then merges it with the static RIPE options to be used
-        const urlOptions = {
-            product_id: productId,
-            brand: brand,
-            model: model,
-            variant: variant,
-            dku: dku,
-            parts: parts,
-            country: country,
-            currency: currency,
-            locale: locale,
-            flag: flag,
-            initials: initials,
-            engraving: engraving,
-            initialsExtra: parsedInitialsExtra
-        };
-        this.options = Object.assign(ripeOptions, urlOptions);
-
-        this.localePlugin.setLocale(this.options.locale);
-
-        store.commit("ripe_url", this.options.url);
-        store.commit("currency", this.options.currency);
-        store.commit("country", this.options.country);
-        store.commit("locale", this.options.locale);
-        store.commit("flag", this.options.flag);
-        store.commit("personalization", {
-            initials: initials,
-            engraving: engraving,
-            initialsExtra: parsedInitialsExtra
-        });
-
-        const previous = RipeCommonsMainPlugin._field("previous", query);
-        const next = RipeCommonsMainPlugin._field("next", query);
-        const labelPrevious = RipeCommonsMainPlugin._field("label_previous", query);
-        const labelNext = RipeCommonsMainPlugin._field("label_next", query);
-        store.commit("previous", previous);
-        store.commit("next", next);
-        store.commit("labelPrevious", labelPrevious);
-        store.commit("labelNext", labelNext);
+        throw new Error("_loadOptions is not implemented.");
     }
 
     _initVueApp(element) {
@@ -337,14 +263,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
             }
         });
+
         return app;
     }
-
-    _getRipeOptions() {
-        throw new Error("_getRipeOptions is not implemented.");
-    }
 }
-
-RipeCommonsMainPlugin.register();
 
 export { RipeCommonsMainPlugin };

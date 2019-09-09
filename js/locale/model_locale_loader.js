@@ -26,11 +26,11 @@ class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             if (!config) {
                 return;
             }
-            const mainPlugin = await this.owner.getPluginByName("RipeCommonsMainPlugin");
+            const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
             const localePlugin = await this.owner.getPluginByName("LocalePlugin");
             const currentLocale = localePlugin.getLocale();
             const { brand, name } = config;
-            const result = await mainPlugin.ripe.getLocaleModelP({
+            const result = await ripeProvider.ripe.getLocaleModelP({
                 brand: brand,
                 model: name,
                 locale: currentLocale

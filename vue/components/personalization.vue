@@ -40,105 +40,37 @@
 .personalization.disabled {
     background-color: transparent;
     border-color: transparent;
-    opacity: 0.3;
     pointer-events: none;
 }
 
-body.mobile .personalization .modal-container {
-    width: 100%;
-}
-
-.personalization .button.button-personalization:hover {
-    opacity: 1;
-    -webkit-transition: opacity 0.8s;
-    -o-transition: opacity 0.8s;
-    -ms-transition: opacity 0.8s;
-    -moz-transition: opacity 0.8s;
-    -khtml-transition: opacity 0.8s;
-    transition: opacity 0.8s;
-}
-
-body.tablet .personalization {
-    bottom: 0px;
-    display: inline-block;
-    margin: 0px auto 0px auto;
-    width: 100%;
-}
-
-.button.button-cancel:hover {
-    cursor: pointer;
-}
-
-.button.button-apply:hover {
-    cursor: pointer;
-}
-
-.button.button-personalization > p {
-    display: none;
-}
-
-.personalization .button.button-personalization {
-    border: solid 1px #333333;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 50px;
-    line-height: 52px;
-    opacity: 0.5;
-    padding: 0px 10px 0 10px;
-    width: 215px;
-}
-
-body.mobile .button.button-personalization {
-    background: url("~./assets/personalize-icon.svg") no-repeat center;
-    background-color: #fafafa;
-    height: 50px;
-    padding: 0px;
-    width: 50px;
-}
-
-body.mobile .button.button-personalization > p {
-    display: none;
-}
-
-body.mobile .button.button-personalization > h3 {
-    display: none;
-}
-
-.personalization .button.button-personalization > h3 {
-    color: #333333;
-    font-size: 16px;
-    margin: 0px 0px 12px 0px;
-}
-
-.personalization >>> .tabs {
+.personalization ::v-deep .tabs {
     height: 70px;
 }
 
-.personalization >>> .tabs .tab {
+.personalization ::v-deep .tabs .tab {
     line-height: 54px;
 }
 
-.personalization >>> .keyboard.text {
+.personalization ::v-deep .keyboard.text {
     padding: 20px 70px 20px 70px;
 }
 
-.personalization >>> .keyboard.special {
+.personalization ::v-deep .keyboard.special {
     padding: 40px 40px 44px 40px;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key {
     background-color: transparent;
     height: auto;
     margin-right: 40px;
     width: 72px;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key:last-child {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key:last-child {
     margin-right: 0px;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special .image-container {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container {
     border-radius: 50%;
     height: 64px;
     margin: 0px auto 14px auto;
@@ -147,14 +79,14 @@ body.mobile .button.button-personalization > h3 {
     width: 64px;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special .image-container img {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container img {
     border-radius: 50%;
     height: 100%;
     object-fit: cover;
     width: 100%;
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
     border: solid 2px #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
@@ -165,7 +97,7 @@ body.mobile .button.button-personalization > h3 {
     width: calc(100% - 4px);
 }
 
-.personalization >>> .keyboard.special .keyboard-row .keyboard-key.special.active .image-container .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special.active .image-container .border {
     border-color: #ffffff;
     height: calc(100% - 10px);
     left: 3px;
