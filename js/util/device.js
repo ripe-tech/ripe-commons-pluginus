@@ -47,6 +47,6 @@ class DevicePlugin extends RipeCommonsPlugin {
     }
 }
 
-DevicePlugin.register(global.manager);
+DevicePlugin.register();
 
 export { DevicePlugin };

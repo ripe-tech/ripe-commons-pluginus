@@ -78,6 +78,6 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
     }
 }
 
-UrlChangerPlugin.register(global.manager);
+UrlChangerPlugin.register();
 
 export { UrlChangerPlugin };

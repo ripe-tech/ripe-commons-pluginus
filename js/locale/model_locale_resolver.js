@@ -181,6 +181,6 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     }
 }
 
-ModelLocaleResolverPlugin.register(global.manager);
+ModelLocaleResolverPlugin.register();
 
 export { ModelLocaleResolverPlugin };

@@ -23,6 +23,6 @@ class BaseSizePlugin extends RipeCommonsPlugin {
     }
 }
 
-BaseSizePlugin.register(global.manager);
+BaseSizePlugin.register();
 
 export { BaseSizePlugin };

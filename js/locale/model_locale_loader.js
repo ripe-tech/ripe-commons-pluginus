@@ -42,6 +42,6 @@ class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
     }
 }
 
-ModelLocaleLoaderPlugin.register(global.manager);
+ModelLocaleLoaderPlugin.register();
 
 export { ModelLocaleLoaderPlugin };

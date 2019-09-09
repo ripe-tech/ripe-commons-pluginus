@@ -92,6 +92,6 @@ class LocalePlugin extends RipeCommonsPlugin {
     }
 }
 
-LocalePlugin.register(global.manager);
+LocalePlugin.register();
 
 export { LocalePlugin };
