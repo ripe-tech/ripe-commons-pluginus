@@ -171,10 +171,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // from the templates, only after this call can the templates
         // use these components safely
         this._installComponents(components);
-        const extraComponents = this._getExtraComponents();
-
-        // the more specific components should override the latter
-        this._installComponents(extraComponents);
+        this._installComponents(this._getExtraComponents());
 
         // registers the store and utils mixins so they are set on
         // all components, this applies directly on component creation
