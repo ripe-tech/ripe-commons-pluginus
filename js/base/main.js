@@ -55,25 +55,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         this._loadOptions();
 
-        // in case there's a valid product id defined that we should resolve
-        // it and update the current options with its resolved values
-        if (!(this.options.brand && this.options.model) && this.options.product_id) {
-            let model = null;
-            const isQuery = this.options.product_id.startsWith("query:");
-            const isDku = this.options.product_id.startsWith("dku:");
-            const isProductId = !isQuery && !isDku;
-            if (isQuery) {
-                model = new Ripe()._queryToSpec(this.options.product_id.slice(6));
-            } else if (isDku) {
-                model = await new Ripe().configDku(this.options.product_id.slice(4));
-            } else if (isProductId) {
-                model = await new Ripe().configResolveP(this.options.product_id);
-            } else {
-                throw Error("No valid product ID structure");
-            }
-            this.options = Object.assign(this.options, model);
-        }
-
         // initializes the ripe object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
@@ -89,6 +70,25 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // the vue app and starts it
         this._loadVue();
         this.app = this._initVueApp(this.appElement);
+
+        // in case there's a valid product id defined that we should resolve
+        // it and update the current options with its resolved values
+        if (!(this.options.brand && this.options.model) && this.options.product_id) {
+            let model = null;
+            const isQuery = this.options.product_id.startsWith("query:");
+            const isDku = this.options.product_id.startsWith("dku:");
+            const isProductId = !isQuery && !isDku;
+            if (isQuery) {
+                model = this.ripe._queryToSpec(this.options.product_id.slice(6));
+            } else if (isDku) {
+                model = await this.ripe.configDku(this.options.product_id.slice(4));
+            } else if (isProductId) {
+                model = await this.ripe.configResolveP(this.options.product_id);
+            } else {
+                throw Error("No valid product ID structure");
+            }
+            this.options = Object.assign(this.options, model);
+        }
 
         // runs the setting of the model according to the currently set
         // options (initial bootstrap operation)
