@@ -76,7 +76,7 @@ body.mobile .modal > .modal-container {
     width: 250px;
 }
 
-body.mobile .modal .modal-content >>> .title {
+body.mobile .modal .modal-content ::v-deep .title {
     font-size: 15px;
 }
 
@@ -105,24 +105,24 @@ body.mobile .modal .modal-content >>> .title {
     opacity: 1;
 }
 
-.modal .modal-content >>> .title {
+.modal .modal-content ::v-deep .title {
     color: #272a2f;
     font-size: 30px;
     font-weight: normal;
     margin: 0px 0px 10px 0px;
 }
 
-.modal .modal-content >>> .subtitle {
+.modal .modal-content ::v-deep .subtitle {
     color: #272a2f;
     font-size: 15px;
     margin: 0px 0px 0px 0px;
 }
 
-.modal .modal-content >>> .buttons-container {
+.modal .modal-content ::v-deep .buttons-container {
     text-align: right;
 }
 
-.modal .modal-content >>> .buttons-container > .button {
+.modal .modal-content ::v-deep .buttons-container > .button {
     display: inline-block;
     font-size: 20px;
     height: 48px;
@@ -130,15 +130,15 @@ body.mobile .modal .modal-content >>> .title {
     text-align: center;
 }
 
-.modal .modal-content >>> .buttons-container > .button.button-cancel {
+.modal .modal-content ::v-deep .buttons-container > .button.button-cancel {
     color: #9b9b9b;
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
 }
 
-.modal .modal-content >>> .buttons-container > .button.button-cancel:hover,
-.modal .modal-content >>> .buttons-container > .button.button-cancel:active {
+.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
+.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
     color: #000000;
 }
 </style>
