@@ -16,15 +16,15 @@ export * from "./locale";
 export * from "./ui";
 export * from "./util";
 
-function registerPlugins(manager) {
-    DomLocaleLoaderPlugin.register(manager);
-    FileLocaleLoaderPlugin.register(manager);
-    LocalePlugin.register(manager);
-    ModelLocaleLoaderPlugin.register(manager);
-    ModelLocaleResolverPlugin.register(manager);
-    BaseSizePlugin.register(manager);
-    DevicePlugin.register(manager);
-    UrlChangerPlugin.register(manager);
+function registerPlugins(owner) {
+    DomLocaleLoaderPlugin.register(owner);
+    FileLocaleLoaderPlugin.register(owner);
+    LocalePlugin.register(owner);
+    ModelLocaleLoaderPlugin.register(owner);
+    ModelLocaleResolverPlugin.register(owner);
+    BaseSizePlugin.register(owner);
+    DevicePlugin.register(owner);
+    UrlChangerPlugin.register(owner);
 }
 
 export { registerPlugins };
