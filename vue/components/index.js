@@ -10,7 +10,7 @@ export { configurator } from "./configurator.vue";
 export { modal } from "./modal.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
-export { pickers } from "./pickers.vue";
+export { pickers } from "./pickers";
 export { personalization } from "./personalization.vue";
 export { size } from "./size.vue";
 
