@@ -17,8 +17,8 @@ export * from "./ui";
 export * from "./util";
 
 function registerPlugins(owner) {
-    FileLocaleLoaderPlugin.register(owner);
     DomLocaleLoaderPlugin.register(owner);
+    FileLocaleLoaderPlugin.register(owner);
     LocalePlugin.register(owner);
     ModelLocaleLoaderPlugin.register(owner);
     ModelLocaleResolverPlugin.register(owner);
