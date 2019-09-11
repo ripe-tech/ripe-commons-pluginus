@@ -293,13 +293,11 @@
     border: 0px solid #ffffff;
     border-radius: 50% 50% 50% 50%;
     bottom: 3px;
-    height: 44px;
     left: 3px;
     position: absolute;
     right: 3px;
     top: 3px;
     transition: border-width 0.125s ease-in-out;
-    width: 44px;
 }
 
 .pickers .colors-container .color:hover > .swatch > .border,
