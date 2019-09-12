@@ -59,15 +59,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // it and update the current options with its resolved values
         if (!(this.options.brand && this.options.model) && this.options.product_id) {
             let model = null;
+            const ripe = new Ripe();
             const isQuery = this.options.product_id.startsWith("query:");
             const isDku = this.options.product_id.startsWith("dku:");
             const isProductId = !isQuery && !isDku;
             if (isQuery) {
-                model = new Ripe()._queryToSpec(this.options.product_id.slice(6));
+                model = ripe._queryToSpec(this.options.product_id.slice(6));
             } else if (isDku) {
-                model = new Ripe().configDku(this.options.product_id.slice(4));
+                model = ripe.configDku(this.options.product_id.slice(4));
             } else if (isProductId) {
-                model = new Ripe().configResolveP(this.options.product_id);
+                model = ripe.configResolveP(this.options.product_id);
             } else {
                 throw Error("No valid product ID structure");
             }
