@@ -154,40 +154,45 @@ export const personalization = {
             this.form = null;
         });
 
-        this.$bus.bind("post_config", async (config, options) => {
-            if (!config) {
-                return;
-            }
+        try {
+            this.$bus.bind("post_config", async (config, options) => {
+                if (!config) {
+                    return;
+                }
 
-            const plugins = (await this.manager.getPluginsByCapability("personalization"))
-                .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
-                .sort((a, b) => b[0] - a[0])
-                .map(v => v[1]);
+                const plugins = (await this.manager.getPluginsByCapability("personalization"))
+                    .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
+                    .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
+                    .sort((a, b) => b[0] - a[0])
+                    .map(v => v[1]);
 
-            if (!plugins.length) {
-                this.hidden = true;
-                throw Error(`No personalization component found for ${this.brand}`);
-            }
+                if (!plugins.length) {
+                    this.hidden = true;
+                    this.$store.commit("error", `No personalization component found for ${this.brand}`);
+                    return;
+                }
 
-            // retrieves the first plugin (best candidate) and retrieves its
-            // personalization component setting it as the form component for
-            // this specific personalization scenario
-            const plugin = plugins[0];
-            const form = await plugin.getPersonalizationComponent();
+                // retrieves the first plugin (best candidate) and retrieves its
+                // personalization component setting it as the form component for
+                // this specific personalization scenario
+                const plugin = plugins[0];
+                const form = await plugin.getPersonalizationComponent();
 
-            // increments the cache invalidation counter, internal hack to enable
-            // proper computation of computed values
-            this.counter += 1;
+                // increments the cache invalidation counter, internal hack to enable
+                // proper computation of computed values
+                this.counter += 1;
 
-            // sets the form for the current component, sets it as enable and hidden
-            // by default (initial state)
-            this.form = form;
-            this.enabled = true;
-            this.hidden = false;
+                // sets the form for the current component, sets it as enable and hidden
+                // by default (initial state)
+                this.form = form;
+                this.enabled = true;
+                this.hidden = false;
 
-            this.initialOptions = Object.assign({}, options);
-        });
+                this.initialOptions = Object.assign({}, options);
+            });
+        } catch (err) {
+            console.log("aqui");
+        }
     },
     mounted() {
         this.updateButtonText();

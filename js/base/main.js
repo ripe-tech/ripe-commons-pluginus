@@ -7,6 +7,10 @@ import GlobalEvents from "vue-global-events";
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
+Vue.config.errorHandler = (err, vm, info) => {
+    console.log("2", err, vm, info);
+};
+
 class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     /**
      * Static method that retrieve the value of the field for the
@@ -55,9 +59,29 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         this._loadOptions();
 
+        // in case there's a valid product id defined that we should resolve
+        // it and update the current options with its resolved values
+        if (!(this.options.brand && this.options.model) && this.options.product_id) {
+            let model = null;
+            const isQuery = this.options.product_id.startsWith("query:");
+            const isDku = this.options.product_id.startsWith("dku:");
+            const isProductId = !isQuery && !isDku;
+            if (isQuery) {
+                model = new Ripe()._queryToSpec(this.options.product_id.slice(6));
+            } else if (isDku) {
+                model = new Ripe().configDku(this.options.product_id.slice(4));
+            } else if (isProductId) {
+                model = new Ripe().configResolveP(this.options.product_id);
+            } else {
+                throw Error("No valid product ID structure");
+            }
+            this.options = Object.assign(this.options, model);
+        }
+
         // initializes the ripe object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
+
         this.ripe = new Ripe(this.options.brand, this.options.model, {
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
@@ -70,29 +94,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // the vue app and starts it
         this._loadVue();
         this.app = this._initVueApp(this.appElement);
-
-        // in case there's a valid product id defined that we should resolve
-        // it and update the current options with its resolved values
-        if (!(this.options.brand && this.options.model) && this.options.product_id) {
-            let model = null;
-            const isQuery = this.options.product_id.startsWith("query:");
-            const isDku = this.options.product_id.startsWith("dku:");
-            const isProductId = !isQuery && !isDku;
-            if (isQuery) {
-                model = this.ripe._queryToSpec(this.options.product_id.slice(6));
-            } else if (isDku) {
-                model = await this.ripe.configDku(this.options.product_id.slice(4));
-            } else if (isProductId) {
-                model = await this.ripe.configResolveP(this.options.product_id);
-            } else {
-                throw Error("No valid product ID structure");
-            }
-            this.options = Object.assign(this.options, model);
-        }
-
-        // runs the setting of the model according to the currently set
-        // options (initial bootstrap operation)
-        this.setModel(this.options);
     }
 
     async unload() {
@@ -114,11 +115,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);
-            this.app.$store.state.error = null;
+            this.app.$store.commit("error", null);
         } catch (err) {
             // in case there's an error the error is set in the store
             // state so that it can be consulted by the components
-            this.app.$store.state.error = err || true;
+            this.app.$store.commit("error", err || true);
         }
     }
 
@@ -217,6 +218,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 };
             },
             store: store,
+            errorHandler: function(err, vm, info) {
+                console.log("3", err, vm, info);
+            },
             created: function() {
                 // triggers the refresh of the UI when the
                 // locale changes

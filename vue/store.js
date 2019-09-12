@@ -126,6 +126,9 @@ export const store = new Vuex.Store({
         },
         labelNext(state, labelNext) {
             state.labelNext = labelNext;
+        },
+        error(state, error) {
+            state.error = error;
         }
     },
     getters: {
