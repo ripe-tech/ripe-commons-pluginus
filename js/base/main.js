@@ -159,10 +159,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
     }
 
-    _getExtraComponents() {
-        return {};
-    }
-
     _installComponents(components) {
         for (const name in components) {
             const component = components[name];
@@ -200,14 +196,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.component("global-events", GlobalEvents);
     }
 
-    _getStore() {
-        return store;
-    }
-
-    _loadOptions(validate = true) {
-        throw new Error("_loadOptions is not implemented.");
-    }
-
     _initVueApp(element) {
         // saves references to the context and to the owner
         // to be used inside the vue app
@@ -222,7 +210,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             },
             store: store,
             delimiters: ["[[", "]]"],
-            created: function() {
+            created: () => {
                 // triggers the refresh of the UI when the
                 // locale changes
                 manager.bind("locale", () => {
@@ -245,15 +233,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
                 self.syncPlugin.bind("sync", (...args) => this.$bus.trigger("sync", ...args));
 
-                // listens for the design selected event and changes the current
-                // model to it imperative/action event)
-                this.$bus.bind("design_selected", config => {
-                    // if there is no description then force its removal
-                    config.description = config.description || null;
-
-                    self.setModel(config);
-                });
-
                 // updates the ripe instance when a part or personalization
                 // is changed (imperative/action events)
                 this.$bus.bind("part_change", (part, material, color) =>
@@ -263,6 +242,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     self.ripe.setInitials(initials, engraving)
                 );
                 this.$bus.bind("undo", () => self.ripe.undo());
+
+                this._bindBus();
 
                 // listens for any model change and triggers the
                 // 'model_changed' event on the owner, so that it's
@@ -280,6 +261,20 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         return app;
     }
+
+    _getExtraComponents() {
+        return {};
+    }
+
+    _getStore() {
+        return store;
+    }
+
+    _loadOptions(validate = true) {
+        throw new Error("_loadOptions is not implemented.");
+    }
+
+    _bindBus() { }
 }
 
 export { RipeCommonsMainPlugin };
