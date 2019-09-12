@@ -55,13 +55,17 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         this._loadOptions();
 
-        // initializes the ripe object and its required plugins
+        // initializes the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe(this.options.brand, this.options.model, {
+        this.ripe = new Ripe(null, null, {
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
         });
+
+        // waits for the complete of the RIPE SDK loading process
+        // so that all the necessary components are loaded
+        await this.ripe.isReady();
 
         // binds to the necessary events sent through the owner
         this._bind();
@@ -114,11 +118,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);
-            this.app.$store.state.error = null;
+            this.app.$store.commit("error", null);
         } catch (err) {
             // in case there's an error the error is set in the store
             // state so that it can be consulted by the components
-            this.app.$store.state.error = err || true;
+            this.app.$store.commit("error", err || true);
         }
     }
 
