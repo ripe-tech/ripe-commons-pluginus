@@ -138,7 +138,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
                 variant: this.ripe.options.variant,
-                description: this.ripe.options.description,
+                description: this.ripe.options.description || config.description,
                 product_id: this.ripe.options.product_id,
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
