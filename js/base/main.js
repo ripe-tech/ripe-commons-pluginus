@@ -7,10 +7,6 @@ import GlobalEvents from "vue-global-events";
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-Vue.config.errorHandler = (err, vm, info) => {
-    console.log("2", err, vm, info);
-};
-
 class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     /**
      * Static method that retrieve the value of the field for the
@@ -218,9 +214,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 };
             },
             store: store,
-            errorHandler: function(err, vm, info) {
-                console.log("3", err, vm, info);
-            },
             created: function() {
                 // triggers the refresh of the UI when the
                 // locale changes
