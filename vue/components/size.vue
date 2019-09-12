@@ -112,7 +112,7 @@ export const size = {
             // in case there's no valid size plugin available raises an error
             // indicating the issue with size loading
             if (!plugin) {
-                throw Error(`No size component found for ${this.brand}`);
+                throw new Error(`No size component found for ${this.brand}`);
             }
 
             // retrieves its personalization component setting it as the form
