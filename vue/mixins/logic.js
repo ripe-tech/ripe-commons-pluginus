@@ -43,7 +43,7 @@ const logicMixin = {
             return this.$store.state.error;
         },
         errorMessage() {
-            return this.error && this.error.message ? this.error.message : null;
+            return this.error;
         },
         modelError() {
             return this.error;
