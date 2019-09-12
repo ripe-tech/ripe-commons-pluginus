@@ -221,6 +221,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 };
             },
             store: store,
+            delimiters: ["[[", "]]"],
             created: function() {
                 // triggers the refresh of the UI when the
                 // locale changes
@@ -243,6 +244,15 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("restrictions", ...args)
                 );
                 self.syncPlugin.bind("sync", (...args) => this.$bus.trigger("sync", ...args));
+
+                // listens for the design selected event and changes the current
+                // model to it imperative/action event)
+                this.$bus.bind("design_selected", config => {
+                    // if there is no description then force its removal
+                    config.description = config.description || null;
+
+                    self.setModel(config);
+                });
 
                 // updates the ripe instance when a part or personalization
                 // is changed (imperative/action events)
