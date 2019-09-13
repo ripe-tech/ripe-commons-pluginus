@@ -1,0 +1,22 @@
+{
+  "ripe_commons.holder.holder.label": "ドラッグ",
+  "ripe_commons.holder.holder-second-label.label": "3D",
+
+  "ripe_commons.modal.cancel": "キャンセル",
+  "ripe_commons.modal.apply": "申し込み",
+  "ripe_commons.modal.select": "申し込み",
+
+  "ripe_commons.pickers.undo": "元に戻る",
+  "ripe_commons.pickers.limited": "選りすぐりの素材、またはカラーのコンビネーションの限定オプション",
+  "ripe_commons.pickers.back": "戻りますか？",
+
+  "ripe_commons.personalization.personalization": "パーソナライゼーション",
+  "ripe_commons.personalization.add_initials": "イニシャルを追加",
+
+  "ripe_commons.size.size": "サイズ",
+  "ripe_commons.size.select_size": "サイズ",
+  "ripe_commons.size.male": "男性",
+  "ripe_commons.size.female": "女性",
+  "ripe_commons.size.male.small": "男性",
+  "ripe_commons.size.female.small": "女性"
+}
