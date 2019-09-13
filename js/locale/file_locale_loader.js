@@ -1,5 +1,7 @@
 import { RipeCommonsCapability, RipeCommonsPlugin } from "../abstract";
 import configEnUs from "../../bundles/config.en_us";
+import configJaJp from "../../bundles/config.ja_jp";
+import configZhCn from "../../bundles/config.zh_cn";
 
 class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
     /**
@@ -15,6 +17,16 @@ class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
                 name: "config",
                 locale: "en_us",
                 content: configEnUs
+            },
+            {
+                name: "config",
+                locale: "ja_jp",
+                content: configJaJp
+            },
+            {
+                name: "config",
+                locale: "zh_cn",
+                content: configZhCn
             }
         ];
     }
