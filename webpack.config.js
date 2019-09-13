@@ -3,8 +3,6 @@ const webpack = require("webpack");
 
 const config = require("uxf-webpack/config/webpack.config.full");
 
-const TerserPlugin = require("terser-webpack-plugin");
-
 const info = require("./package.json");
 
 const banner = [
@@ -21,14 +19,7 @@ config.output.publicPath = "/";
 
 config.optimization = {
     concatenateModules: false,
-    minimizer: [
-        new TerserPlugin({
-            terserOptions: {
-                keep_fnames: true,
-                keep_classnames: true
-            }
-        })
-    ]
+    minimize: false
 };
 
 config.externals = config.externals || {};
