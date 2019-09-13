@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 const config = require("uxf-webpack/config/webpack.config.full");
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 const info = require("./package.json");
