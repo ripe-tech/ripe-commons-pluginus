@@ -132,6 +132,9 @@ export const personalization = {
         },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
+        },
+        hasPersonalization() {
+            return this.$store.state.hasPersonalization;
         }
     },
     watch: {
@@ -155,7 +158,9 @@ export const personalization = {
         });
 
         this.$bus.bind("post_config", async (config, options) => {
-            if (!config) {
+            // in case there's no valid config for this post operation
+            // returns control flow immediately, should not happen
+            if (!config || !this.hasPersonalization) {
                 return;
             }
 

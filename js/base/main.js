@@ -143,6 +143,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
             });
+            store.commit("hasPersonalization", this.ripe.hasPersonalization());
+            store.commit("hasSize", this.ripe.hasSize());
         });
 
         // listens for parts and prices changes and updates the store

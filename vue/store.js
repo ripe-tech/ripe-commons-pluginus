@@ -33,7 +33,9 @@ export const store = new Vuex.Store({
         error: null,
         previous: null,
         next: null,
-        labelNext: null
+        labelNext: null,
+        hasPersonalization: false,
+        hasSize: false
     },
     mutations: {
         ripe_url(state, url) {
@@ -129,6 +131,12 @@ export const store = new Vuex.Store({
         },
         error(state, error) {
             state.error = error;
+        },
+        hasPersonalization(state, hasPersonalization) {
+            state.hasPersonalization = hasPersonalization;
+        },
+        hasSize(state, hasSize) {
+            state.hasSize = hasSize;
         }
     },
     getters: {
