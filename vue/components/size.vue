@@ -68,6 +68,9 @@ export const size = {
         },
         visible() {
             return this.$refs.modal.visible;
+        },
+        hasSize() {
+            return this.$store.state.hasSize;
         }
     },
     watch: {
@@ -95,7 +98,7 @@ export const size = {
         this.$bus.bind("post_config", async config => {
             // in case there's no valid config for this post operation
             // returns control flow immediately, should not happen
-            if (!config) {
+            if (!config || !this.hasSize) {
                 return;
             }
 

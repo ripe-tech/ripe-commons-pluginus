@@ -133,6 +133,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the app state when a new model is set
         this.ripe.bind("post_config", config => {
+            store.commit("hasPersonalization", this.ripe.hasPersonalization());
+            store.commit("hasSize", this.ripe.hasSize());
             store.commit("config", config);
             store.commit("model", {
                 brand: this.ripe.brand,
