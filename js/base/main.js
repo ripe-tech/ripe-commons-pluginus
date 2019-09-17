@@ -251,9 +251,18 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
-                this.$bus.bind("initials_change", (initials, engraving) =>
-                    self.ripe.setInitials(initials, engraving)
-                );
+                this.$bus.bind("initials_change", (initials, engraving) => {
+                    // if both the initials and the engraving are defined,
+                    // apply them in the current RIPE instance
+                    if (initials && engraving) {
+                        self.ripe.setInitials(initials, engraving);
+                    }
+                    // otherwise remove any initials there might be by
+                    // setting the initials and engraving values accordingly
+                    else {
+                        self.ripe.setInitials("", null);
+                    }
+                });
                 this.$bus.bind("undo", () => self.ripe.undo());
 
                 // listens for any model change and triggers the
