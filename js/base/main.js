@@ -253,10 +253,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
                 this.$bus.bind("initials_change", (initials, engraving) => {
                     // if both the initials and the engraving are defined,
-                    // apply them. Otherwise remove any initials there might be
+                    // apply them in the current RIPE instance
                     if (initials && engraving) {
                         self.ripe.setInitials(initials, engraving);
-                    } else {
+                    }
+                    // otherwise remove any initials there might be by
+                    // setting the initials and engraving values accordingly
+                    else {
                         self.ripe.setInitials("", null);
                     }
                 });
