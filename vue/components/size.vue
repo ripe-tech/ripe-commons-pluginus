@@ -89,6 +89,9 @@ export const size = {
             this.closeCallback = callback;
             this.showModal();
         });
+        this.$bus.bind("close_size", () => {
+            this.hideModal();
+        });
 
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
@@ -137,6 +140,9 @@ export const size = {
         this.$bus.bind("refresh", () => {
             this.updateButtonText();
         });
+        this.$bus.bind("size", state => {
+            this.updateFormAndButton(state);
+        });
     },
     methods: {
         apply() {
@@ -148,16 +154,15 @@ export const size = {
             this.form && this.$refs.form.reset();
         },
         modalBeforeEnter() {
+            this.$bus.trigger("open_size", this.closeCallback);
             this.$refs.form.show();
         },
         modalBeforeLeave() {
+            this.$bus.trigger("close_size");
             this.$refs.form.hide();
         },
         modalHidden() {
-            this.originalState
-                ? this.$refs.form.setState(this.originalState)
-                : this.$refs.form.reset();
-            this.updateButtonText();
+            this.updateFormAndButton(this.originalState);
             this.closeCallback && this.allowApply && this.closeCallback();
             this.closeCallback = null;
         },
@@ -169,16 +174,36 @@ export const size = {
         disableSize() {
             this.enabled = false;
         },
+        stateChanged(newState) {
+            const simpleState = JSON.stringify(this.state);
+            const simpleNewState = JSON.stringify(newState);
+            return simpleState !== simpleNewState;
+        },
         sizeChanged(form) {
-            this.state = form.getState();
-            this.sizeText = form.getSizeText();
-            this.state.sizeText = this.sizeText;
-            !this.visible && this.apply();
-            !this.visible && this.updateButtonText();
+            const newState = form.getState();
+            const newSizeText = form.getSizeText();
+            newState.sizeText = newSizeText;
+            const stateChanged = this.stateChanged(newState);
+            this.state = newState;
+            this.sizeText = newSizeText;
+            if (!this.visible && stateChanged) {
+                this.apply();
+                this.updateButtonText();
+            }
+        },
+        updateFormAndButton(state) {
+            const form = this.$refs.form;
+            if (!form) {
+                return;
+            }
+            state
+                ? form.setState(state)
+                : form.reset();
+            this.updateButtonText();
         },
         updateButtonText() {
             this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size").toUpperCase() + " - " + this.sizeText
+                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
         }
     }
