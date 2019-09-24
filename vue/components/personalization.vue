@@ -142,8 +142,10 @@ export const personalization = {
             !enabled && this.clear();
         },
         state: {
-            handler: function(state) {
-                this.$bus.trigger("initials_change", state.initials, state.engraving);
+            handler: function(state, previousState) {
+                if (state.initials !== previousState.initials || state.engraving !== previousState.engraving) {
+                    this.$bus.trigger("initials_change", state.initials, state.engraving);
+                }
             },
             deep: true
         }
@@ -151,6 +153,9 @@ export const personalization = {
     created: function() {
         this.$bus.bind("enable_personalization", this.enablePersonalization);
         this.$bus.bind("disable_personalization", this.disablePersonalization);
+
+        this.$bus.bind("open_personalization", this.showModal);
+        this.$bus.bind("close_personalization", this.hideModal);
 
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
@@ -193,6 +198,11 @@ export const personalization = {
 
             this.initialOptions = Object.assign({}, options);
         });
+
+        this.$bus.bind("initials", (initials, engraving) => {
+            this.state.initials = initials;
+            this.state.engraving = engraving;
+        });
     },
     mounted() {
         this.updateButtonText();
@@ -207,15 +217,27 @@ export const personalization = {
             this.form && this.$refs.form.reset();
         },
         modalBeforeEnter() {
+            this.$bus.trigger("open_personalization");
             this.$refs.form.show();
         },
         modalBeforeLeave() {
+            this.$bus.trigger("close_personalization");
             this.$refs.form.hide();
         },
         modalHidden() {
             this.originalState
                 ? this.$refs.form.setState(this.originalState)
                 : this.$refs.form.reset();
+            this.updateFormAndButton(this.originalState);
+        },
+        updateFormAndButton(state) {
+            const form = this.$refs.form;
+            if (!form) {
+                return;
+            }
+            state
+                ? form.setState(state)
+                : form.reset();
             this.updateButtonText();
         },
         enablePersonalization() {
@@ -239,10 +261,10 @@ export const personalization = {
             this.personalizationChanged(form.getState(), form.getTabMessage());
         },
         personalizationChanged(state = {}, tabMessage = "") {
-            // initializes the local variables with the defaul values
+            // initializes the local variables with the default values
             // so that the default initials and engraving values are set
             let initials = state.initials || "";
-            let engraving = state.engraving || "";
+            let engraving = state.engraving || null;
 
             // if the initials or the engraving don't give a "simple"
             // definition then tries to retrieve a valid value from
@@ -257,7 +279,7 @@ export const personalization = {
             // and the initials extra structure, either from the direct provided
             // state or from the conversion from the "simple" initials
             state.initials = initials;
-            state.engraving = engraving;
+            state.engraving = null;
             state.initialsExtra =
                 state.initialsExtra || this.initialsToInitialsExtra(initials, engraving);
 
@@ -288,7 +310,7 @@ export const personalization = {
             const configGroups = this.$store.state.config.initialsGroups;
             if (configGroups && configGroups.length) {
                 let initials = "";
-                let engraving = "";
+                let engraving = null;
 
                 // tries to retrieve the values of the first valid
                 // group, respecting the order of the declaration

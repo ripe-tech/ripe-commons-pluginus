@@ -30,6 +30,7 @@
 
 .holder {
     bottom: 5px;
+    pointer-events: none;
     position: absolute;
     transition: opacity 2s;
     width: 100%;
