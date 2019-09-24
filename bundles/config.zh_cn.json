@@ -1,22 +1,22 @@
 {
-  "ripe_commons.holder.holder.label": "拖动",
-  "ripe_commons.holder.holder-second-label.label": "3D",
+    "ripe_commons.holder.holder.label": "拖动",
+    "ripe_commons.holder.holder-second-label.label": "3D",
 
-  "ripe_commons.modal.cancel": "取消",
-  "ripe_commons.modal.apply": "采用",
-  "ripe_commons.modal.select": "采用",
+    "ripe_commons.modal.cancel": "取消",
+    "ripe_commons.modal.apply": "采用",
+    "ripe_commons.modal.select": "采用",
 
-  "ripe_commons.pickers.undo": "复原",
-  "ripe_commons.pickers.limited": "此选项仅限于特定材料或颜色组合",
-  "ripe_commons.pickers.back": "返回上一页?",
+    "ripe_commons.pickers.undo": "复原",
+    "ripe_commons.pickers.limited": "此选项仅限于特定材料或颜色组合",
+    "ripe_commons.pickers.back": "返回上一页?",
 
-  "ripe_commons.personalization.personalization": "个性化定制",
-  "ripe_commons.personalization.add_initials": "专属刻字",
+    "ripe_commons.personalization.personalization": "个性化定制",
+    "ripe_commons.personalization.add_initials": "专属刻字",
 
-  "ripe_commons.size.size": "尺码",
-  "ripe_commons.size.select_size": "尺码",
-  "ripe_commons.size.male": "男",
-  "ripe_commons.size.female": "女",
-  "ripe_commons.size.male.small": "男",
-  "ripe_commons.size.female.small": "女"
+    "ripe_commons.size.size": "尺码",
+    "ripe_commons.size.select_size": "尺码",
+    "ripe_commons.size.male": "男",
+    "ripe_commons.size.female": "女",
+    "ripe_commons.size.male.small": "男",
+    "ripe_commons.size.female.small": "女"
 }

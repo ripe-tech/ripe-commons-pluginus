@@ -89,6 +89,9 @@ export const size = {
             this.closeCallback = callback;
             this.showModal();
         });
+        this.$bus.bind("close_size", () => {
+            this.hideModal();
+        });
 
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
@@ -137,6 +140,18 @@ export const size = {
         this.$bus.bind("refresh", () => {
             this.updateButtonText();
         });
+        this.$bus.bind("size", state => {
+            if (
+                this.state.size === state.size &&
+                this.state.scale === state.scale &&
+                this.state.gender === state.gender
+            ) {
+                return;
+            }
+            this.state = state;
+            this.$refs.form.setState(this.state);
+            this.updateButtonText();
+        });
     },
     methods: {
         apply() {
@@ -148,9 +163,11 @@ export const size = {
             this.form && this.$refs.form.reset();
         },
         modalBeforeEnter() {
+            this.$bus.trigger("open_size", this.closeCallback);
             this.$refs.form.show();
         },
         modalBeforeLeave() {
+            this.$bus.trigger("close_size");
             this.$refs.form.hide();
         },
         modalHidden() {
@@ -178,7 +195,7 @@ export const size = {
         },
         updateButtonText() {
             this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size").toUpperCase() + " - " + this.sizeText
+                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
         }
     }
