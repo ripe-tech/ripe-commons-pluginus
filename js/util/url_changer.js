@@ -39,14 +39,16 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         else query.delete("flag");
 
         if (model.personalization) {
-            query.delete("initials");
             if (model.personalization.initials) {
                 query.set("initials", model.personalization.initials);
+            } else {
+                query.delete("initials");
             }
 
-            query.delete("engraving");
             if (model.personalization.engraving) {
                 query.set("engraving", model.personalization.engraving);
+            } else {
+                query.delete("engraving");
             }
 
             query.delete("initials_extra");
