@@ -228,16 +228,6 @@ export const personalization = {
             this.originalState
                 ? this.$refs.form.setState(this.originalState)
                 : this.$refs.form.reset();
-            this.updateFormAndButton(this.originalState);
-        },
-        updateFormAndButton(state) {
-            const form = this.$refs.form;
-            if (!form) {
-                return;
-            }
-            state
-                ? form.setState(state)
-                : form.reset();
             this.updateButtonText();
         },
         enablePersonalization() {
