@@ -100,7 +100,9 @@
                         >
                             <div class="swatch">
                                 <img
-                                    v-bind:src="colorSwatch(colorOption.material, colorOption.color)"
+                                    v-bind:src="
+                                        colorSwatch(colorOption.material, colorOption.color)
+                                    "
                                     v-if="colorOption.color.startsWith('no_') === false"
                                 />
                                 <div class="border" />
@@ -862,8 +864,7 @@ export const pickers = {
             const padding = parseFloat(getComputedStyle(scrollableElement).paddingLeft);
             const scrollableElementWidth = colorsPicker.clientWidth - padding;
 
-            colorsPicker.scrollLeft =
-                scrollActiveColor - scrollableElementWidth / 2 + padding / 2;
+            colorsPicker.scrollLeft = scrollActiveColor - scrollableElementWidth / 2 + padding / 2;
         },
         /**
          * Scrolls the color's container to the defined material and optionally

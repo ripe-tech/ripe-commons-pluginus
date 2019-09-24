@@ -161,7 +161,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
 
         this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
-        this.ripe.bind("initials_extra", (...args) => this.owner.trigger("initials_extra", ...args));
+        this.ripe.bind("initials_extra", (...args) =>
+            this.owner.trigger("initials_extra", ...args)
+        );
     }
 
     _getExtraComponents() {
@@ -242,7 +244,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
                 manager.bind("choices", (...args) => this.$bus.trigger("choices", ...args));
                 manager.bind("initials", (...args) => this.$bus.trigger("initials", ...args));
-                manager.bind("initials_extra", (...args) => this.$bus.trigger("initials_extra", ...args));
+                manager.bind("initials_extra", (...args) =>
+                    this.$bus.trigger("initials_extra", ...args)
+                );
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
