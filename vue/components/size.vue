@@ -141,7 +141,16 @@ export const size = {
             this.updateButtonText();
         });
         this.$bus.bind("size", state => {
-            this.updateFormAndButton(state);
+            if (
+                this.state.size === state.size &&
+                this.state.scale === state.scale &&
+                this.state.gender === state.gender
+            ) {
+                return;
+            }
+            this.state = state;
+            this.$refs.form.setState(this.state);
+            this.updateButtonText();
         });
     },
     methods: {
@@ -162,7 +171,10 @@ export const size = {
             this.$refs.form.hide();
         },
         modalHidden() {
-            this.updateFormAndButton(this.originalState);
+            this.originalState
+                ? this.$refs.form.setState(this.originalState)
+                : this.$refs.form.reset();
+            this.updateButtonText();
             this.closeCallback && this.allowApply && this.closeCallback();
             this.closeCallback = null;
         },
@@ -174,32 +186,12 @@ export const size = {
         disableSize() {
             this.enabled = false;
         },
-        stateChanged(newState) {
-            const simpleState = JSON.stringify(this.state);
-            const simpleNewState = JSON.stringify(newState);
-            return simpleState !== simpleNewState;
-        },
         sizeChanged(form) {
-            const newState = form.getState();
-            const newSizeText = form.getSizeText();
-            newState.sizeText = newSizeText;
-            const stateChanged = this.stateChanged(newState);
-            this.state = newState;
-            this.sizeText = newSizeText;
-            if (!this.visible && stateChanged) {
-                this.apply();
-                this.updateButtonText();
-            }
-        },
-        updateFormAndButton(state) {
-            const form = this.$refs.form;
-            if (!form) {
-                return;
-            }
-            state
-                ? form.setState(state)
-                : form.reset();
-            this.updateButtonText();
+            this.state = form.getState();
+            this.sizeText = form.getSizeText();
+            this.state.sizeText = this.sizeText;
+            !this.visible && this.apply();
+            !this.visible && this.updateButtonText();
         },
         updateButtonText() {
             this.buttonText = this.sizeText
