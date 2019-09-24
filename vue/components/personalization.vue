@@ -79,26 +79,14 @@
     width: 64px;
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special
-    .image-container
-    img {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container img {
     border-radius: 50%;
     height: 100%;
     object-fit: cover;
     width: 100%;
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special
-    .image-container
-    .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
     border: solid 2px #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
@@ -109,13 +97,7 @@
     width: calc(100% - 4px);
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special.active
-    .image-container
-    .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special.active .image-container .border {
     border-color: #ffffff;
     height: calc(100% - 10px);
     left: 3px;
