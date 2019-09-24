@@ -79,26 +79,14 @@
     width: 64px;
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special
-    .image-container
-    img {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container img {
     border-radius: 50%;
     height: 100%;
     object-fit: cover;
     width: 100%;
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special
-    .image-container
-    .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
     border: solid 2px #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
@@ -109,13 +97,7 @@
     width: calc(100% - 4px);
 }
 
-.personalization
-    ::v-deep
-    .keyboard.special
-    .keyboard-row
-    .keyboard-key.special.active
-    .image-container
-    .border {
+.personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special.active .image-container .border {
     border-color: #ffffff;
     height: calc(100% - 10px);
     left: 3px;
@@ -221,8 +203,10 @@ export const personalization = {
         });
 
         this.$bus.bind("initials", (initials, engraving) => {
-            this.state.initials = initials;
-            this.state.engraving = engraving;
+            if (this.state.initials !== initials || this.state.engraving !== engraving) {
+                this.state.initials = initials;
+                this.state.engraving = engraving;
+            }
         });
     },
     mounted() {
@@ -299,7 +283,7 @@ export const personalization = {
             this.state = state;
             this.tabMessage = tabMessage;
 
-            // in case there's no vibility of the personalization then applies the
+            // in case there's no visibility of the personalization then applies the
             // changes and then runs the update of the button text
             !this.visible && this.apply();
             !this.visible && this.updateButtonText();
