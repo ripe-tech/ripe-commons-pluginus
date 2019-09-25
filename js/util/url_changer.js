@@ -52,10 +52,19 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
             }
 
             query.delete("initials_extra");
-            if (model.personalization.initialsExtra) {
-                const strInitialsExtra = new Ripe()._generateExtraS(
-                    model.personalization.initialsExtra
-                );
+            const initialsExtra = model.personalization.initialsExtra;
+            if (initialsExtra) {
+                for (const [key, value] of Object.entries(initialsExtra)) {
+                    if (value.initials && !value.engraving) {
+                        value.engraving = null;
+                    }
+
+                    if (!value.initials && value.engraving) {
+                        delete initialsExtra[key];
+                    }
+                }
+
+                const strInitialsExtra = new Ripe()._generateExtraS(initialsExtra);
                 for (const extraS of strInitialsExtra) {
                     query.append("initials_extra", extraS);
                 }
