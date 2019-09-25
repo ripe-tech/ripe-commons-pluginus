@@ -144,6 +144,7 @@ export const personalization = {
         state: {
             handler: function(state, previousState) {
                 if (
+                    this.diffInitialsExtra(state, previousState) ||
                     state.initials !== previousState.initials ||
                     state.engraving !== previousState.engraving
                 ) {
@@ -206,6 +207,14 @@ export const personalization = {
             if (this.state.initials !== initials || this.state.engraving !== engraving) {
                 this.state.initials = initials;
                 this.state.engraving = engraving;
+                this.$refs.form && this.$refs.form.setState(this.state);
+            }
+        });
+
+        this.$bus.bind("initials_extra", initialsExtra => {
+            if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
+                this.state.initialsExtra = initialsExtra;
+                this.$refs.form && this.$refs.form.setState(this.state);
             }
         });
     },
@@ -213,6 +222,25 @@ export const personalization = {
         this.updateButtonText();
     },
     methods: {
+        diffInitialsExtra(some, other) {
+            if (Boolean(some) !== Boolean(other)) {
+                return true;
+            }
+
+            if (Object.keys(some) !== Object.keys(other)) {
+                return true;
+            }
+
+            for (const group of Object.keys(some)) {
+                const groupSome = some[group];
+                const groupOther = other[group];
+                if (groupSome.initials !== groupOther.initials || groupSome.engraving !== groupOther.engraving) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
         apply() {
             this.$store.commit("personalization", this.state);
             this.$bus.trigger("personalization", this.state);

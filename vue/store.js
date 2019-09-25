@@ -192,10 +192,7 @@ export const store = new Vuex.Store({
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
             state.price && state.price.total ? state.price.total.price_final : null,
-        thumbnails: state => (state.config ? state.config.thumbnails || [] : []),
-        cenas: state => () => {
-            return state.personalization.initials;
-        }
+        thumbnails: state => (state.config ? state.config.thumbnails || [] : [])
     }
 });
 
