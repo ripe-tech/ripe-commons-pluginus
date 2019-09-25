@@ -273,13 +273,14 @@ export const personalization = {
             // updates the current state object with both initials, engraving
             // and the initials extra structure, either from the direct provided
             // state or from the conversion from the "simple" initials
-            this.state.initials = initials;
-            this.state.engraving = null;
-            this.state.initialsExtra =
+            state.initials = initials;
+            state.engraving = engraving;
+            state.initialsExtra =
                 state.initialsExtra || this.initialsToInitialsExtra(initials, engraving);
 
             // updates both the current internal state and the (possible) new tab
             // message from the form
+            this.state = state;
             this.tabMessage = tabMessage;
 
             // in case there's no visibility of the personalization then applies the
