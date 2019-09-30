@@ -199,19 +199,10 @@ export const personalization = {
             this.initialOptions = Object.assign({}, options);
         });
 
-        const self = this;
-        this.$bus.bind("initials", (initials, engraving) => {
-            if (self.state.initials !== initials || self.state.engraving !== engraving) {
-                self.state.initials = initials;
-                self.state.engraving = engraving;
-                self.$refs.form && this.$refs.form.setState(self.state);
-            }
-        });
-
         this.$bus.bind("initials_extra", initialsExtra => {
-            if (this.diffInitialsExtra(initialsExtra, self.state.initialsExtra)) {
-                self.state.initialsExtra = initialsExtra;
-                self.$refs.form && this.$refs.form.setState(self.state);
+            if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
+                this.state.initialsExtra = initialsExtra;
+                this.$refs.form && this.$refs.form.setState(this.state);
             }
         });
     },
