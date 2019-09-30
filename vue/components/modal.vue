@@ -72,8 +72,12 @@
     transition: opacity 0.125s ease-out 0.125s, transform 0.25s ease-in-out 0.125s;
 }
 
+body.tablet .modal > .modal-container,
 body.mobile .modal > .modal-container {
-    width: 250px;
+    box-sizing: border-box;
+    max-height: 90%;
+    max-width: 100%;
+    padding: 20px 10px 20px 10px;
 }
 
 body.mobile .modal .modal-content ::v-deep .title {

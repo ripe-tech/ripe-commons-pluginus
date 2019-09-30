@@ -55,6 +55,11 @@
     padding: 20px 70px 20px 70px;
 }
 
+body.tablet .personalization ::v-deep .keyboard.text,
+body.mobile .personalization ::v-deep .keyboard.text {
+    padding: 20px 0px 20px 0px;
+}
+
 .personalization ::v-deep .keyboard.special {
     padding: 40px 40px 44px 40px;
 }
