@@ -261,6 +261,7 @@
     transform: scale(1, 1);
     transition: transform 0.125s ease-in-out, border-width 0.125s ease-in-out;
     width: 58px;
+    z-index: 1;
 }
 
 .pickers.multiple-materials .colors-container .color > .swatch {
