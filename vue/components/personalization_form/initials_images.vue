@@ -21,6 +21,13 @@
     height: 600px;
     width: auto;
 }
+
+body.mobile .initials-images .initials-image,
+body.tablet .initials-images .initials-image {
+    height: auto;
+    max-width: 600px;
+    width: 100%;
+}
 </style>
 
 <script>

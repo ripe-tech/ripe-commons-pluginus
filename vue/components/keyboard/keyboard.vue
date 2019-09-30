@@ -32,6 +32,12 @@
     text-align: center;
 }
 
+body.tablet .keyboard,
+body.mobile .keyboard {
+    border: none;
+    padding: 0px;
+}
+
 .keyboard .keyboard-row {
     font-size: 0px;
     margin-bottom: 8px;
@@ -53,6 +59,20 @@
     width: 50px;
 }
 
+body.tablet .keyboard .keyboard-row .keyboard-key {
+    font-size: 20px;
+    height: 35px;
+    margin-right: 6px;
+    width: 35px;
+}
+
+body.mobile .keyboard .keyboard-row .keyboard-key {
+    font-size: 17px;
+    height: 30px;
+    margin-right: 4px;
+    width: 30px;
+}
+
 .keyboard .keyboard-row .keyboard-key:last-child {
     margin-right: 0px;
 }
@@ -63,6 +83,29 @@
 
 .keyboard .keyboard-row .keyboard-key.alphanumeric {
     line-height: 60px;
+}
+
+body.tablet .keyboard .keyboard-row .keyboard-key.alphanumeric {
+    line-height: 35px;
+}
+
+body.mobile .keyboard .keyboard-row .keyboard-key.alphanumeric {
+    line-height: 30px;
+}
+
+body.tablet .keyboard .keyboard-row .keyboard-key.special,
+body.mobile .keyboard .keyboard-row .keyboard-key.special {
+    box-sizing: border-box;
+    padding: 5px 0px 5px 0px;
+}
+
+.keyboard .keyboard-row .keyboard-key.backspace {
+    width: 80px;
+}
+
+body.tablet .keyboard .keyboard-row .keyboard-key.backspace,
+body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
+    width: 40px;
 }
 
 .keyboard .keyboard-row .keyboard-key .image-container {
@@ -79,10 +122,6 @@
     font-size: 15px;
     margin: 0px 0px 0px 0px;
     text-transform: none;
-}
-
-.keyboard .keyboard-row .keyboard-key.backspace {
-    width: 80px;
 }
 </style>
 
