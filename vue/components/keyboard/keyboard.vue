@@ -114,7 +114,7 @@ body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
 
 .keyboard .keyboard-row .keyboard-key img {
     height: 100%;
-    object-fit: none;
+    object-fit: scale-down;
     width: auto;
 }
 
