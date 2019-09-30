@@ -57,11 +57,12 @@ const logicMixin = {
     },
     methods: {
         /**
-         * Checks if two 'initialsExtra' are different.
+         * Checks if two 'initialsExtra' are different, by using a deep
+         * comparison analysis.
          *
-         * @param {Object} first One of the 'initialsExtra' being compared.
-         * @param {Object} second The other 'initialsExtra' being compared.
-         * @return {Boolean} Returns 'true' if they're different.
+         * @param {Object} first The first of the 'initialsExtra' being compared.
+         * @param {Object} second The second of the 'initialsExtra' being compared.
+         * @return {Boolean} Returns the result of the deep comparison.
          */
         diffInitialsExtra(first, second) {
             if (Boolean(first) !== Boolean(second)) {
@@ -83,6 +84,9 @@ const logicMixin = {
                 const groupBase = base[group];
                 const groupSuperSet = superset[group];
 
+                // if for a certain base group the corresponding
+                // group does not exist in the super set then the
+                // super set is considered to be invalid
                 if (!groupSuperSet) {
                     return false;
                 }
