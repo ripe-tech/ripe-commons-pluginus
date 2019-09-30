@@ -80,7 +80,10 @@ const logicMixin = {
                     return false;
                 }
 
-                if (groupBase.initials !== groupSuperSet.initials || groupBase.engraving !== groupSuperSet.engraving) {
+                if (
+                    groupBase.initials !== groupSuperSet.initials ||
+                    groupBase.engraving !== groupSuperSet.engraving
+                ) {
                     return false;
                 }
             }
