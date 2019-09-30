@@ -59,20 +59,20 @@ const logicMixin = {
         /**
          * Checks if two 'initialsExtra' are different.
          *
-         * @param {Object} some One of the 'initialsExtra' being compared.
-         * @param {Object} some The other 'initialsExtra' being compared.
+         * @param {Object} first One of the 'initialsExtra' being compared.
+         * @param {Object} second The other 'initialsExtra' being compared.
          * @return {Boolean} Returns 'true' if they're different.
          */
-        diffInitialsExtra(some, other) {
-            if (Boolean(some) !== Boolean(other)) {
+        diffInitialsExtra(first, second) {
+            if (Boolean(first) !== Boolean(second)) {
                 return true;
             }
 
-            if (!this._subsetInitialsExtra(some, other)) {
+            if (!this._subsetInitialsExtra(first, second)) {
                 return true;
             }
 
-            if (!this._subsetInitialsExtra(other, some)) {
+            if (!this._subsetInitialsExtra(second, first)) {
                 return true;
             }
 
