@@ -57,27 +57,30 @@ const logicMixin = {
     },
     methods: {
         /**
-         * Checks if two 'initialsExtra' are different, by using a deep
+         * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis.
          *
          * @param {Object} first The first of the 'initialsExtra' being compared.
          * @param {Object} second The second of the 'initialsExtra' being compared.
          * @return {Boolean} Returns the result of the deep comparison.
          */
-        diffInitialsExtra(first, second) {
+        equalInitialsExtra(first, second) {
             if (Boolean(first) !== Boolean(second)) {
-                return true;
+                return false;
             }
 
             if (!this._subsetCompare(first, second)) {
-                return true;
+                return false;
             }
 
             if (!this._subsetCompare(second, first)) {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
+        },
+        diffInitialsExtra(first, second) {
+            return !this.equalInitialsExtra(first, second);
         },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
@@ -96,10 +99,7 @@ const logicMixin = {
 
                 // in case either the initials or the engraving is
                 // not matching then the subset is invalid
-                if (
-                    groupB.initials !== groupR.initials ||
-                    groupB.engraving !== groupR.engraving
-                ) {
+                if (groupB.initials !== groupR.initials || groupB.engraving !== groupR.engraving) {
                     return false;
                 }
             }
