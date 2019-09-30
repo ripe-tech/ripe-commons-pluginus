@@ -54,6 +54,39 @@ const logicMixin = {
     },
     mounted: function() {
         this.$bus.bind("refresh", this.$forceUpdate);
+    },
+    methods: {
+        diffInitialsExtra(some, other) {
+            if (Boolean(some) !== Boolean(other)) {
+                return true;
+            }
+
+            if (!this.subsetInitialsExtra(some, other)) {
+                return true;
+            }
+
+            if (!this.subsetInitialsExtra(other, some)) {
+                return true;
+            }
+
+            return false;
+        },
+        subsetInitialsExtra(base, superset) {
+            for (const group of Object.keys(base)) {
+                const groupBase = base[group];
+                const groupSuperSet = superset[group];
+
+                if (!groupSuperSet) {
+                    return false;
+                }
+
+                if (groupBase.initials !== groupSuperSet.initials || groupBase.engraving !== groupSuperSet.engraving) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 };
 
