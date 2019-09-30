@@ -56,22 +56,29 @@ const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        /**
+         * Checks if two 'initialsExtra' are different.
+         *
+         * @param {Object} some One of the 'initialsExtra' being compared.
+         * @param {Object} some The other 'initialsExtra' being compared.
+         * @return {Boolean} Returns 'true' if they're different.
+         */
         diffInitialsExtra(some, other) {
             if (Boolean(some) !== Boolean(other)) {
                 return true;
             }
 
-            if (!this.subsetInitialsExtra(some, other)) {
+            if (!this._subsetInitialsExtra(some, other)) {
                 return true;
             }
 
-            if (!this.subsetInitialsExtra(other, some)) {
+            if (!this._subsetInitialsExtra(other, some)) {
                 return true;
             }
 
             return false;
         },
-        subsetInitialsExtra(base, superset) {
+        _subsetInitialsExtra(base, superset) {
             for (const group of Object.keys(base)) {
                 const groupBase = base[group];
                 const groupSuperSet = superset[group];
