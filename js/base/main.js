@@ -159,6 +159,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // forwards the some other events to the global bus
         this.ripe.bind("selected_part", (...args) => this.owner.trigger("selected_part", ...args));
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
+
+        this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
+        this.ripe.bind("initials_extra", (...args) =>
+            this.owner.trigger("initials_extra", ...args)
+        );
     }
 
     _getExtraComponents() {
@@ -238,6 +243,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("selected_part", ...args)
                 );
                 manager.bind("choices", (...args) => this.$bus.trigger("choices", ...args));
+                manager.bind("initials", (...args) => this.$bus.trigger("initials", ...args));
+                manager.bind("initials_extra", (...args) =>
+                    this.$bus.trigger("initials_extra", ...args)
+                );
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
@@ -251,17 +260,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
-                this.$bus.bind("initials_change", (initials, engraving) => {
-                    // if both the initials and the engraving are defined,
-                    // apply them in the current RIPE instance
-                    if (initials && engraving) {
-                        self.ripe.setInitials(initials, engraving);
-                    }
-                    // otherwise remove any initials there might be by
-                    // setting the initials and engraving values accordingly
-                    else {
-                        self.ripe.setInitials("", null);
-                    }
+                this.$bus.bind("initials_change", initialsExtra => {
+                    self.ripe.setInitialsExtra(initialsExtra);
                 });
                 this.$bus.bind("undo", () => self.ripe.undo());
 

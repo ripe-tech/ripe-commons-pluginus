@@ -26,7 +26,11 @@ export const store = new Vuex.Store({
         defaults: {},
         options: {},
         price: null,
-        personalization: {},
+        personalization: {
+            initials: "",
+            engraving: null,
+            initialsExtra: {}
+        },
         size: {},
         orderNumber: null,
         currentFrame: null,
@@ -82,7 +86,9 @@ export const store = new Vuex.Store({
             state.price = price;
         },
         personalization(state, value) {
-            state.personalization = value;
+            state.personalization.initials = value.initials;
+            state.personalization.engraving = value.engraving;
+            state.personalization.initialsExtra = value.initialsExtra;
         },
         size(state, value) {
             state.size = value;

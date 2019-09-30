@@ -703,7 +703,11 @@ export const pickers = {
         colorOptionText(colorOption) {
             const optional = this.isOptional(this.activePart);
 
-            if (optional && colorOption.material.startsWith("no_") && colorOption.color.startsWith("no_")) {
+            if (
+                optional &&
+                colorOption.material.startsWith("no_") &&
+                colorOption.color.startsWith("no_")
+            ) {
                 return this.localeModel(this.activePart, colorOption.material);
             }
 
