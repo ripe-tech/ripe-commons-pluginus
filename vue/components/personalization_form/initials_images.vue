@@ -3,7 +3,7 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
-            v-bind:class="{ active: group == activeGroup }"
+            v-bind:class="{ active: group === activeGroup }"
             v-for="group in groups"
             v-bind:key="groupKey(group)"
             ref="initialsImages"

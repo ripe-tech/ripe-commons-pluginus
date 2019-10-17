@@ -3,7 +3,7 @@
         <p
             v-bind:data-group="group"
             class="initials-input"
-            v-bind:class="{ active: group == activeGroup }"
+            v-bind:class="{ active: group === activeGroup }"
             v-for="group in groups"
             v-bind:key="group"
             ref="initialsInputs"
@@ -15,7 +15,7 @@
             <p
                 v-bind:data-group="group"
                 class="initials-label"
-                v-bind:class="{ active: group == activeGroup }"
+                v-bind:class="{ active: group === activeGroup }"
                 v-for="group in groups"
                 v-bind:key="group"
                 v-on:click="inputSelected(group)"

@@ -51,8 +51,8 @@
             >
                 <ul
                     class="materials-container"
-                    v-bind:class="{ hidden: !multipleMaterials && activeMaterial != null }"
-                    v-show="activePart != null"
+                    v-bind:class="{ hidden: !multipleMaterials && activeMaterial !== null }"
+                    v-show="activePart !== null"
                     ref="materialsPicker"
                 >
                     <li
@@ -82,7 +82,7 @@
                 v-on:click="slideLeftColors"
             />
             <transition name="fade">
-                <ul class="colors-container" v-show="activeMaterial != null" ref="colorsPicker">
+                <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
                     <transition-group name="list" ref="colorsList">
                         <li
                             class="color button button-color"
@@ -705,10 +705,9 @@ export const pickers = {
 
             if (
                 optional &&
-                colorOption.material.startsWith("no_") &&
-                colorOption.color.startsWith("no_")
+                (colorOption.material.startsWith("no_") || colorOption.color.startsWith("no_"))
             ) {
-                return this.localeModel(this.activePart, colorOption.material);
+                return this.localeModel(this.activePart, "no_" + this.activePart);
             }
 
             return this.localeModel(this.activePart, colorOption.material, colorOption.color);
@@ -896,7 +895,7 @@ export const pickers = {
             let scrollLeft = 0;
 
             // searches the selected material, summing the offsets until the requested
-            // material (and optionally collor) is found
+            // material (and optionally color) is found
             for (const _color of colors) {
                 const style = getComputedStyle(_color);
                 const marginLeft = parseFloat(style.marginLeft);
