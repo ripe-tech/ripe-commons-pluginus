@@ -952,6 +952,7 @@ export const pickers = {
             this.selectSwatch();
         },
         undo() {
+            this.allowUndo = false;
             this.$bus.trigger("undo");
         }
     }
