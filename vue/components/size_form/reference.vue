@@ -5,7 +5,7 @@
             <div class="genders" v-show="modelGenders && modelGenders.length > 1">
                 <div
                     class="button button-gender"
-                    v-bind:class="{ active: modelGender == visibleGender }"
+                    v-bind:class="{ active: modelGender === visibleGender }"
                     v-for="modelGender in modelGenders"
                     v-bind:key="modelGender"
                     v-on:click="gender = modelGender"
@@ -21,7 +21,7 @@
                 <div class="scales">
                     <div
                         class="button button-scale"
-                        v-bind:class="{ active: modelScale == visibleScale }"
+                        v-bind:class="{ active: modelScale === visibleScale }"
                         v-for="modelScale in __getAvailableScales(visibleGender)"
                         v-bind:key="modelScale"
                         v-on:click="scale = modelScale"
@@ -32,7 +32,7 @@
                 <div
                     class="sizes"
                     v-for="modelScale in __getAvailableScales(visibleGender)"
-                    v-show="modelScale == visibleScale"
+                    v-show="modelScale === visibleScale"
                     v-bind:key="modelScale"
                 >
                     <div
