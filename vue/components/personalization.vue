@@ -285,6 +285,14 @@ export const personalization = {
             this.state = state;
             this.tabMessage = tabMessage;
 
+            // delete invalid initials extra groups, which are the ones that
+            // do not define both initials and engraving
+            Object.entries(state.initialsExtra).forEach(([group, value]) => {
+                if (!(value.engraving && value.initials)) {
+                    delete state.initialsExtra[group];
+                }
+            });
+
             // in case there's no visibility of the personalization then applies the
             // changes and then runs the update of the button text
             !this.visible && this.apply();
