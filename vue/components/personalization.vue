@@ -149,7 +149,10 @@ export const personalization = {
         state: {
             handler: function(state, previousState) {
                 if (this.diffInitialsExtra(state.initialsExtra, previousState.initialsExtra)) {
-                    this.$bus.trigger("initials_change", state.initialsExtra);
+                    this.$bus.trigger(
+                        "initials_change",
+                        this.sanitizeInitialsExtra(state.initialsExtra)
+                    );
                 }
             },
             deep: true

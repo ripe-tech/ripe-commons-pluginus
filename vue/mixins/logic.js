@@ -82,6 +82,19 @@ const logicMixin = {
         diffInitialsExtra(first, second) {
             return !this.equalInitialsExtra(first, second);
         },
+        sanitizeInitials(initials, engraving) {
+            return [initials || "", initials ? engraving || null : null];
+        },
+        sanitizeInitialsExtra(initialsExtra) {
+            const initialsExtraS = {};
+            Object.entries(initialsExtra).forEach(([group, { initials, engraving }]) => {
+                initialsExtraS[group] = {
+                    initials: initials || "",
+                    engraving: initials ? engraving || null : null
+                };
+            });
+            return initialsExtraS;
+        },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
                 // retrieves the group information for the current
