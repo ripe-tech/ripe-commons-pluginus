@@ -261,7 +261,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     self.ripe.setPart(part, material, color)
                 );
                 this.$bus.bind("initials_change", initialsExtra => {
-                    self.ripe.setInitialsExtra(initialsExtra);
+                    self.ripe.setInitialsExtra(this.sanitizeInitialsExtra(initialsExtra));
                 });
                 this.$bus.bind("undo", () => self.ripe.undo());
 

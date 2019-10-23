@@ -149,10 +149,7 @@ export const personalization = {
         state: {
             handler: function(state, previousState) {
                 if (this.diffInitialsExtra(state.initialsExtra, previousState.initialsExtra)) {
-                    this.$bus.trigger(
-                        "initials_change",
-                        this.sanitizeInitialsExtra(state.initialsExtra)
-                    );
+                    this.$bus.trigger("initials_change", state.initialsExtra);
                 }
             },
             deep: true
@@ -207,7 +204,7 @@ export const personalization = {
             this.initialOptions = Object.assign({}, options);
         });
 
-        this.$bus.bind("initials_extra", initialsExtra => {
+        this.$bus.bind("initials_change", initialsExtra => {
             if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
                 this.state.initialsExtra = initialsExtra;
                 this.$refs.form && this.$refs.form.setState(this.state);
