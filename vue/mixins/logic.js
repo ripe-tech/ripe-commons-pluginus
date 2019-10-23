@@ -58,7 +58,8 @@ const logicMixin = {
     methods: {
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
-         * comparison analysis.
+         * comparison analysis. Equality is defined as: they produce
+         * the same result after sanitization.
          *
          * @param {Object} first The first of the 'initialsExtra' being compared.
          * @param {Object} second The second of the 'initialsExtra' being compared.
@@ -69,11 +70,14 @@ const logicMixin = {
                 return false;
             }
 
-            if (!this._subsetCompare(first, second)) {
+            const firstS = this.sanitizeInitialsExtra(first);
+            const secondS = this.sanitizeInitialsExtra(second);
+
+            if (!this._subsetCompare(firstS, secondS)) {
                 return false;
             }
 
-            if (!this._subsetCompare(second, first)) {
+            if (!this._subsetCompare(secondS, firstS)) {
                 return false;
             }
 
