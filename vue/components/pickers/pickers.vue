@@ -1,15 +1,18 @@
 <template>
     <div
         class="pickers"
-        v-bind:class="{ 'multiple-materials': multipleMaterials, loading: loading, visible: allowUndo }"
+        v-bind:class="{
+            'multiple-materials': multipleMaterials,
+            loading: loading,
+            visible: allowUndo
+        }"
         ref="pickersContainer"
     >
         <div class="message-undo-container" v-bind:class="{ invisible: !allowUndo }">
             <div class="message-undo">
-                <a
-                    class="button button-undo"
-                    v-on:click="undo()"
-                >{{ "ripe_commons.pickers.undo" | locale }}</a>
+                <a class="button button-undo" v-on:click="undo()">{{
+                    "ripe_commons.pickers.undo" | locale
+                }}</a>
                 <span>
                     {{ "ripe_commons.pickers.limited" | locale }}
                     {{ "ripe_commons.pickers.back" | locale }}
@@ -36,10 +39,9 @@
                     <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
                         <img v-bind:src="partSwatch(part)" />
                     </div>
-                    <p
-                        class="no-part"
-                        v-else-if="isOptional(part)"
-                    >{{ localeModel(part, "no_" + part) }}</p>
+                    <p class="no-part" v-else-if="isOptional(part)">
+                        {{ localeModel(part, "no_" + part) }}
+                    </p>
                 </li>
                 <slot />
             </ul>
@@ -95,7 +97,12 @@
                 v-on:click="slideLeftColors"
             />
             <transition name="fade">
-                <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker" v-bind:class="{ visible: !allowUndo }">
+                <ul
+                    class="colors-container"
+                    v-bind:class="{ visible: !allowUndo }"
+                    v-show="activeMaterial !== null"
+                    ref="colorsPicker"
+                >
                     <transition-group name="list" ref="colorsList">
                         <li
                             class="color button button-color"
@@ -141,8 +148,8 @@
 }
 
 .pickers {
-    padding: 0px 0px 16px 0px;
     margin-bottom: -20px;
+    padding: 0px 0px 16px 0px;
 }
 
 .pickers.visible {
@@ -321,9 +328,9 @@
 }
 
 .pickers .message-undo-container {
-    overflow: hidden;
-    max-height: 50px;
     height: auto;
+    max-height: 50px;
+    overflow: hidden;
     transition: max-height 0.5s ease-in;
 }
 
