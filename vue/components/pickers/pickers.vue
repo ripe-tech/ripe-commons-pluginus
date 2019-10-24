@@ -1,9 +1,21 @@
 <template>
     <div
         class="pickers"
-        v-bind:class="{ 'multiple-materials': multipleMaterials, loading: loading }"
+        v-bind:class="{ 'multiple-materials': multipleMaterials, loading: loading, visible: allowUndo }"
         ref="pickersContainer"
     >
+        <div class="message-undo-container" v-bind:class="{ invisible: !allowUndo }">
+            <div class="message-undo">
+                <a
+                    class="button button-undo"
+                    v-on:click="undo()"
+                >{{ "ripe_commons.pickers.undo" | locale }}</a>
+                <span>
+                    {{ "ripe_commons.pickers.limited" | locale }}
+                    {{ "ripe_commons.pickers.back" | locale }}
+                </span>
+            </div>
+        </div>
         <div class="background" />
         <div class="parts-wrapper">
             <div
@@ -24,9 +36,10 @@
                     <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
                         <img v-bind:src="partSwatch(part)" />
                     </div>
-                    <p class="no-part" v-else-if="isOptional(part)">
-                        {{ localeModel(part, "no_" + part) }}
-                    </p>
+                    <p
+                        class="no-part"
+                        v-else-if="isOptional(part)"
+                    >{{ localeModel(part, "no_" + part) }}</p>
                 </li>
                 <slot />
             </ul>
@@ -82,7 +95,7 @@
                 v-on:click="slideLeftColors"
             />
             <transition name="fade">
-                <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
+                <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker" v-bind:class="{ visible: !allowUndo }">
                     <transition-group name="list" ref="colorsList">
                         <li
                             class="color button button-color"
@@ -119,23 +132,22 @@
                 v-on:click="slideRightColors"
             />
         </div>
-        <div class="message-undo-container">
-            <div class="message-undo" v-bind:class="{ visible: allowUndo }">
-                <a class="button button-undo" v-on:click="undo()">
-                    {{ "ripe_commons.pickers.undo" | locale }}
-                </a>
-                <span>
-                    {{ "ripe_commons.pickers.limited" | locale }}
-                    {{ "ripe_commons.pickers.back" | locale }}
-                </span>
-            </div>
-        </div>
     </div>
 </template>
 
 <style scoped>
 .pickers > .parts-wrapper {
     position: relative;
+}
+
+.pickers {
+    padding: 0px 0px 16px 0px;
+    margin-bottom: -20px;
+}
+
+.pickers.visible {
+    padding: 0;
+    transform: padding 0.5s ease-in-out;
 }
 
 .pickers .parts-container > .part {
@@ -310,6 +322,13 @@
 
 .pickers .message-undo-container {
     overflow: hidden;
+    max-height: 50px;
+    height: auto;
+    transition: max-height 0.5s ease-in;
+}
+
+.pickers .message-undo-container.invisible {
+    max-height: 0;
 }
 
 .pickers .message-undo {
@@ -322,12 +341,8 @@
     max-width: 580px;
     padding: 10px 20px 10px 30px;
     text-align: left;
-    transform: translateY(-100%);
+    transform: translateY(0);
     transition: transform 0.5s ease-in-out;
-}
-
-.pickers .message-undo.visible {
-    transform: translateY(0px);
 }
 
 .pickers .message-undo .button.button-undo {
