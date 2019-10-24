@@ -58,7 +58,7 @@ const logicMixin = {
     methods: {
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
-         * comparison analysis. Equality is defined as: they produce
+         * comparison analysis. Equality is defined as, they produce
          * the same result after sanitization.
          *
          * @param {Object} first The first of the 'initialsExtra' being compared.
