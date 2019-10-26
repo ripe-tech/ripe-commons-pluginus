@@ -214,7 +214,7 @@ export const personalization = {
             }
         });
     },
-    mounted() {
+    mounted: function() {
         this.updateButtonText();
     },
     methods: {
