@@ -328,7 +328,7 @@
 }
 
 .pickers .message-undo-container {
-    bottom: 27%;
+    bottom: 25%;
     height: auto;
     left: 50%;
     max-height: 50px;
