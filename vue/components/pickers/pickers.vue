@@ -328,37 +328,39 @@
 }
 
 .pickers .message-undo-container {
-    height: auto;
-    max-height: 50px;
-    position: absolute;
-    overflow-y: visible;
-    left:50%;
     bottom: 25%;
+    height: auto;
+    left: 50%;
+    max-height: 50px;
+    overflow-y: visible;
+    position: absolute;
     transition: max-height 0.5s ease-in-out;
-    
 }
 
 .pickers .message-undo-container.invisible {
-    overflow: hidden;
-    max-height: 0;
     animation: 1.2s delay-overflow;
+    max-height: 0;
+    overflow: hidden;
 }
 
 @keyframes delay-overflow {
-  from { overflow: visible; }
+
+    from {
+        overflow: visible;
+    }
 }
 
 .pickers .message-undo {
-    left: -50%;
-    position: relative;
     background-color: #ececec;
     border-radius: 5px;
     display: block;
     font-size: 11px;
+    left: -50%;
     line-height: 14px;
     margin: 0px auto 0px auto;
     max-width: 580px;
     padding: 10px 20px 10px 30px;
+    position: relative;
     text-align: left;
     transform: translateY(100%);
     transition: transform 0.5s ease-in-out;
