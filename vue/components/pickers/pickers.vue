@@ -328,18 +328,21 @@
 }
 
 .pickers .message-undo-container {
-    bottom: 25%;
+    bottom: 27%;
     height: auto;
     left: 50%;
     max-height: 50px;
+    opacity: 1;
     overflow-y: visible;
     position: absolute;
-    transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out, opacity 0.2s;
+    width: 100%;
 }
 
 .pickers .message-undo-container.invisible {
-    animation: 1.2s delay-overflow;
+    animation: 0.3s delay-overflow;
     max-height: 0;
+    opacity: 0;
     overflow: hidden;
 }
 
