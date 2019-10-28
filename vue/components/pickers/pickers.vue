@@ -9,7 +9,7 @@
         ref="pickersContainer"
     >
         <div class="message-undo-container" v-bind:class="{ invisible: !allowUndo }">
-            <div class="message-undo">
+            <div class="message-undo" v-bind:class="{ visible: allowUndo }">
                 <a class="button button-undo" v-on:click="undo()">{{
                     "ripe_commons.pickers.undo" | locale
                 }}</a>
@@ -330,15 +330,27 @@
 .pickers .message-undo-container {
     height: auto;
     max-height: 50px;
-    overflow: hidden;
-    transition: max-height 0.5s ease-in;
+    position: absolute;
+    overflow-y: visible;
+    left:50%;
+    bottom: 25%;
+    transition: max-height 0.5s ease-in-out;
+    
 }
 
 .pickers .message-undo-container.invisible {
+    overflow: hidden;
     max-height: 0;
+    animation: 1.2s delay-overflow;
+}
+
+@keyframes delay-overflow {
+  from { overflow: visible; }
 }
 
 .pickers .message-undo {
+    left: -50%;
+    position: relative;
     background-color: #ececec;
     border-radius: 5px;
     display: block;
@@ -348,8 +360,12 @@
     max-width: 580px;
     padding: 10px 20px 10px 30px;
     text-align: left;
-    transform: translateY(0);
+    transform: translateY(100%);
     transition: transform 0.5s ease-in-out;
+}
+
+.pickers .message-undo.visible {
+    transform: translateY(0px);
 }
 
 .pickers .message-undo .button.button-undo {
