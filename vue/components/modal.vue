@@ -14,6 +14,9 @@
             <global-events v-on:keydown.esc="hide" />
             <div class="modal-background" v-on:click="backgroundLeave && hide()" />
             <div class="modal-container">
+                <div class="button button-close" v-on:click="hide()">
+                    <img src="~./assets/close.svg" />
+                </div>
                 <div class="modal-content">
                     <slot />
                 </div>
@@ -80,6 +83,26 @@ body.mobile .modal > .modal-container {
     padding: 20px 10px 20px 10px;
 }
 
+.button.button-close {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    left: 0;
+    margin: auto;
+    padding: 5px 23px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+}
+
+.button.button-close > img {
+    height: 25px;
+    margin: auto;
+    vertical-align: middle;
+    width: 25px;
+}
+
 body.mobile .modal .modal-content ::v-deep .title {
     font-size: 15px;
 }
@@ -139,6 +162,11 @@ body.mobile .modal .modal-content ::v-deep .title {
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
+}
+
+body.mobile .modal ::v-deep .button.button-close img {
+    height: 15px;
+    width: 15px;
 }
 
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
