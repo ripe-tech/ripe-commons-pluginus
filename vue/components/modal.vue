@@ -87,7 +87,7 @@ body.mobile .modal > .modal-container {
     background-color: #000000;
     color: #ffffff;
     cursor: pointer;
-    display: inline-block;
+    display: none;
     left: 0;
     margin: auto;
     padding: 5px 23px;
