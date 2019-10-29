@@ -1,12 +1,24 @@
 <template>
-    <div class="personalization" v-bind:class="[brand, model, { disabled: enabled === false }]">
+    <div
+        class="personalization"
+        v-bind:class="[
+            brand,
+            model,
+            { disabled: enabled === false },
+            { selected: tabMessage !== '' }
+        ]"
+    >
         <div
             class="button button-personalization"
             v-bind:class="{ disabled: enabled === false, show: !hidden }"
             v-on:click="showModal()"
         >
-            <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
-            <p>{{ buttonText | locale }}</p>
+            <h3 v-if="tabMessage == ''">
+                {{ "ripe_commons.personalization.personalization" | locale }}
+            </h3>
+            <p v-else>
+                {{ buttonText | locale }}
+            </p>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -34,7 +46,16 @@
 <style scoped>
 .personalization {
     display: inline-block;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    font-weight: bold;
     text-align: center;
+}
+
+.personalization.selected .button.button-personalization {
+    background-color: #000000;
+    color: #ffffff;
 }
 
 .personalization.disabled {
