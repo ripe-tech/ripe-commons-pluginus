@@ -1,17 +1,10 @@
 <template>
     <div
         class="size"
-        v-bind:class="{ disabled: enabled === false, selected: sizeTextSelected !== '' }"
+        v-bind:class="{ disabled: enabled === false, sizeSelected: sizeTextSelected !== '' }"
     >
         <div class="button button-secondary button-size" v-on:click="showModal()">
-            <div class="button-text" v-if="sizeTextSelected == ''">
-                <span>{{ buttonText }}</span>
-                <span><img src="~./assets/chevron-down.svg" /></span>
-            </div>
-            <div class="button-text" v-else>
-                <span>{{ buttonText }}</span>
-                <span>{{ sizeTextSelected }}</span>
-            </div>
+            <span>{{ buttonText }}</span>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -234,7 +227,7 @@ export const size = {
         },
         updateButtonText() {
             this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size")
+                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
             this.sizeTextSelected = this.sizeText;
         }
