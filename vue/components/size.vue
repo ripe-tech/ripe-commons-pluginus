@@ -1,7 +1,17 @@
 <template>
-    <div class="size" v-bind:class="{ disabled: enabled === false }">
+    <div
+        class="size"
+        v-bind:class="{ disabled: enabled === false, selected: sizeTextSelected !== '' }"
+    >
         <div class="button button-secondary button-size" v-on:click="showModal()">
-            <span>{{ buttonText }}</span>
+            <div class="button-text" v-if="sizeTextSelected == ''">
+                <span>{{ buttonText }}</span>
+                <span><img src="~./assets/chevron-down.svg" /></span>
+            </div>
+            <div class="button-text" v-else>
+                <span>{{ buttonText }}</span>
+                <span>{{ sizeTextSelected }}</span>
+            </div>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -35,6 +45,36 @@
     pointer-events: none;
 }
 
+.size.selected .button.button-size {
+    background-color: black;
+    color: white;
+}
+
+.size .button.button-size .button-text {
+    align-content: center;
+    display: flex;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.size .button.button-size .button-text span {
+    align-self: center;
+    vertical-align: middle;
+}
+
+.size.selected .button.button-size .button-text span {
+    color: white;
+}
+
+.size .button.button-size .button-text img {
+    align-self: center;
+    max-width: 25px;
+    vertical-align: middle;
+}
+
 .size .modal.modal-size .modal-container {
     padding: 40px 80px 40px 80px;
 }
@@ -51,8 +91,10 @@ export const size = {
             form: null,
             sizeText: "",
             buttonText: "",
+            sizeTextSelected: "",
             state: {},
             counter: 0,
+            selected: false,
             closeCallback: null
         };
     },
@@ -90,6 +132,7 @@ export const size = {
             this.showModal();
         });
         this.$bus.bind("close_size", () => {
+            this.selected = true;
             this.hideModal();
         });
 
@@ -195,8 +238,9 @@ export const size = {
         },
         updateButtonText() {
             this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
+                ? this.locale("ripe_commons.size.size")
                 : this.locale("ripe_commons.size.select_size");
+            this.sizeTextSelected = this.sizeText;
         }
     }
 };
