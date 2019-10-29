@@ -53,11 +53,6 @@
     text-align: center;
 }
 
-.personalization.selected .button.button-personalization {
-    background-color: #000000;
-    color: #ffffff;
-}
-
 .personalization.disabled {
     background-color: transparent;
     border-color: transparent;
