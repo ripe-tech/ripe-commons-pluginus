@@ -22,9 +22,6 @@
                     v-on:changed="sizeChanged"
                 />
                 <div class="buttons-container">
-                    <div class="button button-cancel" v-on:click="hideModal()">
-                        {{ "ripe_commons.modal.cancel" | locale }}
-                    </div>
                     <div
                         class="button button-primary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
@@ -43,11 +40,6 @@
     background-color: transparent;
     border-color: transparent;
     pointer-events: none;
-}
-
-.size.selected .button.button-size {
-    background-color: black;
-    color: white;
 }
 
 .size .button.button-size .button-text {
@@ -77,6 +69,10 @@
 
 .size .modal.modal-size .modal-container {
     padding: 40px 80px 40px 80px;
+}
+
+.size ::v-deep .modal .modal-content .buttons-container {
+    text-align: center;
 }
 </style>
 
