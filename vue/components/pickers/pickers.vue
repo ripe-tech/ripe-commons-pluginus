@@ -533,7 +533,9 @@ export const pickers = {
     },
     mounted: function() {
         window.addEventListener("resize", this.updateScrollFlags);
-        this.$bus.bind("undo", () => this.allowUndo = false);
+        this.$bus.bind("undo", () => {
+            this.undo = false;
+        });
 
         this.$store.watch(this.$store.getters.getParts, parts => {
             const current = parts[this.activePart];
