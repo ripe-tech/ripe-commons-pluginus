@@ -46,7 +46,7 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.body.classList.remove(this.desktopClass);
         this.body.classList.remove(this.tabletClass);
         this.body.classList.remove(this.mobileClass);
-        
+
         const tabletWidth = this.tabletWidth || this.DEFAULT_TABLET_WIDTH;
         const mobileWidth = this.mobileWidth || this.DEFAULT_MOBILE_WIDTH;
 
