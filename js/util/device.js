@@ -18,12 +18,20 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.desktopClass = "desktop";
         this.tabletClass = "tablet";
         this.mobileClass = "mobile";
-        this.TABLET_WIDTH = 768;
-        this.MOBILE_WIDTH = 420;
+        this.DEFAULT_TABLET_WIDTH = 768;
+        this.DEFAULT_MOBILE_WIDTH = 420;
 
         this.body = document.getElementsByTagName("body")[0];
         this.listen();
         this.updateClass();
+    }
+
+    setTabletWidth(tabletWidth) {
+        this.tabletWidth = tabletWidth;
+    }
+
+    setMobileWidth(mobileWidth) {
+        this.mobileWidth = mobileWidth;
     }
 
     listen() {
@@ -36,10 +44,13 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.body.classList.remove(this.desktopClass);
         this.body.classList.remove(this.tabletClass);
         this.body.classList.remove(this.mobileClass);
+        
+        const tabletWidth = this.tabletWidth || this.DEFAULT_TABLET_WIDTH;
+        const mobileWidth = this.mobileWidth || this.DEFAULT_MOBILE_WIDTH;
 
-        if (width > this.TABLET_WIDTH) {
+        if (width > tabletWidth) {
             this.body.classList.add(this.desktopClass);
-        } else if (width > this.MOBILE_WIDTH) {
+        } else if (width > mobileWidth) {
             this.body.classList.add(this.tabletClass);
         } else {
             this.body.classList.add(this.mobileClass);
