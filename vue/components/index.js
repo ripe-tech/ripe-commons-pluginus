@@ -11,6 +11,7 @@ export { modal } from "./modal.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
 export { pickers } from "./pickers";
+export { undo } from "./undo";
 export { personalization } from "./personalization.vue";
 export { size } from "./size.vue";
 
