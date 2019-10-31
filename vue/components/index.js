@@ -13,5 +13,6 @@ export { thumbnails } from "./thumbnails.vue";
 export { pickers } from "./pickers";
 export { personalization } from "./personalization.vue";
 export { size } from "./size.vue";
+export { info } from "./info.vue";
 
 export { personalizationForm, sizeForm };
