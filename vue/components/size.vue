@@ -5,7 +5,9 @@
             v-bind:class="{ showingSize: smallButtonText }"
         >
             <span class="desktop-button-text">{{ buttonText }}</span>
-            <span class="small-button-text" v-if="smallButtonText">{{ smallButtonText }}</span>
+            <div class="small-button-text-container" v-if="smallButtonText">
+                <p>{{ smallButtonText }}</p>
+            </div>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
