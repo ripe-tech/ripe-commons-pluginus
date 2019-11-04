@@ -11,10 +11,6 @@
     "ripe_commons.pickers.limited": "This option is limited to specific material or colour combinations.",
     "ripe_commons.pickers.back": "Do you want to go back?",
 
-    "ripe_commons.details.title": "Details",
-    "ripe_commons.details.subtitle": "Details about MTO",
-    "ripe_commons.details.text": "The image serves as an indication, and the final product may have small differences in the shades of color or material.|Once a product is personalized, it cannot be returned.",
-
     "ripe_commons.personalization.personalization": "Personalisation",
     "ripe_commons.personalization.add_initials": "Add initials",
 
