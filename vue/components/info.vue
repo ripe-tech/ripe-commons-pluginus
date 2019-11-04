@@ -29,6 +29,7 @@
 .paragraph-container {
     font-size: 14px;
     line-height: normal;
+    font-weight: normal;
     margin-bottom: 60px;
     text-align: center;
 }
