@@ -1,5 +1,5 @@
 <template>
-    <div class="undo">
+    <div id="undo">
         <div class="message-undo-container">
             <div class="message-undo" v-bind:class="{ visible: allowUndo }">
                 <a class="button button-undo" v-on:click="undo()">
@@ -49,27 +49,28 @@
 }
 </style>
 <script>
-    import { localeMixin } from "../../mixins";
-    
-    export const undo = {
-        data: function() {
-            return {
-                allowUndo: false
-            };
-        },
-        mounted: function() {
-            windows.addEventListener("resize", this.updateScrollFlags);
-            this.$bus.bind("restrictions", (changes, newParts) => {
-                this.allowUndo = changes.lenght > 0;
-            });
-        },
-        methods: {
-            undo () {
+export const undo = {
+    data: function() {
+        return {
+            allowUndo: false
+        }
+    },
+    mounted: function() {
+        this.$bus.bind("restrictions", (changes, newPart) => {
+        this.allowUndo = changes.length > 0;
+        });
+    },
+    methods: {
+            undo() {
                 this.allowUndo = false;
                 this.$bus.trigger("undo");
-            }
         }
-    };
-    
-    export default undo;
+    }
+};
+export default undo;   
+
 </script>
+
+
+
+

@@ -119,6 +119,7 @@
                 v-on:click="slideRightColors"
             />
         </div>
+        <undo />
     </div>
 </template>
 
@@ -354,8 +355,13 @@ body.mobile .button-scroll-colors {
 
 <script>
 import { localeMixin } from "../../mixins";
+import undo from '../undo';
+
 
 export const pickers = {
+    commponents: {
+        undo
+    },
     mixins: [localeMixin],
     data: function() {
         return {
@@ -513,9 +519,7 @@ export const pickers = {
         this.$bus.bind("selected_part", part => {
             this.activePart = part;
         });
-        this.$bus.bind("restrictions", (changes, newPart) => {
-            this.allowUndo = changes.length > 0;
-        });
+
         const colorsPicker = this.$refs.colorsPicker;
         colorsPicker.addEventListener("touchstart", () => colorsPicker.classList.add("drag"));
         colorsPicker.addEventListener("touchend", () => colorsPicker.classList.remove("drag"));
