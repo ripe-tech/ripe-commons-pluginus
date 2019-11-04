@@ -2,8 +2,8 @@
     <div class="info">
         <span class="info-button" v-on:click="showModal()" />
         <modal ref="modal" v-bind:visible="true">
-            <h3 class="title"> Details </h3>
-            <h4 class="subtitle"> Details about MTO </h4>
+            <h3 class="title"> {{title}} </h3>
+            <h4 class="subtitle"> {{subtitle}} </h4>
             <div class="paragraph-container">
                 <p v-for="(paragraph, index) in paragraphs" v-bind:key="index">
                     {{ paragraph }}
@@ -69,6 +69,14 @@ export const info = {
     mixins: [modalMixin],
     props: {
         content: {
+            type: String,
+            mandatory: true
+        },
+        title: {
+            type: String,
+            mandatory: true
+        },
+        subtitle: {
             type: String,
             mandatory: true
         }
