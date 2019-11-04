@@ -1,9 +1,9 @@
 <template>
     <div class="info">
         <span class="info-button" v-on:click="showModal()" />
-        <modal ref="modal" v-bind:visible="true">
-            <h3 class="title"> {{title}} </h3>
-            <h4 class="subtitle"> {{subtitle}} </h4>
+        <modal v-bind:visible="true" ref="modal">
+            <h3 class="title">{{ title }}</h3>
+            <h4 class="subtitle">{{ subtitle }}</h4>
             <div class="paragraph-container">
                 <p v-for="(paragraph, index) in paragraphs" v-bind:key="index">
                     {{ paragraph }}
@@ -19,46 +19,46 @@
 <style scoped>
 .info-button {
     background: url("~./assets/info.svg") center no-repeat;
+    cursor: pointer;
     float: right;
     height: 70px;
     vertical-align: middle;
     width: 24px;
-    cursor: pointer;
 }
 
 .paragraph-container {
     font-size: 14px;
+    line-height: normal;
     margin-bottom: 60px;
     text-align: center;
-    line-height: normal;
 }
 
 .button-cancel {
     background-color: #151515;
-    display: inline;
     color: #ffffff;
     cursor: pointer;
+    display: inline;
     font-size: 14px;
     line-height: 40px;
     padding: 13px 101.6px 13px 101.6px;
 }
 
-.button-cancel:hover{
-    opacity: .8;
-    transition: opacity .125s ease-in-out;
-    -moz-transition: opacity .125s ease-in-out;
-    -webkit-transition: opacity .125s ease-in-out;
+.button-cancel:hover {
+    opacity: 0.8;
+    -moz-transition: opacity 0.125s ease-in-out;
+    -webkit-transition: opacity 0.125s ease-in-out;
+    transition: opacity 0.125s ease-in-out;
 }
 
-.button-cancel:active{
-    opacity: .6;
-    transition: opacity .125s ease-in-out;
-    -moz-transition: opacity .125s ease-in-out;
-    -webkit-transition: opacity .125s ease-in-out;
+.button-cancel:active {
+    opacity: 0.6;
+    -moz-transition: opacity 0.125s ease-in-out;
+    -webkit-transition: opacity 0.125s ease-in-out;
+    transition: opacity 0.125s ease-in-out;
 }
 
-.button-cancel:disabled{
-    opacity: .2;
+.button-cancel:disabled {
+    opacity: 0.2;
 }
 </style>
 
