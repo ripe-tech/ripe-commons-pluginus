@@ -358,9 +358,7 @@ import { localeMixin } from "../../mixins";
 import undo from "../undo";
 
 export const pickers = {
-    commponents: {
-        undo
-    },
+
     mixins: [localeMixin],
     data: function() {
         return {
