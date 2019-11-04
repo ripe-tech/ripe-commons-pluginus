@@ -355,7 +355,6 @@ body.mobile .button-scroll-colors {
 
 <script>
 import { localeMixin } from "../../mixins";
-import undo from "../undo";
 
 export const pickers = {
 
