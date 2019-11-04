@@ -14,7 +14,6 @@
     </div>
 </template>
 <style scoped>
-
 .pickers .message-undo-container {
     overflow: hidden;
 }
@@ -53,24 +52,19 @@ export const undo = {
     data: function() {
         return {
             allowUndo: false
-        }
+        };
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
-        this.allowUndo = changes.length > 0;
+            this.allowUndo = changes.length > 0;
         });
     },
     methods: {
-            undo() {
-                this.allowUndo = false;
-                this.$bus.trigger("undo");
+        undo() {
+            this.allowUndo = false;
+            this.$bus.trigger("undo");
         }
     }
 };
-export default undo;   
-
+export default undo;
 </script>
-
-
-
-
