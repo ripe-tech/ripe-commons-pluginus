@@ -357,7 +357,6 @@ body.mobile .button-scroll-colors {
 import { localeMixin } from "../../mixins";
 
 export const pickers = {
-
     mixins: [localeMixin],
     data: function() {
         return {
