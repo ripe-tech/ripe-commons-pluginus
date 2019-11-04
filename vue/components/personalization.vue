@@ -7,6 +7,18 @@
         >
             <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
             <p>{{ buttonText | locale }}</p>
+            <div class="personalization-svg-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 68 68">
+                    <g fill="none" fill-rule="evenodd">
+                        <text fill="#151515" font-family="MarkPro, Mark Pro" font-size="24" font-weight="bold" letter-spacing="2">
+                            <tspan x="9.52" y="36.2">Aa</tspan>
+                        </text>
+                    <path stroke="#151515" stroke-linecap="square" stroke-width="2" d="M10.88 48.96h47.6"/>
+                    <path d="M0 0h68v68H0z"/>
+                    </g>
+                </svg>
+            </div>
+
         </div>
         <modal ref="modal">
             <div v-show="enabled">
