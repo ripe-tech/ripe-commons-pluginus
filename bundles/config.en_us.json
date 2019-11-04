@@ -7,6 +7,7 @@
     "ripe_commons.modal.select": "Select",
 
     "ripe_commons.pickers.undo": "Undo",
+    "ripe_commons.pickers.backbutton": "Back",
     "ripe_commons.pickers.limited": "This option is limited to specific material or colour combinations.",
     "ripe_commons.pickers.back": "Do you want to go back?",
 
