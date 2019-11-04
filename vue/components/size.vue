@@ -204,8 +204,9 @@ export const size = {
             this.buttonText = this.sizeText
                 ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
-
-            this.smallButtonText = this.state.size;
+            
+            if(this.sizeText)
+                this.smallButtonText = this.sizeText.split(" ")[0];
         }
     }
 };
