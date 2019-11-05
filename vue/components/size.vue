@@ -2,13 +2,10 @@
     <div class="size" v-bind:class="{ disabled: enabled === false }">
         <div
             class="button button-secondary button-size"
-            v-bind:class="{ showingSize: smallButtonText }"
+            v-bind:class="{ showingSize: sizeSelected }"
             v-on:click="showModal()"
         >
-            <span class="desktop-button-text">{{ buttonText }}</span>
-            <div class="small-button-text-container" v-if="smallButtonText">
-                <p>{{ smallButtonText }}</p>
-            </div>
+            <span>{{ buttonText }}</span>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -58,7 +55,7 @@ export const size = {
             form: null,
             sizeText: "",
             buttonText: "",
-            smallButtonText: "",
+            sizeSelected: false,
             state: {},
             counter: 0,
             closeCallback: null
@@ -206,7 +203,8 @@ export const size = {
                 ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
 
-            if (this.sizeText) this.smallButtonText = this.sizeText.split(" ")[0];
+            this.sizeSelected = this.buttonText !== this.locale("ripe_commons.size.select_size");
+            console.log(this.sizeSelected);
         }
     }
 };
