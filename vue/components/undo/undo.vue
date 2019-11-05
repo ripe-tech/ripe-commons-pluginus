@@ -6,7 +6,7 @@
                     {{ "ripe_commons.pickers.undo" | locale }}
                 </a>
                 <a class="button button-undo button-back" v-on:click="undo()">
-                    {{ "ripe_commons.pickers.backbutton" | locale }}
+                    {{ "ripe_commons.pickers.back_button" | locale }}
                 </a>
                 <span>
                     {{ "ripe_commons.pickers.limited" | locale }}
@@ -16,6 +16,7 @@
         </div>
     </div>
 </template>
+
 <style scoped>
 .pickers .message-undo-container {
     overflow: hidden;
