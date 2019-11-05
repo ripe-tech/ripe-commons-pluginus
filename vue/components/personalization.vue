@@ -19,6 +19,7 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
+                    <slot/>
                     <div class="button button-cancel" v-on:click="hideModal()">
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </div>
@@ -213,6 +214,8 @@ export const personalization = {
                 this.$refs.form && this.$refs.form.setState(this.state);
             }
         });
+
+        this.$bus.bind("clear_initials", this.clear);
     },
     mounted: function() {
         this.updateButtonText();
