@@ -1,9 +1,8 @@
 <template>
     <div class="size" v-bind:class="{ disabled: enabled === false }">
-        <div
-            class="button button-secondary button-size"
-            v-bind:class="{ showingSize: smallButtonText }"
+        <div class="button button-secondary button-size"
             v-on:click="showModal()"
+            v-bind:class="{ showingSize: smallButtonText }"
         >
             <span class="desktop-button-text">{{ buttonText }}</span>
             <div class="small-button-text-container" v-if="smallButtonText">
@@ -205,8 +204,9 @@ export const size = {
             this.buttonText = this.sizeText
                 ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
                 : this.locale("ripe_commons.size.select_size");
-
-            if (this.sizeText) this.smallButtonText = this.sizeText.split(" ")[0];
+            
+            if(this.sizeText)
+                this.smallButtonText = this.sizeText.split(" ")[0];
         }
     }
 };
