@@ -28,8 +28,8 @@
 
 .paragraph-container {
     font-size: 14px;
-    line-height: normal;
     font-weight: normal;
+    line-height: normal;
     margin-bottom: 60px;
     text-align: center;
 }
