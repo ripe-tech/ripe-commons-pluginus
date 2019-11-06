@@ -35,7 +35,11 @@ export const store = new Vuex.Store({
         orderNumber: null,
         currentFrame: null,
         error: null,
-        previous: null,
+        detailsTitle: null,
+        detailsContent: null,
+        infoTitle: null,
+        infoSubtitle: null,
+        infoContent: null,
         next: null,
         labelNext: null,
         hasPersonalization: false,
@@ -128,6 +132,21 @@ export const store = new Vuex.Store({
         },
         next(state, next) {
             state.next = next;
+        },
+        detailsTitle(state, detailsTitle) {
+            state.detailsTitle = detailsTitle;
+        },
+        detailsContent(state, detailsContent) {
+            state.detailsContent = detailsContent;
+        },
+        infoTitle(state, infoTitle) {
+            state.infoTitle = infoTitle;
+        },
+        infoSubtitle(state, infoSubtitle) {
+            state.infoSubtitle = infoSubtitle;
+        },
+        infoContent(state, infoContent) {
+            state.infoContent = infoContent;
         },
         labelPrevious(state, labelPrevious) {
             state.labelPrevious = labelPrevious;

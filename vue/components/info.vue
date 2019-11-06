@@ -5,7 +5,7 @@
             <h3 class="title">{{ title }}</h3>
             <h4 class="subtitle">{{ subtitle }}</h4>
             <div class="paragraph-container">
-                <p v-for="(paragraph, index) in paragraphs" v-bind:key="index">
+                <p v-for="(paragraph, index) in detailsParagraphs" v-bind:key="index">
                     {{ paragraph }}
                 </p>
             </div>
@@ -83,7 +83,7 @@ export const info = {
         }
     },
     computed: {
-        paragraphs() {
+        detailsParagraphs() {
             return this.content.split("\n");
         }
     }
