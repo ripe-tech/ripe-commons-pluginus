@@ -35,6 +35,7 @@ export const store = new Vuex.Store({
         orderNumber: null,
         currentFrame: null,
         error: null,
+        previous: null,
         detailsTitle: null,
         detailsContent: null,
         infoTitle: null,
