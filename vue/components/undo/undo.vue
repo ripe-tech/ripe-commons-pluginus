@@ -6,7 +6,7 @@
                     <a class="button button-undo" v-on:click="undo()">
                         {{ "ripe_commons.pickers.undo" | locale }}
                     </a>
-                    <a class="button button-undo button-back" v-on:click="undo()">
+                    <a class="button button-undo button-back" v-bind:class="{ visible: allowBackButton }" v-on:click="close()">
                         {{ "ripe_commons.pickers.back_button" | locale }}
                     </a>
                 </div>
@@ -25,7 +25,8 @@
 export const undo = {
     data: function() {
         return {
-            allowUndo: false
+            allowUndo: false,
+            allowBackButton: false
         };
     },
     mounted: function() {
@@ -37,6 +38,9 @@ export const undo = {
         undo() {
             this.allowUndo = false;
             this.$bus.trigger("undo");
+        },
+        close() {
+            this.allowUndo = false;
         }
     }
 };
