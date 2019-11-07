@@ -88,12 +88,12 @@ body.mobile .modal > .modal-container {
     color: #ffffff;
     cursor: pointer;
     display: none;
-    left: 0;
+    left: 0px;
     margin: auto;
     padding: 5px 23px;
     position: absolute;
     text-align: left;
-    top: 0;
+    top: 0px;
 }
 
 .button.button-close > img {
