@@ -101,7 +101,7 @@ body.mobile .modal > .modal-container {
     display: none;
     left: 0px;
     margin: auto;
-    padding: 5px 23px;
+    padding: 5px 23px 5px 23px;
     position: absolute;
     text-align: left;
     top: 0px;
