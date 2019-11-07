@@ -21,6 +21,53 @@
     </div>
 </template>
 
+<style scoped>
+.pickers .message-undo-container {
+    display: flex;
+    flex-direction: row-reverse;
+    overflow: hidden;
+}
+
+.pickers .message-undo {
+    border-radius: 5px;
+    display: block;
+    font-size: 14px;
+    margin: 0px auto 0px auto;
+    max-width: 780px;
+    padding: 10px 20px 10px 30px;
+    text-align: left;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.pickers .undo .message-undo.visible {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    transform: translateY(0px);
+}
+
+body.tablet .pickers .undo .message-undo.visible,
+body.mobile .pickers .undo .message-undo.visible {
+    flex-direction: column-reverse;
+}
+
+.pickers .message-undo .button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.pickers .message-undo .button.button-undo {
+    cursor: pointer;
+    float: right;
+    margin-left: 20px;
+    margin-top: -10px;
+    padding: 10px 10px 10px 10px;
+    text-decoration: underline;
+}
+</style>
+
 <script>
 export const undo = {
     data: function() {
