@@ -41,8 +41,8 @@
 }
 
 .pickers .undo .message-undo.visible {
-    background-color: #fff;
     align-items: center;
+    background-color: #ffffff;
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
@@ -66,7 +66,6 @@ body.mobile .undo .message-undo .button-container {
     justify-content: flex-end;
     width: 100%;
 }
-
 
 .pickers .message-undo .button.button-undo {
     cursor: pointer;
