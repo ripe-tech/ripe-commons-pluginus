@@ -264,6 +264,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     self.ripe.setInitialsExtra(initialsExtra);
                 });
                 this.$bus.bind("undo", () => self.ripe.undo());
+                this.$bus.bind("start_over", () => {
+                    while (self.ripe.canUndo()) {
+                        self.ripe.undo();
+                    }
+                });
 
                 // listens for any model change and triggers the
                 // 'model_changed' event on the owner, so that it's
