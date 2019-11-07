@@ -22,6 +22,7 @@
 </template>
 
 <style scoped>
+
 .pickers .message-undo-container {
     display: flex;
     flex-direction: row-reverse;
@@ -29,26 +30,23 @@
 }
 
 .pickers .message-undo {
-    border-radius: 5px;
-    display: block;
-    font-size: 14px;
+    display: none;
     margin: 0px auto 0px auto;
-    max-width: 780px;
-    padding: 10px 20px 10px 30px;
-    text-align: left;
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
 }
 
 .pickers .undo .message-undo.visible {
     align-items: center;
-    background-color: #ffffff;
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
+    max-width: 780px;
+    padding: 10px 20px 10px 30px;
     position: absolute;
     right: 0;
+    text-align: left;
     top: 90px;
     transform: translateY(0px);
     z-index: 2;
@@ -74,6 +72,7 @@ body.mobile .undo .message-undo .button-container {
 .pickers .message-undo .button.button-undo {
     cursor: pointer;
     float: right;
+    font-weight: bold;
     margin-left: 20px;
     margin-top: -10px;
     padding: 10px 10px 10px 10px;
