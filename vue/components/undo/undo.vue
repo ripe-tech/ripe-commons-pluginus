@@ -47,11 +47,11 @@
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
+    position: absolute;
     right: 0;
+    top: 90px;
     transform: translateY(0px);
     z-index: 2;
-    position: absolute;
-    top: 90px;
 }
 
 body.tablet .pickers .undo .message-undo.visible,

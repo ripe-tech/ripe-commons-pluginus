@@ -159,6 +159,7 @@ body.tablet .pickers .message-undo {
 .pickers .message-undo .button-container .button.button-back.visible {
     display: block;
 }
+
 .pickers > .parts-wrapper {
     position: relative;
 }
