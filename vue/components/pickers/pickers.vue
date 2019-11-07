@@ -135,6 +135,10 @@ body.tablet .pickers .message-undo {
 }
 
 .pickers .message-undo.visible {
+    display: none;
+}
+
+.pickers .message-undo.visible {
     left: 0;
     position: absolute;
     right: 0;
