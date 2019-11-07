@@ -231,8 +231,8 @@ export const personalization = {
             this.$refs.form.show();
         },
         modalBeforeLeave() {
-            this.$bus.trigger("close_personalization");
-            this.$refs.form.hide();
+            //this.$bus.trigger("close_personalization");
+            //this.$refs.form.hide();
         },
         modalHidden() {
             this.originalState
