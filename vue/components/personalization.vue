@@ -232,7 +232,7 @@ export const personalization = {
         },
         modalBeforeLeave() {
             //this.$bus.trigger("close_personalization");
-            //this.$refs.form.hide();
+            this.$refs.form.hide();
         },
         modalHidden() {
             this.originalState
