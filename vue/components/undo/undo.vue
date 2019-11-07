@@ -46,8 +46,12 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
+    left: 0;
+    right: 0;
     transform: translateY(0px);
     z-index: 2;
+    position: absolute;
+    top: 90px;
 }
 
 body.tablet .pickers .undo .message-undo.visible,

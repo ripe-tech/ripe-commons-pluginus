@@ -124,6 +124,41 @@
 </template>
 
 <style scoped>
+.pickers .message-undo-container {
+    display: flex;
+    flex-direction: row-reverse;
+    overflow: hidden;
+}
+
+body.tablet .pickers .message-undo {
+    max-width: 580px;
+}
+
+.pickers .message-undo.visible {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 90px;
+    transform: translateY(0px);
+    z-index: 1;
+}
+
+.pickers .message-undo .button-container .button.button-undo {
+    cursor: pointer;
+    float: right;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 20px;
+    padding: 10px 10px 10px 10px;
+}
+
+.pickers .message-undo .button-container .button.button-back {
+    display: none;
+}
+
+.pickers .message-undo .button-container .button.button-back.visible {
+    display: block;
+}
 .pickers > .parts-wrapper {
     position: relative;
 }
