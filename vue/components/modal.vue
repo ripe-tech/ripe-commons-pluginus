@@ -103,6 +103,11 @@ body.mobile .modal > .modal-container {
     width: 25px;
 }
 
+body.mobile .modal > .modal-container > .button.button-close img {
+    height: 15px;
+    width: 15px;
+}
+
 body.mobile .modal .modal-content ::v-deep .title {
     font-size: 15px;
 }
@@ -162,11 +167,6 @@ body.mobile .modal .modal-content ::v-deep .title {
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
-}
-
-body.mobile .modal ::v-deep .button.button-close img {
-    height: 15px;
-    width: 15px;
 }
 
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
