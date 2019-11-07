@@ -42,7 +42,7 @@
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
-    max-width: 780px;
+    max-width: 1000px;
     padding: 10px 20px 10px 30px;
     position: absolute;
     right: 0;
@@ -52,9 +52,14 @@
     z-index: 2;
 }
 
-body.tablet .pickers .undo .message-undo.visible,
+body.tablet .pickers .undo .message-undo.visible {
+    flex-direction: column-reverse;
+    max-width: 580px;
+}
+
 body.mobile .pickers .undo .message-undo.visible {
     flex-direction: column-reverse;
+    max-width: 290px;
 }
 
 .pickers .message-undo .button-container {
@@ -74,7 +79,6 @@ body.mobile .undo .message-undo .button-container {
     float: right;
     font-weight: bold;
     margin-left: 20px;
-    margin-top: -10px;
     padding: 10px 10px 10px 10px;
     text-decoration: underline;
 }
