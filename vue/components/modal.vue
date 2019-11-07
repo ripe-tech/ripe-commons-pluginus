@@ -83,7 +83,7 @@ body.mobile .modal > .modal-container {
     padding: 20px 10px 20px 10px;
 }
 
-.button.button-close {
+.modal > .modal-container > .button.button-close {
     background-color: #000000;
     color: #ffffff;
     cursor: pointer;
@@ -96,7 +96,7 @@ body.mobile .modal > .modal-container {
     top: 0px;
 }
 
-.button.button-close > img {
+.modal > .modal-container > .button.button-close > img {
     height: 25px;
     margin: auto;
     vertical-align: middle;
