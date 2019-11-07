@@ -26,13 +26,13 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.updateClass();
     }
 
-    setTabletWidth(tabletWidth, update = false) {
-        this.tabletWidth = tabletWidth;
+    setTabletWidth(width, update = false) {
+        this.tabletWidth = width;
         if (update) this.updateClass();
     }
 
-    setMobileWidth(mobileWidth, update = false) {
-        this.mobileWidth = mobileWidth;
+    setMobileWidth(width, update = false) {
+        this.mobileWidth = width;
         if (update) this.updateClass();
     }
 
