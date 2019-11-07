@@ -83,6 +83,17 @@ body.mobile .modal > .modal-container {
     padding: 20px 10px 20px 10px;
 }
 
+.modal.fade-enter > .modal-container,
+.modal.fade-leave-to > .modal-container {
+    opacity: 0;
+    transform: translateY(-48%);
+}
+
+.modal.fade-enter-to > .modal-container {
+    opacity: 1;
+    transform: translateY(-50%);
+}
+
 .modal > .modal-container > .button.button-close {
     background-color: #000000;
     color: #ffffff;
@@ -108,21 +119,6 @@ body.mobile .modal > .modal-container > .button.button-close img {
     width: 15px;
 }
 
-body.mobile .modal .modal-content ::v-deep .title {
-    font-size: 15px;
-}
-
-.modal.fade-enter > .modal-container,
-.modal.fade-leave-to > .modal-container {
-    opacity: 0;
-    transform: translateY(-48%);
-}
-
-.modal.fade-enter-to > .modal-container {
-    opacity: 1;
-    transform: translateY(-50%);
-}
-
 .modal .modal-content {
     opacity: 1;
     transition: opacity 0.25s ease-in-out 0.125s;
@@ -142,6 +138,10 @@ body.mobile .modal .modal-content ::v-deep .title {
     font-size: 30px;
     font-weight: normal;
     margin: 0px 0px 10px 0px;
+}
+
+body.mobile .modal .modal-content ::v-deep .title {
+    font-size: 15px;
 }
 
 .modal .modal-content ::v-deep .subtitle {
