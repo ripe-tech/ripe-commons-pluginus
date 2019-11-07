@@ -41,11 +41,13 @@
 }
 
 .pickers .undo .message-undo.visible {
+    background-color: #fff;
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
     transform: translateY(0px);
+    z-index: 2;
 }
 
 body.tablet .pickers .undo .message-undo.visible,
@@ -57,6 +59,14 @@ body.mobile .pickers .undo .message-undo.visible {
     display: flex;
     flex-direction: row;
 }
+
+body.tablet .undo .message-undo .button-container,
+body.mobile .undo .message-undo .button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 
 .pickers .message-undo .button.button-undo {
     cursor: pointer;
