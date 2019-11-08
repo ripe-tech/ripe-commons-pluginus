@@ -170,11 +170,6 @@ body.mobile .modal .modal-content ::v-deep .title {
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
 }
-
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
-    color: #000000;
-}
 </style>
 
 <script>
