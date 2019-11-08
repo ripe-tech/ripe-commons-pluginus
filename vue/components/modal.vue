@@ -28,6 +28,7 @@
 <style scoped>
 .modal {
     bottom: 0px;
+    height: 100%;
     left: 0px;
     opacity: 1;
     position: fixed;
@@ -35,6 +36,7 @@
     text-align: center;
     top: 0px;
     transition: opacity 0.125s ease-in-out;
+    width: 100%;
     z-index: 10;
 }
 

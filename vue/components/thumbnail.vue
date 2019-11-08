@@ -12,7 +12,6 @@
 
 <style scoped>
 .thumbnail {
-    border: 1px solid #cccccc;
     cursor: pointer;
     display: block;
     height: 70px;

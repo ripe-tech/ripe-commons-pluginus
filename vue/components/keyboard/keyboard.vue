@@ -54,12 +54,12 @@ body.mobile .keyboard {
     display: inline-block;
     font-size: 16px;
     height: 60px;
+    height: 49.8px;
     margin-right: 8px;
     text-transform: uppercase;
     transition: 0.5s;
     vertical-align: top;
     width: 46.2px;
-    height: 49.8px;
 }
 
 .keyboard .keyboard-row .keyboard-key:hover {
@@ -72,7 +72,6 @@ body.tablet .keyboard .keyboard-row .keyboard-key {
     height: 72.2px;
     margin-right: 6px;
     width: 66.6px;
-
 }
 
 body.mobile .keyboard .keyboard-row .keyboard-key {
@@ -89,12 +88,12 @@ body.mobile .keyboard .keyboard-row .keyboard-key {
     background-color: #a5a5a5;
 }
 
-.keyboard .keyboard-row .keyboard-key.alphanumeric > span{
-    width: 100%;
-    height: 100%;
-    display: flex;
+.keyboard .keyboard-row .keyboard-key.alphanumeric > span {
     align-items: center;
+    display: flex;
+    height: 100%;
     justify-content: center;
+    width: 100%;
 }
 
 body.tablet .keyboard .keyboard-row .keyboard-key.special,
