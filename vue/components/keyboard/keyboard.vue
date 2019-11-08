@@ -48,29 +48,37 @@ body.mobile .keyboard {
 }
 
 .keyboard .keyboard-row .keyboard-key {
-    background-color: #e5e5e5;
+    background-color: #151515;
     border-radius: 4px 4px 4px 4px;
+    color: #ffffff;
     display: inline-block;
-    font-size: 28px;
+    font-size: 16px;
     height: 60px;
     margin-right: 8px;
     text-transform: uppercase;
+    transition: 0.5s;
     vertical-align: top;
-    width: 50px;
+    width: 46.2px;
+    height: 49.8px;
+}
+
+.keyboard .keyboard-row .keyboard-key:hover {
+    background-color: #444444;
+    cursor: pointer;
+    transition: 0.5s;
 }
 
 body.tablet .keyboard .keyboard-row .keyboard-key {
-    font-size: 20px;
-    height: 35px;
+    height: 72.2px;
     margin-right: 6px;
-    width: 35px;
+    width: 66.6px;
+
 }
 
 body.mobile .keyboard .keyboard-row .keyboard-key {
-    font-size: 17px;
-    height: 30px;
+    height: 40.9px;
     margin-right: 4px;
-    width: 30px;
+    width: 28.6px;
 }
 
 .keyboard .keyboard-row .keyboard-key:last-child {
@@ -81,16 +89,12 @@ body.mobile .keyboard .keyboard-row .keyboard-key {
     background-color: #a5a5a5;
 }
 
-.keyboard .keyboard-row .keyboard-key.alphanumeric {
-    line-height: 60px;
-}
-
-body.tablet .keyboard .keyboard-row .keyboard-key.alphanumeric {
-    line-height: 35px;
-}
-
-body.mobile .keyboard .keyboard-row .keyboard-key.alphanumeric {
-    line-height: 30px;
+.keyboard .keyboard-row .keyboard-key.alphanumeric > span{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body.tablet .keyboard .keyboard-row .keyboard-key.special,
@@ -99,23 +103,15 @@ body.mobile .keyboard .keyboard-row .keyboard-key.special {
     padding: 5px 0px 5px 0px;
 }
 
-.keyboard .keyboard-row .keyboard-key.backspace {
-    width: 80px;
-}
-
-body.tablet .keyboard .keyboard-row .keyboard-key.backspace,
-body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
-    width: 40px;
-}
-
 .keyboard .keyboard-row .keyboard-key .image-container {
+    align-items: center;
+    display: flex;
     height: 100%;
+    justify-content: center;
 }
 
 .keyboard .keyboard-row .keyboard-key img {
-    height: 100%;
-    object-fit: scale-down;
-    width: auto;
+    height: 14.3px;
 }
 
 .keyboard .keyboard-row .keyboard-key .label {
