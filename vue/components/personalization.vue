@@ -215,8 +215,6 @@ export const personalization = {
                 this.$refs.form && this.$refs.form.setState(this.state);
             }
         });
-
-        this.$bus.bind("clear_initials", this.clear);
     },
     mounted: function() {
         this.updateButtonText();
