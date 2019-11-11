@@ -1,7 +1,7 @@
 <template>
     <div class="undo">
         <div class="message-undo-container">
-            <div class="message-undo" v-bind:class="{ visible: allowUndo }">
+            <div class="message-undo" v-bind:class="{ visible: visible }">
                 <div class="button-container">
                     <a class="button button-undo" v-on:click="undo()">
                         {{ "ripe_commons.pickers.undo" | locale }}
@@ -87,21 +87,21 @@ body.mobile .undo .message-undo .button-container {
 export const undo = {
     data: function() {
         return {
-            allowUndo: false
+            visible: false
         };
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
-            this.allowUndo = changes.length > 0;
+            this.visible = changes.length > 0;
         });
     },
     methods: {
         undo() {
-            this.allowUndo = false;
+            this.visible = false;
             this.$bus.trigger("undo");
         },
         close() {
-            this.allowUndo = false;
+            this.visible = false;
         }
     }
 };
