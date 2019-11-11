@@ -1,17 +1,20 @@
 <template>
-    <div class="configurator" v-bind:class="{ loading: loading }">
-        <div class="config" ref="configurator" />
-        <div class="error" v-if="modelError">
-            Problem loading model {{ model }} from brand {{ brand }}<br />
-            {{ errorMessage ? errorMessage : "" }}
-        </div>
-        <div class="holder" v-bind:class="{ disappear: hideHolder }">
-            <div class="holder-label">
-                {{ "ripe_commons.holder.holder.label" | locale }}
+    <div class="configurator-container">
+        <loader class="loader" v-if="!modelLoaded && !modelError" />
+        <div class="configurator" v-bind:class="{ loading: loading }">
+            <div class="config" ref="configurator" />
+            <div class="error" v-if="modelError">
+                Problem loading model {{ model }} from brand {{ brand }}<br />
+                {{ errorMessage ? errorMessage : "" }}
             </div>
-            <img class="holder-image" src="~./assets/drag_to_rotate-icon.svg" />
-            <div class="holder-second-label">
-                {{ "ripe_commons.holder.holder-second-label.label" | locale }}
+            <div class="holder" v-bind:class="{ disappear: hideHolder }">
+                <div class="holder-label">
+                    {{ "ripe_commons.holder.holder.label" | locale }}
+                </div>
+                <img class="holder-image" src="~./assets/drag_to_rotate-icon.svg" />
+                <div class="holder-second-label">
+                    {{ "ripe_commons.holder.holder-second-label.label" | locale }}
+                </div>
             </div>
         </div>
     </div>
@@ -26,6 +29,12 @@
 
 .configurator.loading {
     opacity: 0;
+}
+
+.loader {
+    left: 50%;
+    position: absolute;
+    top: 40%;
 }
 
 .holder {
