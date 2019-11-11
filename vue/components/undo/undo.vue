@@ -22,7 +22,6 @@
 </template>
 
 <style scoped>
-
 .pickers .message-undo-container {
     display: flex;
     flex-direction: row-reverse;
