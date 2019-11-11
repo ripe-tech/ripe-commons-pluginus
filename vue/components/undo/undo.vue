@@ -6,7 +6,7 @@
                     <a class="button button-undo" v-on:click="undo()">
                         {{ "ripe_commons.pickers.undo" | locale }}
                     </a>
-                    <a class="button button-undo button-back" v-bind:class="{ visible: allowBackButton }" v-on:click="close()">
+                    <a class="button button-back" v-on:click="close()">
                         {{ "ripe_commons.pickers.back_button" | locale }}
                     </a>
                 </div>
@@ -22,20 +22,20 @@
 </template>
 
 <style scoped>
-.pickers .message-undo-container {
+.undo .message-undo-container {
     display: flex;
     flex-direction: row-reverse;
     overflow: hidden;
 }
 
-.pickers .message-undo {
+.undo .message-undo-container .message-undo {
     display: none;
     margin: 0px auto 0px auto;
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
 }
 
-.pickers .undo .message-undo.visible {
+.undo .message-undo-container .message-undo.visible {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
@@ -51,13 +51,13 @@
     z-index: 2;
 }
 
-body.mobile .pickers .undo .message-undo.visible,
-body.tablet .pickers .undo .message-undo.visible {
+body.mobile .undo .message-undo-container .message-undo.visible,
+body.tablet .undo .message-undo-container .message-undo.visible {
     flex-direction: column-reverse;
     max-width: 80%;
 }
 
-.pickers .message-undo .button-container {
+.undo .message-undo .button-container {
     display: flex;
     flex-direction: row;
 }
@@ -69,7 +69,7 @@ body.mobile .undo .message-undo .button-container {
     width: 100%;
 }
 
-.pickers .message-undo .button.button-undo {
+.undo .message-undo-container .message-undo .button {
     cursor: pointer;
     float: right;
     font-weight: bold;
@@ -77,14 +77,17 @@ body.mobile .undo .message-undo .button-container {
     padding: 10px 10px 10px 10px;
     text-decoration: underline;
 }
+
+.undo .message-undo-container .message-undo .button-back {
+    display: none;
+}
 </style>
 
 <script>
 export const undo = {
     data: function() {
         return {
-            allowUndo: false,
-            allowBackButton: false
+            allowUndo: false
         };
     },
     mounted: function() {
