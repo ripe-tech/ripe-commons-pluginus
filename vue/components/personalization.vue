@@ -162,8 +162,6 @@ export const personalization = {
         this.$bus.bind("enable_personalization", this.enablePersonalization);
         this.$bus.bind("disable_personalization", this.disablePersonalization);
 
-        this.$bus.bind("open_personalization", this.showModal);
-
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
             this.form = null;
@@ -226,7 +224,6 @@ export const personalization = {
             this.form && this.$refs.form.reset();
         },
         modalBeforeEnter() {
-            this.$bus.trigger("open_personalization");
             this.$refs.form.show();
         },
         modalBeforeLeave() {
