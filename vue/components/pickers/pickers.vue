@@ -855,7 +855,7 @@ export const pickers = {
                 const style = getComputedStyle(_color);
                 const marginLeft = parseFloat(style.marginLeft);
                 const marginRight = parseFloat(style.marginRight);
-                if (_color.dataset.color === part.color) {
+                if (_color.dataset.color === this.activeColor) {
                     scrollActiveColor += (_color.offsetWidth + marginLeft + marginRight) / 2;
                     break;
                 }
