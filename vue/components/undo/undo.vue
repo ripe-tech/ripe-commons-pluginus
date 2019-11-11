@@ -41,7 +41,7 @@
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
-    max-width: 40%;
+    max-width: 30%;
     padding: 10px 20px 10px 30px;
     position: absolute;
     right: 0;
