@@ -6,6 +6,7 @@
 
 <script>
 import "loaders.css";
+
 export const loader = {
     props: {
         loader: {
@@ -24,5 +25,6 @@ export const loader = {
         }
     }
 };
+
 export default loader;
 </script>
