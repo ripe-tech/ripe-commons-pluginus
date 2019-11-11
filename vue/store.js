@@ -4,11 +4,6 @@ export const store = {
         country: "",
         currency: "",
         locale: "",
-        store: "",
-        account: "",
-        storeBrand: "",
-        customerIdInput: false,
-        customerId: "",
         brand: "",
         model: "",
         dku: "",
@@ -27,7 +22,6 @@ export const store = {
             initialsExtra: {}
         },
         size: {},
-        orderNumber: null,
         currentFrame: null,
         error: null,
         hasPersonalization: false,
@@ -99,21 +93,6 @@ export const store = {
         },
         current_frame(state, currentFrame) {
             state.currentFrame = currentFrame;
-        },
-        store_brand(state, storeBrand) {
-            state.storeBrand = storeBrand;
-        },
-        store(state, store) {
-            state.store = store;
-        },
-        customer_id_input(state, customerIdInput) {
-            state.customerIdInput = customerIdInput;
-        },
-        customer_id(state, customerId) {
-            state.customerId = customerId;
-        },
-        account(state, account) {
-            state.account = account;
         },
         error(state, error) {
             state.error = error;
