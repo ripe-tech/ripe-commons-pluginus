@@ -26,6 +26,16 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.updateClass();
     }
 
+    setTabletWidth(width, update = false) {
+        this.tabletWidth = width;
+        if (update) this.updateClass();
+    }
+
+    setMobileWidth(width, update = false) {
+        this.mobileWidth = width;
+        if (update) this.updateClass();
+    }
+
     listen() {
         window.addEventListener("resize", () => this.updateClass());
     }
@@ -37,9 +47,12 @@ class DevicePlugin extends RipeCommonsPlugin {
         this.body.classList.remove(this.tabletClass);
         this.body.classList.remove(this.mobileClass);
 
-        if (width > this.TABLET_WIDTH) {
+        const tabletWidth = this.tabletWidth || this.TABLET_WIDTH;
+        const mobileWidth = this.mobileWidth || this.MOBILE_WIDTH;
+
+        if (width > tabletWidth) {
             this.body.classList.add(this.desktopClass);
-        } else if (width > this.MOBILE_WIDTH) {
+        } else if (width > mobileWidth) {
             this.body.classList.add(this.tabletClass);
         } else {
             this.body.classList.add(this.mobileClass);

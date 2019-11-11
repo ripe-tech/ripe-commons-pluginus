@@ -19,12 +19,14 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <div class="button button-cancel" v-on:click="hideModal()">
-                        {{ "ripe_commons.modal.cancel" | locale }}
-                    </div>
-                    <div class="button button-primary button-apply" v-on:click="apply()">
-                        {{ "ripe_commons.modal.apply" | locale }}
-                    </div>
+                    <slot name="buttons">
+                        <div class="button button-cancel" v-on:click="hideModal()">
+                            {{ "ripe_commons.modal.cancel" | locale }}
+                        </div>
+                        <div class="button button-primary button-apply" v-on:click="apply()">
+                            {{ "ripe_commons.modal.apply" | locale }}
+                        </div>
+                    </slot>
                 </div>
             </div>
         </modal>
@@ -214,7 +216,7 @@ export const personalization = {
             }
         });
     },
-    mounted() {
+    mounted: function() {
         this.updateButtonText();
     },
     methods: {

@@ -83,30 +83,6 @@ body.mobile .modal > .modal-container {
     padding: 20px 10px 20px 10px;
 }
 
-.button.button-close {
-    background-color: #000000;
-    color: #ffffff;
-    cursor: pointer;
-    display: none;
-    left: 0;
-    margin: auto;
-    padding: 5px 23px;
-    position: absolute;
-    text-align: left;
-    top: 0;
-}
-
-.button.button-close > img {
-    height: 25px;
-    margin: auto;
-    vertical-align: middle;
-    width: 25px;
-}
-
-body.mobile .modal .modal-content ::v-deep .title {
-    font-size: 15px;
-}
-
 .modal.fade-enter > .modal-container,
 .modal.fade-leave-to > .modal-container {
     opacity: 0;
@@ -116,6 +92,31 @@ body.mobile .modal .modal-content ::v-deep .title {
 .modal.fade-enter-to > .modal-container {
     opacity: 1;
     transform: translateY(-50%);
+}
+
+.modal > .modal-container > .button.button-close {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    display: none;
+    left: 0px;
+    margin: auto;
+    padding: 5px 23px 5px 23px;
+    position: absolute;
+    text-align: left;
+    top: 0px;
+}
+
+.modal > .modal-container > .button.button-close > img {
+    height: 25px;
+    margin: auto;
+    vertical-align: middle;
+    width: 25px;
+}
+
+body.mobile .modal > .modal-container > .button.button-close img {
+    height: 15px;
+    width: 15px;
 }
 
 .modal .modal-content {
@@ -137,6 +138,10 @@ body.mobile .modal .modal-content ::v-deep .title {
     font-size: 30px;
     font-weight: normal;
     margin: 0px 0px 10px 0px;
+}
+
+body.mobile .modal .modal-content ::v-deep .title {
+    font-size: 15px;
 }
 
 .modal .modal-content ::v-deep .subtitle {
@@ -162,11 +167,6 @@ body.mobile .modal .modal-content ::v-deep .title {
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
-}
-
-body.mobile .modal ::v-deep .button.button-close img {
-    height: 15px;
-    width: 15px;
 }
 
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
