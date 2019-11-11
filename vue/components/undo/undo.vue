@@ -28,13 +28,6 @@
     overflow: hidden;
 }
 
-.undo .message-undo-container .message-undo {
-    display: none;
-    margin: 0px auto 0px auto;
-    transform: translateY(-100%);
-    transition: transform 0.5s ease-in-out;
-}
-
 .undo .message-undo-container .message-undo.visible {
     align-items: center;
     display: flex;
