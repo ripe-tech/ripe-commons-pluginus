@@ -68,8 +68,10 @@ body.mobile .personalization ::v-deep .keyboard.text {
 
 .personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key {
     background-color: transparent;
+    display: inline-block;
     height: auto;
     margin-right: 40px;
+    user-select: none;
     width: 72px;
 }
 
