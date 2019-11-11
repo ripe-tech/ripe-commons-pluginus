@@ -269,12 +269,7 @@ export const personalization = {
             // if the initials or the engraving don't give a "simple"
             // definition then tries to retrieve a valid value from
             // the initials extra definition
-            console.log("InitialsExtra: " + Boolean(state.initialsExtra)
-                +"  Initials: " + Boolean(initials)
-                +"  Engraving: " + Boolean(engraving));
-            debugger;
             if (!(initials && engraving) && state.initialsExtra) {
-                debugger;
                 const initialsSimple = this.initialsExtraToInitials(state.initialsExtra);
                 initials = initialsSimple.initials;
                 engraving = initialsSimple.engraving;
@@ -312,7 +307,6 @@ export const personalization = {
         initialsExtraToInitials(initialsExtra) {
             // checks if the initials groups are declared on the model
             // config and uses them to retrieve the initials value
-            debugger;
             const configGroups = this.$store.state.config.initialsGroups;
             if (configGroups && configGroups.length) {
                 let initials = "";
@@ -365,7 +359,6 @@ export const personalization = {
             for (const key of keys) {
                 const group = initialsExtra[key];
                 if (group.initials.length) {
-                    debugger;
                     return group;
                 }
             }
