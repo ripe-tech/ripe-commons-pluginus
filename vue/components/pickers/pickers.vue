@@ -124,7 +124,6 @@
 </template>
 
 <style scoped>
-
 .pickers > .parts-wrapper {
     position: relative;
 }
