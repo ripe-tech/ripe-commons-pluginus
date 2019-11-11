@@ -32,7 +32,7 @@
 }
 
 .loader {
-    left: 50%;
+    left: calc(50% - 28px);
     position: absolute;
     top: 40%;
 }
