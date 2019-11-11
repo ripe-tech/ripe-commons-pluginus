@@ -31,6 +31,10 @@
     opacity: 0;
 }
 
+.configurator.highlight {
+    cursor: pointer;
+}
+
 .loader {
     left: 50%;
     position: absolute;
