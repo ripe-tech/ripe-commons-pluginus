@@ -1,9 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
-
-Vue.use(Vuex);
-
-export const store = new Vuex.Store({
+export const store = {
     state: {
         ripe_url: "",
         country: "",
@@ -35,9 +30,6 @@ export const store = new Vuex.Store({
         orderNumber: null,
         currentFrame: null,
         error: null,
-        previous: null,
-        next: null,
-        labelNext: null,
         hasPersonalization: false,
         hasSize: false
     },
@@ -123,18 +115,6 @@ export const store = new Vuex.Store({
         account(state, account) {
             state.account = account;
         },
-        previous(state, previous) {
-            state.previous = previous;
-        },
-        next(state, next) {
-            state.next = next;
-        },
-        labelPrevious(state, labelPrevious) {
-            state.labelPrevious = labelPrevious;
-        },
-        labelNext(state, labelNext) {
-            state.labelNext = labelNext;
-        },
         error(state, error) {
             state.error = error;
         },
@@ -194,6 +174,6 @@ export const store = new Vuex.Store({
             state.price && state.price.total ? state.price.total.price_final : null,
         thumbnails: state => (state.config ? state.config.thumbnails || [] : [])
     }
-});
+};
 
 export default store;
