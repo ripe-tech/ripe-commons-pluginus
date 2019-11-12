@@ -121,7 +121,6 @@ body.mobile .keyboard .keyboard-row .keyboard-key.special {
 </style>
 
 <script>
-
 export const keyboard = {
     props: {
         keys: {
