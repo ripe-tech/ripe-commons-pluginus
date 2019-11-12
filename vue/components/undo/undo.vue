@@ -4,16 +4,16 @@
             <div class="message-undo" v-bind:class="{ visible: visible }">
                 <div class="button-container">
                     <a class="button button-undo" v-on:click="undo()">
-                        {{ "ripe_commons.pickers.undo" | locale }}
+                        {{ "ripe_commons.undo.undo" | locale }}
                     </a>
                     <a class="button button-back" v-on:click="close()">
-                        {{ "ripe_commons.pickers.back_button" | locale }}
+                        {{ "ripe_commons.undo.back_button" | locale }}
                     </a>
                 </div>
                 <div class="message-container">
                     <span>
-                        {{ "ripe_commons.pickers.limited" | locale }}
-                        {{ "ripe_commons.pickers.back" | locale }}
+                        {{ "ripe_commons.undo.limited" | locale }}
+                        {{ "ripe_commons.undo.back" | locale }}
                     </span>
                 </div>
             </div>
@@ -28,24 +28,18 @@
     overflow: hidden;
 }
 
-.undo .message-undo-container .message-undo.visible {
+.undo .message-undo-container .message-undo {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
-    left: 0;
-    max-width: 55%;
     padding: 10px 20px 10px 30px;
-    position: absolute;
-    right: 0;
     text-align: left;
-    top: 90px;
-    transform: translateY(0px);
     z-index: 2;
 }
 
-body.mobile .undo .message-undo-container .message-undo.visible,
-body.tablet .undo .message-undo-container .message-undo.visible {
+body.mobile .undo .message-undo-container .message-undo,
+body.tablet .undo .message-undo-container .message-undo {
     flex-direction: column-reverse;
     max-width: 70%;
 }
@@ -68,8 +62,8 @@ body.mobile .undo .message-undo .button-container {
     margin-left: 20px;
     padding: 10px 10px 10px 10px;
     text-decoration: underline;
+    user-select: none;
 }
-
 </style>
 
 <script>

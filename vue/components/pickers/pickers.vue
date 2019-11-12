@@ -351,6 +351,16 @@ body.mobile .button-scroll-colors {
     height: 100px;
     width: 50px;
 }
+
+.undo .message-undo-container .message-undo.visible {
+    left: 0;
+    max-width: 55%;
+    position: absolute;
+    right: 0;
+    top: 90px;
+    transform: translateY(0px);
+    z-index: 2;
+}
 </style>
 
 <script>
