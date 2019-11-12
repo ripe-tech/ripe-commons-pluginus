@@ -248,7 +248,7 @@
 }
 
 .pickers .colors-container .color > .swatch {
-    border: solid 2px #eaeaec;
+    border: 2px solid #eaeaec;
     border-radius: 50% 50% 50% 50%;
     height: 58px;
     left: 0px;

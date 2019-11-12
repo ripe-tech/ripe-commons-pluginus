@@ -96,7 +96,7 @@ body.mobile .personalization ::v-deep .keyboard.text {
 }
 
 .personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
-    border: solid 2px #eaeaec;
+    border: 2px solid #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
     left: 0px;
