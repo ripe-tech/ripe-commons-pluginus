@@ -34,7 +34,7 @@
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
-    max-width: 30%;
+    max-width: 50%;
     padding: 10px 20px 10px 30px;
     position: absolute;
     right: 0;
@@ -47,7 +47,7 @@
 body.mobile .undo .message-undo-container .message-undo.visible,
 body.tablet .undo .message-undo-container .message-undo.visible {
     flex-direction: column-reverse;
-    max-width: 80%;
+    max-width: 70%;
 }
 
 .undo .message-undo .button-container {
