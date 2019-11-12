@@ -134,12 +134,6 @@
     vertical-align: top;
 }
 
-.pickers .parts-container > .part > p {
-    color: #6d6d6d;
-    font-size: 15px;
-    font-weight: 600;
-}
-
 .pickers .parts-container > .part > .swatch {
     border-radius: 50% 50% 50% 50%;
     height: 22px;
