@@ -52,6 +52,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             throw Error("Element #app not found");
         }
 
+        // initializes the Vue.js reactive data store according to the
+        // underlying specification defined by `_getStoreDef`
         this._initStore();
 
         // reads and parses the options from the URL
@@ -173,6 +175,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return {};
     }
 
+    _getStoreDef() {
+        return store;
+    }
+
     _installComponents(components) {
         for (const name in components) {
             const component = components[name];
@@ -212,10 +218,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     _loadOptions(validate = true) {
         throw new Error("_loadOptions is not implemented.");
-    }
-
-    _getStoreDef() {
-        return store;
     }
 
     _initStore() {
