@@ -34,7 +34,7 @@
     flex-direction: row-reverse;
     justify-content: center;
     left: 0;
-    max-width: 50%;
+    max-width: 55%;
     padding: 10px 20px 10px 30px;
     position: absolute;
     right: 0;
@@ -57,7 +57,6 @@ body.tablet .undo .message-undo-container .message-undo.visible {
 
 body.tablet .undo .message-undo .button-container,
 body.mobile .undo .message-undo .button-container {
-    display: flex;
     justify-content: flex-end;
     width: 100%;
 }
@@ -71,9 +70,6 @@ body.mobile .undo .message-undo .button-container {
     text-decoration: underline;
 }
 
-.undo .message-undo-container .message-undo .button-back {
-    display: none;
-}
 </style>
 
 <script>
