@@ -1,6 +1,10 @@
 <template>
     <div class="size" v-bind:class="{ disabled: enabled === false }">
-        <div class="button button-secondary button-size" v-on:click="showModal()" v-bind:class="{ disabled: enabled === false }">
+        <div
+            class="button button-secondary button-size"
+            v-bind:class="{ disabled: enabled === false }"
+            v-on:click="showModal()"
+        >
             <span>{{ buttonText }}</span>
         </div>
         <modal ref="modal">
