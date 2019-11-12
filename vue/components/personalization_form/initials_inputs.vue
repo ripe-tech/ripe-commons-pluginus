@@ -50,8 +50,10 @@
 
 .initials-labels .initials-label {
     color: #9b9b9b;
+    cursor: pointer;
     font-size: 15px;
     margin: 30px 0px 30px 0px;
+    user-select: none;
 }
 </style>
 

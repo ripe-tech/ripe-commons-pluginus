@@ -18,6 +18,7 @@
 }
 
 .initials-images .initials-image {
+    cursor: pointer;
     height: 600px;
     width: auto;
 }
