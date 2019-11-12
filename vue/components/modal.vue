@@ -53,6 +53,7 @@
 
 .modal > .modal-background {
     background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
     height: 100%;
     left: 0px;
     position: absolute;
