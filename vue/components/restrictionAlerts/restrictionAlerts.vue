@@ -1,19 +1,19 @@
 <template>
-    <div class="restrictionAlerts">
-        <div class="message-restrictionAlerts-container">
-            <div class="message-restrictionAlerts" v-bind:class="{ visible: visible }">
+    <div class="restrictions-alert">
+        <div class="message-restrictions-alert-container">
+            <div class="message-restrictions-alert" v-bind:class="{ visible: visible }">
                 <div class="button-container">
-                    <a class="button button-restrictionAlerts" v-on:click="restrictionAlerts()">
-                        {{ "ripe_commons.restrictionAlerts.restrictionAlerts" | locale }}
+                    <a class="button button-restrictions-alert" v-on:click="restrictions-alert()">
+                        {{ "ripe_commons.restrictions-alert.restrictions-alert" | locale }}
                     </a>
                     <a class="button button-back" v-on:click="close()">
-                        {{ "ripe_commons.restrictionAlerts.back_button" | locale }}
+                        {{ "ripe_commons.restrictions-alert.back_button" | locale }}
                     </a>
                 </div>
                 <div class="message-container">
                     <span>
-                        {{ "ripe_commons.restrictionAlerts.limited" | locale }}
-                        {{ "ripe_commons.restrictionAlerts.back" | locale }}
+                        {{ "ripe_commons.restrictions-alert.limited" | locale }}
+                        {{ "ripe_commons.restrictions-alert.back" | locale }}
                     </span>
                 </div>
             </div>
@@ -22,13 +22,13 @@
 </template>
 
 <style scoped>
-.restrictionAlerts .message-restrictionAlerts-container {
+.restrictions-alert .message-restrictions-alert-container {
     display: flex;
     flex-direction: row-reverse;
     overflow: hidden;
 }
 
-.restrictionAlerts .message-restrictionAlerts-container .message-restrictionAlerts {
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
@@ -38,24 +38,24 @@
     z-index: 2;
 }
 
-body.mobile .restrictionAlerts .message-restrictionAlerts-container .message-restrictionAlerts,
-body.tablet .restrictionAlerts .message-restrictionAlerts-container .message-restrictionAlerts {
+body.mobile .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert,
+body.tablet .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert {
     flex-direction: column-reverse;
     max-width: 70%;
 }
 
-.restrictionAlerts .message-restrictionAlerts .button-container {
+.restrictions-alert .message-restrictions-alert .button-container {
     display: flex;
     flex-direction: row;
 }
 
-body.tablet .restrictionAlerts .message-restrictionAlerts .button-container,
-body.mobile .restrictionAlerts .message-restrictionAlerts .button-container {
+body.tablet .restrictions-alert .message-restrictions-alert .button-container,
+body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     justify-content: flex-end;
     width: 100%;
 }
 
-.restrictionAlerts .message-restrictionAlerts-container .message-restrictionAlerts .button {
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .button {
     cursor: pointer;
     float: right;
     font-weight: bold;
@@ -67,7 +67,7 @@ body.mobile .restrictionAlerts .message-restrictionAlerts .button-container {
 </style>
 
 <script>
-export const restrictionAlerts = {
+export const restrictions-alert = {
     data: function() {
         return {
             visible: false
@@ -79,14 +79,14 @@ export const restrictionAlerts = {
         });
     },
     methods: {
-        restrictionAlerts() {
+        restrictions-alert() {
             this.visible = false;
-            this.$bus.trigger("restrictionAlerts");
+            this.$bus.trigger("restrictions-alert");
         },
         close() {
             this.visible = false;
         }
     }
 };
-export default restrictionAlerts;
+export default restrictions-alert;
 </script>
