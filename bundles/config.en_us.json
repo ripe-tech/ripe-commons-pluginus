@@ -6,10 +6,10 @@
     "ripe_commons.modal.apply": "Apply",
     "ripe_commons.modal.select": "Select",
 
-    "ripe_commons.undo.undo": "Undo",
-    "ripe_commons.undo.back_button": "Back",
-    "ripe_commons.undo.limited": "This option is limited to specific material or colour combinations.",
-    "ripe_commons.undo.back": "Do you want to go back?",
+    "ripe_commons.restrictionsAlert.restrictionsAlert": "Undo",
+    "ripe_commons.restrictionsAlert.back_button": "Back",
+    "ripe_commons.restrictionsAlert.limited": "This option is limited to specific material or colour combinations.",
+    "ripe_commons.restrictionsAlert.back": "Do you want to go back?",
 
     "ripe_commons.personalization.personalization": "Personalisation",
     "ripe_commons.personalization.add_initials": "Add initials",

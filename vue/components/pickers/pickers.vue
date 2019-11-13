@@ -119,7 +119,7 @@
                 v-on:click="slideRightColors"
             />
         </div>
-        <undo />
+        <restrictionsAlert />
     </div>
 </template>
 
@@ -346,7 +346,7 @@ body.mobile .button-scroll-colors {
     width: 50px;
 }
 
-.undo .message-undo-container .message-undo.visible {
+.restrictionsAlert .message-restrictionsAlert-container .message-restrictionsAlert.visible {
     left: 0;
     max-width: 55%;
     position: absolute;
