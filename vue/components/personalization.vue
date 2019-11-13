@@ -1,7 +1,7 @@
 <template>
     <div class="personalization" v-bind:class="[brand, model, { disabled: !enabled }]">
         <div
-            class="button button-personalization"
+            class="button button-personalization button-color"
             v-bind:class="{ disabled: !enabled, show: !hidden }"
             v-on:click="showModal()"
         >

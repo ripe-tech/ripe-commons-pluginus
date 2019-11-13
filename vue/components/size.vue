@@ -1,7 +1,7 @@
 <template>
     <div class="size" v-bind:class="{ disabled: !enabled }">
         <div
-            class="button button-secondary button-size"
+            class="button button-secondary button-size button-color"
             v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal()"
         >
