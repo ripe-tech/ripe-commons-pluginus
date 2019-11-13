@@ -877,7 +877,7 @@ export const pickers = {
          *
          * @param {String} material The name of the material to scroll to.
          * @param {String} color The name of the color to scroll to.
-         * @param {Boolean} smooth If the smoth transition should be ensured.
+         * @param {Boolean} smooth If the smooth transition should be ensured.
          */
         scrollColors(material, color, smooth = true) {
             if (this.multipleMaterials === false) {

@@ -1,8 +1,8 @@
 <template>
-    <div class="size" v-bind:class="{ disabled: enabled === false }">
+    <div class="size" v-bind:class="{ disabled: !enabled }">
         <div
             class="button button-secondary button-size"
-            v-bind:class="{ disabled: enabled === false }"
+            v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal()"
         >
             <span>{{ buttonText }}</span>
