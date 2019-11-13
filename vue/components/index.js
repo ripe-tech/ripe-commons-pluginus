@@ -15,4 +15,5 @@ export { restrictionsAlert } from "./restrictionsAlert";
 export { size } from "./size.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
+
 export { personalizationForm, sizeForm };
