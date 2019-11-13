@@ -55,6 +55,7 @@ body.mobile .keyboard {
     height: 60px;
     margin-right: 8px;
     text-transform: uppercase;
+    user-select: none;
     vertical-align: top;
     width: 50px;
 }

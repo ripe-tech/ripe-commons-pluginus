@@ -2,6 +2,7 @@ import "ripe-sdk/src/css/ripe.css";
 
 import { Ripe } from "ripe-sdk";
 import Vue from "vue";
+import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
 
 import { components, plugins, mixins, store } from "../../vue";
@@ -50,6 +51,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (!this.appElement) {
             throw Error("Element #app not found");
         }
+
+        // initializes the Vue.js reactive data store according to the
+        // underlying specification defined by `_getStoreDef`
+        this._initStore();
 
         // reads and parses the options from the URL
         // initializes the app state accordingly
@@ -133,8 +138,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the app state when a new model is set
         this.ripe.bind("post_config", config => {
-            store.commit("config", config);
-            store.commit("model", {
+            this.store.commit("config", config);
+            this.store.commit("model", {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
                 variant: this.ripe.options.variant,
@@ -143,13 +148,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
             });
-            store.commit("hasPersonalization", this.ripe.hasPersonalization());
-            store.commit("hasSize", this.ripe.hasSize());
+            this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
+            this.store.commit("hasSize", this.ripe.hasSize());
         });
 
         // listens for parts and prices changes and updates the store
-        this.ripe.bind("parts", parts => store.commit("parts", parts));
-        this.ripe.bind("price", price => store.commit("price", price));
+        this.ripe.bind("parts", parts => this.store.commit("parts", parts));
+        this.ripe.bind("price", price => this.store.commit("price", price));
 
         // forwards the config events to the global bus
         this.ripe.bind("pre_config", (...args) => this.owner.trigger("pre_config", ...args));
@@ -168,6 +173,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     _getExtraComponents() {
         return {};
+    }
+
+    _getStoreDef() {
+        return store;
     }
 
     _installComponents(components) {
@@ -207,12 +216,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.component("global-events", GlobalEvents);
     }
 
-    _getStore() {
-        return store;
-    }
-
     _loadOptions(validate = true) {
         throw new Error("_loadOptions is not implemented.");
+    }
+
+    _initStore() {
+        Vue.use(Vuex);
+        this.store = new Vuex.Store(this._getStoreDef());
     }
 
     _initVueApp(element) {
@@ -227,7 +237,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     manager: manager
                 };
             },
-            store: store,
+            store: this.store,
             created: function() {
                 // triggers the refresh of the UI when the
                 // locale changes

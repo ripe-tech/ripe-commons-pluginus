@@ -12,7 +12,7 @@
     >
         <div v-bind:class="'modal modal-' + name" v-show="visible" v-bind:id="'modal-' + name">
             <global-events v-on:keydown.esc="hide" />
-            <div class="modal-background" v-on:click="backgroundLeave && hide()" />
+            <div class="modal-overlay" v-on:click="overlayLeave && hide()" />
             <div class="modal-container">
                 <div class="button button-close" v-on:click="hide()">
                     <img src="~./assets/close.svg" />
@@ -51,7 +51,7 @@
     opacity: 1;
 }
 
-.modal > .modal-background {
+.modal > .modal-overlay {
     background-color: rgba(0, 0, 0, 0.5);
     height: 100%;
     left: 0px;
@@ -182,7 +182,7 @@ export const modal = {
             options: {
                 name: "",
                 visible: false,
-                backgroundLeave: true
+                overlayLeave: true
             }
         };
     },
@@ -193,8 +193,8 @@ export const modal = {
         visible() {
             return this.options.visible;
         },
-        backgroundLeave() {
-            return this.options.backgroundLeave;
+        overlayLeave() {
+            return this.options.overlayLeave;
         }
     },
     methods: {

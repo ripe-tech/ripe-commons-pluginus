@@ -157,7 +157,7 @@
 }
 
 .size .size-selector .sizes .button.button-size {
-    border: solid 1px #e5e5e5;
+    border: 1px solid #e5e5e5;
     border-radius: 4px 4px 4px 4px;
     box-sizing: border-box;
     cursor: pointer;
