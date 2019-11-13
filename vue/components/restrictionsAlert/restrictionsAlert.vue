@@ -72,7 +72,6 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     background: #ffffff;
     color: #151515;
 }
-
 </style>
 
 <script>
