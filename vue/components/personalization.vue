@@ -21,12 +21,12 @@
                 <div class="buttons-container">
                     <slot name="buttons">
                         <div
-                            class="button button-cancel button-color button-color-secondary"
+                            class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal()"
                         >
                             {{ "ripe_commons.modal.cancel" | locale }}
                         </div>
-                        <div class="button button-apply button-color" v-on:click="apply()">
+                        <div class="button button-color button-apply" v-on:click="apply()">
                             {{ "ripe_commons.modal.apply" | locale }}
                         </div>
                     </slot>
