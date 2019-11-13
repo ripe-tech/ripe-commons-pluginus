@@ -119,7 +119,7 @@
                 v-on:click="slideRightColors"
             />
         </div>
-        <restrictions_alert />
+        <restrictionsAlert />
     </div>
 </template>
 

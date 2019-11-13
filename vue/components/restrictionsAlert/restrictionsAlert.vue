@@ -88,5 +88,5 @@ export const undo = {
         }
     }
 };
-export default restrictions-alert;
+export default restrictionsAlert;
 </script>

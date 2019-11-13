@@ -14,6 +14,6 @@ export { personalization } from "./personalization.vue";
 export { size } from "./size.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
-export { restrictions_alert } from "./restrictions_alert";
+export { restrictionsAlert } from "./restrictionsAlert";
 
 export { personalizationForm, sizeForm };
