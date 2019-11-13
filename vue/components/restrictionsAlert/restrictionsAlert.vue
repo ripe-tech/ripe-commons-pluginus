@@ -79,7 +79,7 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 export const restrictionsAlert = {
     data: function() {
         return {
-            visible: true
+            visible: false
         };
     },
     mounted: function() {
