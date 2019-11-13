@@ -26,10 +26,7 @@
                         >
                             {{ "ripe_commons.modal.cancel" | locale }}
                         </div>
-                        <div
-                            class="button button-primary button-apply button-color"
-                            v-on:click="apply()"
-                        >
+                        <div class="button button-apply button-color" v-on:click="apply()">
                             {{ "ripe_commons.modal.apply" | locale }}
                         </div>
                     </slot>

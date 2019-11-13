@@ -17,13 +17,13 @@
                 />
                 <div class="buttons-container">
                     <div
-                        class="button button-cancel button-color button-color-secondary"
+                        class="button button-color button-color-secondary button-cancel"
                         v-on:click="hideModal()"
                     >
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </div>
                     <div
-                        class="button button-primary button-apply button-color button-color-secondary"
+                        class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply()"
                     >
