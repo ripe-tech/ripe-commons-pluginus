@@ -1,1 +1,1 @@
-export { restrictions_alert } from "./restrictions_alert.vue";
+export { restrictionsAlert } from "./restrictionsAlert.vue";
