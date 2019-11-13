@@ -20,7 +20,7 @@
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </div>
                     <div
-                        class="button button-primary button-apply"
+                        class="button button-primary button-apply button-color-secondary"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply()"
                     >
