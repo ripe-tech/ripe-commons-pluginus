@@ -1,8 +1,8 @@
 <template>
-    <div class="personalization" v-bind:class="[brand, model, { disabled: enabled === false }]">
+    <div class="personalization" v-bind:class="[brand, model, { disabled: !enabled }]">
         <div
             class="button button-personalization"
-            v-bind:class="{ disabled: enabled === false, show: !hidden }"
+            v-bind:class="{ disabled: !enabled, show: !hidden }"
             v-on:click="showModal()"
         >
             <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
@@ -96,7 +96,7 @@ body.mobile .personalization ::v-deep .keyboard.text {
 }
 
 .personalization ::v-deep .keyboard.special .keyboard-row .keyboard-key.special .image-container .border {
-    border: solid 2px #eaeaec;
+    border: 2px solid #eaeaec;
     border-radius: 50%;
     height: calc(100% - 4px);
     left: 0px;
