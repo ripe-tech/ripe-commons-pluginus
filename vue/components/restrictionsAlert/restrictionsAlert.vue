@@ -67,7 +67,7 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 </style>
 
 <script>
-export const undo = {
+export const restrictionsAlert = {
     data: function() {
         return {
             visible: false
