@@ -74,7 +74,7 @@ export const restrictionsAlert = {
         };
     },
     mounted: function() {
-        this.$bus.bind("undo", (changes, newPart) => {
+        this.$bus.bind("restrictions-alert", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
     },
