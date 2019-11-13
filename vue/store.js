@@ -1,19 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-
-Vue.use(Vuex);
-
-export const store = new Vuex.Store({
+export const store = {
     state: {
         ripe_url: "",
         country: "",
         currency: "",
         locale: "",
-        store: "",
-        account: "",
-        storeBrand: "",
-        customerIdInput: false,
-        customerId: "",
         brand: "",
         model: "",
         dku: "",
@@ -32,12 +22,8 @@ export const store = new Vuex.Store({
             initialsExtra: {}
         },
         size: {},
-        orderNumber: null,
         currentFrame: null,
         error: null,
-        previous: null,
-        next: null,
-        labelNext: null,
         hasPersonalization: false,
         hasSize: false
     },
@@ -108,33 +94,6 @@ export const store = new Vuex.Store({
         current_frame(state, currentFrame) {
             state.currentFrame = currentFrame;
         },
-        store_brand(state, storeBrand) {
-            state.storeBrand = storeBrand;
-        },
-        store(state, store) {
-            state.store = store;
-        },
-        customer_id_input(state, customerIdInput) {
-            state.customerIdInput = customerIdInput;
-        },
-        customer_id(state, customerId) {
-            state.customerId = customerId;
-        },
-        account(state, account) {
-            state.account = account;
-        },
-        previous(state, previous) {
-            state.previous = previous;
-        },
-        next(state, next) {
-            state.next = next;
-        },
-        labelPrevious(state, labelPrevious) {
-            state.labelPrevious = labelPrevious;
-        },
-        labelNext(state, labelNext) {
-            state.labelNext = labelNext;
-        },
         error(state, error) {
             state.error = error;
         },
@@ -194,6 +153,6 @@ export const store = new Vuex.Store({
             state.price && state.price.total ? state.price.total.price_final : null,
         thumbnails: state => (state.config ? state.config.thumbnails || [] : [])
     }
-});
+};
 
 export default store;

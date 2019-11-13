@@ -232,7 +232,7 @@
 }
 
 .pickers .colors-container .color > .swatch {
-    border: solid 2px #eaeaec;
+    border: 2px solid #eaeaec;
     border-radius: 50% 50% 50% 50%;
     height: 58px;
     left: 0px;
@@ -835,7 +835,7 @@ export const pickers = {
          *
          * @param {String} material The name of the material to scroll to.
          * @param {String} color The name of the color to scroll to.
-         * @param {Boolean} smooth If the smoth transition should be ensured.
+         * @param {Boolean} smooth If the smooth transition should be ensured.
          */
         scrollColors(material, color, smooth = true) {
             if (this.multipleMaterials === false) {

@@ -5,7 +5,7 @@ const modalMixin = {
             modalOptions: {
                 name: "",
                 visible: false,
-                backgroundLeave: true
+                overlayLeave: true
             }
         };
     },
