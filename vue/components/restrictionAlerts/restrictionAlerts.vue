@@ -67,21 +67,21 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 </style>
 
 <script>
-export const restrictions-alert = {
+export const undo = {
     data: function() {
         return {
             visible: false
         };
     },
     mounted: function() {
-        this.$bus.bind("restrictions", (changes, newPart) => {
+        this.$bus.bind("undo", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
     },
     methods: {
-        restrictions-alert() {
+        undo() {
             this.visible = false;
-            this.$bus.trigger("restrictions-alert");
+            this.$bus.trigger("undo");
         },
         close() {
             this.visible = false;
