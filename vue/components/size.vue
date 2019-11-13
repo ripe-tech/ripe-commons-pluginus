@@ -1,7 +1,7 @@
 <template>
     <div class="size" v-bind:class="{ disabled: !enabled }">
         <div
-            class="button button-secondary button-size"
+            class="button button-color button-size"
             v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal()"
         >
@@ -16,11 +16,14 @@
                     v-on:changed="sizeChanged"
                 />
                 <div class="buttons-container">
-                    <div class="button button-cancel" v-on:click="hideModal()">
+                    <div
+                        class="button button-color button-color-secondary button-cancel"
+                        v-on:click="hideModal()"
+                    >
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </div>
                     <div
-                        class="button button-primary button-apply"
+                        class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply()"
                     >
