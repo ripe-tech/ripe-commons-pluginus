@@ -263,8 +263,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("initials_change", initialsExtra => {
                     self.ripe.setInitialsExtra(initialsExtra);
                 });
-                this.$bus.bind("restrictionsAlert", () => self.ripe.restrictionsAlert());
-
+                this.$bus.bind("restrictionAlerts", () => self.ripe.restrictionAlerts());
                 // listens for any model change and triggers the
                 // 'model_changed' event on the owner, so that it's
                 // possible to be notified at any level about this

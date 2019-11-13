@@ -119,7 +119,7 @@
                 v-on:click="slideRightColors"
             />
         </div>
-        <restrictionsAlert />
+        <restrictionAlerts />
     </div>
 </template>
 
@@ -346,7 +346,7 @@ body.mobile .button-scroll-colors {
     width: 50px;
 }
 
-.restrictionsAlert .message-restrictionsAlert-container .message-restrictionsAlert.visible {
+.restrictionAlerts .message-restrictionAlerts-container .message-restrictionAlerts.visible {
     left: 0;
     max-width: 55%;
     position: absolute;

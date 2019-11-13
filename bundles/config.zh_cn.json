@@ -6,10 +6,10 @@
     "ripe_commons.modal.apply": "采用",
     "ripe_commons.modal.select": "采用",
 
-    "ripe_commons.restrictionsAlert.restrictionsAlert": "复原",
-    "ripe_commons.restrictionsAlert.back_button": "背部",
-    "ripe_commons.restrictionsAlert.limited": "此选项仅限于特定材料或颜色组合",
-    "ripe_commons.restrictionsAlert.back": "返回上一页?",
+    "ripe_commons.restrictionAlerts.restrictionAlerts": "复原",
+    "ripe_commons.restrictionAlerts.back_button": "背部",
+    "ripe_commons.restrictionAlerts.limited": "此选项仅限于特定材料或颜色组合",
+    "ripe_commons.restrictionAlerts.back": "返回上一页?",
 
     "ripe_commons.personalization.personalization": "个性化定制",
     "ripe_commons.personalization.add_initials": "专属刻字",
