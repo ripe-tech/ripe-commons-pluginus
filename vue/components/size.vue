@@ -16,7 +16,10 @@
                     v-on:changed="sizeChanged"
                 />
                 <div class="buttons-container">
-                    <div class="button button-cancel button-color button-color-secondary" v-on:click="hideModal()">
+                    <div
+                        class="button button-cancel button-color button-color-secondary"
+                        v-on:click="hideModal()"
+                    >
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </div>
                     <div

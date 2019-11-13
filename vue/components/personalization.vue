@@ -20,10 +20,16 @@
                 />
                 <div class="buttons-container">
                     <slot name="buttons">
-                        <div class="button button-cancel button-color button-color-secondary" v-on:click="hideModal()">
+                        <div
+                            class="button button-cancel button-color button-color-secondary"
+                            v-on:click="hideModal()"
+                        >
                             {{ "ripe_commons.modal.cancel" | locale }}
                         </div>
-                        <div class="button button-primary button-apply button-color" v-on:click="apply()">
+                        <div
+                            class="button button-primary button-apply button-color"
+                            v-on:click="apply()"
+                        >
                             {{ "ripe_commons.modal.apply" | locale }}
                         </div>
                     </slot>
