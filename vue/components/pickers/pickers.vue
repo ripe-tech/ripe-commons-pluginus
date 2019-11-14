@@ -18,7 +18,7 @@
                     v-bind:class="{ active: activePart === part }"
                     v-for="(materials, part) in filteredOptions"
                     v-bind:key="part"
-                    v-on:click="showSwatches(part)"
+                    v-on:click="selectPart(part)"
                 >
                     <p>{{ localeModel(part) }}</p>
                     <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
@@ -736,7 +736,7 @@ export const pickers = {
             }
             this.swatches = swatches;
         },
-        showSwatches(part) {
+        selectPart(part) {
             this.activePart = part;
             this.$bus.trigger("picker_part", part);
             this.$bus.trigger("highlight_part", part);
