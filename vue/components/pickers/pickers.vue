@@ -738,6 +738,7 @@ export const pickers = {
         },
         showSwatches(part) {
             this.activePart = part;
+            this.$bus.trigger("picker_part", part);
             this.$bus.trigger("highlight_part", part);
             this.onMaterialsChanged();
             this.onColorsChanged();
