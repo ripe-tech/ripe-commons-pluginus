@@ -80,7 +80,7 @@ body.mobile .modal > .modal-container {
     box-sizing: border-box;
     max-height: 90%;
     max-width: 100%;
-    padding: 20px 10px 20px 10px;
+    padding: 40px 10px 20px 10px;
 }
 
 .modal.fade-enter > .modal-container,
