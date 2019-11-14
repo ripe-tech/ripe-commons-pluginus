@@ -85,7 +85,7 @@
                 <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
                     <transition-group name="list" ref="colorsList">
                         <li
-                            class="color button button-color"
+                            class="color button button-color-option"
                             v-bind:data-index="colorOption.index"
                             v-bind:data-material="colorOption.material"
                             v-bind:data-color="colorOption.color"
@@ -530,7 +530,7 @@ export const pickers = {
                 if (colorsPicker.classList.contains("drag") === false) {
                     return false;
                 }
-                const colorButtons = scrollElement.querySelectorAll(".button-color");
+                const colorButtons = scrollElement.querySelectorAll(".button-color-option");
                 let centerColor = null;
                 const maxOffset = scrollElement.scrollWidth - scrollElement.clientWidth;
                 let targetOffset = scrollElement.scrollLeft + scrollElement.clientWidth / 2;
@@ -620,7 +620,7 @@ export const pickers = {
         },
         slideLeftColors() {
             const colorsPicker = this.$refs.colorsPicker;
-            const colors = colorsPicker.querySelectorAll(".button-color");
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.slideLeft(colorsPicker, colors);
         },
         slideRightParts() {
@@ -635,7 +635,7 @@ export const pickers = {
         },
         slideRightColors() {
             const colorsPicker = this.$refs.colorsPicker;
-            const colors = colorsPicker.querySelectorAll(".button-color");
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.slideRight(colorsPicker, colors);
         },
         configName(part) {
@@ -801,7 +801,7 @@ export const pickers = {
                 return;
             }
 
-            const colors = colorsPicker.querySelectorAll(".button-color");
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
 
             let scrollActiveColor = 0;
             for (const _color of colors) {
@@ -846,7 +846,7 @@ export const pickers = {
                 return;
             }
             const colorsPicker = this.$refs.colorsPicker;
-            const colors = colorsPicker.querySelectorAll(".button-color");
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
 
             // initializes the counter of pixels for the (new) scroll left position
             // to be applied to the scroll element
