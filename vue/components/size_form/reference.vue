@@ -142,7 +142,7 @@
     font-size: 0px;
     margin-top: 10px;
     max-width: 492px;
-    text-align: left;
+    text-align: center;
 }
 
 .size .size-selector .sizes-container .sizes.fade-enter,
