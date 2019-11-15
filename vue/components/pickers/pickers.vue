@@ -119,17 +119,7 @@
                 v-on:click="slideRightColors"
             />
         </div>
-        <div class="message-undo-container">
-            <div class="message-undo" v-bind:class="{ visible: allowUndo }">
-                <a class="button button-undo" v-on:click="undo()">
-                    {{ "ripe_commons.pickers.undo" | locale }}
-                </a>
-                <span>
-                    {{ "ripe_commons.pickers.limited" | locale }}
-                    {{ "ripe_commons.pickers.back" | locale }}
-                </span>
-            </div>
-        </div>
+        <restrictions-alert />
     </div>
 </template>
 
@@ -142,12 +132,6 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
-}
-
-.pickers .parts-container > .part > p {
-    color: #6d6d6d;
-    font-size: 15px;
-    font-weight: 600;
 }
 
 .pickers .parts-container > .part > .swatch {
@@ -312,39 +296,6 @@
     border-width: 4px;
 }
 
-.pickers .message-undo-container {
-    overflow: hidden;
-}
-
-.pickers .message-undo {
-    background-color: #ececec;
-    border-radius: 5px;
-    display: block;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px auto 0px auto;
-    max-width: 580px;
-    padding: 10px 20px 10px 30px;
-    text-align: left;
-    transform: translateY(-100%);
-    transition: transform 0.5s ease-in-out;
-}
-
-.pickers .message-undo.visible {
-    transform: translateY(0px);
-}
-
-.pickers .message-undo .button.button-undo {
-    cursor: pointer;
-    float: right;
-    font-size: 12px;
-    font-weight: bold;
-    margin-left: 20px;
-    margin-top: -10px;
-    padding: 10px 10px 10px 10px;
-    text-decoration: underline;
-}
-
 .button-scroll {
     cursor: pointer;
     position: absolute;
@@ -398,6 +349,16 @@ body.mobile .button-scroll-colors {
     height: 100px;
     width: 50px;
 }
+
+.restrictions_alert .message-restrictions_alert-container .message-restrictions_alert.visible {
+    left: 0;
+    max-width: 55%;
+    position: absolute;
+    right: 0;
+    top: 90px;
+    transform: translateY(0px);
+    z-index: 2;
+}
 </style>
 
 <script>
@@ -412,7 +373,6 @@ export const pickers = {
             activeColor: null,
             multipleMaterials: false,
             loading: false,
-            allowUndo: false,
             swatches: {},
             choices: {},
             /**
@@ -562,9 +522,7 @@ export const pickers = {
         this.$bus.bind("selected_part", part => {
             this.activePart = part;
         });
-        this.$bus.bind("restrictions", (changes, newPart) => {
-            this.allowUndo = changes.length > 0;
-        });
+
         const colorsPicker = this.$refs.colorsPicker;
         colorsPicker.addEventListener("touchstart", () => colorsPicker.classList.add("drag"));
         colorsPicker.addEventListener("touchend", () => colorsPicker.classList.remove("drag"));
@@ -955,10 +913,6 @@ export const pickers = {
             this.selectMaterial(option.material);
             this.activeColor = option.color;
             this.selectSwatch();
-        },
-        undo() {
-            this.allowUndo = false;
-            this.$bus.trigger("undo");
         }
     }
 };

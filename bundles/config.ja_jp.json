@@ -6,9 +6,10 @@
     "ripe_commons.modal.apply": "申し込み",
     "ripe_commons.modal.select": "申し込み",
 
-    "ripe_commons.pickers.undo": "元に戻る",
-    "ripe_commons.pickers.limited": "選りすぐりの素材、またはカラーのコンビネーションの限定オプション",
-    "ripe_commons.pickers.back": "戻りますか？",
+    "ripe_commons.restrictions_alert.restrictions_alert": "元に戻る",
+    "ripe_commons.restrictions_alert.back_button": "バック",
+    "ripe_commons.restrictions_alert.limited": "選りすぐりの素材、またはカラーのコンビネーションの限定オプション",
+    "ripe_commons.restrictions_alert.back": "戻りますか？",
 
     "ripe_commons.personalization.personalization": "パーソナライゼーション",
     "ripe_commons.personalization.add_initials": "イニシャルを追加",
