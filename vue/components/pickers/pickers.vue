@@ -134,10 +134,6 @@
 </template>
 
 <style scoped>
-*.hidden {
-    display: none;
-}
-
 .pickers > .parts-wrapper {
     position: relative;
 }
@@ -202,6 +198,10 @@
 
 .pickers .materials-wrapper {
     position: relative;
+}
+
+.pickers .materials-wrapper .materials-container.hidden {
+    display: none;
 }
 
 .pickers.multiple-materials .colors-container .color[data-index="0"] {
