@@ -200,6 +200,10 @@
     position: relative;
 }
 
+.pickers .materials-wrapper .materials-container.hidden {
+    display: none;
+}
+
 .pickers.multiple-materials .colors-container .color[data-index="0"] {
     border-left: 1px solid #eaeaec;
     box-sizing: border-box;
