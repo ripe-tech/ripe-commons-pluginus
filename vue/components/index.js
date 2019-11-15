@@ -11,7 +11,7 @@ export { componentPlugin } from "./component_plugin.vue";
 export { configurator } from "./configurator.vue";
 export { modal } from "./modal.vue";
 export { personalization } from "./personalization.vue";
-export { restrictionsAlert } from "./restrictionsAlert";
+export { restrictionsAlert } from "./restrictions_alert";
 export { size } from "./size.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
