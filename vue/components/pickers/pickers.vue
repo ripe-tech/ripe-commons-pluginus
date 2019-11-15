@@ -134,6 +134,10 @@
 </template>
 
 <style scoped>
+*.hidden {
+    display: none;
+}
+
 .pickers > .parts-wrapper {
     position: relative;
 }
