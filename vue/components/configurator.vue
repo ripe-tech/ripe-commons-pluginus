@@ -1,6 +1,6 @@
 <template>
     <div class="configurator-container">
-        <loader class="loader" v-if="!modelLoaded && !modelError" />
+        <loader class="loader" v-if="loading && !modelError" />
         <div class="configurator" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError">
