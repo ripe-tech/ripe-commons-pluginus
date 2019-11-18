@@ -126,7 +126,7 @@ export const personalization = {
     data: function() {
         return {
             hidden: true,
-            enabled: true,
+            enabled: false,
             form: null,
             tabMessage: "",
             buttonText: "",
@@ -150,7 +150,7 @@ export const personalization = {
         }
     },
     watch: {
-        enabled: function(enabled) {
+        enabled(enabled) {
             !enabled && this.clear();
         },
         state: {
@@ -208,7 +208,7 @@ export const personalization = {
             // sets the form for the current component, sets it as enable and hidden
             // by default (initial state)
             this.form = form;
-            this.enabled = true;
+            this.enabled = false;
             this.hidden = false;
 
             this.initialOptions = Object.assign({}, options);
