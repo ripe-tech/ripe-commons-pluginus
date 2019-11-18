@@ -1,1 +1,5 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" aria-labelledby="chevronRightIconTitle" stroke="#808080" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" fill="none" color="#808080"> <title id="chevronRightIconTitle">Chevron Right</title> <polyline points="10 6 16 12 10 18 10 18"/> </svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" color="#808080" fill="none" stroke="#808080" stroke-linecap="square" stroke-width="3" aria-labelledby="chevronRightIconTitle" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<title>Chevron Right</title>
+<polyline points="10 6 16 12 10 18 10 18"/>
+</svg>
