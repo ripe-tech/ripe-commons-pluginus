@@ -25,14 +25,24 @@
     position: relative;
     text-align: center;
     transition: opacity 0.125s ease-in;
+    cursor: grab;
 }
 
 .configurator.loading {
     opacity: 0;
 }
 
+.configurator.drag {
+    cursor: grabbing;
+}
+
 .configurator.highlight {
     cursor: pointer;
+}
+
+.configurator.loading,
+.configurator.preloading {
+    cursor: progress;
 }
 
 .loader {
