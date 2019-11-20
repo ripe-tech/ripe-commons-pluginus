@@ -142,8 +142,10 @@
 }
 
 .pickers .parts-container > .part > .swatch > img {
-    margin-left: -4px;
-    margin-top: -4px;
+    height: 100%;
+    object-fit: cover;
+    vertical-align: top;
+    width: 100%;
 }
 
 .pickers .parts-container > .part > .no-part {
@@ -275,9 +277,11 @@
 }
 
 .pickers .colors-container .color > .swatch > img {
-    height: 78px;
-    margin-left: -4px;
-    margin-top: -4px;
+    height: 100%;
+    margin-left: 0px;
+    margin-top: 0px;
+    object-fit: cover;
+    width: 100%;
 }
 
 .pickers .colors-container .color > .swatch > .border {

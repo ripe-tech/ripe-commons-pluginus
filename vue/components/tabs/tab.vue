@@ -24,10 +24,7 @@
 
 .tab.active {
     background-color: #ffffff;
-    border-bottom-color: transparent;
-    border-left-color: #e9eaee;
-    border-right-color: #e9eaee;
-    border-top-color: #e9eaee;
+    border-color: #e9eaee #e9eaee transparent #e9eaee;
 }
 
 .tab > h1.default {

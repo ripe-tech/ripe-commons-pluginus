@@ -95,10 +95,7 @@
 .size .size-selector .genders .button.button-gender.active,
 .size .size-selector .genders .button.button-gender:active {
     background-color: #ffffff;
-    border-bottom-color: transparent;
-    border-left-color: #e9eaee;
-    border-right-color: #e9eaee;
-    border-top-color: #e9eaee;
+    border-color: #e9eaee #e9eaee transparent #e9eaee;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     height: 70px;
