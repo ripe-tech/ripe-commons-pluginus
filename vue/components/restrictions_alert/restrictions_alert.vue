@@ -7,7 +7,7 @@
                         {{ "ripe_commons.restrictions_alert.restrictions_alert" | locale }}
                     </a>
                     <a class="button button-back" v-on:click="close()">
-                        {{ "ripe_commons.restrictions_alert.back_button" | locale }}
+                        {{ "ripe_commons.restrictions_alert.close_button" | locale }}
                     </a>
                 </div>
                 <div class="message-container">

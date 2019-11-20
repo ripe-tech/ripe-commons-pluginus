@@ -8,6 +8,7 @@
 
     "ripe_commons.restrictions_alert.restrictions_alert": "Undo",
     "ripe_commons.restrictions_alert.back_button": "Back",
+    "ripe_commons.restrictions_alert.close_button": "Close",
     "ripe_commons.restrictions_alert.limited": "This option is limited to specific material or colour combinations.",
     "ripe_commons.restrictions_alert.back": "Do you want to go back?",
 
