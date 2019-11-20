@@ -48,8 +48,11 @@ const logicMixin = {
         modelError() {
             return this.error;
         },
+        modelConfigured() {
+            return Object.keys(this.config).length > 0;
+        },
         modelLoaded() {
-            return Boolean(this.error) === false && Object.keys(this.config).length > 0;
+            return Boolean(this.error) === false && this.modelConfigured;
         }
     },
     mounted: function() {

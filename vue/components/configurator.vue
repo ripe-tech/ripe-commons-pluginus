@@ -1,6 +1,6 @@
 <template>
     <div class="configurator-container">
-        <loader class="loader" v-if="loading && !modelError" />
+        <loader class="loader" v-if="loading" />
         <div class="configurator" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError">
@@ -48,7 +48,7 @@
 .loader {
     left: calc(50% - 28px);
     position: absolute;
-    top: 40%;
+    top: calc(50% - 11px);
 }
 
 .holder {
