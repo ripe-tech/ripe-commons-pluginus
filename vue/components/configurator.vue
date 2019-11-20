@@ -22,10 +22,10 @@
 
 <style scoped>
 .configurator {
+    cursor: grab;
     position: relative;
     text-align: center;
     transition: opacity 0.125s ease-in;
-    cursor: grab;
 }
 
 .configurator.loading {
