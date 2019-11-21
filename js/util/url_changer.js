@@ -64,7 +64,7 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
                     }
                 }
 
-                const strInitialsExtra = new Ripe()._generateExtraS(initialsExtra);
+                const strInitialsExtra = new Ripe({ init: false })._generateExtraS(initialsExtra);
                 for (const extraS of strInitialsExtra) {
                     query.append("initials_extra", extraS);
                 }
