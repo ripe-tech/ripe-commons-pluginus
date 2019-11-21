@@ -1,7 +1,7 @@
 <template>
     <div class="configurator-container">
         <loader class="loader" v-if="loading" />
-        <div class="configurator" v-bind:class="{ loading: loading }">
+        <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError">
                 Problem loading model {{ model }} from brand {{ brand }}<br />
@@ -21,28 +21,31 @@
 </template>
 
 <style scoped>
-.configurator {
-    cursor: grab;
+.configurator-wrapper {
     position: relative;
     text-align: center;
     transition: opacity 0.125s ease-in;
 }
 
-.configurator.loading {
+.configurator-wrapper.loading {
     opacity: 0;
 }
 
-.configurator.drag {
+.configurator-wrapper .configurator {
+    cursor: grab;
+}
+
+.configurator-wrapper .configurator.drag {
     cursor: grabbing;
 }
 
-.configurator.highlight {
+.configurator-wrapper .configurator.highlight {
     cursor: pointer;
 }
 
-.configurator.loading,
-.configurator.preloading,
-.configurator:not(.ready) {
+.configurator-wrapper .configurator.loading,
+.configurator-wrapper .configurator.preloading,
+.configurator-wrapper .configurator:not(.ready) {
     cursor: progress;
 }
 
