@@ -44,14 +44,16 @@ body.desktop .thumbnail:first-child {
     opacity: 1;
 }
 
-body.tablet .thumbnail {
+body.tablet .thumbnail,
+body.mobile .thumbnail {
     display: inline-block;
     height: 50px;
     margin: 0px auto 0px 7px;
     width: 50px;
 }
 
-body.tablet .thumbnail:first-child {
+body.tablet .thumbnail:first-child
+body.mobile .thumbnail:first-child {
     margin-left: 0px;
     margin-top: 0px;
 }
