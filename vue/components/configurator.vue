@@ -41,7 +41,8 @@
 }
 
 .configurator.loading,
-.configurator.preloading {
+.configurator.preloading,
+.configurator:not(.ready) {
     cursor: progress;
 }
 
