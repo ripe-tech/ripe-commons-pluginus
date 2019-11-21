@@ -278,8 +278,6 @@
 
 .pickers .colors-container .color > .swatch > img {
     height: 100%;
-    margin-left: 0px;
-    margin-top: 0px;
     object-fit: cover;
     width: 100%;
 }
