@@ -217,7 +217,7 @@ export const personalization = {
         this.$bus.bind("initials_extra", initialsExtra => {
             if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
                 this.state.initialsExtra = initialsExtra;
-                this.$refs.form && this.$refs.form.setState(this.state);
+                if (this.$refs.form) this.$refs.form.setState(this.state);
             }
         });
     },
@@ -290,9 +290,12 @@ export const personalization = {
             state.initialsExtra =
                 state.initialsExtra || this.initialsToInitialsExtra(initials, engraving);
 
-            // updates both the current internal state and the (possible) new tab
-            // message from the form
+            // updates both the current internal state taking into account if an event
+            // should be triggered or not (using internal state values)
             this.state = state;
+
+            // updates the message for the tab according to the provided value to be
+            // able to show the most up-to-date values
             this.tabMessage = tabMessage;
 
             // in case there's no visibility of the personalization then applies the
