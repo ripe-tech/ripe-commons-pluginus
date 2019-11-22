@@ -309,7 +309,7 @@
     background: url("~./assets/arrow-right.svg") right center no-repeat,
         linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0));
     right: 0px;
-    top: 0;
+    top: 0px;
 }
 
 .button-scroll-left {
