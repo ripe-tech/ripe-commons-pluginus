@@ -52,7 +52,7 @@ body.mobile .thumbnail {
     width: 50px;
 }
 
-body.tablet .thumbnail:first-child
+body.tablet .thumbnail:first-child,
 body.mobile .thumbnail:first-child {
     margin-left: 0px;
     margin-top: 0px;
