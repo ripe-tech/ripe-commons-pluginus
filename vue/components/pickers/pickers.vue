@@ -717,8 +717,8 @@ export const pickers = {
             this.$bus.trigger("part_change", this.activePart, material, color);
             this.$bus.trigger("lowlight_part", this.activePart, material, color);
 
-            // runs the update swatches operation so that they are properly updatd
-            // in according to the swatches selectedion
+            // runs the update swatches operation so that they are properly updated
+            // in according to the swatches selection
             this.updateSwatches();
             this.isOptional(this.activePart) && this.$nextTick(() => this.$forceUpdate());
         },
