@@ -148,7 +148,7 @@ export const configurator = {
             frameChanged: false,
             /**
              * Indicates whether the time accepted for the
-             * holder to appear on the display has timedout.
+             * holder to appear on the display has "timedout".
              */
             holderTimedOut: false
         };
@@ -193,26 +193,29 @@ export const configurator = {
                 return;
             }
 
-            if (this.configurator.ready) {
-                this.configurator.changeFrame(frame, {
-                    type: null,
-                    duration: null
-                });
+            // in case the configurator is not currently ready
+            // then avoids the operation (returns control flow)
+            if (!this.configurator || !this.configurator.ready) {
+                return;
             }
+
+            this.configurator.changeFrame(frame, {
+                type: null,
+                duration: null
+            });
         });
 
         this.$bus.bind("show_frame", frame => {
+            if (!this.configurator || !this.configurator.ready) return;
             const currentView = this.frame.split("-")[0];
             const newView = frame.split("-")[0];
             const sameView = currentView === newView;
             const type = sameView ? false : "cross";
             const revolutionDuration = sameView ? 500 : null;
-            if (this.configurator.ready) {
-                this.configurator.changeFrame(frame, {
-                    type: type,
-                    revolutionDuration: revolutionDuration
-                });
-            }
+            this.configurator.changeFrame(frame, {
+                type: type,
+                revolutionDuration: revolutionDuration
+            });
         });
 
         this.$bus.bind("highlight_part", part => {
