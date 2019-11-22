@@ -29,6 +29,7 @@
 .modal {
     bottom: 0px;
     left: 0px;
+    line-height: initial;
     opacity: 1;
     position: fixed;
     right: 0px;
