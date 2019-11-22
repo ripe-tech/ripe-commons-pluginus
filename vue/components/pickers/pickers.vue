@@ -308,8 +308,8 @@
 .button-scroll-right {
     background: url("~./assets/arrow-right.svg") right center no-repeat,
         linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0));
-    right: 0;
-    top: 0;
+    right: 0px;
+    top: 0px;
 }
 
 .button-scroll-left {
@@ -344,7 +344,7 @@ body.mobile .button-scroll-materials {
 }
 
 .button-scroll-colors-left {
-    left: 0;
+    left: 0px;
 }
 
 body.mobile .button-scroll-colors {
@@ -353,10 +353,10 @@ body.mobile .button-scroll-colors {
 }
 
 .restrictions_alert .message-restrictions_alert-container .message-restrictions_alert.visible {
-    left: 0;
+    left: 0px;
     max-width: 55%;
     position: absolute;
-    right: 0;
+    right: 0px;
     top: 90px;
     transform: translateY(0px);
     z-index: 2;
