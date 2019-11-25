@@ -210,6 +210,9 @@ export const personalization = {
             this.form = form;
             this.hidden = false;
 
+            // copies the provided options from the post config as the initial options
+            // for the initials and then triggers the enable operation on the
+            // personalization, effectively enabling personalization on the configurator
             this.initialOptions = Object.assign({}, options);
             this.enablePersonalization();
         });
