@@ -208,10 +208,10 @@ export const personalization = {
             // sets the form for the current component, sets it as enable and hidden
             // by default (initial state)
             this.form = form;
-            this.enabled = false;
             this.hidden = false;
 
             this.initialOptions = Object.assign({}, options);
+            this.enablePersonalization();
         });
 
         this.$bus.bind("initials_extra", initialsExtra => {
