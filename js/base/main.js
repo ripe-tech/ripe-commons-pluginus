@@ -169,6 +169,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("initials_extra", (...args) =>
             this.owner.trigger("initials_extra", ...args)
         );
+
+        this.ripe.bind("post_parts", (...args) => this.owner.trigger("post_parts", ...args));
     }
 
     _getExtraComponents() {
@@ -247,6 +249,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // pipes the (plugin) manager events to the vue bus
                 manager.bind("pre_config", (...args) => this.$bus.trigger("pre_config", ...args));
+                manager.bind("post_parts", (...args) => this.$bus.trigger("post_parts", ...args));
                 manager.bind("config", (...args) => this.$bus.trigger("config", ...args));
                 manager.bind("post_config", (...args) => this.$bus.trigger("post_config", ...args));
                 manager.bind("selected_part", (...args) =>
@@ -274,6 +277,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     self.ripe.setInitialsExtra(initialsExtra);
                 });
                 this.$bus.bind("undo", () => self.ripe.undo());
+                this.$bus.bind("redo", () => self.ripe.redo());
                 this.$bus.bind("start_over", () => self.ripe.undoAll());
 
                 // listens for any model change and triggers the
