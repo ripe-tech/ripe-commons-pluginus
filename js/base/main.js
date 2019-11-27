@@ -249,7 +249,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // pipes the (plugin) manager events to the vue bus
                 manager.bind("pre_config", (...args) => this.$bus.trigger("pre_config", ...args));
-                manager.bind("post_parts", (...args) => this.$bus.trigger("post_parts", ...args));
                 manager.bind("config", (...args) => this.$bus.trigger("config", ...args));
                 manager.bind("post_config", (...args) => this.$bus.trigger("post_config", ...args));
                 manager.bind("selected_part", (...args) =>
@@ -260,6 +259,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 manager.bind("initials_extra", (...args) =>
                     this.$bus.trigger("initials_extra", ...args)
                 );
+                manager.bind("post_parts", (...args) => this.$bus.trigger("post_parts", ...args));
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
