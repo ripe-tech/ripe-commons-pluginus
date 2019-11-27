@@ -205,16 +205,15 @@ export const personalization = {
             // proper computation of computed values
             this.counter += 1;
 
-            // sets the form for the current component, sets it as enable and hidden
-            // by default (initial state)
+            // sets the form for the current component, then removes the hidden flag
+            // and enables the personalization (button for personalization)
             this.form = form;
             this.hidden = false;
+            this.enablePersonalization();
 
             // copies the provided options from the post config as the initial options
-            // for the initials and then triggers the enable operation on the
-            // personalization, effectively enabling personalization on the configurator
+            // for the initials, to be used for context based initials settings
             this.initialOptions = Object.assign({}, options);
-            this.enablePersonalization();
         });
 
         this.$bus.bind("initials_extra", initialsExtra => {
