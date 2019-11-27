@@ -156,6 +156,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("parts", parts => this.store.commit("parts", parts));
         this.ripe.bind("price", price => this.store.commit("price", price));
 
+        // forwards the parts events to the global bus
+        this.ripe.bind("pre_parts", (...args) => this.owner.trigger("pre_parts", ...args));
+        this.ripe.bind("parts", (...args) => this.owner.trigger("parts", ...args));
+        this.ripe.bind("post_parts", (...args) => this.owner.trigger("post_parts", ...args));
+
         // forwards the config events to the global bus
         this.ripe.bind("pre_config", (...args) => this.owner.trigger("pre_config", ...args));
         this.ripe.bind("config", (...args) => this.owner.trigger("config", ...args));
@@ -169,8 +174,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("initials_extra", (...args) =>
             this.owner.trigger("initials_extra", ...args)
         );
-
-        this.ripe.bind("post_parts", (...args) => this.owner.trigger("post_parts", ...args));
     }
 
     _getExtraComponents() {
@@ -248,6 +251,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 });
 
                 // pipes the (plugin) manager events to the vue bus
+                manager.bind("pre_parts", (...args) => this.$bus.trigger("pre_parts", ...args));
+                manager.bind("parts", (...args) => this.$bus.trigger("parts", ...args));
+                manager.bind("post_parts", (...args) => this.$bus.trigger("post_parts", ...args));
                 manager.bind("pre_config", (...args) => this.$bus.trigger("pre_config", ...args));
                 manager.bind("config", (...args) => this.$bus.trigger("config", ...args));
                 manager.bind("post_config", (...args) => this.$bus.trigger("post_config", ...args));
@@ -259,7 +265,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 manager.bind("initials_extra", (...args) =>
                     this.$bus.trigger("initials_extra", ...args)
                 );
-                manager.bind("post_parts", (...args) => this.$bus.trigger("post_parts", ...args));
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
