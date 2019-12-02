@@ -1,6 +1,6 @@
 <template>
     <div class="configurator-container">
-        <loader class="loader" v-if="loading" />
+        <loader class="loader" v-bind:loader="'ball-scale-multiple'" v-if="loading" />
         <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError">
@@ -50,9 +50,9 @@
 }
 
 .loader {
-    left: calc(50% - 28px);
+    left: calc(50%);
     position: absolute;
-    top: calc(50% - 11px);
+    top: calc(50%);
 }
 
 .holder {
