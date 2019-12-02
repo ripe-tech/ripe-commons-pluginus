@@ -164,7 +164,10 @@ export const configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.$ripe.bindConfigurator(this.$refs.configurator, this.mergedOptions);
+        this.configurator = this.$ripe.bindConfigurator(
+            this.$refs.configurator,
+            this.mergedOptions
+        );
 
         this.configurator.bind("changed_frame", frame => {
             // sets the frame changed flag and then updates
