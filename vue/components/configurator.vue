@@ -104,7 +104,6 @@ export const configurator = {
             default: function() {
                 return {
                     duration: 250,
-                    useMasks: true,
                     configAnimate: false
                 };
             }
@@ -125,6 +124,10 @@ export const configurator = {
         timeoutHolder: {
             type: Number,
             default: 5000
+        },
+        useMasks: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
@@ -136,6 +139,9 @@ export const configurator = {
         },
         hideHolder() {
             return this.frameChanged || this.holderTimedOut;
+        },
+        mergedOptions() {
+            return { ...this.options, useMasks: this.useMasks };
         }
     },
     data: function() {
@@ -158,7 +164,10 @@ export const configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.$ripe.bindConfigurator(this.$refs.configurator, this.options);
+        this.configurator = this.$ripe.bindConfigurator(
+            this.$refs.configurator,
+            this.mergedOptions
+        );
 
         this.configurator.bind("changed_frame", frame => {
             // sets the frame changed flag and then updates
@@ -231,6 +240,11 @@ export const configurator = {
     watch: {
         size(size) {
             this.resize(size);
+        },
+        useMasks() {
+            if (!this.configurator) return;
+            if (this.useMasks) this.configurator.enableMasks();
+            else this.configurator.disableMasks();
         }
     },
     methods: {
