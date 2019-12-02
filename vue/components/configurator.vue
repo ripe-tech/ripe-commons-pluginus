@@ -243,7 +243,7 @@ export const configurator = {
         },
         useMasks() {
             if (!this.configurator) return;
-            this.configurator.setUseMasks(this.useMasks);
+            this.useMasks ? this.configurator.useMasks() : this.configurator.noMasks();
         }
     },
     methods: {
