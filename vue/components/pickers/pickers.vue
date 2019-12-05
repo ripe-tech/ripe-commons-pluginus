@@ -749,7 +749,7 @@ export const pickers = {
         materialColors(material) {
             const colors = [];
             let index = 0;
-            const materialColors = this.materialOptions[material];
+            const materialColors = this.materialOptions[material] || [];
             for (const color of materialColors) {
                 colors.push({
                     material: material,
