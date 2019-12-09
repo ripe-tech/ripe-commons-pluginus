@@ -82,7 +82,7 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         }
         href =
             Array.from(query.entries()).length > 0
-                ? "?" + decodeURIComponent(query.toString())
+                ? "?" + query.toString()
                 : "";
         return href;
     }
