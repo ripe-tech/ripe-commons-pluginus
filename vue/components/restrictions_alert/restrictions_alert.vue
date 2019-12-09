@@ -67,11 +67,6 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     text-decoration: underline;
     user-select: none;
 }
-
-.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .button:hover {
-    background: #ffffff;
-    color: #151515;
-}
 </style>
 
 <script>
