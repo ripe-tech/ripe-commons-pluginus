@@ -17,13 +17,14 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
     }
 
     updateQuery(model) {
-        const href = this._generateQuery(model);
+        const query = this._generateQuery(model, false);
+        const href = query ? "?" + query : "";
         window.history.replaceState({}, null, href);
     }
 
-    _generateQuery(model) {
-        let href = window.location.search;
-        const query = new URLSearchParams(href);
+    _generateQuery(model, decode = true) {
+        const search = window.location.search;
+        const query = new URLSearchParams(search);
         const parts = model.parts || {};
 
         if (model.brand) query.set("brand", model.brand);
@@ -80,11 +81,9 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
             const partQ = `${part}:${value.material}:${value.color}`;
             query.append("p", partQ);
         }
-        href =
-            Array.from(query.entries()).length > 0
-                ? "?" + query.toString()
-                : "";
-        return href;
+
+        const queryS = query.toString();
+        return decode ? decodeURIComponent(queryS) : queryS;
     }
 }
 
