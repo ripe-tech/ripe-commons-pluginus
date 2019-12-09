@@ -28,7 +28,7 @@
 
 <style scoped>
 .initials-input {
-    border-bottom: solid 1px #9b9b9b;
+    border-bottom: 1px solid #d0d0d0;
     font-size: 25px;
     height: 40px;
     letter-spacing: 5px;
@@ -41,7 +41,7 @@
 }
 
 .initials-input.active {
-    border-bottom: solid 1px #454545;
+    border-bottom: 1px solid #2d2d2d;
 }
 
 .initials-labels {
@@ -54,6 +54,7 @@
     font-size: 15px;
     margin: 30px 0px 30px 0px;
     user-select: none;
+    vertical-align: top;
 }
 </style>
 

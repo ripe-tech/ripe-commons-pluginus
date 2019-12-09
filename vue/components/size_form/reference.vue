@@ -66,7 +66,7 @@
 }
 
 .size .size-selector .genders {
-    border-bottom: solid 1px #e9eaee;
+    border-bottom: 1px solid #e9eaee;
     font-size: 0px;
     height: 70px;
 }
