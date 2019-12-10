@@ -54,7 +54,6 @@
     font-size: 15px;
     margin: 30px 0px 30px 0px;
     user-select: none;
-    vertical-align: top;
 }
 </style>
 
