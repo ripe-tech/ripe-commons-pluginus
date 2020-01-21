@@ -1,5 +1,6 @@
 <template>
-    <div class="keyboard">
+    <div class="keyboard" v-bind:class="classes">
+        <global-events v-on:keydown="keyPressedDevice" />
         <div class="keyboard-keys">
             <div class="keyboard-row" v-for="(row, index) in parsedKeys" v-bind:key="index">
                 <div
@@ -30,6 +31,14 @@
     margin-bottom: 30px;
     padding: 20px 20px 20px 20px;
     text-align: center;
+}
+
+.keyboard.keyboard-tablet {
+    display: none;
+}
+
+body.tablet .keyboard.keyboard-tablet {
+    display: block;
 }
 
 body.tablet .keyboard,
@@ -136,6 +145,14 @@ export const keyboard = {
         singleChoice: {
             type: Boolean,
             default: false
+        },
+        allowKeyboardDevice: {
+            type: Boolean,
+            default: true
+        },
+        tabletOnly: {
+            type: Boolean,
+            default: false
         }
     },
     data: function() {
@@ -144,6 +161,11 @@ export const keyboard = {
         };
     },
     computed: {
+        classes() {
+            return {
+                "keyboard-tablet": this.tabletOnly
+            };
+        },
         parsedKeys() {
             return this.keys.map(row =>
                 row.map(key => {
@@ -155,6 +177,15 @@ export const keyboard = {
         }
     },
     methods: {
+        keyPressedDevice(event) {
+            const key = event.key;
+
+            if (key === "Backspace") this.$emit("key-pressed", { name: "backspace", value: "backspace" });
+
+            if (!(key >= "a" && key <= "z") && !(key >= "0" && key <= "9")) return;
+
+            this.$emit("key-pressed", { type: "alphanumeric", name: key, value: key });
+        },
         keyPressed(key) {
             let activeKeys = this.activeKeys.slice(0);
             const index = activeKeys.indexOf(key.name);

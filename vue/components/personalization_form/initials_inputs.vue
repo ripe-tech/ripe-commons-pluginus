@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="initials-input-container">
         <p
             v-bind:data-group="group"
             class="initials-input"
