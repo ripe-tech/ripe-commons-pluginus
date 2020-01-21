@@ -116,6 +116,12 @@ body.mobile .modal > .modal-container {
     position: fixed;
 }
 
+body.tablet .modal > .modal-container > .modal-header,
+body.mobile .modal > .modal-container > .modal-header {
+    margin-left: -10px;
+    margin-top: -35px;
+}
+
 .modal > .modal-container > .modal-header > .button.button-close {
     background-color: #000000;
     color: #ffffff;
