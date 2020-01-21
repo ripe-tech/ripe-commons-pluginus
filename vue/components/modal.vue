@@ -14,11 +14,18 @@
             <global-events v-on:keydown.esc="hide" />
             <div class="modal-overlay" v-on:click="overlayLeave && hide()" />
             <div class="modal-container">
-                <div class="button button-close" v-on:click="hide()">
-                    <img src="~./assets/close.svg" />
+                <div class="modal-header">
+                    <slot name="header">
+                        <div class="button button-close" v-on:click="hide()">
+                            <img src="~./assets/close.svg" />
+                        </div>
+                    </slot>
                 </div>
                 <div class="modal-content">
                     <slot />
+                </div>
+                <div class="modal-footer">
+                    <slot name="footer" />
                 </div>
             </div>
         </div>
@@ -27,7 +34,10 @@
 
 <style scoped>
 .modal {
+    align-items: center;
     bottom: 0px;
+    display: flex;
+    justify-content: center;
     left: 0px;
     line-height: initial;
     opacity: 1;
@@ -67,13 +77,10 @@
     box-shadow: 0px 0px 12px #2d2d2d;
     display: inline-block;
     max-height: 80%;
-    opacity: 1;
     overflow-y: auto;
     padding: 40px 40px 40px 40px;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: opacity 0.125s ease-out 0.125s, transform 0.25s ease-in-out 0.125s;
+    transition: opacity 0.25s ease-out, transform 0.2s ease-out;
+    z-index: 1;
 }
 
 body.tablet .modal > .modal-container,
@@ -84,54 +91,51 @@ body.mobile .modal > .modal-container {
     padding: 20px 10px 20px 10px;
 }
 
-.modal.fade-enter > .modal-container,
-.modal.fade-leave-to > .modal-container {
+.modal.fade-enter > .modal-container {
     opacity: 0;
-    transform: translateY(-48%);
+    transform: translateY(5%);
 }
 
 .modal.fade-enter-to > .modal-container {
     opacity: 1;
-    transform: translateY(-50%);
+    transform: translateY(0%);
 }
 
-.modal > .modal-container > .button.button-close {
+.modal.fade-leave-active > .modal-container {
+    transition: opacity 0.15s ease-out, transform 0.1s ease-out;
+}
+
+.modal.fade-leave-to > .modal-container {
+    opacity: 0;
+    transform: scale(0.97);
+}
+
+.modal > .modal-container > .modal-header {
+    margin-left: -40px;
+    margin-top: -40px;
+    position: fixed;
+}
+
+.modal > .modal-container > .modal-header > .button.button-close {
     background-color: #000000;
     color: #ffffff;
     cursor: pointer;
     display: none;
-    left: 0px;
     margin: auto;
     padding: 5px 23px 5px 23px;
-    position: absolute;
     text-align: left;
-    top: 0px;
 }
 
-.modal > .modal-container > .button.button-close > img {
+.modal > .modal-container > .modal-header > .button.button-close > img {
     height: 25px;
     margin: auto;
     vertical-align: middle;
     width: 25px;
 }
 
-body.mobile .modal > .modal-container > .button.button-close img {
+body.mobile .modal > .modal-container > .modal-header > .button.button-close img {
     height: 15px;
     width: 15px;
-}
-
-.modal .modal-content {
-    opacity: 1;
-    transition: opacity 0.25s ease-in-out 0.125s;
-}
-
-.modal.fade-enter .modal-content,
-.modal.fade-leave-to .modal-content {
-    opacity: 0;
-}
-
-.modal.fade-enter-to .modal-content {
-    opacity: 1;
 }
 
 .modal .modal-content ::v-deep .title {
