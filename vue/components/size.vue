@@ -174,17 +174,13 @@ export const size = {
             this.hideModal();
         },
         clear() {
-            this.form && this.$refs.form.reset();
+            if (this.form) this.$refs.form.reset();
         },
         modalBeforeEnter() {
             this.$bus.trigger("open_size", this.closeCallback);
             this.$refs.form.show();
         },
         modalBeforeLeave() {
-            this.$bus.trigger("close_size");
-            this.$refs.form.hide();
-        },
-        modalHidden() {
             // restores the original state (state at the time of the modal
             // opening operation) to the modal so that the modal is restored
             this.originalState
@@ -192,6 +188,12 @@ export const size = {
                 : this.$refs.form.reset();
             this.saveSizeText();
 
+            // triggers the close size event and the hides the form of the
+            // managed by the "external" plugin
+            this.$bus.trigger("close_size");
+            this.$refs.form.hide();
+        },
+        modalHidden() {
             // in case the allow apply flag is set and a close callback
             // exists calls it exactly one time
             if (this.allowApply && this.closeCallback) this.closeCallback();
