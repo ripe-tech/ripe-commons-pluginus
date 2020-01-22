@@ -149,10 +149,10 @@ export const size = {
         });
     },
     mounted: function() {
-        this.saveSizeText();
+        this.updateSizeText();
 
         this.$bus.bind("refresh", () => {
-            this.saveSizeText();
+            this.updateSizeText();
         });
         this.$bus.bind("size", state => {
             if (
@@ -164,7 +164,7 @@ export const size = {
             }
             this.state = state;
             this.$refs.form.setState(this.state);
-            this.saveSizeText();
+            this.updateSizeText();
         });
     },
     methods: {
@@ -186,7 +186,7 @@ export const size = {
             this.originalState
                 ? this.$refs.form.setState(this.originalState)
                 : this.$refs.form.reset();
-            this.saveSizeText();
+            this.updateSizeText();
 
             // triggers the close size event and the hides the form of the
             // managed by the "external" plugin
@@ -212,9 +212,9 @@ export const size = {
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
             !this.visible && this.apply();
-            !this.visible && this.saveSizeText();
+            !this.visible && this.updateSizeText();
         },
-        saveSizeText() {
+        updateSizeText() {
             this.sizeTextState = this.sizeText;
         }
     }
