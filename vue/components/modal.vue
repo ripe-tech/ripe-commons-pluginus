@@ -10,10 +10,14 @@
         v-on:after-leave="afterLeave"
         v-on:leave-cancelled="leaveCancelled"
     >
-        <div v-bind:class="'modal modal-' + name" v-show="visible" v-bind:id="'modal-' + name">
+        <div
+            v-bind:class="'modal' + (name ? ' modal-' + name : '')"
+            v-show="visible"
+            v-bind:id="name ? 'modal-' + name : null"
+        >
             <global-events v-on:keydown.esc="hide" />
             <div class="modal-overlay" v-on:click="overlayLeave && hide()" />
-            <div class="modal-container">
+            <div class="modal-container" ref="container">
                 <div class="modal-header">
                     <slot name="header">
                         <div class="button button-close" v-on:click="hide()">
@@ -206,6 +210,15 @@ export const modal = {
         },
         overlayLeave() {
             return this.options.overlayLeave;
+        }
+    },
+    watch: {
+        visible(value, previous) {
+            if (!previous && value) {
+                this.$nextTick(() => {
+                    this.$refs.container.scrollTop = 0;
+                });
+            }
         }
     },
     methods: {
