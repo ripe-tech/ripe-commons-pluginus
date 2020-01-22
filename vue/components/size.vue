@@ -5,7 +5,10 @@
             v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal()"
         >
-            <span>{{ buttonText }}</span>
+            <span class="button-text">
+                <div class="prefix">{{ buttonTextPrefix }}</div>
+                <div class="size" v-show="sizeText">{{ buttonTextSize }}</div>
+            </span>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -42,6 +45,11 @@
     pointer-events: none;
 }
 
+.size > .button-size > .button-text > .prefix,
+.size > .button-size > .button-text > .size {
+    display: inline-block;
+}
+
 .size .modal.modal-size .modal-container {
     padding: 40px 80px 40px 80px;
 }
@@ -57,7 +65,8 @@ export const size = {
             enabled: false,
             form: null,
             sizeText: "",
-            buttonText: "",
+            buttonTextPrefix: "",
+            buttonTextSize: "",
             state: {},
             counter: 0,
             closeCallback: null
@@ -201,9 +210,10 @@ export const size = {
             !this.visible && this.updateButtonText();
         },
         updateButtonText() {
-            this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
+            this.buttonTextPrefix = this.sizeText
+                ? this.locale("ripe_commons.size.size") + " - "
                 : this.locale("ripe_commons.size.select_size");
+            this.buttonTextSize = this.sizeText || "";
         }
     }
 };
