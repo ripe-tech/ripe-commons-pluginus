@@ -58,7 +58,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // reads and parses the options from the URL
         // initializes the app state accordingly
-        this._loadOptions();
+        await this._loadOptions();
 
         // initializes the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
@@ -77,7 +77,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
-        this._loadVue();
+        await this._loadVue();
         this.app = this._initVueApp(this.appElement);
 
         // in case there's a valid product id defined that we should resolve
@@ -191,7 +191,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         }
     }
 
-    _loadVue() {
+    async _loadVue() {
         // register the vue components so that they can initialized
         // from the templates, only after this call can the templates
         // use these components safely
@@ -221,7 +221,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.component("global-events", GlobalEvents);
     }
 
-    _loadOptions(validate = true) {
+    async _loadOptions(validate = true) {
         throw new Error("_loadOptions is not implemented.");
     }
 
