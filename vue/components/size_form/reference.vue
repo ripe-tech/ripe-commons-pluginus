@@ -164,9 +164,12 @@
     line-height: 60px;
     margin: 0px 10px 8px 10px;
     min-width: 60px;
+    overflow: hidden;
     padding: 0px 6px 0px 6px;
     text-align: center;
+    text-overflow: ellipsis;
     vertical-align: top;
+    white-space: nowrap;
 }
 
 .size .size-selector .sizes .button.button-size.active,
