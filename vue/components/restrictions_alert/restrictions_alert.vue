@@ -61,7 +61,7 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     cursor: pointer;
     display: flex;
     float: right;
-    font-weight: bold;
+    font-weight: 600;
     margin-left: 20px;
     padding: 10px 10px 10px 10px;
     text-decoration: underline;

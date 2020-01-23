@@ -75,7 +75,7 @@
 .holder-second-label {
     color: #afafaf;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
@@ -83,7 +83,7 @@
 .holder-label {
     color: #afafaf;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 600;
     letter-spacing: 2px;
     margin-bottom: -55px;
     text-transform: uppercase;
