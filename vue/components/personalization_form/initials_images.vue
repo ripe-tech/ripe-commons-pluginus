@@ -20,6 +20,7 @@
 .initials-images .initials-image {
     cursor: pointer;
     height: 600px;
+    transition: box-shadow 0.125s ease-in;
     width: auto;
 }
 
@@ -28,6 +29,10 @@ body.tablet .initials-images .initials-image {
     height: auto;
     max-width: 600px;
     width: 100%;
+}
+
+.initials-images .initials-image.active {
+    box-shadow: 0px 0px 8px rgba(64, 64, 64, 0.6);
 }
 </style>
 

@@ -48,22 +48,29 @@
 </style>
 
 <script>
-import { modalMixin } from "../mixins";
+import { partMixin, modalMixin } from "../mixins";
 
 export const size = {
-    mixins: [modalMixin],
+    mixins: [partMixin, modalMixin],
     data: function() {
         return {
             enabled: false,
             form: null,
             sizeText: "",
-            buttonText: "",
+            sizeTextState: "",
             state: {},
             counter: 0,
             closeCallback: null
         };
     },
     computed: {
+        buttonText() {
+            return this.sizeTextState
+                ? (this.isMobileWidth() || this.isTabletWidth()
+                      ? ""
+                      : this.locale("ripe_commons.size.size") + " - ") + this.sizeTextState
+                : this.locale("ripe_commons.size.select_size");
+        },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
         },
@@ -142,10 +149,10 @@ export const size = {
         });
     },
     mounted: function() {
-        this.updateButtonText();
+        this.updateSizeText();
 
         this.$bus.bind("refresh", () => {
-            this.updateButtonText();
+            this.updateSizeText();
         });
         this.$bus.bind("size", state => {
             if (
@@ -157,7 +164,7 @@ export const size = {
             }
             this.state = state;
             this.$refs.form.setState(this.state);
-            this.updateButtonText();
+            this.updateSizeText();
         });
     },
     methods: {
@@ -167,22 +174,29 @@ export const size = {
             this.hideModal();
         },
         clear() {
-            this.form && this.$refs.form.reset();
+            if (this.form) this.$refs.form.reset();
         },
         modalBeforeEnter() {
             this.$bus.trigger("open_size", this.closeCallback);
             this.$refs.form.show();
         },
         modalBeforeLeave() {
+            // restores the original state (state at the time of the modal
+            // opening operation) to the modal so that the modal is restored
+            this.originalState
+                ? this.$refs.form.setState(this.originalState)
+                : this.$refs.form.reset();
+            this.updateSizeText();
+
+            // triggers the close size event and the hides the form of the
+            // managed by the "external" plugin
             this.$bus.trigger("close_size");
             this.$refs.form.hide();
         },
         modalHidden() {
-            this.originalState
-                ? this.$refs.form.setState(this.originalState)
-                : this.$refs.form.reset();
-            this.updateButtonText();
-            this.closeCallback && this.allowApply && this.closeCallback();
+            // in case the allow apply flag is set and a close callback
+            // exists calls it exactly one time
+            if (this.allowApply && this.closeCallback) this.closeCallback();
             this.closeCallback = null;
         },
         enableSize() {
@@ -198,12 +212,10 @@ export const size = {
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
             !this.visible && this.apply();
-            !this.visible && this.updateButtonText();
+            !this.visible && this.updateSizeText();
         },
-        updateButtonText() {
-            this.buttonText = this.sizeText
-                ? this.locale("ripe_commons.size.size") + " - " + this.sizeText
-                : this.locale("ripe_commons.size.select_size");
+        updateSizeText() {
+            this.sizeTextState = this.sizeText;
         }
     }
 };
