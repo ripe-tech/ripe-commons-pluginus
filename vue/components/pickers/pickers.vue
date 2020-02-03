@@ -268,7 +268,6 @@
 
 .pickers .colors-container .color:hover > .swatch,
 .pickers .colors-container .color.active > .swatch {
-    border-width: 0px;
     transform: scale(1.13, 1.13);
 }
 
