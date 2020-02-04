@@ -148,6 +148,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
             });
+            this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
         });

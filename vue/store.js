@@ -24,6 +24,7 @@ export const store = {
         size: {},
         currentFrame: null,
         error: null,
+        hasCustomization: false,
         hasPersonalization: false,
         hasSize: false
     },
@@ -96,6 +97,9 @@ export const store = {
         },
         error(state, error) {
             state.error = error;
+        },
+        hasCustomization(state, hasCustomization) {
+            state.hasCustomization = hasCustomization;
         },
         hasPersonalization(state, hasPersonalization) {
             state.hasPersonalization = hasPersonalization;
