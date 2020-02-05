@@ -1,8 +1,12 @@
 <template>
-    <div class="personalization" v-bind:class="[brand, model, { disabled: !enabled }]">
+    <div
+        class="personalization"
+        v-bind:class="[brand, model, { disabled: !enabled }]"
+        v-show="!hidden"
+    >
         <div
             class="button button-color button-personalization"
-            v-bind:class="{ disabled: !enabled, show: !hidden }"
+            v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal()"
         >
             <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
@@ -123,6 +127,12 @@ import { modalMixin } from "../mixins";
 
 export const personalization = {
     mixins: [modalMixin],
+    props: {
+        pedantic: {
+            type: Boolean,
+            default: false
+        }
+    },
     data: function() {
         return {
             hidden: true,
@@ -190,9 +200,14 @@ export const personalization = {
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
 
+            // verifies that at least one plugin is fond that is able to handle
+            // the requirements for the current configuration scenario
             if (!plugins.length) {
                 this.hidden = true;
-                throw Error(`No personalization component found for ${this.brand}`);
+                if (this.pedantic) {
+                    throw Error(`No personalization component found for ${this.brand}`);
+                }
+                return;
             }
 
             // retrieves the first plugin (best candidate) and retrieves its

@@ -100,7 +100,6 @@ export const configurator = {
     props: {
         options: {
             type: Object,
-            required: false,
             default: function() {
                 return {
                     duration: 250,
@@ -110,8 +109,7 @@ export const configurator = {
         },
         initialFrame: {
             type: String,
-            default: null,
-            required: false
+            default: null
         },
         size: {
             type: Number,

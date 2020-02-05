@@ -13,6 +13,14 @@ const modalMixin = {
         this.modalComponent = this.$children.find(
             child => child.constructor.options.name === "modal"
         );
+
+        // in case it was not possible to found a valid modal under
+        // the direct children list then an exception is raised as
+        // the modal mixin would not work under such conditions
+        if (!this.modalComponent) {
+            throw Error("No modal component found in element children");
+        }
+
         this.modalComponent.options = this.modalOptions;
 
         this.modalComponent.$on("hide", this.hideModal);
