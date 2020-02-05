@@ -92,7 +92,7 @@
                             v-bind:class="{
                                 active: isSelected(colorOption),
                                 optional: isOptional(activePart),
-                                no_option: colorOption.color.startsWith('no_')
+                                'no-option': colorOption.color.startsWith('no_')
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + '_' + colorOption.color"
@@ -272,7 +272,7 @@
     transform: scale(1.13, 1.13);
 }
 
-.pickers .colors-container .color.active.no_option > .swatch {
+.pickers .colors-container .color.active.no-option > .swatch {
     border-width: 2px;
 }
 
