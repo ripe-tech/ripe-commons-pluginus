@@ -67,12 +67,12 @@
     bottom: 5px;
     pointer-events: none;
     position: absolute;
-    transition: opacity 1s ease;
     width: 100%;
 }
 
 .holder.disappear {
     opacity: 0;
+    transition: opacity 1s ease;
 }
 
 .holder-image {
