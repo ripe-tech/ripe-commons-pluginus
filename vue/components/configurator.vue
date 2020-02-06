@@ -35,8 +35,16 @@
     cursor: grab;
 }
 
+.configurator-wrapper .configurator[data-frames="1"] {
+    cursor: default;
+}
+
 .configurator-wrapper .configurator.drag {
     cursor: grabbing;
+}
+
+.configurator-wrapper .configurator.drag[data-frames="1"] {
+    cursor: default;
 }
 
 .configurator-wrapper .configurator.highlight {
