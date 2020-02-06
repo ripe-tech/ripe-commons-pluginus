@@ -144,15 +144,26 @@ export const configurator = {
     },
     data: function() {
         return {
+            /**
+             * The frame that is currently being shown in the
+             * configurator.
+             */
             frame: this.initialFrame,
+
+            /**
+             * Flag that controls if the initial loading process for
+             * the modal in the configurator is still running.
+             */
             loading: true,
+
             /**
              * Listener flag that represents if a rotation have been made.
              */
             frameChanged: false,
+
             /**
              * Indicates whether the time accepted for the
-             * holder to appear on the display has "timedout".
+             * holder to appear on the display has "timed-out".
              */
             holderTimedOut: false
         };
