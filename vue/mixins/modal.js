@@ -10,15 +10,17 @@ const modalMixin = {
         };
     },
     mounted: function() {
+        // tries to find the first modal component that is a child
+        // of the current component (if any)
         this.modalComponent = this.$children.find(
             child => child.constructor.options.name === "modal"
         );
 
-        // in case it was not possible to found a valid modal under
+        // in case it was not possible to find a valid modal under
         // the direct children list then an exception is raised as
         // the modal mixin would not work under such conditions
         if (!this.modalComponent) {
-            throw Error("No modal component found in element children");
+            throw Error("No modal component found in component children");
         }
 
         this.modalComponent.options = this.modalOptions;
