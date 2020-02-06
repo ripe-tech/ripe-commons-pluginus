@@ -67,7 +67,7 @@
     bottom: 5px;
     pointer-events: none;
     position: absolute;
-    transition: opacity 2s;
+    transition: opacity 1s ease;
     width: 100%;
 }
 
@@ -129,7 +129,7 @@ export const configurator = {
          */
         timeoutHolder: {
             type: Number,
-            default: 5000
+            default: 7500
         },
         useMasks: {
             type: Boolean,
@@ -144,7 +144,7 @@ export const configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return this.frameChanged || this.holderTimedOut;
+            return this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
             return { ...this.options, useMasks: this.useMasks };
@@ -163,6 +163,12 @@ export const configurator = {
              * the modal in the configurator is still running.
              */
             loading: true,
+
+            /**
+             * If the current view is a single frame one, meaning that
+             * no "rotation" should be "applied" to it.
+             */
+            singleFrameView: true,
 
             /**
              * Listener flag that represents if a rotation have been made.
@@ -192,6 +198,11 @@ export const configurator = {
             this.frameChanged = true;
             this.frame = frame;
 
+            // updates the value of the single frame view
+            // variable as the new view may have several frames
+            // or just one and the variable value may change
+            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
+
             // only the visible instance of this component
             // should be sending events it's considered to
             // be the main/master one
@@ -205,6 +216,7 @@ export const configurator = {
             const frame = `${this.configurator.view}-${this.configurator.position}`;
             this.frame = frame;
             this.loading = false;
+            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
             this.$store.commit("current_frame", frame);
         });
 
