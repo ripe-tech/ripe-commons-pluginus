@@ -15,4 +15,10 @@ const setFavicon = function(src) {
     document.head.appendChild(link);
 };
 
-export { getFavicon, setFavicon };
+const waitP = async function(timeout) {
+    await new Promise(resolve => {
+        setTimeout(() => resolve(), timeout);
+    });
+};
+
+export { getFavicon, setFavicon, waitP };
