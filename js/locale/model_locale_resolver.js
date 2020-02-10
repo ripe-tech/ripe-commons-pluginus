@@ -35,7 +35,7 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         value = value.concat(suffixes);
         return this.localeModel(value, {
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue || this._getFallback(color)
         });
     }
 
@@ -50,7 +50,7 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         value = value.concat(suffixes);
         return this.localeModel(value, {
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue || this._getFallback(material)
         });
     }
 
@@ -61,7 +61,7 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         value = value.concat(suffixes);
         return this.localeModel(value, {
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue || this._getFallback(part)
         });
     }
 
@@ -178,6 +178,14 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             permutations.push(`${valueP[0]}.${partsS}${valueP[valueP.length - 1]}`);
         }
         return permutations;
+    }
+
+    _getFallback(value) {
+        const split = value.split(".");
+        const last = split[split.length - 1];
+        return last
+            .split("_")
+            .join(" ");
     }
 }
 
