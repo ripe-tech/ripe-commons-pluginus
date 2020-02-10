@@ -15,16 +15,16 @@
             <ul class="parts-container" ref="partsPicker">
                 <li
                     class="part button button-part"
-                    v-bind:class="{ active: activePart === part }"
+                    v-bind:class="{ active: activePart === part, 'no-part': !isColorSelected(part) }"
                     v-for="(materials, part) in filteredOptions"
                     v-bind:key="part"
                     v-on:click="selectPart(part)"
                 >
                     <p>{{ localeModel(part) }}</p>
-                    <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
-                        <img v-bind:src="partSwatch(part)" />
+                    <div class="swatch">
+                        <img v-bind:src="partSwatch(part)" v-if="isColorSelected(part)" />
                     </div>
-                    <p class="no-part" v-else-if="isOptional(part)">
+                    <p class="no-part" v-if="isOptional(part) && !isColorSelected(part)">
                         {{ localeModel(part, "no_" + part) }}
                     </p>
                 </li>
@@ -139,6 +139,10 @@
     height: 22px;
     overflow: hidden;
     width: 22px;
+}
+
+.pickers .parts-container > .part.no-part > .swatch {
+    display: none;
 }
 
 .pickers .parts-container > .part > .swatch > img {
@@ -678,6 +682,11 @@ export const pickers = {
         },
         selectedColor(part) {
             return this.parts[part];
+        },
+        isColorSelected(part) {
+            const selectedColor = this.selectedColor(part);
+            console.log(selectedColor && selectedColor.color, part, selectedColor);
+            return selectedColor && selectedColor.color;
         },
         isSelected(colorOption) {
             return (
