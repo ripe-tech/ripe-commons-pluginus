@@ -15,12 +15,18 @@
             <ul class="parts-container" ref="partsPicker">
                 <li
                     class="part button button-part"
-                    v-bind:class="{ active: activePart === part }"
+                    v-bind:class="{
+                        active: activePart === part,
+                        optional: isOptional(part),
+                        selected: selectedColor(part) && selectedColor(part).color
+                    }"
                     v-for="(materials, part) in filteredOptions"
                     v-bind:key="part"
                     v-on:click="selectPart(part)"
                 >
-                    <p>{{ localeModel(part) }}</p>
+                    <p class="label">
+                        {{ localeModel(part) }}
+                    </p>
                     <div class="swatch" v-if="selectedColor(part) && selectedColor(part).color">
                         <img v-bind:src="partSwatch(part)" />
                     </div>
@@ -152,7 +158,6 @@
     color: #4d545f;
     line-height: 18px;
     margin: 0px 0px 0px 0px;
-    text-transform: capitalize;
 }
 
 .colors-wrapper {
@@ -217,7 +222,6 @@
 .pickers .colors-container .color > p {
     font-size: 14px;
     margin: 100px 0px 0px 0px;
-    text-transform: capitalize;
     white-space: normal;
 }
 
