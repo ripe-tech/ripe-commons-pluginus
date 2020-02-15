@@ -9,6 +9,12 @@ Initial consumers should include:
 * [RIPE Retail](https://github.com/ripe-tech/ripe-retail)
 * [RIPE White](https://github.com/ripe-tech/ripe-white)
 
+## CI/CD
+
+There should be a Storybook instance continuously deployed under:
+
+* [https://ripe-commons-pluginus-now.platforme.com](https://ripe-commons-pluginus-now.platforme.com)
+
 ## License
 
 RIPE Commons Pluginus Javascript is currently licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/).
