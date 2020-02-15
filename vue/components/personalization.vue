@@ -194,6 +194,9 @@ export const personalization = {
                 return;
             }
 
+            // tries to retrieve the complete set of personalization plugins
+            // that match the requested set of constrains for the new model
+            // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
                 .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
                 .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
