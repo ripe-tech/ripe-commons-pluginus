@@ -128,7 +128,7 @@ body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
 </style>
 
 <script>
-export const keyboard = {
+export const Keyboard = {
     props: {
         keys: {
             type: Array,
@@ -184,5 +184,5 @@ export const keyboard = {
     }
 };
 
-export default keyboard;
+export default Keyboard;
 </script>

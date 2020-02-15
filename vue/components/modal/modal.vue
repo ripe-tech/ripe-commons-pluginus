@@ -191,7 +191,7 @@ body.mobile .modal .modal-content ::v-deep .title {
 </style>
 
 <script>
-export const modal = {
+export const Modal = {
     data: function() {
         return {
             options: {
@@ -255,5 +255,5 @@ export const modal = {
     }
 };
 
-export default modal;
+export default Modal;
 </script>

@@ -1,1 +1,1 @@
-export { keyboard } from "./keyboard.vue";
+export { Keyboard } from "./keyboard.vue";
