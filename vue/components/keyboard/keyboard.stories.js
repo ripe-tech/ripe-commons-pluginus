@@ -8,7 +8,7 @@ storiesOf("Molecules", module)
             keys: {
                 default: object("Keys", [
                     ["A", "B", "C"],
-                    ["D", "E", "😀"]
+                    ["D", "E", "😀", { name: "backspace", value: "backspace" }]
                 ])
             },
             singleChoice: {
