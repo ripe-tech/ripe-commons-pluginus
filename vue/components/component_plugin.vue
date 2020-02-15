@@ -39,7 +39,7 @@ export const componentPlugin = {
     created: async function() {
         const plugin = await this.getPlugin();
         if (!plugin) {
-            throw new Error(); // TODO handle error
+            throw new Error("Not plugin available for requested parameters");
         }
         this.component = await plugin[this.componentGetter]();
     },
