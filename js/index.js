@@ -16,7 +16,7 @@ export * from "./locale";
 export * from "./ui";
 export * from "./util";
 
-function registerPlugins(owner) {
+const registerPlugins = owner => {
     DomLocaleLoaderPlugin.register(owner);
     FileLocaleLoaderPlugin.register(owner);
     LocalePlugin.register(owner);
@@ -25,6 +25,6 @@ function registerPlugins(owner) {
     BaseSizePlugin.register(owner);
     DevicePlugin.register(owner);
     UrlChangerPlugin.register(owner);
-}
+};
 
 export { registerPlugins };
