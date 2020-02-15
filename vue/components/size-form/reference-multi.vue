@@ -1,8 +1,8 @@
 <script>
-import referenceSize from "./reference.vue";
+import Reference from "./reference.vue";
 
 export const ReferenceMulti = {
-    extends: referenceSize,
+    extends: Reference,
     data: function() {
         return {
             availableScales: ["it", "uk", "us", "jp", "ch"]

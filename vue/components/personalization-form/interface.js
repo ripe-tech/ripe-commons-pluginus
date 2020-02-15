@@ -1,6 +1,6 @@
 const notImplementedMessage = method => "Method " + method + " not implemented";
 
-export const formInterface = {
+export const Interface = {
     methods: {
         /**
          * Called just before the modal window containing the personalization
@@ -47,4 +47,4 @@ export const formInterface = {
     }
 };
 
-export default formInterface;
+export default Interface;
