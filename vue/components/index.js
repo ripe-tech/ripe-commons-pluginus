@@ -1,9 +1,10 @@
 import * as personalizationForm from "./personalization-form";
 import * as sizeForm from "./size-form";
 
-export { loader } from "./loader.vue";
-export { keyboard } from "./keyboard";
-export { initialsImages, initialsInputs } from "./personalization-form";
+import { loader } from "./loader.vue";
+import { keyboard } from "./keyboard";
+import { initialsImages, initialsInputs } from "./personalization-form";
+
 export { pickers } from "./pickers";
 export { referenceMulti, reference } from "./size-form";
 export { tab, tabs } from "./tabs";
@@ -16,4 +17,15 @@ export { size } from "./size.vue";
 export { thumbnail } from "./thumbnail.vue";
 export { thumbnails } from "./thumbnails.vue";
 
-export { personalizationForm, sizeForm };
+const install = Vue => {
+    Vue.component("loader", loader);
+    Vue.component("keyboard", keyboard);
+    Vue.component("initials-images", initialsImages);
+    Vue.component("initials-inputs", initialsInputs);
+};
+
+export { loader, keyboard, initialsImages, initialsInputs };
+
+export { install, personalizationForm, sizeForm };
+
+export default install;

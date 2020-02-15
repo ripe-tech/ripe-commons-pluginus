@@ -157,24 +157,20 @@ export const configurator = {
              * configurator.
              */
             frame: this.initialFrame,
-
             /**
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
              */
             loading: true,
-
             /**
              * If the current view is a single frame one, meaning that
              * no "rotation" should be "applied" to it.
              */
             singleFrameView: true,
-
             /**
              * Listener flag that represents if a rotation have been made.
              */
             frameChanged: false,
-
             /**
              * Indicates whether the time accepted for the
              * holder to appear on the display has "timed-out".

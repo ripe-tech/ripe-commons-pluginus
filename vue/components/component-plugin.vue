@@ -9,9 +9,10 @@
  * The abstract component plugin that is meant to receive a certain
  * dynamic component and abstract it under a Vue.js component.
  *
- * This provides a bridge between Pluginus and Vue.js.
+ * This provides a simple bridge between Pluginus and Vue.js.
  */
 export const componentPlugin = {
+    name: "components-plugin",
     props: {
         name: {
             type: String,

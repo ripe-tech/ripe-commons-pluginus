@@ -1,13 +1,10 @@
 import { storiesOf } from "@storybook/vue";
-import { withKnobs } from "@storybook/addon-knobs";
 
-storiesOf("Molecules", module)
-    .addDecorator(withKnobs)
-    .add("Keyboard", () => ({
-        props: {
-        },
-        template: `
+storiesOf("Molecules", module).add("Keyboard", () => ({
+    props: {},
+    template: `
             <div>
+                <keyboard v-bind:keys="[['A', 'B', 'C'], ['D', 'E', '😀']]" />
             </div>
         `
-    }));
+}));

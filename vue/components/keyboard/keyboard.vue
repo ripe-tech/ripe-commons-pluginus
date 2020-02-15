@@ -50,6 +50,7 @@ body.mobile .keyboard {
 .keyboard .keyboard-row .keyboard-key {
     background-color: #e5e5e5;
     border-radius: 4px 4px 4px 4px;
+    cursor: pointer;
     display: inline-block;
     font-size: 28px;
     height: 60px;
