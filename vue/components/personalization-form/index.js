@@ -6,8 +6,4 @@ export const formInterface = Interface;
 export const initialsImages = InitialsImages;
 export const initialsInputs = InitialsInputs;
 
-export {
-    Interface,
-    InitialsImages,
-    InitialsInputs
-};
+export { Interface, InitialsImages, InitialsInputs };

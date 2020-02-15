@@ -49,7 +49,6 @@ export {
     Tabs,
     Thumbnail,
     Thumbnails,
-
     InitialsImages,
     initialsInputs
 };

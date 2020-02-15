@@ -6,8 +6,4 @@ export const formInterface = Interface;
 export const reference = Reference;
 export const referenceMulti = ReferenceMulti;
 
-export {
-    Interface,
-    Reference,
-    ReferenceMulti
-};
+export { Interface, Reference, ReferenceMulti };
