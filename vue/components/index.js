@@ -7,6 +7,7 @@ import { Keyboard } from "./keyboard";
 import { Loader } from "./loader";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
+import { InitialsImages, initialsInputs } from "./personalization-form";
 import { Pickers } from "./pickers";
 import { RestrictionsAlert } from "./restrictions-alert";
 import { Size } from "./size";
@@ -28,6 +29,9 @@ const install = Vue => {
     Vue.component("tabs", Tabs);
     Vue.component("thumbnail", Thumbnail);
     Vue.component("thumbnails", Thumbnails);
+
+    Vue.component("initials-images", InitialsImages);
+    Vue.component("initials-inputs", initialsInputs);
 };
 
 export {
@@ -44,7 +48,10 @@ export {
     Tab,
     Tabs,
     Thumbnail,
-    Thumbnails
+    Thumbnails,
+
+    InitialsImages,
+    initialsInputs
 };
 
 export { personalizationForm, sizeForm };
