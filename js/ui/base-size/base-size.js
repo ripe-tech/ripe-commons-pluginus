@@ -1,5 +1,5 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../../abstract";
-import { baseSize } from "./base-size.vue";
+import { BaseSize } from "./base-size.vue";
 
 class BaseSizePlugin extends RipeCommonsPlugin {
     getCapabilities() {
@@ -11,15 +11,15 @@ class BaseSizePlugin extends RipeCommonsPlugin {
     }
 
     async getComponent() {
-        return baseSize;
+        return BaseSize;
     }
 
     async getComponentSize() {
-        return baseSize;
+        return BaseSize;
     }
 
     async getSizeComponent() {
-        return baseSize;
+        return BaseSize;
     }
 }
 
