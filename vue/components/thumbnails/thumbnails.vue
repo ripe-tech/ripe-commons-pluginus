@@ -10,7 +10,7 @@
 </template>
 
 <script>
-export const thumbnails = {
+export const Thumbnails = {
     computed: {
         thumbnails() {
             return this.$store.getters.thumbnails;
@@ -23,5 +23,5 @@ export const thumbnails = {
     }
 };
 
-export default thumbnails;
+export default Thumbnails;
 </script>

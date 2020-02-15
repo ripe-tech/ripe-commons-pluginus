@@ -48,9 +48,9 @@
 </style>
 
 <script>
-import { partMixin, modalMixin } from "../mixins";
+import { partMixin, modalMixin } from "../../mixins";
 
-export const size = {
+export const Size = {
     mixins: [partMixin, modalMixin],
     data: function() {
         return {
@@ -220,5 +220,5 @@ export const size = {
     }
 };
 
-export default size;
+export default Size;
 </script>

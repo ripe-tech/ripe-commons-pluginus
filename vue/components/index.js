@@ -9,11 +9,10 @@ import { Modal } from "./modal";
 import { Personalization } from "./personalization";
 import { Pickers } from "./pickers";
 import { RestrictionsAlert } from "./restrictions-alert";
+import { Size } from "./size";
 import { Tab, Tabs } from "./tabs";
-
-export { size } from "./size.vue";
-export { thumbnail } from "./thumbnail.vue";
-export { thumbnails } from "./thumbnails.vue";
+import { Thumbnail } from "./thumbnail";
+import { Thumbnails } from "./thumbnails";
 
 const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
@@ -24,11 +23,15 @@ const install = Vue => {
     Vue.component("personalization", Personalization);
     Vue.component("pickers", Pickers);
     Vue.component("restrictions-alert", RestrictionsAlert);
+    Vue.component("size", Size);
     Vue.component("tab", Tab);
     Vue.component("tabs", Tabs);
+    Vue.component("thumbnail", Thumbnail);
+    Vue.component("thumbnails", Thumbnails);
 };
 
 export {
+    install,
     ComponentPlugin,
     Configurator,
     Keyboard,
@@ -37,10 +40,13 @@ export {
     Personalization,
     Pickers,
     RestrictionsAlert,
+    Size,
     Tab,
-    Tabs
+    Tabs,
+    Thumbnail,
+    Thumbnails
 };
 
-export { install, personalizationForm, sizeForm };
+export { personalizationForm, sizeForm };
 
 export default install;
