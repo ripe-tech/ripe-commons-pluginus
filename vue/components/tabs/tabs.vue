@@ -52,7 +52,7 @@
 </style>
 
 <script>
-export const tabs = {
+export const Tabs = {
     props: {
         tabs: {
             type: Array,
@@ -84,5 +84,5 @@ export const tabs = {
     }
 };
 
-export default tabs;
+export default Tabs;
 </script>

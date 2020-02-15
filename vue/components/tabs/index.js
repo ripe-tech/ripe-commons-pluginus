@@ -1,2 +1,2 @@
-export { tab } from "./tab.vue";
-export { tabs } from "./tabs.vue";
+export { Tab } from "./tab.vue";
+export { Tabs } from "./tabs.vue";

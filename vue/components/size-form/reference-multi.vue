@@ -1,7 +1,7 @@
 <script>
 import referenceSize from "./reference.vue";
 
-export const referenceMulti = {
+export const ReferenceMulti = {
     extends: referenceSize,
     data: function() {
         return {
@@ -19,7 +19,7 @@ export const referenceMulti = {
                 // then raises an error as such situation is considered to
                 // be an abnormal one
                 if (!config.sizes) {
-                    reject(new Error("No sizes avaliable for config"));
+                    reject(new Error("No sizes available for config"));
                     return;
                 }
 
@@ -55,5 +55,5 @@ export const referenceMulti = {
     }
 };
 
-export default referenceMulti;
+export default ReferenceMulti;
 </script>

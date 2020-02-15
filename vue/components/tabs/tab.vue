@@ -34,7 +34,7 @@
 </style>
 
 <script>
-export const tab = {
+export const Tab = {
     props: {
         tab: {
             type: Object,
@@ -47,5 +47,5 @@ export const tab = {
     }
 };
 
-export default tab;
+export default Tab;
 </script>
