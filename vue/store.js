@@ -11,6 +11,7 @@ export const store = {
         variant: "",
         description: "",
         flag: "",
+        format: "",
         parts: {},
         config: {},
         defaults: {},
@@ -43,6 +44,9 @@ export const store = {
         },
         flag(state, flag) {
             state.flag = flag;
+        },
+        format(state, format) {
+            state.format = format;
         },
         parts(state, parts) {
             state.parts = Object.assign({}, parts);
@@ -117,6 +121,7 @@ export const store = {
             model: state.model,
             variant: state.variant,
             flag: state.flag,
+            format: state.format,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
