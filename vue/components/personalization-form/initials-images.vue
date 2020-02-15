@@ -32,7 +32,7 @@ body.tablet .initials-images .initials-image {
 </style>
 
 <script>
-export const initialsImages = {
+export const InitialsImages = {
     props: {
         groups: {
             type: Array,
@@ -75,5 +75,5 @@ export const initialsImages = {
     }
 };
 
-export default initialsImages;
+export default InitialsImages;
 </script>

@@ -58,7 +58,7 @@
 </style>
 
 <script>
-export const initialsInputs = {
+export const InitialsInputs = {
     props: {
         groups: {
             type: Array,
@@ -86,5 +86,5 @@ export const initialsInputs = {
     }
 };
 
-export default initialsInputs;
+export default InitialsInputs;
 </script>
