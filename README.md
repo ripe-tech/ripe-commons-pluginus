@@ -11,7 +11,7 @@ Initial consumers should include:
 
 ## Storybook
 
-There's a CI/CD integration running using [now.sh](https://zeit.co) @ [https://ripe-commons-pluginus-now.platforme.com]https://ripe-commons-pluginus-now.platforme.com).
+There's a CI/CD integration running using [now.sh](https://zeit.co) @ [https://ripe-commons-pluginus-now.platforme.com](https://ripe-commons-pluginus-now.platforme.com).
 
 ## License
 
