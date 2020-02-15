@@ -11,7 +11,7 @@
  *
  * This provides a simple bridge between Pluginus and Vue.js.
  */
-export const componentPlugin = {
+export const ComponentPlugin = {
     name: "components-plugin",
     props: {
         name: {
@@ -64,5 +64,5 @@ export const componentPlugin = {
     }
 };
 
-export default componentPlugin;
+export default ComponentPlugin;
 </script>

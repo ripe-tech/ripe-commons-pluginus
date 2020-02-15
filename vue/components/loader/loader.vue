@@ -7,7 +7,7 @@
 <script>
 import "loaders.css";
 
-export const loader = {
+export const Loader = {
     props: {
         loader: {
             type: String,
@@ -26,5 +26,5 @@ export const loader = {
     }
 };
 
-export default loader;
+export default Loader;
 </script>

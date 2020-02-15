@@ -123,9 +123,9 @@ body.mobile .personalization ::v-deep .keyboard.text {
 </style>
 
 <script>
-import { modalMixin } from "../mixins";
+import { modalMixin } from "../../mixins";
 
-export const personalization = {
+export const Personalization = {
     mixins: [modalMixin],
     props: {
         pedantic: {
@@ -402,5 +402,5 @@ export const personalization = {
     }
 };
 
-export default personalization;
+export default Personalization;
 </script>

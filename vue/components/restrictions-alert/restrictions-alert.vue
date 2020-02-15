@@ -70,7 +70,7 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 </style>
 
 <script>
-export const restrictionsAlert = {
+export const RestrictionsAlert = {
     data: function() {
         return {
             visible: false
@@ -91,5 +91,5 @@ export const restrictionsAlert = {
         }
     }
 };
-export default restrictionsAlert;
+export default RestrictionsAlert;
 </script>

@@ -1,1 +1,1 @@
-export { pickers } from "./pickers.vue";
+export { Pickers } from "./pickers.vue";

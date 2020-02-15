@@ -11,7 +11,7 @@
                 <div class="holder-label">
                     {{ "ripe_commons.holder.holder.label" | locale }}
                 </div>
-                <img class="holder-image" src="~./assets/drag_to_rotate-icon.svg" />
+                <img class="holder-image" src="~./assets/drag.svg" />
                 <div class="holder-second-label">
                     {{ "ripe_commons.holder.holder-second-label.label" | locale }}
                 </div>
@@ -104,7 +104,7 @@
  * for forwarding its events to the Vue bus, as well the other way
  * around.
  */
-export const configurator = {
+export const Configurator = {
     props: {
         options: {
             type: Object,
@@ -290,5 +290,5 @@ export const configurator = {
     }
 };
 
-export default configurator;
+export default Configurator;
 </script>
