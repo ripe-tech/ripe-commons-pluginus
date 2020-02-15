@@ -9,11 +9,9 @@ Initial consumers should include:
 * [RIPE Retail](https://github.com/ripe-tech/ripe-retail)
 * [RIPE White](https://github.com/ripe-tech/ripe-white)
 
-## CI/CD
+## Storybook
 
-There should be a Storybook instance continuously deployed under:
-
-* [https://ripe-commons-pluginus-now.platforme.com](https://ripe-commons-pluginus-now.platforme.com)
+There's a CI/CD integration running using [now.sh](https://zeit.co) @ [https://ripe-commons-pluginus-now.platforme.com]https://ripe-commons-pluginus-now.platforme.com).
 
 ## License
 
