@@ -1,3 +1,13 @@
-export { Interface } from "./interface";
-export { InitialsImages } from "./initials-images.vue";
-export { InitialsInputs } from "./initials-inputs.vue";
+import { Interface } from "./interface";
+import { InitialsImages } from "./initials-images.vue";
+import { InitialsInputs } from "./initials-inputs.vue";
+
+export const formInterface = Interface;
+export const initialsImages = InitialsImages;
+export const initialsInputs = InitialsInputs;
+
+export {
+    Interface,
+    InitialsImages,
+    InitialsInputs
+};
