@@ -1,2 +1,2 @@
 export * from "./device";
-export * from "./url_changer";
+export * from "./url-changer";

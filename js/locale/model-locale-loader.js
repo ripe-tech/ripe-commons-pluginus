@@ -1,7 +1,7 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 /**
- * Class that contains the plugin implentation responsible for the
+ * Class that contains the plugin implementation responsible for the
  * retrieval of locales for a certain model.
  *
  * Should attach itself to the proper event `ripe` and then "injects"
