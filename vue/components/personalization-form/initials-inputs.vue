@@ -59,6 +59,7 @@
 
 <script>
 export const InitialsInputs = {
+    name: "initials-inputs",
     props: {
         groups: {
             type: Array,

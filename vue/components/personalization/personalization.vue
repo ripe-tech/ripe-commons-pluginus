@@ -126,6 +126,7 @@ body.mobile .personalization ::v-deep .keyboard.text {
 import { modalMixin } from "../../mixins";
 
 export const Personalization = {
+    name: "personalization",
     mixins: [modalMixin],
     props: {
         pedantic: {

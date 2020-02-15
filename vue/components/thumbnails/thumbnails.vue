@@ -11,6 +11,7 @@
 
 <script>
 export const Thumbnails = {
+    name: "thumbnails",
     computed: {
         thumbnails() {
             return this.$store.getters.thumbnails;

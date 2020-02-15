@@ -192,6 +192,7 @@ body.mobile .modal .modal-content ::v-deep .title {
 
 <script>
 export const Modal = {
+    name: "modal",
     data: function() {
         return {
             options: {

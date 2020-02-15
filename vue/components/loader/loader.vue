@@ -8,6 +8,7 @@
 import "loaders.css";
 
 export const Loader = {
+    name: "loader",
     props: {
         loader: {
             type: String,

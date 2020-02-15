@@ -129,6 +129,7 @@ body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
 
 <script>
 export const Keyboard = {
+    name: "keyboard",
     props: {
         keys: {
             type: Array,

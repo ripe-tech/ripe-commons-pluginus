@@ -105,6 +105,7 @@
  * around.
  */
 export const Configurator = {
+    name: "configurator",
     props: {
         options: {
             type: Object,

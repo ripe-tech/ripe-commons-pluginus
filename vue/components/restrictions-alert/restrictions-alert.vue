@@ -71,6 +71,7 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 
 <script>
 export const RestrictionsAlert = {
+    name: "restrictions-alert",
     data: function() {
         return {
             visible: false

@@ -2,6 +2,7 @@
 import Reference from "./reference.vue";
 
 export const ReferenceMulti = {
+    name: "reference-multi",
     extends: Reference,
     data: function() {
         return {

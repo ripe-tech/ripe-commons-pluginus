@@ -186,6 +186,7 @@
 import formInterface from "./interface.js";
 
 export const Reference = {
+    name: "reference",
     mixins: [formInterface],
     props: {
         referenceScale: {

@@ -51,6 +51,7 @@
 import { partMixin, modalMixin } from "../../mixins";
 
 export const Size = {
+    name: "size",
     mixins: [partMixin, modalMixin],
     data: function() {
         return {

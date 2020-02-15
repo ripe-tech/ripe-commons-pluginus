@@ -35,6 +35,7 @@
 
 <script>
 export const Tab = {
+    name: "tab",
     props: {
         tab: {
             type: Object,

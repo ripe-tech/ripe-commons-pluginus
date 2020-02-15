@@ -33,6 +33,7 @@ body.tablet .initials-images .initials-image {
 
 <script>
 export const InitialsImages = {
+    name: "initials-images",
     props: {
         groups: {
             type: Array,

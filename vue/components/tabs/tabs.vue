@@ -53,6 +53,7 @@
 
 <script>
 export const Tabs = {
+    name: "tabs",
     props: {
         tabs: {
             type: Array,

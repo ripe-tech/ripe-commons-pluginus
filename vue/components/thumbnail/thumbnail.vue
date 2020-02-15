@@ -61,6 +61,7 @@ body.mobile .thumbnail:first-child {
 
 <script>
 export const Thumbnail = {
+    name: "thumbnail",
     props: {
         frame: {
             type: String,
