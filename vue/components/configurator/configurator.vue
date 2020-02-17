@@ -1,6 +1,10 @@
 <template>
     <div class="configurator-container">
-        <loader class="loader" v-bind:loader="'ball-scale-multiple'" v-if="loading" />
+        <div class="loader-container" v-if="loading">
+            <slot name="loader" v-if="loading">
+                <loader class="loader" v-bind:loader="'ball-scale-multiple'" />
+            </slot>
+        </div>
         <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError">
@@ -57,7 +61,7 @@
     cursor: progress;
 }
 
-.loader {
+.loader-container > * {
     left: calc(50%);
     position: absolute;
     top: calc(50%);
