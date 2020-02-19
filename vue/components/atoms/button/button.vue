@@ -16,16 +16,24 @@
 }
 
 .button.button-variant-default {
-    border-radius: 2px 2px 2px 2px;
+    background-color: #e5e5e5;
+    border: none;
+    border-radius: 4px 4px 4px 4px;
     font-family: Lato, "Open Sans", arial, sans-serif;
+    font-size: 16px;
     font-weight: 500;
-    min-width: 120px;
-    padding: 6px 6px 6px 6px;
+    letter-spacing: 0.25px;
+    min-width: 100px;
+    padding: 6px 10px 6px 10px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
 .button:hover {
     border: 1px solid #2d2d2d;
+}
+
+.button.button-variant-default:hover {
+    border: none;
 }
 
 .button:active {
