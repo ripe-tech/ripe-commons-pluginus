@@ -19,13 +19,13 @@
     background-color: #e5e5e5;
     border: none;
     border-radius: 4px 4px 4px 4px;
+    color: #000000;
     font-family: Lato, "Open Sans", arial, sans-serif;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.25px;
     min-width: 100px;
     padding: 6px 10px 6px 10px;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
 .button:hover {
@@ -39,6 +39,11 @@
 .button:active {
     background-color: #2d2d2d;
     color: #ffffff;
+}
+
+.button.button-variant-default:active {
+    background-color: #a5a5a5;
+    color: #000000;
 }
 </style>
 
