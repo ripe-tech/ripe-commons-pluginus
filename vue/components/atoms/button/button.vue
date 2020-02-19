@@ -1,5 +1,5 @@
 <template>
-    <button class="button">
+    <button class="button" v-on:click="onClick">
         <slot>
             {{ text }}
         </slot>
@@ -26,7 +26,11 @@ export const Button = {
         }
     },
     computed: {},
-    methods: {}
+    methods: {
+        onClick(event) {
+            this.$emit("click", event);
+        }
+    }
 };
 
 export default Button;

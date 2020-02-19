@@ -16,19 +16,19 @@
                     v-on:changed="sizeChanged"
                 />
                 <div class="buttons-container">
-                    <div
+                    <button-ripe
                         class="button button-color button-color-secondary button-cancel"
                         v-on:click="hideModal()"
                     >
                         {{ "ripe_commons.modal.cancel" | locale }}
-                    </div>
-                    <div
+                    </button-ripe>
+                    <button-ripe
                         class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply()"
                     >
                         <span>{{ "ripe_commons.modal.select" | locale }}</span>
-                    </div>
+                    </button-ripe>
                 </div>
             </div>
         </modal>

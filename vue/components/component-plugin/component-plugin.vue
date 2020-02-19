@@ -12,7 +12,7 @@
  * This provides a simple bridge between Pluginus and Vue.js.
  */
 export const ComponentPlugin = {
-    name: "components-plugin",
+    name: "component-plugin",
     props: {
         name: {
             type: String,

@@ -186,9 +186,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     _installComponents(components) {
-        for (const name in components) {
+        for (const name of Object.keys(components)) {
             const component = components[name];
-            Vue.component(name, component);
+            const componentName = component.name ? component.name : name;
+            Vue.component(componentName, component);
         }
     }
 

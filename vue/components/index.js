@@ -37,6 +37,8 @@ const install = Vue => {
     Vue.use(Atoms);
 };
 
+export * from "./atoms";
+
 export {
     install,
     ComponentPlugin,
