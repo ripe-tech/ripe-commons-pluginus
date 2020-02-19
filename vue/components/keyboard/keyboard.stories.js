@@ -16,10 +16,10 @@ storiesOf("Molecules", module)
             }
         },
         template: `
-        <div>
-            <keyboard
-                v-bind:keys="keys"
-                v-bind:single-choice="singleChoice" />
-        </div>
-    `
+            <div>
+                <keyboard
+                    v-bind:keys="keys"
+                    v-bind:single-choice="singleChoice" />
+            </div>
+        `
     }));

@@ -1,6 +1,7 @@
 import * as personalizationForm from "./personalization-form";
 import * as sizeForm from "./size-form";
 
+import { Button } from "./button";
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
 import { Keyboard } from "./keyboard";
@@ -15,6 +16,7 @@ import { Thumbnail } from "./thumbnail";
 import { Thumbnails } from "./thumbnails";
 
 const install = Vue => {
+    Vue.component("button-ripe", Button);
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
     Vue.component("keyboard", Keyboard);
@@ -35,6 +37,7 @@ const install = Vue => {
 
 export {
     install,
+    Button,
     ComponentPlugin,
     Configurator,
     Keyboard,
