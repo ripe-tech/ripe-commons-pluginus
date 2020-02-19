@@ -4,7 +4,10 @@ import * as sizeForm from "./size-form";
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
 import { Dropdown } from "./dropdown";
+import { FormInput } from "./form-input";
+import { Input } from "./input";
 import { Keyboard } from "./keyboard";
+import { Label } from "./label-white";
 import { Loader } from "./loader";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
@@ -20,7 +23,10 @@ const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
     Vue.component("dropdown", Dropdown);
+    Vue.component("form-input", FormInput);
+    Vue.component("input-white", Input);
     Vue.component("keyboard", Keyboard);
+    Vue.component("label-white", Label);
     Vue.component("loader", Loader);
     Vue.component("modal", Modal);
     Vue.component("personalization", Personalization);
@@ -42,7 +48,10 @@ export {
     ComponentPlugin,
     Configurator,
     Dropdown,
+    FormInput,
     Keyboard,
+    Input,
+    Label,
     Loader,
     Modal,
     Personalization,
