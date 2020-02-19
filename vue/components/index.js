@@ -3,12 +3,14 @@ import * as sizeForm from "./size-form";
 
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
+import { Dropdown } from "./dropdown";
 import { Keyboard } from "./keyboard";
 import { Loader } from "./loader";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
 import { Pickers } from "./pickers";
 import { RestrictionsAlert } from "./restrictions-alert";
+import { SelectWhite } from "./select";
 import { Size } from "./size";
 import { Tab, Tabs } from "./tabs";
 import { Thumbnail } from "./thumbnail";
@@ -17,12 +19,14 @@ import { Thumbnails } from "./thumbnails";
 const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
+    Vue.component("dropdown", Dropdown);
     Vue.component("keyboard", Keyboard);
     Vue.component("loader", Loader);
     Vue.component("modal", Modal);
     Vue.component("personalization", Personalization);
     Vue.component("pickers", Pickers);
     Vue.component("restrictions-alert", RestrictionsAlert);
+    Vue.component("select-white", SelectWhite);
     Vue.component("size", Size);
     Vue.component("tab", Tab);
     Vue.component("tabs", Tabs);
@@ -37,12 +41,14 @@ export {
     install,
     ComponentPlugin,
     Configurator,
+    Dropdown,
     Keyboard,
     Loader,
     Modal,
     Personalization,
     Pickers,
     RestrictionsAlert,
+    SelectWhite,
     Size,
     Tab,
     Tabs,
