@@ -19,8 +19,14 @@ export const Button = {
         text: {
             type: String,
             default: ""
+        },
+        active: {
+            type: Boolean,
+            default: false
         }
-    }
+    },
+    computed: {},
+    methods: {}
 };
 
 export default Button;
