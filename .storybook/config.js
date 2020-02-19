@@ -1,8 +1,8 @@
 import Vue from "vue";
 import { configure } from "@storybook/vue";
-import GlobalEvents from "vue-global-events";
 
 import { install as RipeCommonsPluginusVue } from "../vue";
+import GlobalEvents from "vue-global-events";
 
 import "./styles.css";
 
