@@ -23,9 +23,7 @@ storiesOf("Molecules", module)
                         None: null,
                         A: "option_1",
                         B: "option_2",
-                        C: "option_3",
-                        D: "option_4",
-                        E: "option_5"
+                        C: "option_3"
                     },
                     null
                 )
