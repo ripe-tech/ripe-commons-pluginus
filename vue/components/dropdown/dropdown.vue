@@ -91,7 +91,9 @@
 }
 
 .dropdown > .dropdown-item.selected {
-    background: url("~./assets/ic-check.svg") right center no-repeat;
+    background: url("~./assets/ic-check.svg") no-repeat;
+    background-size: 14px;
+    background-position: right 12px center;
     background-color: #1d1d1d;
     color: #ffffff;
 }
