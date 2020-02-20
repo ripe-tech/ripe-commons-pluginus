@@ -39,8 +39,8 @@ body.mobile .summary-details {
     display: inline-block;
     font-size: 16px;
     font-weight: 600;
-    text-transform: capitalize;
     margin: 0px 0px 12px 0px;
+    text-transform: capitalize;
 }
 
 .summary-details > .link {
