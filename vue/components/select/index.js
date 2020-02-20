@@ -1,1 +1,1 @@
-export { SelectWhite } from "./select-white.vue";
+export { Select } from "./select.vue";

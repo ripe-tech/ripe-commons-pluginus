@@ -131,8 +131,8 @@
 
 <script>
 import { partMixin } from "../../mixins";
-export const SelectWhite = {
-    name: "select-white",
+export const Select = {
+    name: "select-ripe",
     mixins: [partMixin],
     props: {
         options: {
@@ -396,5 +396,5 @@ export const SelectWhite = {
     }
 };
 
-export default SelectWhite;
+export default Select;
 </script>

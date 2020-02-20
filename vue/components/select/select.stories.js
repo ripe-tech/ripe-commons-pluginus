@@ -74,7 +74,7 @@ storiesOf("Molecules", module)
         },
         template: `
             <div>
-                <select-white
+                <select-ripe
                     v-bind:placeholder="placeholder"
                     v-bind:options="options"
                     v-bind:value.sync="valueData"
@@ -86,7 +86,7 @@ storiesOf("Molecules", module)
                     v-bind:dropdown-min-width="dropdownMinWidth"
                     v-bind:dropdown-max-width="dropdownMaxWidth"
                 >
-                </select-white>
+                </select-ripe>
                 <p>Value: {{ valueData }}, visible: {{ visibleData }}</p>
             </div>
             `
