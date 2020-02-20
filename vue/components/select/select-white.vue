@@ -63,8 +63,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "css/variables.scss";
-
 .dropdown-select,
 .select .select-container {
     margin: 0px auto 0px auto;
@@ -76,9 +74,9 @@
 .select .select-container .select-button {
     background-color: #151515;
     background-image: url("~./assets/chevron-down.svg");
-    background-position: right 12px center;
+    background-position: right 14px center;
     background-repeat: no-repeat;
-    background-size: 14px 14px;
+    background-size: 18px;
     box-sizing: border-box;
     color: #ffffff;
     cursor: pointer;

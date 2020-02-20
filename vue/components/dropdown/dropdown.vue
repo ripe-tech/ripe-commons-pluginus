@@ -9,8 +9,8 @@
                     v-for="(item, index) in items.filter(v => v !== null && v !== undefined)"
                     v-bind:key="item.value"
                     v-on:click.stop="click(item, index)"
-                    v-on:mouseenter="onMouseenter(index)"
-                    v-on:mouseleave="onMouseleave(index)"
+                    v-on:mouseenter="onMouseEnter(index)"
+                    v-on:mouseleave="onMouseLeave(index)"
                 >
                     <slot v-bind:item="item" v-bind:index="index" v-bind:name="item.value">
                         <slot v-bind:item="item" v-bind:index="index">
@@ -93,7 +93,7 @@
 .dropdown > .dropdown-item.selected {
     background: url("~./assets/ic-check.svg") no-repeat;
     background-color: #1d1d1d;
-    background-position: right 12px center;
+    background-position: right 16px center;
     background-size: 14px;
     color: #ffffff;
 }
@@ -241,10 +241,10 @@ export const Dropdown = {
         onEscKey() {
             this.handleGlobal();
         },
-        onMouseenter(index) {
+        onMouseEnter(index) {
             this.highlight(index);
         },
-        onMouseleave(index) {
+        onMouseLeave(index) {
             this.dehighlight(index);
         },
         onSlideAfterLeave() {
