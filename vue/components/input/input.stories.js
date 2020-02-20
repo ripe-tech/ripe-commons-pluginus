@@ -89,7 +89,14 @@ storiesOf("Atoms", module)
         },
         template: `
             <div>
-                    <input-white
+                <form-input
+                    v-bind:header="header"
+                    v-bind:footer="footer"
+                    v-bind:error="errorText"
+                    v-bind:warning="warning"
+                    v-bind:success="success"
+                >
+                    <input-ripe
                         v-bind:variant="variant"
                         v-bind:border="border"
                         v-bind:value.sync="valueData"
@@ -100,6 +107,7 @@ storiesOf("Atoms", module)
                         v-bind:width="width"
                         v-bind:min-width="minWidth"
                         v-bind:height="height" />
+                </form-input>
                 <p>Text: {{ valueData }}</p>
             </div>
         `

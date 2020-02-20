@@ -1,7 +1,7 @@
 <template>
     <div class="form-input" v-bind:class="classes">
         <slot name="header">
-            <label-white
+            <label-ripe
                 class="header"
                 v-bind:style="headerStyle"
                 v-bind:class="headerClasses"
@@ -16,7 +16,7 @@
                 <slot />
             </div>
             <slot name="footer">
-                <label-white
+                <label-ripe
                     class="footer"
                     v-bind:style="footerStyle"
                     v-bind:class="footerClasses"
@@ -75,13 +75,6 @@
 .form-input .content {
     font-size: 0px;
     line-height: 0px;
-}
-
-.form-input.form-input-inline .content {
-    align-items: center;
-    display: flex;
-    height: 34px;
-    line-height: 34px;
 }
 
 .form-input .footer {

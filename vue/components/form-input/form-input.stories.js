@@ -88,7 +88,7 @@ storiesOf("Molecules", module)
                 v-bind:header-min-width="headerMinWidth"
                 v-bind:footer-min-width="footerMinWidth"    
             >
-                <input-white />
+                <input-ripe />
             </form-input>
         `
     }));

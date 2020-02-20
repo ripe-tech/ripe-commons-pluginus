@@ -71,7 +71,7 @@ input::-webkit-input-placeholder {
 
 <script>
 export const Input = {
-    name: "input-white",
+    name: "input-ripe",
     props: {
         variant: {
             type: String,
