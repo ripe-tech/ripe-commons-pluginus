@@ -6,7 +6,7 @@ import { Configurator } from "./configurator";
 import { FormInput } from "./form-input";
 import { Input } from "./input";
 import { Keyboard } from "./keyboard";
-import { Label } from "./label-ripe";
+import { Label } from "./label";
 import { Loader } from "./loader";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
