@@ -81,6 +81,13 @@
     color: $main-color;
     margin-top: 6px;
 }
+
+.form-input.form-input-inline .content {
+    align-items: center;
+    display: flex;
+    height: 34px;
+    line-height: 34px;
+}
 </style>
 
 <script>
@@ -91,7 +98,7 @@ export const FormInput = {
             type: String,
             default: null
         },
-        variant: {
+        alignment: {
             type: String,
             default: null
         },
@@ -137,7 +144,7 @@ export const FormInput = {
         },
         classes() {
             const base = {};
-            if (this.variant) base[`form-input-${this.variant}`] = true;
+            if (this.alignment) base[`form-input-${this.alignment}`] = true;
             return base;
         },
         headerClasses() {
