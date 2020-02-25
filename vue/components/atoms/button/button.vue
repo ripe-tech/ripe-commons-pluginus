@@ -74,7 +74,7 @@ export const Button = {
             type: String,
             default: ""
         },
-        theme: {
+        mode: {
             type: String,
             default: "default"
         },

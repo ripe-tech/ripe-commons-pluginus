@@ -10,7 +10,7 @@ storiesOf("Atoms", module)
             },
             theme: {
                 default: select(
-                    "Design",
+                    "Theme",
                     {
                         default: "default",
                         black: "black"
