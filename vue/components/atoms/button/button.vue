@@ -1,8 +1,6 @@
 <template>
     <button class="button" v-bind:class="classes" v-on:click="onClick">
-        <slot>
-            {{ text }}
-        </slot>
+        <slot>{{ text }}</slot>
     </button>
 </template>
 
@@ -55,14 +53,11 @@
     border-color: #444444;
 }
 
+.button.button-variant-default,
+.button.button-variant-black:active,
 .button:active {
-    background-color: #2d2d2d;
-    color: #ffffff;
-}
-
-.button.button-variant-default:active {
-    background-color: #a5a5a5;
-    color: #000000;
+    background-color: #737373;
+    border: 1px solid #737373;
 }
 </style>
 
@@ -74,7 +69,7 @@ export const Button = {
             type: String,
             default: ""
         },
-        mode: {
+        theme: {
             type: String,
             default: "default"
         },
