@@ -6,16 +6,16 @@ storiesOf("Atoms", module)
     .add("Button", () => ({
         props: {
             text: {
-                default: text("Text", "Button")
+                default: text("Text", "Create Order")
             },
-            design: {
+            theme: {
                 default: select(
                     "Design",
                     {
-                        Unset: null,
-                        Default: "default"
+                        default: "default",
+                        black: "black"
                     },
-                    null
+                    "default"
                 )
             },
             active: {
@@ -26,7 +26,7 @@ storiesOf("Atoms", module)
             <div>
                 <button-ripe
                     v-bind:text="text"
-                    v-bind:design="design"
+                    v-bind:theme="theme"
                     v-bind:active="active" />
             </div>
         `

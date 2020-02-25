@@ -8,32 +8,51 @@
 
 <style scoped>
 .button {
-    background-color: transparent;
-    border: 1px solid #cccccc;
+    border: 1px solid #0d0d0d;
     cursor: pointer;
     font-size: 14px;
+    max-width: 250px;
     outline: none;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-.button.button-design-default {
-    background-color: #e5e5e5;
-    border: none;
-    border-radius: 4px 4px 4px 4px;
+.button.button-variant-default {
     color: #000000;
     font-family: Lato, "Open Sans", arial, sans-serif;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: bold;
+    height: 44px;
     letter-spacing: 0.25px;
     min-width: 100px;
-    padding: 6px 10px 6px 10px;
+    padding: 0px 20px 0px 20px;
 }
 
-.button:hover {
-    border: 1px solid #2d2d2d;
+.button.button-variant-default:hover {
+    background-color: #0d0d0d;
+    color: #ffffff;
 }
 
-.button.button-design-default:hover {
-    border: none;
+.button.button-variant-black {
+    background-color: #0d0d0d;
+    border: 1px solid #0d0d0d;
+    box-sizing: border-box;
+    color: #ffffff;
+    display: inline-block;
+    font-family: MarkPro, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    height: 44px;
+    letter-spacing: 1.17px;
+    line-height: 44px;
+    padding: 0px 20px 0px 20px;
+}
+
+.button.button-variant-black:hover {
+    background-color: #444444;
+    border-color: #444444;
 }
 
 .button:active {
@@ -41,7 +60,7 @@
     color: #ffffff;
 }
 
-.button.button-design-default:active {
+.button.button-variant-default:active {
     background-color: #a5a5a5;
     color: #000000;
 }
@@ -55,9 +74,9 @@ export const Button = {
             type: String,
             default: ""
         },
-        design: {
+        theme: {
             type: String,
-            default: null
+            default: "default"
         },
         active: {
             type: Boolean,
@@ -69,7 +88,7 @@ export const Button = {
             const base = {
                 active: this.active
             };
-            if (this.design) base["button-design-" + this.design] = this.design;
+            if (this.theme) base["button-variant-" + this.theme] = this.theme;
             return base;
         }
     },
