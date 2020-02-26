@@ -15,7 +15,7 @@
     outline: none;
 }
 
-.button.button-variant-default {
+.button.button-design-default {
     background-color: #e5e5e5;
     border: none;
     border-radius: 4px 4px 4px 4px;
@@ -32,7 +32,7 @@
     border: 1px solid #2d2d2d;
 }
 
-.button.button-variant-default:hover {
+.button.button-design-default:hover {
     border: none;
 }
 
@@ -41,7 +41,7 @@
     color: #ffffff;
 }
 
-.button.button-variant-default:active {
+.button.button-design-default:active {
     background-color: #a5a5a5;
     color: #000000;
 }
@@ -55,7 +55,7 @@ export const Button = {
             type: String,
             default: ""
         },
-        variant: {
+        design: {
             type: String,
             default: null
         },
@@ -69,7 +69,7 @@ export const Button = {
             const base = {
                 active: this.active
             };
-            if (this.variant) base["button-variant-" + this.variant] = this.variant;
+            if (this.design) base["button-design-" + this.design] = this.design;
             return base;
         }
     },

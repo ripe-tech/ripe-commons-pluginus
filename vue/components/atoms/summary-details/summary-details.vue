@@ -23,14 +23,7 @@
 
 <style scoped>
 .summary-details {
-    max-width: 280px;
     text-align: left;
-    width: 100%;
-}
-
-body.tablet .summary-details,
-body.mobile .summary-details {
-    max-width: 100%;
     width: 100%;
 }
 

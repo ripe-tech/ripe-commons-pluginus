@@ -8,9 +8,9 @@ storiesOf("Atoms", module)
             text: {
                 default: text("Text", "Button")
             },
-            variant: {
+            design: {
                 default: select(
-                    "Variant",
+                    "Design",
                     {
                         Unset: null,
                         Default: "default"
@@ -26,7 +26,7 @@ storiesOf("Atoms", module)
             <div>
                 <button-ripe
                     v-bind:text="text"
-                    v-bind:variant="variant"
+                    v-bind:design="design"
                     v-bind:active="active" />
             </div>
         `
