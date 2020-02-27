@@ -5,7 +5,7 @@ storiesOf("Molecules", module)
     .addDecorator(withKnobs)
     .add("Form Input", () => ({
         props: {
-            variant: {
+            formVariant: {
                 default: select(
                     "Variant",
                     {
@@ -78,7 +78,7 @@ storiesOf("Molecules", module)
         },
         template: `
             <form-input
-                v-bind:variant="variant"
+                v-bind:formVariant="formVariant"
                 v-bind:header="header"
                 v-bind:footer="footer"
                 v-bind:header-variant="headerVariant"

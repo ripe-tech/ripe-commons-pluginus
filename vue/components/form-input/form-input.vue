@@ -98,7 +98,7 @@ export const FormInput = {
             type: String,
             default: null
         },
-        alignment: {
+        formVariant: {
             type: String,
             default: null
         },
@@ -144,7 +144,7 @@ export const FormInput = {
         },
         classes() {
             const base = {};
-            if (this.alignment) base[`form-input-${this.alignment}`] = true;
+            if (this.formVariant) base[`form-input-${this.formVariant}`] = true;
             return base;
         },
         headerClasses() {
