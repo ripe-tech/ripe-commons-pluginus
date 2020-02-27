@@ -82,7 +82,7 @@
     color: #ffffff;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     height: 44px;
     letter-spacing: 0.25px;
     line-height: 44px;
