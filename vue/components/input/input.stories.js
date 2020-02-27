@@ -5,9 +5,9 @@ storiesOf("Atoms", module)
     .addDecorator(withKnobs)
     .add("Input", () => ({
         props: {
-            mode: {
+            inputVariant: {
                 default: select(
-                    "Mode",
+                    "Variant",
                     {
                         Unset: null,
                         Dark: "dark"
@@ -97,7 +97,7 @@ storiesOf("Atoms", module)
                     v-bind:success="success"
                 >
                     <input-ripe
-                        v-bind:mode="mode"
+                        v-bind:inputVariant="inputVariant"
                         v-bind:border="border"
                         v-bind:value.sync="valueData"
                         v-bind:placeholder="placeholder"

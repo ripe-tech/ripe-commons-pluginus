@@ -73,7 +73,7 @@ input::-webkit-input-placeholder {
 export const Input = {
     name: "input-ripe",
     props: {
-        mode: {
+        inputVariant: {
             type: String,
             default: null
         },
@@ -182,7 +182,7 @@ export const Input = {
         },
         classes() {
             const base = { monospaced: this.monospaced };
-            if (this.mode) base[this.mode] = true;
+            if (this.inputVariant) base[this.inputVariant] = true;
             if (this.border) base[`border-${this.border}`] = true;
             if (this.ellipsis) base.ellipsis = true;
             if (this.validationMessage) base.validation = true;
