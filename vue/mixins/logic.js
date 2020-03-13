@@ -52,7 +52,7 @@ const logicMixin = {
             return Object.keys(this.config).length > 0;
         },
         modelLoaded() {
-            return Boolean(this.error) === false && this.modelConfigured;
+            return this.modelConfigured && Boolean(this.error) === false;
         }
     },
     mounted: function() {

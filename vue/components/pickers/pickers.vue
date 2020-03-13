@@ -2,6 +2,9 @@
     <div
         class="pickers"
         v-bind:class="{ 'multiple-materials': multipleMaterials, loading: loading }"
+        v-bind:data-part="activePart"
+        v-bind:data-material="activeMaterial"
+        v-bind:data-color="activeColor"
         ref="pickersContainer"
     >
         <div class="background" />
@@ -20,6 +23,7 @@
                         optional: isOptional(part),
                         selected: selectedColor(part) && selectedColor(part).color
                     }"
+                    v-bind:data-part="part"
                     v-for="(materials, part) in filteredOptions"
                     v-bind:key="part"
                     v-on:click="selectPart(part)"
@@ -65,6 +69,7 @@
                         class="material button button-material"
                         v-bind:class="{ active: activeMaterial === material }"
                         v-bind:data-material="material"
+                        v-bind:data-part="activePart"
                         v-for="(colors, material) in materialOptions"
                         v-bind:key="material"
                         v-on:click="selectMaterial(material)"
@@ -94,6 +99,7 @@
                             class="color button button-color-option"
                             v-bind:data-index="colorOption.index"
                             v-bind:data-material="colorOption.material"
+                            v-bind:data-part="activePart"
                             v-bind:data-color="colorOption.color"
                             v-bind:class="{
                                 active: isSelected(colorOption),
@@ -681,7 +687,8 @@ export const Pickers = {
 
             return this.localeModel(this.activePart, colorOption.material, colorOption.color);
         },
-        selectedColor(part) {
+        selectedColor(part = null) {
+            part = part || this.part;
             return this.parts[part];
         },
         isSelected(colorOption) {
