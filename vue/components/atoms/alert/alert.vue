@@ -122,19 +122,16 @@ export const Alert = {
             if (!this.visibleData) return;
             this.visibleData = false;
         },
-        handleClose() {
-            this.hide();
-        },
-        handleGlobal() {
-            if (!this.globalEvents) return;
-            if (this.visibleData) this.resetTimeout();
-            this.hide();
-        },
         reset() {
             this.key = !this.key;
         },
         resetTimeout() {
             if (this.timer) clearTimeout(this.timer);
+        },
+        handleGlobal() {
+            if (!this.globalEvents) return;
+            if (this.visibleData) this.resetTimeout();
+            this.hide();
         }
     }
 };
