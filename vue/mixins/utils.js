@@ -7,8 +7,8 @@ const utilsMixin = {
 
             return value[0].toUpperCase() + value.slice(1);
         },
-        alert(msg, duration) {
-            this.$bus.trigger("alert", msg, duration);
+        alert(options) {
+            this.$bus.trigger("alert", options);
         },
         readable(value) {
             return this.$options.filters.readable(value);
