@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="alert" v-bind:style="style" v-show="isVisible">
+        <div class="alert" v-bind:style="style" v-show="isVisible" v-on:click="onClick">
             <global-events v-on:keydown.esc="handleGlobal" />
             <div class="alert-content">
                 {{ textData }}
@@ -132,6 +132,9 @@ export const Alert = {
         handleGlobal() {
             if (!this.globalEvents) return;
             if (this.visibleData) this.resetTimeout();
+            this.hide();
+        },
+        onClick() {
             this.hide();
         }
     }
