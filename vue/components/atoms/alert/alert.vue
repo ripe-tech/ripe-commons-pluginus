@@ -15,14 +15,14 @@
     box-shadow: 0px 0px 16px rgba(45, 58, 70, 0.25);
     box-sizing: border-box;
     display: block;
-    left: calc(50% - 127px);
-    padding: 23px 25px 23px 25px;
-    pointer-events: none;
+    font-size: 14px;
+    font-weight: 500;
+    left: calc(50% - 153px);
+    padding: 16px 24px 16px 24px;
     position: absolute;
     text-align: center;
-    top: calc(50% - 57px);
-    user-select: none;
-    width: 305px;
+    top: calc(50% - 80px);
+    width: 306px;
     z-index: 20;
 }
 
