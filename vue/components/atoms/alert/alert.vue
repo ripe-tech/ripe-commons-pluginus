@@ -14,6 +14,7 @@
     background-color: #151515;
     box-shadow: 0px 0px 16px rgba(45, 58, 70, 0.25);
     box-sizing: border-box;
+    cursor: pointer;
     display: block;
     font-size: 14px;
     font-weight: 500;
@@ -23,7 +24,7 @@
     text-align: center;
     top: calc(50% - 80px);
     width: 306px;
-    z-index: 20;
+    z-index: 9;
 }
 
 .alert.fade-leave-active {
