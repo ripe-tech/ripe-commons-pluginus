@@ -20,7 +20,7 @@
     font-weight: 500;
     left: calc(50% - 153px);
     padding: 16px 24px 16px 24px;
-    position: absolute;
+    position: fixed;
     text-align: center;
     top: calc(50% - 80px);
     width: 306px;
