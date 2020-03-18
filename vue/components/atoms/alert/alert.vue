@@ -101,19 +101,30 @@ export const Alert = {
     },
     methods: {
         show(options) {
+            // unpacks the complete set of options for the new alert
+            // that is going to be displayed
             const { text, timeout, globalEvents, reset = true } = options;
 
+            // updates the current local values taking into account
+            // the provided set of options
             this.textData = text;
             this.timeoutData = timeout || this.timeout;
             this.globalEventsData = globalEvents || this.globalEvents;
 
-            if (this.visibleData) this.resetTimeout();
+            // sets the visible data value so that the current context
+            // indicates that there's data available
             this.visibleData = true;
 
             // alternate the key to force the component
             // to be destroyed and mounted again
             if (reset) this.reset();
 
+            // ensures that the previously registered timeout
+            // is cleared so that a new one can be created
+            this.resetTimeout();
+
+            // creates the timeout that is going to be used to
+            // hide and reset the current notification
             this.timer = setTimeout(() => {
                 this.hide();
                 this.reset();
@@ -127,7 +138,8 @@ export const Alert = {
             this.key = !this.key;
         },
         resetTimeout() {
-            if (this.timer) clearTimeout(this.timer);
+            if (!this.timer) return;
+            clearTimeout(this.timer);
         },
         handleGlobal() {
             if (!this.globalEvents) return;
