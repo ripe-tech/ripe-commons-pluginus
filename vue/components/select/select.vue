@@ -77,6 +77,7 @@
     background-position: right 14px center;
     background-repeat: no-repeat;
     background-size: 18px;
+    border: 1px solid #000000;
     box-sizing: border-box;
     color: #ffffff;
     cursor: pointer;
@@ -90,7 +91,6 @@
     padding: 0px 20px 0px 20px;
     text-align: left;
     text-overflow: ellipsis;
-    border: 1px solid #000000;
     transition: width 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
     user-select: none;
     white-space: nowrap;
