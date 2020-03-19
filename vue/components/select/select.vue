@@ -66,9 +66,8 @@
 <style lang="scss" scoped>
 .dropdown-select,
 .select .select-container {
-    margin: 0px auto 0px auto;
     position: relative;
-    width: 400px;
+    width: 100%;
 }
 
 .dropdown-select,
@@ -91,6 +90,7 @@
     padding: 0px 20px 0px 20px;
     text-align: left;
     text-overflow: ellipsis;
+    border: 1px solid #000000;
     transition: width 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
     user-select: none;
     white-space: nowrap;
@@ -105,11 +105,11 @@
 }
 
 .select .select-container .select-button:focus {
-    border-color: #add8e6;
+    border-color: #dfe1e5;
 }
 
 .select.disabled .select-container .select-button {
-    border-color: #add8e6;
+    border-color: #dfe1e5;
     cursor: default;
     opacity: 0.4;
 }
