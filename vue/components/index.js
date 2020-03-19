@@ -2,6 +2,7 @@ import * as personalizationForm from "./personalization-form";
 import * as sizeForm from "./size-form";
 
 import Atoms from "./atoms";
+import Logic from "./logic";
 
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
@@ -35,9 +36,11 @@ const install = Vue => {
     Vue.component("initials-inputs", personalizationForm.InitialsInputs);
 
     Vue.use(Atoms);
+    Vue.use(Logic);
 };
 
 export * from "./atoms";
+export * from "./logic";
 
 export {
     install,
