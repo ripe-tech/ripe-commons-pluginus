@@ -67,7 +67,7 @@
 }
 
 .form-input.form-input-inline .header {
-    line-height: 34px;
+    line-height: 44px;
     margin: 0px 4px 0px 0px;
     min-width: 120px;
 }
@@ -85,8 +85,8 @@
 .form-input.form-input-inline .content {
     align-items: center;
     display: flex;
-    height: 34px;
-    line-height: 34px;
+    height: 44px;
+    line-height: 44px;
 }
 </style>
 
