@@ -46,8 +46,8 @@
     float: left;
     height: 44px;
     line-height: 44px;
-    text-align: right;
     margin-right: 10px;
+    text-align: right;
     // transition: background-color 0.15s ease-in-out;
     width: 44px;
 }
