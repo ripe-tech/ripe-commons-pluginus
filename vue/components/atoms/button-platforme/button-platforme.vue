@@ -28,12 +28,10 @@
     font-weight: 500;
     height: 44px;
     letter-spacing: 1.5px;
-    line-height: 47px;
+    line-height: 39px;
     max-width: 320px;
-    text-align: left;
-    transition: background-color 0.15s ease-in-out,
-        opacity 0.15s ease-in-out,
-        transform 0.15s ease-in-out;
+    text-align: center;
+    transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
 
 .button.button-platforme:hover {
@@ -43,11 +41,10 @@
 
 .button.button-platforme > span.button-logo {
     background-color: #151515;
-    float: left;
     height: 44px;
-    line-height: 44px;
+    line-height: 42px;
     margin-right: 10px;
-    text-align: right;
+    text-align: center;
     width: 44px;
 }
 
