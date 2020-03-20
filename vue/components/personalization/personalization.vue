@@ -7,7 +7,7 @@
         <div
             class="button button-color button-personalization"
             v-bind:class="{ disabled: !enabled }"
-            v-on:click="showModal()"
+            v-on:click="showModal"
         >
             <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
             <p>{{ buttonText | locale }}</p>
@@ -26,11 +26,11 @@
                     <slot name="buttons">
                         <div
                             class="button button-color button-color-secondary button-cancel"
-                            v-on:click="hideModal()"
+                            v-on:click="hideModal"
                         >
                             {{ "ripe_commons.modal.cancel" | locale }}
                         </div>
-                        <div class="button button-color button-apply" v-on:click="apply()">
+                        <div class="button button-color button-apply" v-on:click="apply">
                             {{ "ripe_commons.modal.apply" | locale }}
                         </div>
                     </slot>

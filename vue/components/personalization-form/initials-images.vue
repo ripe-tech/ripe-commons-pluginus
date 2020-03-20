@@ -7,7 +7,7 @@
             v-for="group in groups"
             v-bind:key="groupKey(group)"
             ref="initialsImages"
-            v-on:click="imageSelected(group)"
+            v-on:click="() => imageSelected(group)"
         />
     </div>
 </template>

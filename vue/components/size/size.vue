@@ -3,7 +3,7 @@
         <div
             class="button button-color button-size"
             v-bind:class="{ disabled: !enabled }"
-            v-on:click="showModal()"
+            v-on:click="showModal"
         >
             <span>{{ buttonText }}</span>
         </div>
@@ -18,14 +18,14 @@
                 <div class="buttons-container">
                     <button-ripe
                         class="button button-color button-color-secondary button-cancel"
-                        v-on:click="hideModal()"
+                        v-on:click="hideModal"
                     >
                         {{ "ripe_commons.modal.cancel" | locale }}
                     </button-ripe>
                     <button-ripe
                         class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
-                        v-on:click="apply()"
+                        v-on:click="apply"
                     >
                         <span>{{ "ripe_commons.modal.select" | locale }}</span>
                     </button-ripe>

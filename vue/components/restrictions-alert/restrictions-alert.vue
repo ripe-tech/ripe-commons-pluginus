@@ -3,10 +3,10 @@
         <div class="message-restrictions-alert-container">
             <div class="message-restrictions-alert" v-bind:class="{ visible: visible }">
                 <div class="button-container">
-                    <a class="button button-restrictions-alert" v-on:click="undo()">
+                    <a class="button button-restrictions-alert" v-on:click="undo">
                         {{ "ripe_commons.restrictions_alert.restrictions_alert" | locale }}
                     </a>
-                    <a class="button button-back" v-on:click="close()">
+                    <a class="button button-back" v-on:click="close">
                         {{ "ripe_commons.restrictions_alert.close_button" | locale }}
                     </a>
                 </div>

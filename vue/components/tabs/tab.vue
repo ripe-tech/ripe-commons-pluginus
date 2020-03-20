@@ -1,5 +1,5 @@
 <template>
-    <div class="tab" v-bind:class="{ active: active }" v-on:click="$emit('selected')">
+    <div class="tab" v-bind:class="{ active: active }" v-on:click="() => $emit('selected')">
         <slot>
             <h1 class="default">{{ tab.title | locale }}</h1>
         </slot>

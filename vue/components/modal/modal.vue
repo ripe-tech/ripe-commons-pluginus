@@ -16,11 +16,11 @@
             v-bind:id="name ? 'modal-' + name : null"
         >
             <global-events v-on:keydown.esc="hide" />
-            <div class="modal-overlay" v-on:click="overlayLeave && hide()" />
+            <div class="modal-overlay" v-on:click="() => overlayLeave && hide()" />
             <div class="modal-container" ref="container">
                 <div class="modal-header">
                     <slot name="header">
-                        <div class="button button-close" v-on:click="hide()">
+                        <div class="button button-close" v-on:click="hide">
                             <img src="~./assets/close.svg" />
                         </div>
                     </slot>

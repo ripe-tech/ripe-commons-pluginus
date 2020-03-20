@@ -26,7 +26,7 @@
                     v-bind:data-part="part"
                     v-for="(materials, part) in filteredOptions"
                     v-bind:key="part"
-                    v-on:click="selectPart(part)"
+                    v-on:click="() => selectPart(part)"
                 >
                     <p class="label">
                         {{ localeModel(part) }}
@@ -72,7 +72,7 @@
                         v-bind:data-part="activePart"
                         v-for="(colors, material) in materialOptions"
                         v-bind:key="material"
-                        v-on:click="selectMaterial(material)"
+                        v-on:click="() => selectMaterial(material)"
                     >
                         <p>{{ localeModel(activePart, material) }}</p>
                     </li>
@@ -108,7 +108,7 @@
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + '_' + colorOption.color"
-                            v-on:click="colorClicked(colorOption)"
+                            v-on:click="() => colorClicked(colorOption)"
                         >
                             <div class="swatch">
                                 <img

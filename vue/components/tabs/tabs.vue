@@ -8,7 +8,7 @@
                 v-for="tab in tabs"
                 v-bind:key="tab.id"
                 v-bind:ref="tab.id"
-                v-on:selected="selectTab(tab.id)"
+                v-on:selected="() => selectTab(tab.id)"
             >
                 <slot v-bind:tab="tab" />
             </tab>

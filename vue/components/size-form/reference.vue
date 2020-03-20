@@ -42,7 +42,7 @@
                         }"
                         v-for="sizeObject in sizeOptions[visibleGender][modelScale]"
                         v-bind:key="sizeObject.native"
-                        v-on:click="__sizeSelected(visibleGender, modelScale, sizeObject.native)"
+                        v-on:click="() => __sizeSelected(visibleGender, modelScale, sizeObject.native)"
                     >
                         {{ sizeObject.locale }}
                     </div>

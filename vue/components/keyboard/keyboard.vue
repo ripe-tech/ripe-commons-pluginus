@@ -7,7 +7,7 @@
                     v-bind:class="[keyType(key), key.name, { active: isActive(key) }]"
                     v-for="key in row"
                     v-bind:key="key.name"
-                    v-on:click="keyPressed(key)"
+                    v-on:click="() => keyPressed(key)"
                 >
                     <span v-if="keyType(key) === 'alphanumeric'">{{ key.name }}</span>
                     <div class="image-container" v-else>

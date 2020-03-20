@@ -7,7 +7,7 @@
             v-for="group in groups"
             v-bind:key="group"
             ref="initialsInputs"
-            v-on:click="inputSelected(group)"
+            v-on:click="() => inputSelected(group)"
         >
             {{ initialsText(group) }}
         </p>
@@ -18,7 +18,7 @@
                 v-bind:class="{ active: group === activeGroup }"
                 v-for="group in groups"
                 v-bind:key="group"
-                v-on:click="inputSelected(group)"
+                v-on:click="() => inputSelected(group)"
             >
                 {{ groupLabel(group) }}
             </p>
