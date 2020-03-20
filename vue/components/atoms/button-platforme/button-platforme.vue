@@ -48,17 +48,12 @@
     line-height: 44px;
     margin-right: 10px;
     text-align: right;
-    // transition: background-color 0.15s ease-in-out;
     width: 44px;
 }
 
 .button.button-platforme.loading > span.button-logo {
     opacity: 0.7;
 }
-
-// .button.button-platforme:hover > span.button-logo {
-//     background-color: #151515;
-// }
 
 .button.button-platforme > span.button-logo > img {
     height: 26px;
