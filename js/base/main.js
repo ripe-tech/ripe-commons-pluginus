@@ -1,7 +1,6 @@
 import "ripe-sdk/src/css/ripe.css";
 
 import { Ripe } from "ripe-sdk";
-import { API as RipeIdAPI } from "ripe-id-api";
 import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
@@ -75,9 +74,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // binds to the necessary events sent through the owner
         this._bind();
-
-        // initializes the RIPE ID API
-        this.ripeId = new RipeIdAPI(this.ripeIdOptions);
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
@@ -216,10 +212,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // adds a reference to the ripe object on the vue
         // components
         Vue.use(plugins.ripePlugin, this.ripe);
-
-        // adds a reference to the ripe object on the vue
-        // components
-        Vue.use(plugins.ripeIdPlugin, this.ripeId);
 
         // initializes the vue plugin that provides an
         // interface between the components and the
