@@ -28,6 +28,14 @@
     padding: 6px 10px 6px 10px;
 }
 
+.button.button-alignment-left {
+    text-align: left;
+}
+
+.button.button-alignment-right {
+    text-align: right;
+}
+
 .button:hover {
     border: 1px solid #2d2d2d;
 }
@@ -59,17 +67,29 @@ export const Button = {
             type: String,
             default: null
         },
+        alignment: {
+            type: String,
+            default: null
+        },
         active: {
             type: Boolean,
             default: false
         }
     },
     computed: {
+        alignmentStyle() {
+            if (this.alignment) return this.alignment;
+            if (this.icon) return "right";
+            return "center";
+        },
         classes() {
             const base = {
                 active: this.active
             };
             if (this.design) base["button-design-" + this.design] = this.design;
+            if (this.alignmentStyle) {
+                base["button-alignment-" + this.alignmentStyle] = this.alignmentStyle;
+            }
             return base;
         }
     },
