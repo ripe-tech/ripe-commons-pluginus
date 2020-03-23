@@ -149,7 +149,8 @@ body.mobile .modal > .modal-container > .modal-header > .button.button-close img
 }
 
 .modal .modal-content ::v-deep > .title,
-.modal .modal-content ::v-deep > * > .title {
+.modal .modal-content ::v-deep > * > .title,
+.modal .modal-content ::v-deep > * > * > .title {
     color: #272a2f;
     font-size: 30px;
     font-weight: normal;
@@ -157,11 +158,14 @@ body.mobile .modal > .modal-container > .modal-header > .button.button-close img
 }
 
 body.mobile .modal .modal-content ::v-deep > .title,
-body.mobile .modal .modal-content ::v-deep > * > .title {
+body.mobile .modal .modal-content ::v-deep > * > .title,
+body.mobile .modal .modal-content ::v-deep > * > * > .title {
     font-size: 15px;
 }
 
-.modal .modal-content ::v-deep > .subtitle {
+.modal .modal-content ::v-deep > .subtitle,
+.modal .modal-content ::v-deep > * > .subtitle,
+.modal .modal-content ::v-deep > * > * > .subtitle {
     color: #272a2f;
     font-size: 15px;
     margin: 0px 0px 0px 0px;
