@@ -43,23 +43,19 @@ const modalMixin = {
         }
     },
     methods: {
-        willHideModal() {
-            return true;
+        showModal(...args) {
+            const show = this.willShowModal(...args);
+            if (show) this.modalOptions.visible = true;
         },
         hideModal(...args) {
             const hide = this.willHideModal(...args);
-            if (hide) {
-                this.modalOptions.visible = false;
-            }
+            if (hide) this.modalOptions.visible = false;
         },
         willShowModal() {
             return true;
         },
-        showModal(...args) {
-            const show = this.willShowModal(...args);
-            if (show) {
-                this.modalOptions.visible = true;
-            }
+        willHideModal() {
+            return true;
         },
         modalShown() {},
         modalHidden() {},
