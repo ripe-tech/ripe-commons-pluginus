@@ -24,14 +24,16 @@
     background-color: #151515;
     color: #ffffff;
     cursor: pointer;
+    display: inline-block;
     font-size: 14px;
     font-weight: 500;
     height: 44px;
     letter-spacing: 1.5px;
-    line-height: 39px;
+    line-height: 44px;
     max-width: 320px;
     text-align: center;
     transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+    width: 320px;
 }
 
 .button.button-platforme:hover {
