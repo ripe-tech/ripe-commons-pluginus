@@ -28,7 +28,6 @@
     font-size: 14px;
     font-weight: 500;
     height: 44px;
-    letter-spacing: 1.5px;
     line-height: 44px;
     max-width: 320px;
     text-align: center;
