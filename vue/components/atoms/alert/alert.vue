@@ -22,7 +22,6 @@
     padding: 16px 24px 16px 24px;
     position: fixed;
     text-align: center;
-    top: calc(50% - 80px);
     width: 306px;
     z-index: 9;
 }
@@ -52,9 +51,9 @@ export const Alert = {
             type: Number,
             default: 1000
         },
-        topHeight: {
+        topOffset: {
             type: Number,
-            default: 150
+            default: 100
         },
         globalEvents: {
             type: Boolean,
@@ -67,7 +66,7 @@ export const Alert = {
         },
         style() {
             const base = {};
-            if (this.topHeight !== null) base.top = `${this.topHeight}px`;
+            if (this.topOffset !== null) base.top = `${this.topOffset}px`;
             return base;
         }
     },
