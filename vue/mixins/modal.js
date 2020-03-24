@@ -45,11 +45,11 @@ const modalMixin = {
     methods: {
         showModal(...args) {
             const show = this.willShowModal(...args);
-            if (show) this.modalOptions.visible = true;
+            if (show !== false) this.modalOptions.visible = true;
         },
         hideModal(...args) {
             const hide = this.willHideModal(...args);
-            if (hide) this.modalOptions.visible = false;
+            if (hide !== false) this.modalOptions.visible = false;
         },
         willShowModal() {
             return true;
