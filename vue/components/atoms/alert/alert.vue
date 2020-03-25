@@ -19,6 +19,7 @@
     font-size: 14px;
     font-weight: 500;
     left: calc(50% - 153px);
+    line-height: 22px;
     padding: 16px 24px 16px 24px;
     position: fixed;
     text-align: center;

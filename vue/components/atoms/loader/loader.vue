@@ -4,8 +4,7 @@
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 <script>
 import "loaders.css";
