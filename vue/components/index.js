@@ -7,7 +7,6 @@ import Logic from "./logic";
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
 import { Keyboard } from "./keyboard";
-import { Loader } from "./loader";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
 import { Pickers } from "./pickers";
@@ -21,7 +20,6 @@ const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
     Vue.component("keyboard", Keyboard);
-    Vue.component("loader", Loader);
     Vue.component("modal", Modal);
     Vue.component("personalization", Personalization);
     Vue.component("pickers", Pickers);
@@ -47,7 +45,6 @@ export {
     ComponentPlugin,
     Configurator,
     Keyboard,
-    Loader,
     Modal,
     Personalization,
     Pickers,

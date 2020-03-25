@@ -20,14 +20,17 @@ storiesOf("Atoms", module)
             },
             active: {
                 default: boolean("Active", false)
+            },
+            loading: {
+                default: boolean("Loading", false)
             }
         },
         template: `
-            <div>
-                <button-ripe
-                    v-bind:text="text"
-                    v-bind:design="design"
-                    v-bind:active="active" />
-            </div>
+            <button-ripe
+                v-bind:text="text"
+                v-bind:design="design"
+                v-bind:active="active"
+                v-bind:loading="loading"
+            />
         `
     }));

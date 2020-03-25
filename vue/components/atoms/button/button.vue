@@ -1,6 +1,12 @@
 <template>
     <button class="button" v-bind:class="classes" v-on:click="onClick">
-        <slot>
+        <loader
+            loader="ball-scale-multiple"
+            class="loader"
+            v-bind:loader-style="loaderStyle"
+            v-show="loading"
+        />
+        <slot v-if="!loading">
             {{ text }}
         </slot>
     </button>
@@ -53,6 +59,19 @@
     background-color: #a5a5a5;
     color: #000000;
 }
+
+.button .loader {
+    display: inline-block;
+    transform: translateY(-21px);
+    width: 32px;
+}
+
+.button ::v-deep .loader > div {
+    background-color: transparent;
+    height: 32px;
+    left: 0px;
+    width: 32px;
+}
 </style>
 
 <script>
@@ -74,6 +93,14 @@ export const Button = {
         active: {
             type: Boolean,
             default: false
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        loaderStyle: {
+            type: Object,
+            default: () => ({})
         }
     },
     computed: {
@@ -84,7 +111,8 @@ export const Button = {
         },
         classes() {
             const base = {
-                active: this.active
+                active: this.active,
+                loading: this.loading
             };
             if (this.design) base["button-design-" + this.design] = this.design;
             if (this.alignmentStyle) {
