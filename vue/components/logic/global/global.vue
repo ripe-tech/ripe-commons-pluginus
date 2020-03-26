@@ -1,6 +1,8 @@
 <template>
     <div class="global">
+        <slot name="before" />
         <alert />
+        <slot name="after" />
     </div>
 </template>
 
