@@ -1,9 +1,9 @@
 import "ripe-sdk/src/css/ripe.css";
 
-import { Ripe } from "ripe-sdk";
 import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
+import { Ripe } from "ripe-sdk";
 
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
@@ -221,6 +221,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // registers the usage of the global events component
         // as this is going to be used by multiple parts
         Vue.component("global-events", GlobalEvents);
+
+        // returns the global vue instance so that methods that
+        // inherit from this may use the same reference
+        return Vue;
     }
 
     async _loadOptions(validate = true) {

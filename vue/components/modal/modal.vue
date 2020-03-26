@@ -16,7 +16,7 @@
             v-bind:id="name ? 'modal-' + name : null"
         >
             <global-events v-on:keydown.esc="hide" />
-            <div class="modal-overlay" v-on:click="() => overlayLeave && hide()" />
+            <div class="modal-overlay" v-on:click="() => overlayLeave && hide(false)" />
             <div class="modal-container" ref="container">
                 <div class="modal-header">
                     <slot name="header">
@@ -229,8 +229,8 @@ export const Modal = {
         }
     },
     methods: {
-        hide() {
-            this.$emit("hide");
+        hide(status) {
+            this.$emit("hide", status);
         },
         keyPressed(key) {
             this.$emit("key_pressed");
