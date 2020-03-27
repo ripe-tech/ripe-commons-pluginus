@@ -209,7 +209,7 @@ export const Configurator = {
             // be the main/master one
             if (this.elementDisplayed) {
                 this.$store.commit("current_frame", frame);
-                this.$bus.trigger("changed_frame", frame);
+                this.$bus.trigger("changed_frame", this.configurator, frame);
             }
         });
 
@@ -221,11 +221,19 @@ export const Configurator = {
             this.$store.commit("current_frame", frame);
         });
 
+        this.configurator.bind("highlighted_part", part => {
+            this.$bus.trigger("highlighted_part", this.configurator, part);
+        });
+
+        this.configurator.bind("lowlighted", () => {
+            this.$bus.trigger("lowlighted", this.configurator);
+        });
+
         this.$bus.bind("pre_config", () => {
             this.loading = true;
         });
 
-        this.$bus.bind("changed_frame", frame => {
+        this.$bus.bind("changed_frame", (configurator, frame) => {
             // avoid infinite loop, by checking if the frame
             // is the one we're currently on
             if (this.frame === frame) {
