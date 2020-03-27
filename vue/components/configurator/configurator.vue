@@ -225,8 +225,8 @@ export const Configurator = {
             this.$bus.trigger("highlighted_part", part);
         });
 
-        this.configurator.bind("lowlight", () => {
-            this.$bus.trigger("lowlight");
+        this.configurator.bind("lowlighted", () => {
+            this.$bus.trigger("lowlighted");
         });
 
         this.$bus.bind("pre_config", () => {
