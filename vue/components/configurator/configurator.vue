@@ -221,6 +221,14 @@ export const Configurator = {
             this.$store.commit("current_frame", frame);
         });
 
+        this.configurator.bind("highlighted_part", part => {
+            this.$bus.trigger("highlighted_part", part);
+        });
+
+        this.configurator.bind("lowlight", () => {
+            this.$bus.trigger("lowlight");
+        });
+
         this.$bus.bind("pre_config", () => {
             this.loading = true;
         });
