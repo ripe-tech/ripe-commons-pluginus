@@ -130,14 +130,29 @@ body.mobile .keyboard .keyboard-row .keyboard-key.backspace {
 export const Keyboard = {
     name: "keyboard",
     props: {
+        /**
+         * The sequence of arrays that define the multiple
+         * lines of keys in a string or object fashion.
+         */
         keys: {
             type: Array,
             required: true
         },
+        /**
+         * If the character based keys should be uppercased
+         * in the visual part of the display, or if instead
+         * they should be displayed as defined in the object
+         * based structure.
+         */
         uppercase: {
             type: Boolean,
             default: true
         },
+        /**
+         * Single choice operation in which no buffer
+         * is kept for the last set of values, allowing
+         * for more complex operations like backspace.
+         */
         singleChoice: {
             type: Boolean,
             default: false
