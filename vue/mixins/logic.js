@@ -53,12 +53,76 @@ const logicMixin = {
         },
         modelLoaded() {
             return this.modelConfigured && Boolean(this.error) === false;
+        },
+        initialsTextGroup() {
+            const personalization = this.$store.state.personalization;
+            if (!personalization.initialsExtra) return null;
+
+            const initials = {};
+            for (const group in personalization.initialsExtra) {
+                const text = personalization.initialsExtra[group].initials;
+                if (!text.length || text === "$blank") {
+                    continue;
+                }
+                initials[group] = text.toUpperCase();
+            }
+
+            return initials;
+        },
+        initialsTextSingle() {
+            return this.getNormalizedInitials();
+        },
+        engravingLocalized() {
+            const engraving = this.$store.state.personalization.engraving;
+            if (!engraving) return "";
+
+            const initialsConfig = this.$store.state.config.initials;
+            if (!initialsConfig) return engraving;
+
+            const { values } = this.$ripe.parseEngraving(engraving, initialsConfig.properties);
+
+            return values
+                .map(property => this.localeModelProperty(property.name, property.type))
+                .filter(localizedProperty => localizedProperty.length)
+                .join(" ");
         }
     },
     mounted: function() {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        /**
+         * Normalizes the internal initials structure into a single string
+         * using either the initials extra values or the "base" initials string.
+         *
+         * Some aspects of the string generation may be controller like the separator
+         * in between the initials groups and the dash value.
+         *
+         * @param {String} separator The separator to be used in between multiple
+         * groups of initials on the string generation.
+         * @param {String} dash The dash separator between the group name and the
+         * initials (concrete) value for the group.
+         * @returns {String} The normalizes initials text string for the provided
+         * order object.
+         */
+        getNormalizedInitials(separator = " ", dash = ":") {
+            const personalization = this.$store.state.personalization;
+            if (personalization.initialsExtra) {
+                let initials = "";
+                let isFirst = true;
+                for (const group in personalization.initialsExtra) {
+                    const text = personalization.initialsExtra[group].initials;
+                    if (!text.length || text === "$blank") continue;
+                    if (isFirst) isFirst = false;
+                    else initials += separator;
+                    initials += `${this.capitalize(group)}${dash} ${text.toUpperCase()}`;
+                }
+                return initials.trim();
+            } else if (personalization.initials) {
+                return personalization.initials.toUpperCase();
+            }
+            return "";
+        },
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce
