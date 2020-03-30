@@ -53,9 +53,6 @@ const logicMixin = {
         },
         modelLoaded() {
             return this.modelConfigured && Boolean(this.error) === false;
-        },
-        initialsTextSingle() {
-            return this.getNormalizedInitials();
         }
     },
     mounted: function() {
