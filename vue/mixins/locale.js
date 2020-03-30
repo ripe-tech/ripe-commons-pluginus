@@ -35,6 +35,13 @@ const localeMixin = {
                 return options.defaultValue || "";
             }
             return this.__localeModel.localeProperty(name, options);
+        },
+        localeEngraving(engraving, separator = " ") {
+            const { values } = this.$ripe.parseEngraving(engraving, this.config.initials.properties);
+            return values
+                .map(property => this.localeModelProperty(property.name, property.type))
+                .filter(localizedProperty => localizedProperty.length)
+                .join(separator);
         }
     }
 };

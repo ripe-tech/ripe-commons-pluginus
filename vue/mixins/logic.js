@@ -102,13 +102,6 @@ const logicMixin = {
             });
             return initialsExtraS;
         },
-        localeEngraving(engraving, separator = " ") {
-            const { values } = this.$ripe.parseEngraving(engraving, this.config.initials.properties);
-            return values
-                .map(property => this.localeModelProperty(property.name, property.type))
-                .filter(localizedProperty => localizedProperty.length)
-                .join(separator);
-        },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
                 // retrieves the group information for the current
