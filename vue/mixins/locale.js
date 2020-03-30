@@ -38,7 +38,10 @@ const localeMixin = {
         },
         localeEngraving(engraving, separator = " ") {
             if (!this.config || !this.config.initials) return engraving;
-            const { values } = this.$ripe.parseEngraving(engraving, this.config.initials.properties);
+            const { values } = this.$ripe.parseEngraving(
+                engraving,
+                this.config.initials.properties
+            );
             return values
                 .map(property => this.localeModelProperty(property.name, property.type))
                 .filter(localizedProperty => localizedProperty.length)

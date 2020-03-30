@@ -7,9 +7,12 @@ storiesOf("Molecules", module)
         props: {
             keys: {
                 default: object("Keys", [
-                    ["A", "B", "C"],
-                    ["D", "E", "😀", { name: "backspace", value: "backspace" }]
+                    ["a", "b", "c"],
+                    ["d", "e", "😀", { name: "backspace", value: "backspace" }]
                 ])
+            },
+            uppercase: {
+                default: boolean("Uppercase", true)
             },
             singleChoice: {
                 default: boolean("Single Choice", false)
@@ -19,6 +22,7 @@ storiesOf("Molecules", module)
             <div>
                 <keyboard
                     v-bind:keys="keys"
+                    v-bind:uppercase="uppercase"
                     v-bind:single-choice="singleChoice" />
             </div>
         `

@@ -55,7 +55,6 @@ body.mobile .keyboard {
     font-size: 28px;
     height: 60px;
     margin-right: 8px;
-    text-transform: uppercase;
     user-select: none;
     vertical-align: top;
     width: 50px;
@@ -135,6 +134,10 @@ export const Keyboard = {
             type: Array,
             required: true
         },
+        uppercase: {
+            type: Boolean,
+            default: true
+        },
         singleChoice: {
             type: Boolean,
             default: false
@@ -150,7 +153,11 @@ export const Keyboard = {
             return this.keys.map(row =>
                 row.map(key => {
                     return typeof key === "string"
-                        ? { type: "alphanumeric", name: key, value: key }
+                        ? {
+                              type: "alphanumeric",
+                              name: this.uppercase ? key.toUpperCase() : key,
+                              value: key
+                          }
                         : key;
                 })
             );
