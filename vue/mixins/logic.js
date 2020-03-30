@@ -102,7 +102,7 @@ const logicMixin = {
             });
             return initialsExtraS;
         },
-        localizeEngraving(engraving, separator = " ") {
+        localeEngraving(engraving, separator = " ") {
             const { values } = this.$ripe.parseEngraving(engraving, this.config.initials.properties);
             return values
                 .map(property => this.localeModelProperty(property.name, property.type))
