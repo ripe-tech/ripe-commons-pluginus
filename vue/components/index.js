@@ -2,11 +2,11 @@ import * as personalizationForm from "./personalization-form";
 import * as sizeForm from "./size-form";
 
 import Atoms from "./atoms";
+import Molecules from "./molecules";
 import Logic from "./logic";
 
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
-import { Keyboard } from "./keyboard";
 import { Modal } from "./modal";
 import { Personalization } from "./personalization";
 import { Pickers } from "./pickers";
@@ -19,7 +19,6 @@ import { Thumbnails } from "./thumbnails";
 const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
-    Vue.component("keyboard", Keyboard);
     Vue.component("modal", Modal);
     Vue.component("personalization", Personalization);
     Vue.component("pickers", Pickers);
@@ -34,17 +33,18 @@ const install = Vue => {
     Vue.component("initials-inputs", personalizationForm.InitialsInputs);
 
     Vue.use(Atoms);
+    Vue.use(Molecules);
     Vue.use(Logic);
 };
 
 export * from "./atoms";
+export * from "./molecules";
 export * from "./logic";
 
 export {
     install,
     ComponentPlugin,
     Configurator,
-    Keyboard,
     Modal,
     Personalization,
     Pickers,
