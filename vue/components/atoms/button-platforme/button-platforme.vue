@@ -29,7 +29,6 @@
     font-weight: 500;
     height: 44px;
     line-height: 44px;
-    max-width: 320px;
     text-align: center;
     transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
     width: 320px;
