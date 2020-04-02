@@ -14,6 +14,6 @@ const install = Vue => {
     Vue.component("thumbnail", Thumbnail);
 };
 
-export { Alert, Button, ButtonPlatforme, Icon, Loader };
+export { Alert, Button, ButtonPlatforme, Icon, Loader, Thumbnail };
 
 export default install;
