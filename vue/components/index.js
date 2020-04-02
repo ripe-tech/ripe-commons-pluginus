@@ -13,8 +13,6 @@ import { Pickers } from "./pickers";
 import { RestrictionsAlert } from "./restrictions-alert";
 import { Size } from "./size";
 import { Tab, Tabs } from "./tabs";
-import { Thumbnail } from "./thumbnail";
-import { Thumbnails } from "./thumbnails";
 
 const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
@@ -26,8 +24,6 @@ const install = Vue => {
     Vue.component("size", Size);
     Vue.component("tab", Tab);
     Vue.component("tabs", Tabs);
-    Vue.component("thumbnail", Thumbnail);
-    Vue.component("thumbnails", Thumbnails);
 
     Vue.component("initials-images", personalizationForm.InitialsImages);
     Vue.component("initials-inputs", personalizationForm.InitialsInputs);
@@ -51,9 +47,7 @@ export {
     RestrictionsAlert,
     Size,
     Tab,
-    Tabs,
-    Thumbnail,
-    Thumbnails
+    Tabs
 };
 
 export const InitialsImages = personalizationForm.InitialsImages;
