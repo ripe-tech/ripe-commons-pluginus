@@ -2,21 +2,21 @@
     <div class="ask">
         <modal class="modal" v-bind:visible="true" ref="modal">
             <h3 class="title">{{ titleData }}</h3>
-            <div class="message">
-                {{ messageData }}
-            </div>
+            <div class="message" v-html="messageHtml" />
             <div class="buttons-container">
                 <div class="buttons">
                     <button-ripe
-                        class="button button-color button-cancel"
+                        class="button button-color button-ask-cancel"
                         v-bind:disabled="loading"
+                        v-if="buttonCancelData"
                         v-on:click="onCancelClick"
                     >
                         {{ buttonCancelData }}
                     </button-ripe>
                     <button-ripe
-                        class="button button-color button-color-secondary button-confirm"
+                        class="button button-color button-color-secondary button-ask-confirm"
                         v-bind:loading="loading"
+                        v-if="buttonConfirmData"
                         v-on:click="onConfirmClick"
                     >
                         {{ buttonConfirmData }}
@@ -30,21 +30,28 @@
 <style scoped>
 .ask {
     position: absolute;
-    z-index: 13;
+    z-index: 10;
+}
+
+.ask .message {
+    color: #0d0d0d;
+    font-size: 15px;
+    line-height: 22px;
+    margin: 28px 0px 28px 0px;
 }
 
 .ask .modal ::v-deep .modal-container {
     max-width: 100%;
-    min-width: 600px;
+    min-width: 520px;
 }
 
 .ask .buttons-container {
+    font-size: 0px;
     margin-top: 15px;
 }
 
-.ask .buttons-container > .button {
-    height: 48px;
-    line-height: 48px;
+.ask .buttons-container > .buttons > .button {
+    margin: 0px 12px 0px 12px;
 }
 </style>
 
@@ -95,6 +102,12 @@ export const Ask = {
             loading: false
         };
     },
+    computed: {
+        messageHtml() {
+            if (!this.messageData) return this.messageData;
+            return this.messageData.replace(/\n/g, "<br/>");
+        }
+    },
     mounted: function() {
         if (this.global) {
             this.$bus.bind("ask", options => {
@@ -103,7 +116,7 @@ export const Ask = {
                 this.titleData = options.title || "Title";
                 this.messageData = options.message || "Message";
                 this.buttonConfirmData = options.buttonConfirm || "Confirm";
-                this.buttonConfirmData = options.buttonCancel || "Cancel";
+                this.buttonCancelData = options.buttonCancel || "Cancel";
                 this.showModal();
             });
         }
@@ -123,9 +136,7 @@ export const Ask = {
                 this.hideModal(true);
             }
             if (this.callbackData) {
-                this.callbackData({
-                    result: true
-                });
+                this.callbackData({ result: true });
             }
         },
         async willHideModal(result) {

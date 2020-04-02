@@ -15,7 +15,7 @@ const utilsMixin = {
                 options.callback = resolve;
                 this.$bus.trigger("ask", options);
             });
-            const result = await promise;
+            const { result } = await promise;
             return result;
         },
         readable(value) {
