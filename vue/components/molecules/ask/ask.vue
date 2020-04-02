@@ -30,7 +30,7 @@
 <style scoped>
 .ask {
     position: absolute;
-    z-index: 10;
+    z-index: 11;
 }
 
 .ask .message {
@@ -84,7 +84,7 @@ export const Ask = {
         },
         buttonCancel: {
             type: String,
-            default: "Confirm"
+            default: "Cancel"
         },
         global: {
             type: Boolean,
@@ -115,8 +115,10 @@ export const Ask = {
                 this.operationData = options.operation || null;
                 this.titleData = options.title || "Title";
                 this.messageData = options.message || "Message";
-                this.buttonConfirmData = options.buttonConfirm || "Confirm";
-                this.buttonCancelData = options.buttonCancel || "Cancel";
+                this.buttonConfirmData =
+                    options.buttonConfirm === undefined ? "Confirm" : options.buttonConfirm;
+                this.buttonCancelData =
+                    options.buttonCancel === undefined ? "Cancel" : options.buttonCancel;
                 this.showModal();
             });
         }
