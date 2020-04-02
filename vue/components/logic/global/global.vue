@@ -2,6 +2,7 @@
     <div class="global">
         <slot name="before" />
         <alert />
+        <ask v-bind:global="true" />
         <slot name="after" />
     </div>
 </template>
