@@ -7,9 +7,7 @@ import Logic from "./logic";
 
 import { ComponentPlugin } from "./component-plugin";
 import { Configurator } from "./configurator";
-import { Modal } from "./modal";
 import { Personalization } from "./personalization";
-import { Pickers } from "./pickers";
 import { RestrictionsAlert } from "./restrictions-alert";
 import { Size } from "./size";
 import { Tab, Tabs } from "./tabs";
@@ -17,9 +15,7 @@ import { Tab, Tabs } from "./tabs";
 const install = Vue => {
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("configurator", Configurator);
-    Vue.component("modal", Modal);
     Vue.component("personalization", Personalization);
-    Vue.component("pickers", Pickers);
     Vue.component("restrictions-alert", RestrictionsAlert);
     Vue.component("size", Size);
     Vue.component("tab", Tab);
@@ -41,9 +37,7 @@ export {
     install,
     ComponentPlugin,
     Configurator,
-    Modal,
     Personalization,
-    Pickers,
     RestrictionsAlert,
     Size,
     Tab,
