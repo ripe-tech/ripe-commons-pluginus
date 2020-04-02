@@ -10,6 +10,19 @@ const utilsMixin = {
         alert(options) {
             this.$bus.trigger("alert", options);
         },
+        async ask(options = {}) {
+            const promise = new Promise((resolve, reject) => {
+                try {
+                    this.$bus.$on("ask:confirm", () => resolve(true));
+                    this.$bus.$on("ask:cancel", () => resolve(false));
+                } catch (err) {
+                    reject(err);
+                }
+            });
+            this.$bus.trigger("ask", options);
+            const result = await promise;
+            return result;
+        },
         readable(value) {
             return this.$options.filters.readable(value);
         },
