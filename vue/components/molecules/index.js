@@ -1,3 +1,4 @@
+import { Ask } from "./ask/ask.vue";
 import { ComponentPlugin } from "./component-plugin/component-plugin.vue";
 import { Keyboard } from "./keyboard/keyboard.vue";
 import { Modal } from "./modal/modal.vue";
@@ -7,6 +8,7 @@ import { Tabs } from "./tabs/tabs.vue";
 import { Thumbnails } from "./thumbnails/thumbnails.vue";
 
 const install = Vue => {
+    Vue.component("ask", Ask);
     Vue.component("component-plugin", ComponentPlugin);
     Vue.component("keyboard", Keyboard);
     Vue.component("modal", Modal);
@@ -16,6 +18,6 @@ const install = Vue => {
     Vue.component("thumbnails", Thumbnails);
 };
 
-export { ComponentPlugin, Keyboard, Modal, RestrictionsAlert, Tab, Tabs, Thumbnails };
+export { Ask, ComponentPlugin, Keyboard, Modal, RestrictionsAlert, Tab, Tabs, Thumbnails };
 
 export default install;

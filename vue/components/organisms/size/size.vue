@@ -48,7 +48,7 @@
 </style>
 
 <script>
-import { partMixin, modalMixin } from "../../mixins";
+import { partMixin, modalMixin } from "../../../mixins";
 
 export const Size = {
     name: "size",

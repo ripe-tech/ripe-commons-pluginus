@@ -123,7 +123,7 @@ body.mobile .personalization ::v-deep .keyboard.text {
 </style>
 
 <script>
-import { modalMixin } from "../../mixins";
+import { modalMixin } from "../../../mixins";
 
 export const Personalization = {
     name: "personalization",
