@@ -229,6 +229,9 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
+        this.configurator.bind("frame_loaded_info", info => this.$bus.trigger("frame_loaded_info", info));
+        this.configurator.bind("mask_loaded_info", info => this.$bus.trigger("mask_loaded_info", info));
+
         this.$bus.bind("pre_config", () => {
             this.loading = true;
         });
