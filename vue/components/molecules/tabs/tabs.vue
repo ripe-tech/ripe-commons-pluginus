@@ -37,7 +37,6 @@
 
 .tabs-container {
     font-size: 0px;
-    height: 100%;
     margin: 0px 0px 0px 0px;
     overflow-x: auto;
     overflow-y: hidden;
