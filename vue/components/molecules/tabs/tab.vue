@@ -17,7 +17,7 @@
     font-size: 15px;
     height: 100%;
     line-height: 100px;
-    padding: 0px 20px;
+    padding: 0px 20px 0px 20px;
     transition: background-color 0.125s ease-in-out;
     vertical-align: top;
 }
