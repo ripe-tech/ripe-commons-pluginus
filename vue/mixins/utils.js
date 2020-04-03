@@ -7,10 +7,10 @@ const utilsMixin = {
 
             return value[0].toUpperCase() + value.slice(1);
         },
-        alert(options) {
+        alert(options = {}) {
             this.$bus.trigger("alert", options);
         },
-        async ask(options) {
+        async ask(options = {}) {
             const promise = new Promise((resolve, reject) => {
                 options.callback = resolve;
                 this.$bus.trigger("ask", options);
@@ -18,7 +18,7 @@ const utilsMixin = {
             const { result } = await promise;
             return result;
         },
-        async askError(options) {
+        async askError(options = {}) {
             options.title = options.title || "Error";
             options.message = options.message || "There was an error";
             options.confirmButton = options.confirmButton || "Confirm";
