@@ -20,9 +20,9 @@ const utilsMixin = {
         },
         async askError(options = {}) {
             options.title = options.title || "Error";
-            options.message = options.message || "There was an error";
-            options.confirmButton = options.confirmButton || "Confirm";
-            options.cancelButton = options.cancelButton || null;
+            options.message = options.message || options.error || "There was an error";
+            options.buttonConfirm = options.buttonConfirm || "Confirm";
+            options.buttonCancel = options.buttonCancel || null;
             const result = await this.ask(options);
             return result;
         },
