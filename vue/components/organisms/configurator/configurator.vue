@@ -5,7 +5,10 @@
                 <loader class="loader" v-bind:loader="'ball-scale-multiple'" />
             </slot>
         </div>
-        <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
+        <div
+            class="configurator-wrapper"
+            v-bind:class="{ loading: loading, 'loading-error': Boolean(loadingError) }"
+        >
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError && !loadingError">
                 Error loading model {{ model }} from brand {{ brand }}<br />
@@ -61,7 +64,11 @@
     cursor: progress;
 }
 
-.loader-container > * {
+.configurator-wrapper.loading-error .configurator {
+    cursor: default;
+}
+
+.configurator-wrapper .loader-container > * {
     left: calc(50%);
     position: absolute;
     top: calc(50%);
@@ -234,7 +241,7 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
-        this.$bus.bind("error", (error) => {
+        this.$bus.bind("error", error => {
             if (!this.loading) return;
             this.loading = false;
             this.loadingError = error;
