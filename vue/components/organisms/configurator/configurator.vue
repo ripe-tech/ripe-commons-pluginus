@@ -8,7 +8,7 @@
         <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError && !loadingError">
-                Problem loading model {{ model }} from brand {{ brand }}<br />
+                Error loading model {{ model }} from brand {{ brand }}<br />
                 {{ errorMessage ? errorMessage : "" }}
             </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
