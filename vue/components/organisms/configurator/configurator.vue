@@ -68,7 +68,7 @@
     cursor: default;
 }
 
-.configurator-wrapper .loader-container > * {
+.loader-container > * {
     left: calc(50%);
     position: absolute;
     top: calc(50%);
