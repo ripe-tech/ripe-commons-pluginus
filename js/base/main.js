@@ -129,6 +129,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // state so that it can be consulted by the components
             this.app.$store.commit("error", err || true);
 
+            // triggers the error event in the current app indicating
+            // that an error error state has been reached in set model
+            this.app.$bus.trigger("error", err || true);
+
             // on top of the config error being set on the store a proper
             // exception is also thrown indicating the issue
             throw err;

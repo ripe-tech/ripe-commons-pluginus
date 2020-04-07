@@ -229,6 +229,10 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
+        this.$bus.bind("error", () => {
+            this.loading = false;
+        });
+
         this.$bus.bind("pre_config", () => {
             this.loading = true;
         });
