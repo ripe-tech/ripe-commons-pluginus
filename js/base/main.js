@@ -101,7 +101,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // runs the setting of the model according to the currently set
         // options (initial bootstrap operation)
-        this.setModel(this.options);
+        this.setModel(this.options).catch(async err => await this._handleCritical(err));
     }
 
     async unload() {
@@ -128,6 +128,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // in case there's an error the error is set in the store
             // state so that it can be consulted by the components
             this.app.$store.commit("error", err || true);
+
+            // on top of the config error being set on the store a proper
+            // exception is also thrown indicating the issue
+            throw err;
         }
     }
 
@@ -306,6 +310,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         });
 
         return app;
+    }
+
+    async _handleCritical(err) {
+        alert(err.message ? err.message : String(err));
     }
 }
 

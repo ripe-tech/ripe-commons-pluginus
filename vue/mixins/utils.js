@@ -19,6 +19,7 @@ const utilsMixin = {
             return result;
         },
         async askError(options = {}) {
+            options = typeof options === "string" ? { message: options } : options;
             options.title = options.title || "Error";
             options.message = options.message || options.error || "There was an error";
             options.buttonConfirm = options.buttonConfirm || "Confirm";
