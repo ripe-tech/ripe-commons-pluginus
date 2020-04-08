@@ -101,6 +101,14 @@ export const Button = {
         loaderStyle: {
             type: Object,
             default: () => ({})
+        },
+        href: {
+            type: String,
+            default: null
+        },
+        target: {
+            type: String,
+            default: null
         }
     },
     computed: {
@@ -123,6 +131,10 @@ export const Button = {
     },
     methods: {
         onClick(event) {
+            if (this.href) {
+                if (this.target) window.open(this.href, this.target);
+                else document.location = this.href;
+            }
             this.$emit("click", event);
         }
     }
