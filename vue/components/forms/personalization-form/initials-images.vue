@@ -58,6 +58,7 @@ export const InitialsImages = {
         for (const initialsImage of initialsImages) {
             const image = this.$ripe.bindImage(initialsImage, {
                 showInitials: true,
+                initialsGroup: initialsImage.dataset.group,
                 initialsBuilder: this.initialsBuilder
             });
             this.initialsImages.push(image);
