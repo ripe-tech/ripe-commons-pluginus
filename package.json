@@ -17,6 +17,7 @@
     },
     "license": "Apache-2.0",
     "author": "Platforme",
+    "main": "dist/ripe-commons-pluginus.min.js",
     "files": [
         "index.js",
         "LICENSE",
@@ -28,7 +29,6 @@
         "vue/**/*.js",
         "vue/**/*.vue"
     ],
-    "main": "dist/ripe-commons-pluginus.min.js",
     "scripts": {
         "build": "webpack --mode production --config webpack.config.js",
         "build-dev": "webpack --mode development --config webpack.config.js",
