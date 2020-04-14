@@ -1,11 +1,12 @@
 import Vue from "vue";
 import { configure } from "@storybook/vue";
 
-import { install as RipeCommonsPluginusVue, busPlugin } from "../vue";
+import { install as RipeCommonsPluginusVue, plugins } from "../vue";
 
 import "./styles.css";
 
-Vue.use(busPlugin);
+Vue.use(plugins.busPlugin);
+
 Vue.use(RipeCommonsPluginusVue);
 
 const req = require.context("../vue", true, /\.stories\.js$/);
