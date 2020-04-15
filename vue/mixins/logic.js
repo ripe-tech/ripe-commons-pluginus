@@ -17,7 +17,7 @@ const logicMixin = {
         productId() {
             return this.$store.state.product_id;
         },
-        variant() {
+        modelVariant() {
             return this.$store.state.variant;
         },
         flag() {
