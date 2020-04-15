@@ -14,11 +14,11 @@ const logicMixin = {
         model() {
             return this.$store.state.model;
         },
-        productId() {
-            return this.$store.state.product_id;
-        },
         modelVariant() {
             return this.$store.state.variant;
+        },
+        productId() {
+            return this.$store.state.product_id;
         },
         flag() {
             return this.$store.state.flag;
