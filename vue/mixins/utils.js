@@ -1,14 +1,10 @@
+import { normalize } from "../../js";
+
 const utilsMixin = {
     methods: {
         capitalize(value) {
-            if (!value) {
-                return "";
-            }
-
+            if (!value) return "";
             return value[0].toUpperCase() + value.slice(1);
-        },
-        normalize(value) {
-            return value.split("_").join(" ");
         },
         alert(options = {}) {
             this.$bus.trigger("alert", options);
@@ -35,6 +31,9 @@ const utilsMixin = {
         },
         locale(value, defaultValue) {
             return this.$options.filters.locale(value, defaultValue);
+        },
+        normalize(value) {
+            return normalize(value);
         },
         dateString(timestamp, separator = "/") {
             const date = new Date(timestamp * 1000);
