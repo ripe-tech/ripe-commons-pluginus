@@ -49,7 +49,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // mounted, throwing and error if it doesn't exist
         this.appElement = document.getElementById("app");
         if (!this.appElement) {
-            throw Error("Element #app not found");
+            throw new Error("Element #app not found");
         }
 
         // initializes the Vue.js reactive data store according to the
@@ -94,7 +94,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             } else if (isProductId) {
                 model = await this.ripe.configResolveP(this.options.product_id);
             } else {
-                throw Error("No valid product ID structure");
+                throw new Error("No valid product ID structure");
             }
             this.options = Object.assign(this.options, model);
         }
@@ -120,6 +120,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (options === null) options = this.options;
 
         try {
+            // validates that all of the pre-condition required for model
+            // setting are fulfilled, otherwise raises errors
+            if (!options.brand) throw Error("No brand defined in context");
+            if (!options.model) throw Error("No model defined in context");
+
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);
