@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/vue";
-import { withKnobs, boolean, select, number } from "@storybook/addon-knobs";
+import { withKnobs, boolean, select } from "@storybook/addon-knobs";
 
 storiesOf("Atoms", module)
     .addDecorator(withKnobs)
@@ -23,7 +23,16 @@ storiesOf("Atoms", module)
                 default: boolean("Subtle", false)
             },
             size: {
-                default: number("Size", 9)
+                default: select(
+                    "Size",
+                    {
+                        Tiny: "tiny",
+                        Small: "small",
+                        Medium: "medium",
+                        Large: "large"
+                    },
+                    "medium"
+                )
             }
         },
         template: `

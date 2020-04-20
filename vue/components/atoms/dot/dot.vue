@@ -1,5 +1,5 @@
 <template>
-    <div class="dot" v-bind:class="classes" v-bind:style="styles" v-on:click="onClick" />
+    <div class="dot" v-bind:class="classes" v-on:click="onClick" />
 </template>
 
 <style lang="scss" scoped>
@@ -12,6 +12,21 @@
     height: 9px;
     transition: background-color 0.125s ease-in-out;
     width: 9px;
+}
+
+.dot.dot-small {
+    height: 9px;
+    width: 9px;
+}
+
+.dot.dot-medium {
+    height: 10px;
+    width: 10px;
+}
+
+.dot.dot-large {
+    height: 12px;
+    width: 12px;
 }
 
 .dot.dot-dark {
@@ -84,7 +99,7 @@ export const Dot = {
             default: false
         },
         size: {
-            type: Number,
+            type: String,
             default: null
         }
     },
@@ -92,15 +107,8 @@ export const Dot = {
         classes() {
             const base = {};
             if (this.color) base["dot-" + this.color] = this.color;
+            if (this.size) base["dot-" + this.size] = this.size;
             if (this.subtle) base["dot-subtle"] = this.subtle;
-            return base;
-        },
-        styles() {
-            const base = {};
-            if (this.size !== null) {
-                base.height = `${this.size}px`;
-                base.width = `${this.size}px`;
-            }
             return base;
         }
     },
