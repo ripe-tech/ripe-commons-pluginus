@@ -80,28 +80,24 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this._loadVue();
         this.app = this._initVueApp(this.appElement);
 
-        // in case there's a valid product id defined that we should resolve
-        // it and update the current options with its resolved values
-        if (!(this.options.brand && this.options.model) && this.options.product_id) {
-            let model = null;
+        if (this.options.brand && this.options.model) {
+            await this.setModelOptions({ brand: this.options.brand, model: this.options.model });
+        } else if (this.options.product_id) {
             const isQuery = this.options.product_id.startsWith("query:");
             const isDku = this.options.product_id.startsWith("dku:");
             const isProductId = !isQuery && !isDku;
             if (isQuery) {
-                model = this.ripe._queryToSpec(this.options.product_id.slice(6));
+                await this.setModelOptions({ query: this.options.product_id.slice(6) });
             } else if (isDku) {
-                model = await this.ripe.configDku(this.options.product_id.slice(4));
+                await this.setModelOptions({ dku: this.options.product_id.slice(4) });
             } else if (isProductId) {
-                model = await this.ripe.configResolveP(this.options.product_id);
+                await this.setModelOptions({ productId: this.options.product_id });
             } else {
                 throw new Error("No valid product ID structure");
             }
-            this.options = Object.assign(this.options, model);
+        } else {
+            await this.setModelOptions();
         }
-
-        // runs the setting of the model according to the currently set
-        // options (initial bootstrap operation)
-        this.setModel(this.options).catch(async err => await this._handleCritical(err));
     }
 
     async unload() {
@@ -112,6 +108,21 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     getCapabilities() {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
+    }
+
+    async setModelOptions({ brand = null, model = null, query = null, dku = null, productId = null, setModel = true } = {}) {
+        let modelConfig = {};
+        if (query) {
+            modelConfig = this.ripe._queryToSpec(query);
+        } else if (dku) {
+            modelConfig = await this.ripe.configDkuP(dku);
+        } else if (productId) {
+            modelConfig = await this.ripe.configResolveP(productId);
+        }
+
+        this.options = Object.assign({ brand: brand, model: model }, modelConfig);
+
+        if (setModel) await this.setModel(this.options).catch(async err => await this._handleCritical(err));
     }
 
     async setModel(options = null) {
@@ -217,6 +228,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // all components, this applies directly on component creation
         Vue.mixin(mixins.logicMixin);
         Vue.mixin(mixins.utilsMixin);
+        Vue.mixin({
+            methods: {
+                setModelOptions: this.setModelOptions.bind(this)
+            }
+        });
 
         // initializes the event bus that will be used for
         // UI related communication between the components
