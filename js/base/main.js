@@ -110,7 +110,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
-    async setModelOptions({ brand = null, model = null, query = null, dku = null, productId = null, setModel = true } = {}) {
+    async setModelOptions({
+        brand = null,
+        model = null,
+        query = null,
+        dku = null,
+        productId = null,
+        setModel = true
+    } = {}) {
         let modelConfig = {};
         if (query) {
             modelConfig = this.ripe._queryToSpec(query);
@@ -122,7 +129,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         this.options = Object.assign({ brand: brand, model: model }, modelConfig);
 
-        if (setModel) await this.setModel(this.options).catch(async err => await this._handleCritical(err));
+        if (setModel)
+            { await this.setModel(this.options).catch(async err => await this._handleCritical(err)); }
     }
 
     async setModel(options = null) {
