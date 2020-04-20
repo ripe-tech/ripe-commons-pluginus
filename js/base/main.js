@@ -54,7 +54,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // initializes the Vue.js reactive data store according to the
         // underlying specification defined by `_getStoreDef`
-        this._initStore();
+        await this._initStore();
 
         // reads and parses the options from the URL
         // initializes the app state accordingly
@@ -78,30 +78,40 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // loads the vue components and mixins to be used on
         // the vue app and starts it
         await this._loadVue();
-        this.app = this._initVueApp(this.appElement);
+        this.app = await this._initVueApp(this.appElement);
 
-        // in case there's a valid product id defined that we should resolve
+        // allocates space for the object that will hold the target model
+        // configuration to be applied to the ripe instance
+        const config = {};
+
+        // in case there's a brand and model defined we should follow the
+        // "typical" setting of options according to brand and model
+        if (this.options.brand && this.options.model) {
+            Object.assign(config, {
+                brand: this.options.brand,
+                model: this.options.model
+            });
+        }
+        // otherwise if there's a valid product id defined then we should resolve
         // it and update the current options with its resolved values
-        if (!(this.options.brand && this.options.model) && this.options.product_id) {
-            let model = null;
+        else if (this.options.product_id) {
             const isQuery = this.options.product_id.startsWith("query:");
             const isDku = this.options.product_id.startsWith("dku:");
             const isProductId = !isQuery && !isDku;
             if (isQuery) {
-                model = this.ripe._queryToSpec(this.options.product_id.slice(6));
+                Object.assign(config, { query: this.options.product_id.slice(6) });
             } else if (isDku) {
-                model = await this.ripe.configDku(this.options.product_id.slice(4));
+                Object.assign(config, { dku: this.options.product_id.slice(4) });
             } else if (isProductId) {
-                model = await this.ripe.configResolveP(this.options.product_id);
+                Object.assign(config, { productId: this.options.product_id });
             } else {
                 throw new Error("No valid product ID structure");
             }
-            this.options = Object.assign(this.options, model);
         }
 
-        // runs the setting of the model according to the currently set
-        // options (initial bootstrap operation)
-        this.setModel(this.options).catch(async err => await this._handleCritical(err));
+        // runs the setting of the model & configuration according to the currently set
+        // options (initial bootstrap operation), handling critical error as expected
+        this.setModelConfig(config).catch(async err => await this._handleCritical(err));
     }
 
     async unload() {
@@ -142,6 +152,37 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // exception is also thrown indicating the issue
             throw err;
         }
+    }
+
+    async setModelConfig({
+        brand = null,
+        model = null,
+        query = null,
+        dku = null,
+        productId = null,
+        setModel = true
+    } = {}) {
+        let config = {};
+
+        if (query) {
+            config = this.ripe._queryToSpec(query);
+        } else if (dku) {
+            config = await this.ripe.configDkuP(dku);
+        } else if (productId) {
+            config = await this.ripe.configResolveP(productId);
+        }
+
+        // updates the currently set options with the model configuration
+        // provided (base object contains current brand and model)
+        this.options = Object.assign({ brand: brand, model: model }, config);
+
+        // in case no model setting is effectively required then return
+        // the control flow immediately (only options are changed)
+        if (!setModel) return;
+
+        // runs the set model operation using the newly resolved options
+        // and waiting for it to finalize (as expected)
+        await this.setModel(this.options);
     }
 
     _bind() {
@@ -244,12 +285,12 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         throw new Error("_loadOptions is not implemented.");
     }
 
-    _initStore() {
+    async _initStore() {
         Vue.use(Vuex);
         this.store = new Vuex.Store(this._getStoreDef());
     }
 
-    _initVueApp(element) {
+    async _initVueApp(element) {
         // saves references to the context and to the owner
         // to be used inside the vue app
         const self = this;
