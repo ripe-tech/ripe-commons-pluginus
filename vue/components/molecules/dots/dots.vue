@@ -1,5 +1,5 @@
 <template>
-    <div class="dots thumbnails" ref="thumbnailsContainer">
+    <div class="thumbnails" ref="thumbnailsContainer">
         <dot-thumbnail
             v-bind:frame="`${thumbnail.face}-${thumbnail.frame}`"
             v-bind:name="thumbnail.name"
