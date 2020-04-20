@@ -2,7 +2,6 @@
     <div class="thumbnails" ref="thumbnailsContainer">
         <dot-thumbnail
             v-bind:frame="`${thumbnail.face}-${thumbnail.frame}`"
-            v-bind:name="thumbnail.name"
             v-for="thumbnail in thumbnails"
             v-bind:key="thumbnailKey(thumbnail)"
         />
