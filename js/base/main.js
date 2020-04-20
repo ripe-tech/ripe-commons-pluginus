@@ -160,7 +160,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         query = null,
         dku = null,
         productId = null,
-        setModel = true
+        setModel = true,
+        ...extra
     } = {}) {
         let config = {};
 
@@ -174,7 +175,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the currently set options with the model configuration
         // provided (base object contains current brand and model)
-        this.options = Object.assign({ brand: brand, model: model }, config);
+        this.options = Object.assign({ brand: brand, model: model, parts: {} }, extra, config);
 
         // in case no model setting is effectively required then return
         // the control flow immediately (only options are changed)
