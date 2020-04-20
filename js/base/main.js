@@ -49,7 +49,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // mounted, throwing and error if it doesn't exist
         this.appElement = document.getElementById("app");
         if (!this.appElement) {
-            throw Error("Element #app not found");
+            throw new Error("Element #app not found");
         }
 
         // initializes the Vue.js reactive data store according to the
@@ -94,14 +94,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             } else if (isProductId) {
                 model = await this.ripe.configResolveP(this.options.product_id);
             } else {
-                throw Error("No valid product ID structure");
+                throw new Error("No valid product ID structure");
             }
             this.options = Object.assign(this.options, model);
         }
 
         // runs the setting of the model according to the currently set
         // options (initial bootstrap operation)
-        this.setModel(this.options);
+        this.setModel(this.options).catch(async err => await this._handleCritical(err));
     }
 
     async unload() {
@@ -120,6 +120,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (options === null) options = this.options;
 
         try {
+            // validates that all of the pre-condition required for model
+            // setting are fulfilled, otherwise raises errors
+            if (!options.brand) throw Error("No brand defined in context");
+            if (!options.model) throw Error("No model defined in context");
+
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
             await this.ripe.config(options.brand, options.model, options);
@@ -128,6 +133,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // in case there's an error the error is set in the store
             // state so that it can be consulted by the components
             this.app.$store.commit("error", err || true);
+
+            // triggers the error event in the current app indicating
+            // that an error error state has been reached in set model
+            this.app.$bus.trigger("error", err || true);
+
+            // on top of the config error being set on the store a proper
+            // exception is also thrown indicating the issue
+            throw err;
         }
     }
 
@@ -306,6 +319,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         });
 
         return app;
+    }
+
+    async _handleCritical(err) {
+        alert(err.message ? err.message : String(err));
     }
 }
 

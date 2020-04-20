@@ -170,6 +170,10 @@
     position: relative;
 }
 
+.pickers .colors-container {
+    padding: 0px 0px 0px 0px;
+}
+
 .pickers .colors-container > span {
     display: block;
     height: 100%;

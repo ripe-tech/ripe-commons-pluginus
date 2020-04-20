@@ -5,10 +5,13 @@
                 <loader class="loader" v-bind:loader="'ball-scale-multiple'" />
             </slot>
         </div>
-        <div class="configurator-wrapper" v-bind:class="{ loading: loading }">
+        <div
+            class="configurator-wrapper"
+            v-bind:class="{ loading: loading, 'loading-error': Boolean(loadingError) }"
+        >
             <div class="config" ref="configurator" />
-            <div class="error" v-if="modelError">
-                Problem loading model {{ model }} from brand {{ brand }}<br />
+            <div class="error" v-if="modelError && !loadingError">
+                Error loading model {{ model }} from brand {{ brand }}<br />
                 {{ errorMessage ? errorMessage : "" }}
             </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
@@ -59,6 +62,10 @@
 .configurator-wrapper .configurator.preloading,
 .configurator-wrapper .configurator:not(.ready) {
     cursor: progress;
+}
+
+.configurator-wrapper.loading-error .configurator {
+    cursor: default;
 }
 
 .loader-container > * {
@@ -168,6 +175,11 @@ export const Configurator = {
              */
             loading: true,
             /**
+             * The reference to the possible loading error instance
+             * triggered withing an malfunctioning configurator loading.
+             */
+            loadingError: null,
+            /**
              * If the current view is a single frame one, meaning that
              * no "rotation" should be "applied" to it.
              */
@@ -227,6 +239,12 @@ export const Configurator = {
 
         this.configurator.bind("lowlighted", () => {
             this.$bus.trigger("lowlighted", this.configurator);
+        });
+
+        this.$bus.bind("error", error => {
+            if (!this.loading) return;
+            this.loading = false;
+            this.loadingError = error;
         });
 
         this.$bus.bind("pre_config", () => {
