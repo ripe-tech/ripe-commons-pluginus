@@ -89,8 +89,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (this.options.brand && this.options.model) {
             Object.assign(config, {
                 brand: this.options.brand,
-                model: this.options.model
+                model: this.options.model,
+                parts: this.options.parts || {}
             });
+        } else if (this.options.dku) {
+            Object.assign(config, { dku: this.options.dku });
         }
         // otherwise if there's a valid product id defined then we should resolve
         // it and update the current options with its resolved values

@@ -496,7 +496,7 @@ export const Pickers = {
             this.multipleMaterials = false;
         },
         activePart(part, oldPart) {
-            if (!part) {
+            if (!part || !this.materialOptions) {
                 return;
             }
             const current = this.parts[this.activePart];
@@ -763,6 +763,7 @@ export const Pickers = {
             return colors;
         },
         materialColors(material) {
+            if (!this.materialOptions) return;
             const colors = [];
             let index = 0;
             const materialColors = this.materialOptions[material] || [];
