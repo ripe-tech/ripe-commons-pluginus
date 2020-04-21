@@ -342,6 +342,12 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("initials_change", initialsExtra => {
                     self.ripe.setInitialsExtra(initialsExtra);
                 });
+                this.$bus.bind("previous_frame", () =>
+                    self.ripe.getChildren("Configurator").forEach(c => c.previousFrame())
+                );
+                this.$bus.bind("next_frame", () =>
+                    self.ripe.getChildren("Configurator").forEach(c => c.nextFrame())
+                );
                 this.$bus.bind("undo", () => self.ripe.undo());
                 this.$bus.bind("redo", () => self.ripe.redo());
                 this.$bus.bind("start_over", () => self.ripe.undoAll());
