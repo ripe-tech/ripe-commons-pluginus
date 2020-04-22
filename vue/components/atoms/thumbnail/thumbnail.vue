@@ -70,6 +70,14 @@ export const Thumbnail = {
         name: {
             type: String,
             required: true
+        },
+        size: {
+            type: Number,
+            default: null
+        },
+        crop: {
+            type: Boolean,
+            default: null
         }
     },
     data: function() {
@@ -93,7 +101,9 @@ export const Thumbnail = {
     },
     mounted: function() {
         this.image = this.$ripe.bindImage(this.$refs.image, {
-            frame: this.frame
+            frame: this.frame,
+            size: this.size || undefined,
+            crop: this.crop || undefined
         });
     },
     destroyed: function() {
