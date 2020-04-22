@@ -38,6 +38,14 @@
                         {{ localeModel(part, "no_" + part) }}
                     </p>
                 </li>
+                <li
+                    class="part button button-part personalization"
+                    v-on:click="() => $bus.trigger('open_personalization')"
+                >
+                    <p class="label">
+                        {{ "ripe_commons.personalization.personalize" | locale }}
+                    </p>
+                </li>
                 <slot />
             </ul>
             <div
@@ -144,6 +152,10 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
+}
+
+body.desktop .pickers .parts-container > .part.personalization {
+    display: none;
 }
 
 .pickers .parts-container > .part > .swatch {
