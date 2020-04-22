@@ -309,9 +309,7 @@ export const Configurator = {
          * available container size (defined by parent).
          */
         resize(size) {
-            if (!size || !this.configurator) {
-                return;
-            }
+            if (!size || !this.configurator) return;
             this.configurator.resize(size);
         }
     },

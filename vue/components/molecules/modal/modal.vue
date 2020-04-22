@@ -20,7 +20,7 @@
             <div class="modal-container" ref="container">
                 <div class="modal-header">
                     <slot name="header">
-                        <div class="button button-close" v-on:click="hide">
+                        <div class="button button-close" v-on:click="() => hide(false)">
                             <img src="~./assets/close.svg" />
                         </div>
                     </slot>

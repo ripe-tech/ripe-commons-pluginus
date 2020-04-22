@@ -156,6 +156,7 @@ export const store = {
         },
         getCurrentFrame: state => () => state.currentFrame,
         getConfig: state => () => state.config,
+        getFormat: state => () => state.format,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
