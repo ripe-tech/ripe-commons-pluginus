@@ -9,7 +9,7 @@ export const store = {
         dku: "",
         product_id: "",
         variant: "",
-        version: null,
+        version: "",
         description: "",
         flag: "",
         format: "",
