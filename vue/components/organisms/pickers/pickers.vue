@@ -17,6 +17,18 @@
             />
             <ul class="parts-container" ref="partsPicker">
                 <li
+                    class="part button button-part button-extra"
+                    v-for="button in beforeButtonsParts"
+                    v-bind:key="button.id"
+                    v-on:click="onButtonPartClick(button.event)"
+                >
+                    <slot v-bind:name="`button-before-part-${button.id}`">
+                        <p class="label">
+                            {{ button.label }}
+                        </p>
+                    </slot>
+                </li>
+                <li
                     class="part button button-part"
                     v-bind:class="{
                         active: activePart === part,
@@ -40,13 +52,13 @@
                 </li>
                 <li
                     class="part button button-part button-extra"
-                    v-for="partButton in afterPartsButtons"
-                    v-bind:key="partButton.id"
-                    v-on:click="onAfterPartsButtonClick(partButton.event)"
+                    v-for="button in afterButtonsParts"
+                    v-bind:key="button.id"
+                    v-on:click="onButtonPartClick(button.event)"
                 >
-                    <slot v-bind:name="`part-button-${partButton.id}`">
+                    <slot v-bind:name="`button-after-part-${button.id}`">
                         <p class="label">
-                            {{ partButton.label }}
+                            {{ button.label }}
                         </p>
                     </slot>
                 </li>
@@ -155,10 +167,6 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
-}
-
-body.desktop .pickers .parts-container > .part.button-extra {
-    display: none;
 }
 
 .pickers .parts-container > .part > .swatch {
@@ -443,7 +451,11 @@ export const Pickers = {
             type: Boolean,
             default: false
         },
-        afterPartsButtons: {
+        beforeButtonsParts: {
+            type: Array,
+            default: () => []
+        },
+        afterButtonsParts: {
             type: Array,
             default: () => []
         }
@@ -918,7 +930,7 @@ export const Pickers = {
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
         },
-        onAfterPartsButtonClick(event) {
+        onButtonPartClick(event) {
             this.$emit(event);
         },
         onMaterialsChanged() {
