@@ -38,7 +38,18 @@
                         {{ localeModel(part, "no_" + part) }}
                     </p>
                 </li>
-                <slot />
+                <li
+                    class="part button button-part button-extra"
+                    v-for="partButton in afterPartsButtons"
+                    v-bind:key="partButton.id"
+                    v-on:click="onAfterPartsButtonClick(partButton.event)"
+                >
+                    <slot v-bind:name="`part-button-${partButton.id}`">
+                        <p class="label">
+                            {{ partButton.label }}
+                        </p>
+                    </slot>
+                </li>
             </ul>
             <div
                 class="button-scroll button-scroll-right button-scroll-parts button-scroll-parts-right"
@@ -144,6 +155,10 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
+}
+
+body.desktop .pickers .parts-container > .part.button-extra {
+    display: none;
 }
 
 .pickers .parts-container > .part > .swatch {
@@ -427,6 +442,10 @@ export const Pickers = {
         enableScrollColors: {
             type: Boolean,
             default: false
+        },
+        afterPartsButtons: {
+            type: Array,
+            default: () => []
         }
     },
     computed: {
@@ -898,6 +917,9 @@ export const Pickers = {
             scrollElement.scrollLeft = scrollLeft;
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
+        },
+        onAfterPartsButtonClick(event) {
+            this.$emit(event);
         },
         onMaterialsChanged() {
             this.scrollMaterials(this.activeMaterial, false);
