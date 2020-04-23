@@ -36,6 +36,9 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         if (model.variant) query.set("variant", model.variant);
         else query.delete("variant");
 
+        if (model.version) query.set("version", model.version);
+        else query.delete("version");
+
         if (model.flag) query.set("flag", model.flag);
         else query.delete("flag");
 
