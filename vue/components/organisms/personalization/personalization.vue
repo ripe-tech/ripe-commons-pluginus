@@ -248,7 +248,7 @@ export const Personalization = {
     methods: {
         apply() {
             this.$store.commit("personalization", this.state);
-            this.$bus.trigger("personalization", this.state);
+            this.$bus.trigger("personalization", this.state, this.tabMessage);
             this.hideModal();
         },
         clear() {
