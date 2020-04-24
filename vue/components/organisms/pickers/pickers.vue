@@ -17,7 +17,7 @@
             />
             <ul class="parts-container" ref="partsPicker">
                 <li
-                    class="part button button-part button-extra"
+                    class="part button button-part button-part-before"
                     v-bind:class="{ disabled: button.disabled }"
                     v-for="button in beforeButtonsParts"
                     v-bind:key="button.id"
@@ -52,7 +52,7 @@
                     </p>
                 </li>
                 <li
-                    class="part button button-part button-extra"
+                    class="part button button-part button-part-after"
                     v-bind:class="{ disabled: button.disabled }"
                     v-for="button in afterButtonsParts"
                     v-bind:key="button.id"
