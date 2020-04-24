@@ -18,6 +18,7 @@
             <ul class="parts-container" ref="partsPicker">
                 <li
                     class="part button button-part button-extra"
+                    v-bind:class="{ disabled: button.disabled }"
                     v-for="button in beforeButtonsParts"
                     v-bind:key="button.id"
                     v-on:click="onButtonPartClick(button.event, $event)"
@@ -52,6 +53,7 @@
                 </li>
                 <li
                     class="part button button-part button-extra"
+                    v-bind:class="{ disabled: button.disabled }"
                     v-for="button in afterButtonsParts"
                     v-bind:key="button.id"
                     v-on:click="onButtonPartClick(button.event, $event)"
@@ -167,6 +169,11 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
+}
+
+.pickers .parts-container > .part.button-part.disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .pickers .parts-container > .part > .swatch {
