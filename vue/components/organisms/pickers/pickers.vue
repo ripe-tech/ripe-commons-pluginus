@@ -20,8 +20,7 @@
                     class="part button button-part button-extra"
                     v-for="button in beforeButtonsParts"
                     v-bind:key="button.id"
-                    v-on:click="onButtonPartClick($event, button.event)"
-
+                    v-on:click="onButtonPartClick(button.event, $event)"
                 >
                     <slot v-bind:name="`button-before-part-${button.id}`">
                         <p class="label">
@@ -55,7 +54,7 @@
                     class="part button button-part button-extra"
                     v-for="button in afterButtonsParts"
                     v-bind:key="button.id"
-                    v-on:click="onButtonPartClick(button.event)"
+                    v-on:click="onButtonPartClick(button.event, $event)"
                 >
                     <slot v-bind:name="`button-after-part-${button.id}`">
                         <p class="label">
@@ -931,8 +930,8 @@ export const Pickers = {
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
         },
-        onButtonPartClick(event) {
-            this.$emit(event);
+        onButtonPartClick(buttonEvent, event) {
+            this.$emit(buttonEvent, event);
         },
         onMaterialsChanged() {
             this.scrollMaterials(this.activeMaterial, false);
