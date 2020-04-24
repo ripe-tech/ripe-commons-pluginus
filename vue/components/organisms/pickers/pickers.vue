@@ -18,7 +18,7 @@
             <ul class="parts-container" ref="partsPicker">
                 <li
                     class="part button button-part button-part-before"
-                    v-bind:class="{ disabled: button.disabled }"
+                    v-bind:class="buttonPartsClasses(button)"
                     v-for="button in beforeButtonsParts"
                     v-bind:key="button.id"
                     v-on:click="onButtonPartClick(button.event, $event)"
@@ -53,7 +53,7 @@
                 </li>
                 <li
                     class="part button button-part button-part-after"
-                    v-bind:class="{ disabled: button.disabled }"
+                    v-bind:class="buttonPartsClasses(button)"
                     v-for="button in afterButtonsParts"
                     v-bind:key="button.id"
                     v-on:click="onButtonPartClick(button.event, $event)"
@@ -936,6 +936,12 @@ export const Pickers = {
             scrollElement.scrollLeft = scrollLeft;
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
+        },
+        buttonPartsClasses(button) {
+            const base = {};
+            if (button.disabled) base.disabled = button.disabled;
+            if (button.id) base[`button-part-${button.id}`] = button.id;
+            return base;
         },
         onButtonPartClick(buttonEvent, event) {
             this.$emit(buttonEvent, event);
