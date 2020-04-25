@@ -157,6 +157,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     async setModelConfig({
         brand = null,
         model = null,
+        version = null,
         query = null,
         dku = null,
         productId = null,
@@ -175,7 +176,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the currently set options with the model configuration
         // provided (base object contains current brand and model)
-        this.options = Object.assign({ brand: brand, model: model, parts: {} }, extra, config);
+        this.options = Object.assign(
+            {
+                brand: brand,
+                model: model,
+                version: version,
+                parts: {}
+            },
+            extra,
+            config
+        );
 
         // in case no model setting is effectively required then return
         // the control flow immediately (only options are changed)
