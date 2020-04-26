@@ -160,6 +160,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     async setModelConfig({
         brand = null,
         model = null,
+        version = null,
         query = null,
         dku = null,
         productId = null,
@@ -178,7 +179,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the currently set options with the model configuration
         // provided (base object contains current brand and model)
-        this.options = Object.assign({ brand: brand, model: model, parts: {} }, extra, config);
+        this.options = Object.assign(
+            {
+                brand: brand,
+                model: model,
+                version: version,
+                parts: {}
+            },
+            extra,
+            config
+        );
 
         // in case no model setting is effectively required then return
         // the control flow immediately (only options are changed)
@@ -201,14 +211,22 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
                 variant: this.ripe.options.variant,
+                version: this.ripe.options.version,
                 description: this.ripe.options.description,
                 product_id: this.ripe.options.product_id,
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
             });
+            this.store.commit("format", this.ripe.format);
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
+        });
+
+        // updates some of the internal store setting whenever there's
+        // a change in the internal ripe settings
+        this.ripe.bind("settings", () => {
+            this.store.commit("format", this.ripe.format);
         });
 
         // listens for parts and prices changes and updates the store
@@ -339,12 +357,19 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // updates the ripe instance when a part or personalization
                 // is changed (imperative/action events)
+                this.$bus.bind("format_change", format => self.ripe.setFormat(format));
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
                 this.$bus.bind("initials_change", initialsExtra => {
                     self.ripe.setInitialsExtra(initialsExtra);
                 });
+                this.$bus.bind("previous_frame", () =>
+                    self.ripe.getChildren("Configurator").forEach(c => c.previousFrame())
+                );
+                this.$bus.bind("next_frame", () =>
+                    self.ripe.getChildren("Configurator").forEach(c => c.nextFrame())
+                );
                 this.$bus.bind("undo", () => self.ripe.undo());
                 this.$bus.bind("redo", () => self.ripe.redo());
                 this.$bus.bind("start_over", () => self.ripe.undoAll());
@@ -359,6 +384,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     {
                         deep: true
                     }
+                );
+
+                // registers a watch operation on the (image) format field of
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getFormat, format =>
+                    this.$bus.trigger("format_change", format)
                 );
             }
         });

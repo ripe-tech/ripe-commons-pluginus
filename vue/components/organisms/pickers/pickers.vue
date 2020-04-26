@@ -107,7 +107,7 @@
                                 'no-option': colorOption.color.startsWith('no_')
                             }"
                             v-for="colorOption in colorOptions"
-                            v-bind:key="colorOption.material + '_' + colorOption.color"
+                            v-bind:key="colorOption.material + ':' + colorOption.color"
                             v-on:click="() => colorClicked(colorOption)"
                         >
                             <div class="swatch">
