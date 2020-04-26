@@ -460,7 +460,7 @@ export const Pickers = {
             return choices;
         },
         materialOptions() {
-            return this.activePart ? this.filteredOptions[this.activePart] : null;
+            return this.activePart ? this.filteredOptions[this.activePart] || {} : {};
         },
         colorOptions() {
             if (!this.activeMaterial) {
@@ -496,7 +496,7 @@ export const Pickers = {
             this.multipleMaterials = false;
         },
         activePart(part, oldPart) {
-            if (!part || !this.materialOptions) {
+            if (!part) {
                 return;
             }
             const current = this.parts[this.activePart];
@@ -763,7 +763,6 @@ export const Pickers = {
             return colors;
         },
         materialColors(material) {
-            if (!this.materialOptions) return;
             const colors = [];
             let index = 0;
             const materialColors = this.materialOptions[material] || [];
