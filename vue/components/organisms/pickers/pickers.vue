@@ -16,19 +16,21 @@
                 v-on:click="slideLeftParts"
             />
             <ul class="parts-container" ref="partsPicker">
-                <li
-                    class="part button button-part button-part-before"
-                    v-bind:class="buttonPartsClasses(button)"
-                    v-for="button in beforeButtonsParts"
-                    v-bind:key="button.id"
-                    v-on:click="onButtonPartClick(button.event, $event)"
-                >
-                    <slot v-bind:name="`button-before-part-${button.id}`">
-                        <p class="label">
-                            {{ button.label }}
-                        </p>
-                    </slot>
-                </li>
+                <slot name="before-buttons-parts">
+                    <li
+                        class="part button button-part button-before-buttons-parts"
+                        v-bind:class="buttonPartsClasses(button)"
+                        v-for="button in beforeButtonsParts"
+                        v-bind:key="button.id"
+                        v-on:click="onButtonPartClick(button.event, $event)"
+                    >
+                        <slot v-bind:name="`button-before-buttons-parts-${button.id}`">
+                            <p class="label">
+                                {{ button.label }}
+                            </p>
+                        </slot>
+                    </li>
+                </slot>
                 <li
                     class="part button button-part"
                     v-bind:class="{
@@ -51,19 +53,21 @@
                         {{ localeModel(part, "no_" + part) }}
                     </p>
                 </li>
-                <li
-                    class="part button button-part button-part-after"
-                    v-bind:class="buttonPartsClasses(button)"
-                    v-for="button in afterButtonsParts"
-                    v-bind:key="button.id"
-                    v-on:click="onButtonPartClick(button.event, $event)"
-                >
-                    <slot v-bind:name="`button-after-part-${button.id}`">
-                        <p class="label">
-                            {{ button.label }}
-                        </p>
-                    </slot>
-                </li>
+                <slot name="after-buttons-parts">
+                    <li
+                        class="part button button-part button-after-buttons-parts"
+                        v-bind:class="buttonPartsClasses(button)"
+                        v-for="button in afterButtonsParts"
+                        v-bind:key="button.id"
+                        v-on:click="onButtonPartClick(button.event, $event)"
+                    >
+                        <slot v-bind:name="`button-after-buttons-parts-${button.id}`">
+                            <p class="label">
+                                {{ button.label }}
+                            </p>
+                        </slot>
+                    </li>
+                </slot>
             </ul>
             <div
                 class="button-scroll button-scroll-right button-scroll-parts button-scroll-parts-right"
