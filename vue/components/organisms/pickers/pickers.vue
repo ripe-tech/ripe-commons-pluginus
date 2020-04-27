@@ -464,7 +464,7 @@ export const Pickers = {
         },
         colorOptions() {
             if (!this.activeMaterial) {
-                return null;
+                return {};
             } else if (this.multipleMaterials === false || this.colorToggle === true) {
                 return this.materialColors(this.activeMaterial);
             } else {
