@@ -84,7 +84,7 @@ Money._formatCurrency = function(money, currency, useSymbol) {
 };
 
 Money.formatMoney = function(value, currency, places, separator, thousands, useSymbol) {
-    if (!value) {
+    if (value === null || value === undefined) {
         return "";
     }
     useSymbol = useSymbol === undefined ? true : useSymbol;
