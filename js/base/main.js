@@ -90,6 +90,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             Object.assign(config, {
                 brand: this.options.brand,
                 model: this.options.model,
+                version: this.options.version || null,
                 parts: this.options.parts || {}
             });
         } else if (this.options.dku) {
