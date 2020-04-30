@@ -219,6 +219,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 parts: this.ripe.parts || {}
             });
             this.store.commit("format", this.ripe.format);
+            this.store.commit("resolution", this.ripe.size);
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
@@ -228,6 +229,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // a change in the internal ripe settings
         this.ripe.bind("settings", () => {
             this.store.commit("format", this.ripe.format);
+            this.store.commit("resolution", this.ripe.size);
         });
 
         // listens for parts and prices changes and updates the store
@@ -359,6 +361,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // updates the ripe instance when a part or personalization
                 // is changed (imperative/action events)
                 this.$bus.bind("format_change", format => self.ripe.setFormat(format));
+                this.$bus.bind("size_change", size => self.ripe.setSize(size));
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
@@ -392,6 +395,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // instance and then to the user interface
                 this.$store.watch(this.$store.getters.getFormat, format =>
                     this.$bus.trigger("format_change", format)
+                );
+
+                // registers a watch operation on the (image) resolution field of
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getResolution, resolution =>
+                    this.$bus.trigger("size_change", resolution)
                 );
             }
         });

@@ -13,6 +13,7 @@ export const store = {
         description: "",
         flag: "",
         format: "",
+        resolution: "",
         parts: {},
         config: {},
         defaults: {},
@@ -49,6 +50,9 @@ export const store = {
         },
         format(state, format) {
             state.format = format;
+        },
+        resolution(state, resolution) {
+            state.resolution = resolution;
         },
         parts(state, parts) {
             state.parts = Object.assign({}, parts);
@@ -125,6 +129,7 @@ export const store = {
             version: state.version,
             flag: state.flag,
             format: state.format,
+            resolution: state.resolution,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
@@ -161,6 +166,7 @@ export const store = {
         getCurrentFrame: state => () => state.currentFrame,
         getConfig: state => () => state.config,
         getFormat: state => () => state.format,
+        getResolution: state => () => state.resolution,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
