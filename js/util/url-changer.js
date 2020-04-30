@@ -4,11 +4,14 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 class UrlChangerPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
-        this.handler = this.owner.bind("model_changed", model => this.updateQuery(model));
+        this.model = null;
+        this.onModelChanged = this.owner.bind("model_changed", model => this.updateQuery(model));
+        this.onUpdateQuery = this.owner.bind("update_query", () => this.updateQuery());
     }
 
     async unload() {
-        this.owner.unbind("model_changed", this.handler);
+        this.owner.unbind("update_query", this.onUpdateQuery);
+        this.owner.unbind("model_changed", this.onModelChanged);
         await super.unload();
     }
 
@@ -16,7 +19,12 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("helper")];
     }
 
-    updateQuery(model) {
+    updateQuery(model = null) {
+        model = model || this.model;
+        if (!model) return;
+
+        this.model = model;
+
         const query = this._generateQuery(model, false);
         const href = query ? "?" + query : "";
         window.history.replaceState({}, null, href);
@@ -84,6 +92,8 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
             const partQ = `${part}:${value.material}:${value.color}`;
             query.append("p", partQ);
         }
+
+        this.owner.trigger("generate_query", query);
 
         const queryS = query.toString();
         return decode ? decodeURIComponent(queryS) : queryS;
