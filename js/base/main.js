@@ -220,6 +220,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             });
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
+            this.store.commit("backgroundColor", this.ripe.backgroundColor);
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
@@ -230,6 +231,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("settings", () => {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
+            this.store.commit("backgroundColor", this.ripe.backgroundColor);
         });
 
         // listens for parts and prices changes and updates the store
@@ -362,6 +364,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // is changed (imperative/action events)
                 this.$bus.bind("format_change", format => self.ripe.setFormat(format));
                 this.$bus.bind("size_change", size => self.ripe.setSize(size));
+                this.$bus.bind("background_color_change", backgroundColor =>
+                    self.ripe.setBackgroundColor(backgroundColor)
+                );
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
@@ -402,6 +407,13 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // instance and then to the user interface
                 this.$store.watch(this.$store.getters.getResolution, resolution =>
                     this.$bus.trigger("size_change", resolution)
+                );
+
+                // registers a watch operation on the (image) background color field of
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getBackgroundColor, backgroundColor =>
+                    this.$bus.trigger("background_color_change", backgroundColor)
                 );
             }
         });

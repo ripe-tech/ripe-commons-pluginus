@@ -14,6 +14,7 @@ export const store = {
         flag: "",
         format: "",
         resolution: "",
+        backgroundColor: "",
         parts: {},
         config: {},
         defaults: {},
@@ -53,6 +54,9 @@ export const store = {
         },
         resolution(state, resolution) {
             state.resolution = resolution;
+        },
+        backgroundColor(state, backgroundColor) {
+            state.backgroundColor = backgroundColor;
         },
         parts(state, parts) {
             state.parts = Object.assign({}, parts);
@@ -130,6 +134,7 @@ export const store = {
             flag: state.flag,
             format: state.format,
             resolution: state.resolution,
+            backgroundColor: state.backgroundColor,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
@@ -167,6 +172,7 @@ export const store = {
         getConfig: state => () => state.config,
         getFormat: state => () => state.format,
         getResolution: state => () => state.resolution,
+        getBackgroundColor: state => () => state.backgroundColor,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
