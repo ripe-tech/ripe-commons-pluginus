@@ -35,6 +35,13 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         const query = new URLSearchParams(search);
         const parts = model.parts || {};
 
+        // a full query will be generated, so clear the parameters
+        // that are exclusively used as entry points since they
+        // aren't needed anymore and might be outdated with regards
+        // to the current model configuration
+        query.delete("dku");
+        query.delete("product_id");
+
         if (model.brand) query.set("brand", model.brand);
         else query.delete("brand");
 
