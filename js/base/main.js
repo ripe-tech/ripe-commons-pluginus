@@ -285,6 +285,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // all components, this applies directly on component creation
         Vue.mixin(mixins.logicMixin);
         Vue.mixin(mixins.utilsMixin);
+        Vue.mixin(mixins.loggingMixin);
 
         // initializes the event bus that will be used for
         // UI related communication between the components
@@ -417,6 +418,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
             }
         });
+
+        app.logInfo("RIPE Commons application initializing...");
 
         return app;
     }

@@ -16,8 +16,6 @@
 </style>
 
 <script>
-import { logError } from "../../../../js";
-
 export const Icon = {
     name: "icon",
     props: {
@@ -89,7 +87,7 @@ export const Icon = {
                 }
                 return resource.default;
             } catch (error) {
-                logError(`Error loading icon '${this.icon}'.`, error);
+                this.logError(`Error loading icon '${this.icon}'.`, error);
             }
         }
     },
