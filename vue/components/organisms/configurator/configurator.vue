@@ -313,8 +313,8 @@ export const Configurator = {
             this.configurator.resize(size);
         }
     },
-    destroyed: function() {
-        this.configurator && this.$ripe.unbindConfigurator(this.configurator);
+    destroyed: async function() {
+        this.configurator && (await this.$ripe.unbindConfigurator(this.configurator));
         this.configurator = null;
     }
 };

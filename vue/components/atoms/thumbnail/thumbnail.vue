@@ -106,8 +106,8 @@ export const Thumbnail = {
             crop: this.crop || undefined
         });
     },
-    destroyed: function() {
-        this.image && this.$ripe.unbindImage(this.image);
+    destroyed: async function() {
+        this.image && (await this.$ripe.unbindImage(this.image));
         this.image = null;
     }
 };
