@@ -52,7 +52,7 @@
     "dependencies": {
         "loaders.css": "^0.1.2",
         "pluginus": "^0.3.6",
-        "ripe-sdk": "^1.9.24",
+        "ripe-sdk": "^1.9.25",
         "vue": "^2.6.11",
         "vue-global-events": "^1.1.2",
         "vuex": "^3.3.0"
