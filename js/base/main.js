@@ -251,6 +251,20 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
+
+            this.store.commit("currency", this.ripe.currency);
+            this.store.commit("country", this.ripe.country);
+            this.store.commit("locale", this.ripe.locale);
+            this.store.commit("flag", this.ripe.flag);
+            this.store.commit("guess", this.ripe.guess);
+            this.store.commit("guessUrl", this.ripe.guessUrl);
+            this.store.commit("remoteCalls", this.ripe.remoteCalls);
+            this.store.commit("useBundles", this.ripe.useBundles);
+            this.store.commit("useDefaults", this.ripe.useDefaults);
+            this.store.commit("useCombinations", this.ripe.useCombinations);
+            this.store.commit("usePrice", this.ripe.usePrice);
+            this.store.commit("useDiag", this.ripe.useDiag);
+
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
@@ -445,6 +459,15 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(this.$store.getters.getFormat, format =>
                     this.$bus.trigger("format_change", format)
                 );
+
+                // registers a watch operation on all sdk options fields
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getSdkOptions, () => {
+                    const allOptions = this.$store.getters.getOptions();
+                    self.ripe.setOptions(allOptions);
+                    self.ripe.update();
+                });
 
                 // registers a watch operation on the (image) resolution field of
                 // the data store so that the change is propagated to the ripe

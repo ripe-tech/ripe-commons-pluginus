@@ -30,7 +30,15 @@ export const store = {
         error: null,
         hasCustomization: false,
         hasPersonalization: false,
-        hasSize: false
+        hasSize: false,
+        guess: null,
+        guessUrl: null,
+        remoteCalls: null,
+        useBundles: null,
+        useDefaults: null,
+        useCombinations: null,
+        usePrice: null,
+        useDiag: null
     },
     mutations: {
         ripe_url(state, url) {
@@ -120,9 +128,34 @@ export const store = {
         },
         hasSize(state, hasSize) {
             state.hasSize = hasSize;
+        },
+        guess(state, guess) {
+            state.guess = guess;
+        },
+        guessUrl(state, guessUrl) {
+            state.guessUrl = guessUrl;
+        },
+        remoteCalls(state, remoteCalls) {
+            state.remoteCalls = remoteCalls;
+        },
+        useBundles(state, useBundles) {
+            state.useBundles = useBundles;
+        },
+        useDefaults(state, useDefaults) {
+            state.useDefaults = useDefaults;
+        },
+        useCombinations(state, useCombinations) {
+            state.useCombinations = useCombinations;
+        },
+        usePrice(state, usePrice) {
+            state.usePrice = usePrice;
+        },
+        useDiag(state, useDiag) {
+            state.useDiag = useDiag;
         }
     },
     getters: {
+        getOptions: state => () => state,
         getParts: state => () => state.parts,
         getModelState: state => () => ({
             dku: state.dku,
@@ -140,6 +173,20 @@ export const store = {
             personalization: state.personalization,
             size: state.size,
             parts: state.parts
+        }),
+        getSdkOptions: state => () => ({
+            currency: state.currency,
+            country: state.country,
+            locale: state.locale,
+            flag: state.flag,
+            guess: state.guess,
+            guessUrl: state.guessUrl,
+            remoteCalls: state.remoteCalls,
+            useBundles: state.useBundles,
+            useDefaults: state.useDefaults,
+            useCombinations: state.useCombinations,
+            usePrice: state.usePrice,
+            useDiag: state.useDiag
         }),
         getOrderInfo: state => () => {
             const orderInfo = {
