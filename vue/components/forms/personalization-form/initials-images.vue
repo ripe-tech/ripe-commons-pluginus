@@ -65,7 +65,7 @@ export const InitialsImages = {
         }
     },
     destroyed: async function() {
-        this.initialsImages.forEach(async image => await this.$ripe.unbindImage(image));
+        await Promise.all(this.initialsImages.map(async image => this.$ripe.unbindImage(image)));
     },
     methods: {
         groupKey(group) {

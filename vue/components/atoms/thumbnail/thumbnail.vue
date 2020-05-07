@@ -107,7 +107,7 @@ export const Thumbnail = {
         });
     },
     destroyed: async function() {
-        this.image && (await this.$ripe.unbindImage(this.image));
+        if (this.image) await this.$ripe.unbindImage(this.image);
         this.image = null;
     }
 };
