@@ -242,8 +242,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
                 variant: this.ripe.options.variant,
-                version: this.ripe.options.version,
-                description: this.ripe.options.description,
+                version: config.version,
+                description: config.description,
                 product_id: this.ripe.options.product_id,
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
