@@ -67,7 +67,7 @@
 }
 
 .button ::v-deep .loader > div {
-    background-color: transparent;
+    background-color: #fff;
     height: 32px;
     left: 0px;
     width: 32px;
