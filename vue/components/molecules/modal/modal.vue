@@ -118,6 +118,7 @@ body.mobile .modal > .modal-container {
     margin-left: -40px;
     margin-top: -40px;
     position: fixed;
+    z-index: 1;
 }
 
 body.tablet .modal > .modal-container > .modal-header,
