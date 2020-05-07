@@ -1,4 +1,4 @@
-import { logError, logInfo } from "../../js";
+import { logError, logInfo, logDebug } from "../../js";
 
 const loggingMixin = {
     methods: {
@@ -7,6 +7,9 @@ const loggingMixin = {
         },
         logInfo(...args) {
             logInfo(...args);
+        },
+        logDebug(...args) {
+            logDebug(...args);
         }
     }
 };

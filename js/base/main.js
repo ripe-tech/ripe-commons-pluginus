@@ -128,16 +128,32 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
-    async setModel(options = null) {
-        // in case not options are provided then the options currently
-        // set in the instance are used
+    async setModel(options = null, safe = true) {
+        if (safe && this.configuring) {
+            this.app.logInfo(() => "Delaying set model, still configuring...");
+            this.pending = options || true;
+            return;
+        }
+
+        // in case no options are provided then the options currently
+        // set in the instance are used instead
         if (options === null) options = this.options;
+
+        this.configuring = true;
+        this.pending = undefined;
+
+        // creates a copy of the options setting the safe flag with the
+        // value that has been set in the operation
+        options = Object.assign({ safe: safe }, options);
 
         try {
             // validates that all of the pre-condition required for model
             // setting are fulfilled, otherwise raises errors
             if (!options.brand) throw Error("No brand defined in context");
             if (!options.model) throw Error("No model defined in context");
+
+            // prints a small info message about the new model to be set
+            this.app.logInfo(() => `Setting model ${JSON.stringify(options, null, 2)}`);
 
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
@@ -155,6 +171,17 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // on top of the config error being set on the store a proper
             // exception is also thrown indicating the issue
             throw err;
+        } finally {
+            // unset the safe flag for configuration, allowing further configuration
+            // to take place, as it's now considered safe
+            this.configuring = false;
+
+            // in case there's a configuration pending (meaning it has been requested
+            // in the middle of the previous one) it's now time to set it as the model
+            if (this.pending) {
+                this.app.logInfo(() => "Processing delayed set model...");
+                this.setModel(typeof this.pending === "object" ? this.pending : null);
+            }
         }
     }
 
@@ -207,6 +234,9 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the app state when a new model is set
         this.ripe.bind("post_config", config => {
+            this.app.logDebug(
+                () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
+            );
             this.store.commit("config", config);
             this.store.commit("model", {
                 brand: this.ripe.brand,
@@ -226,17 +256,30 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasSize", this.ripe.hasSize());
         });
 
+        // changes some internal structure whenever there's an update
+        // on the underlying ripe instance
+        this.ripe.bind("post_update", options => {
+            this.app.logDebug(() => `SDK update: ${JSON.stringify(options, null, 2)}`);
+        });
+
         // updates some of the internal store setting whenever there's
         // a change in the internal ripe settings
         this.ripe.bind("settings", () => {
+            this.app.logDebug(() => "SDK settings changed");
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
         });
 
         // listens for parts and prices changes and updates the store
-        this.ripe.bind("parts", parts => this.store.commit("parts", parts));
-        this.ripe.bind("price", price => this.store.commit("price", price));
+        this.ripe.bind("parts", parts => {
+            this.app.logDebug(() => "SDK parts changed");
+            this.store.commit("parts", parts);
+        });
+        this.ripe.bind("price", price => {
+            this.app.logDebug(() => `SDK price changed: ${price.total.price_final}`);
+            this.store.commit("price", price);
+        });
 
         // forwards the parts events to the global bus
         this.ripe.bind("pre_parts", (...args) => this.owner.trigger("pre_parts", ...args));
@@ -419,7 +462,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             }
         });
 
-        app.logInfo("RIPE Commons application initializing...");
+        app.logInfo(() => "RIPE Commons application initializing...");
 
         return app;
     }
