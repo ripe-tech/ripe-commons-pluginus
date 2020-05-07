@@ -314,7 +314,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        this.configurator && (await this.$ripe.unbindConfigurator(this.configurator));
+        if (this.configurator) await this.$ripe.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
 };
