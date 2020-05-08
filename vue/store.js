@@ -155,7 +155,6 @@ export const store = {
         }
     },
     getters: {
-        getOptions: state => () => state,
         getParts: state => () => state.parts,
         getModelState: state => () => ({
             dku: state.dku,
@@ -173,20 +172,6 @@ export const store = {
             personalization: state.personalization,
             size: state.size,
             parts: state.parts
-        }),
-        getSdkOptions: state => () => ({
-            currency: state.currency,
-            country: state.country,
-            locale: state.locale,
-            flag: state.flag,
-            guess: state.guess,
-            guessUrl: state.guessUrl,
-            remoteCalls: state.remoteCalls,
-            useBundles: state.useBundles,
-            useDefaults: state.useDefaults,
-            useCombinations: state.useCombinations,
-            usePrice: state.usePrice,
-            useDiag: state.useDiag
         }),
         getOrderInfo: state => () => {
             const orderInfo = {
@@ -215,6 +200,20 @@ export const store = {
 
             return orderInfo;
         },
+        getOptions: state => () => ({
+            currency: state.currency,
+            country: state.country,
+            locale: state.locale,
+            flag: state.flag,
+            guess: state.guess,
+            guessUrl: state.guessUrl,
+            remoteCalls: state.remoteCalls,
+            useBundles: state.useBundles,
+            useDefaults: state.useDefaults,
+            useCombinations: state.useCombinations,
+            usePrice: state.usePrice,
+            useDiag: state.useDiag
+        }),
         getCurrentFrame: state => () => state.currentFrame,
         getConfig: state => () => state.config,
         getFormat: state => () => state.format,

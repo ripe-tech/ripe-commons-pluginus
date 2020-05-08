@@ -462,9 +462,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE SDK accordingly
-                this.$store.watch(this.$store.getters.getSdkOptions, () => {
-                    const allOptions = this.$store.getters.getOptions();
-                    self.ripe.setOptions(allOptions);
+                this.$store.watch(this.$store.getters.getOptions, (options) => {
+                    self.ripe.setOptions({ ...self.ripe.options, ...options });
                     self.ripe.update();
                 });
 
