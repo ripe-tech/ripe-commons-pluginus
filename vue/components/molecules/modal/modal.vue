@@ -82,7 +82,7 @@
     display: inline-block;
     max-height: 80%;
     overflow-y: auto;
-    padding: 40px 40px 40px 40px;
+    padding: 40px 40px 0px 40px;
     transition: opacity 0.25s ease-out, transform 0.2s ease-out;
     z-index: 1;
 }
@@ -193,6 +193,10 @@ body.mobile .modal .modal-content ::v-deep > div > div > .title {
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
     color: #000000;
+}
+
+.modal .modal-footer {
+    padding: 0px 0px 40px 0px;
 }
 </style>
 
