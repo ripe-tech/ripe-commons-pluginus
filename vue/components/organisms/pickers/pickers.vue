@@ -16,6 +16,21 @@
                 v-on:click="slideLeftParts"
             />
             <ul class="parts-container" ref="partsPicker">
+                <slot name="before-buttons-parts">
+                    <li
+                        class="part button button-part button-before-buttons-parts"
+                        v-bind:class="buttonPartsClasses(button)"
+                        v-for="button in beforeButtonsParts"
+                        v-bind:key="button.id"
+                        v-on:click="onButtonPartClick(button.event, $event)"
+                    >
+                        <slot v-bind:name="`button-before-buttons-parts-${button.id}`">
+                            <p class="label">
+                                {{ button.label }}
+                            </p>
+                        </slot>
+                    </li>
+                </slot>
                 <li
                     class="part button button-part"
                     v-bind:class="{
@@ -38,6 +53,21 @@
                         {{ localeModel(part, "no_" + part) }}
                     </p>
                 </li>
+                <slot name="after-buttons-parts">
+                    <li
+                        class="part button button-part button-after-buttons-parts"
+                        v-bind:class="buttonPartsClasses(button)"
+                        v-for="button in afterButtonsParts"
+                        v-bind:key="button.id"
+                        v-on:click="onButtonPartClick(button.event, $event)"
+                    >
+                        <slot v-bind:name="`button-after-buttons-parts-${button.id}`">
+                            <p class="label">
+                                {{ button.label }}
+                            </p>
+                        </slot>
+                    </li>
+                </slot>
                 <slot />
             </ul>
             <div
@@ -144,6 +174,11 @@
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
+}
+
+.pickers .parts-container > .part.button-part.disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .pickers .parts-container > .part > .swatch {
@@ -427,6 +462,14 @@ export const Pickers = {
         enableScrollColors: {
             type: Boolean,
             default: false
+        },
+        beforeButtonsParts: {
+            type: Array,
+            default: () => []
+        },
+        afterButtonsParts: {
+            type: Array,
+            default: () => []
         }
     },
     computed: {
@@ -460,11 +503,11 @@ export const Pickers = {
             return choices;
         },
         materialOptions() {
-            return this.activePart ? this.filteredOptions[this.activePart] : null;
+            return this.activePart ? this.filteredOptions[this.activePart] || {} : {};
         },
         colorOptions() {
             if (!this.activeMaterial) {
-                return null;
+                return {};
             } else if (this.multipleMaterials === false || this.colorToggle === true) {
                 return this.materialColors(this.activeMaterial);
             } else {
@@ -898,6 +941,15 @@ export const Pickers = {
             scrollElement.scrollLeft = scrollLeft;
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
+        },
+        buttonPartsClasses(button) {
+            const base = {};
+            if (button.disabled) base.disabled = button.disabled;
+            if (button.id) base[`button-part-${button.id}`] = button.id;
+            return base;
+        },
+        onButtonPartClick(buttonEvent, event) {
+            this.$emit(buttonEvent, event);
         },
         onMaterialsChanged() {
             this.scrollMaterials(this.activeMaterial, false);

@@ -23,7 +23,7 @@
     position: relative;
 }
 
-.background {
+.tabs > .background {
     background-color: #f5f5f5;
     border-bottom: 1px solid #e9eaee;
     border-top-left-radius: 8px;
@@ -35,7 +35,7 @@
     top: 5px;
 }
 
-.tabs-container {
+.tabs > .tabs-container {
     font-size: 0px;
     margin: 0px 0px 0px 0px;
     overflow-x: auto;
@@ -44,7 +44,7 @@
     white-space: nowrap;
 }
 
-.tabs-container::-webkit-scrollbar {
+.tabs > .tabs-container::-webkit-scrollbar {
     background: transparent;
     height: 0px;
 }

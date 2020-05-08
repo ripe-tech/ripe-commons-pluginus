@@ -89,8 +89,12 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         if (this.options.brand && this.options.model) {
             Object.assign(config, {
                 brand: this.options.brand,
-                model: this.options.model
+                model: this.options.model,
+                version: this.options.version || null,
+                parts: this.options.parts || {}
             });
+        } else if (this.options.dku) {
+            Object.assign(config, { dku: this.options.dku });
         }
         // otherwise if there's a valid product id defined then we should resolve
         // it and update the current options with its resolved values
@@ -124,16 +128,32 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
-    async setModel(options = null) {
-        // in case not options are provided then the options currently
-        // set in the instance are used
+    async setModel(options = null, safe = true) {
+        if (safe && this.configuring) {
+            this.app.logInfo(() => "Delaying set model, still configuring...");
+            this.pending = options || true;
+            return;
+        }
+
+        // in case no options are provided then the options currently
+        // set in the instance are used instead
         if (options === null) options = this.options;
+
+        this.configuring = true;
+        this.pending = undefined;
+
+        // creates a copy of the options setting the safe flag with the
+        // value that has been set in the operation
+        options = Object.assign({ safe: safe }, options);
 
         try {
             // validates that all of the pre-condition required for model
             // setting are fulfilled, otherwise raises errors
             if (!options.brand) throw Error("No brand defined in context");
             if (!options.model) throw Error("No model defined in context");
+
+            // prints a small info message about the new model to be set
+            this.app.logInfo(() => `Setting model ${JSON.stringify(options, null, 2)}`);
 
             // updates the config of the ripe object, this should
             // start the process of loading a specific model
@@ -151,12 +171,24 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // on top of the config error being set on the store a proper
             // exception is also thrown indicating the issue
             throw err;
+        } finally {
+            // unset the safe flag for configuration, allowing further configuration
+            // to take place, as it's now considered safe
+            this.configuring = false;
+
+            // in case there's a configuration pending (meaning it has been requested
+            // in the middle of the previous one) it's now time to set it as the model
+            if (this.pending) {
+                this.app.logInfo(() => "Processing delayed set model...");
+                this.setModel(typeof this.pending === "object" ? this.pending : null);
+            }
         }
     }
 
     async setModelConfig({
         brand = null,
         model = null,
+        version = null,
         query = null,
         dku = null,
         productId = null,
@@ -175,7 +207,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the currently set options with the model configuration
         // provided (base object contains current brand and model)
-        this.options = Object.assign({ brand: brand, model: model, parts: {} }, extra, config);
+        this.options = Object.assign(
+            {
+                brand: brand,
+                model: model,
+                version: version,
+                parts: {}
+            },
+            extra,
+            config
+        );
 
         // in case no model setting is effectively required then return
         // the control flow immediately (only options are changed)
@@ -193,31 +234,52 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // updates the app state when a new model is set
         this.ripe.bind("post_config", config => {
+            this.app.logDebug(
+                () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
+            );
             this.store.commit("config", config);
             this.store.commit("model", {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
                 variant: this.ripe.options.variant,
+                version: this.ripe.options.version,
                 description: this.ripe.options.description,
                 product_id: this.ripe.options.product_id,
                 dku: this.ripe.options.dku,
                 parts: this.ripe.parts || {}
             });
             this.store.commit("format", this.ripe.format);
+            this.store.commit("resolution", this.ripe.size);
+            this.store.commit("backgroundColor", this.ripe.backgroundColor);
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
         });
 
+        // changes some internal structure whenever there's an update
+        // on the underlying ripe instance
+        this.ripe.bind("post_update", options => {
+            this.app.logDebug(() => `SDK update: ${JSON.stringify(options, null, 2)}`);
+        });
+
         // updates some of the internal store setting whenever there's
         // a change in the internal ripe settings
         this.ripe.bind("settings", () => {
+            this.app.logDebug(() => "SDK settings changed");
             this.store.commit("format", this.ripe.format);
+            this.store.commit("resolution", this.ripe.size);
+            this.store.commit("backgroundColor", this.ripe.backgroundColor);
         });
 
         // listens for parts and prices changes and updates the store
-        this.ripe.bind("parts", parts => this.store.commit("parts", parts));
-        this.ripe.bind("price", price => this.store.commit("price", price));
+        this.ripe.bind("parts", parts => {
+            this.app.logDebug(() => "SDK parts changed");
+            this.store.commit("parts", parts);
+        });
+        this.ripe.bind("price", price => {
+            this.app.logDebug(() => `SDK price changed: ${price.total.price_final}`);
+            this.store.commit("price", price);
+        });
 
         // forwards the parts events to the global bus
         this.ripe.bind("pre_parts", (...args) => this.owner.trigger("pre_parts", ...args));
@@ -266,6 +328,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // all components, this applies directly on component creation
         Vue.mixin(mixins.logicMixin);
         Vue.mixin(mixins.utilsMixin);
+        Vue.mixin(mixins.loggingMixin);
 
         // initializes the event bus that will be used for
         // UI related communication between the components
@@ -344,6 +407,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // updates the ripe instance when a part or personalization
                 // is changed (imperative/action events)
                 this.$bus.bind("format_change", format => self.ripe.setFormat(format));
+                this.$bus.bind("size_change", size => self.ripe.setSize(size));
+                this.$bus.bind("background_color_change", backgroundColor =>
+                    self.ripe.setBackgroundColor(backgroundColor)
+                );
                 this.$bus.bind("part_change", (part, material, color) =>
                     self.ripe.setPart(part, material, color)
                 );
@@ -378,8 +445,24 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(this.$store.getters.getFormat, format =>
                     this.$bus.trigger("format_change", format)
                 );
+
+                // registers a watch operation on the (image) resolution field of
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getResolution, resolution =>
+                    this.$bus.trigger("size_change", resolution)
+                );
+
+                // registers a watch operation on the (image) background color field of
+                // the data store so that the change is propagated to the ripe
+                // instance and then to the user interface
+                this.$store.watch(this.$store.getters.getBackgroundColor, backgroundColor =>
+                    this.$bus.trigger("background_color_change", backgroundColor)
+                );
             }
         });
+
+        app.logInfo(() => "RIPE Commons application initializing...");
 
         return app;
     }
