@@ -460,9 +460,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("format_change", format)
                 );
 
-                // registers a watch operation on all sdk options fields
-                // the data store so that the change is propagated to the ripe
-                // instance and then to the user interface
+                // registers a watch operation on all options
+                // and updates the RIPE SDK accordingly
                 this.$store.watch(this.$store.getters.getSdkOptions, () => {
                     const allOptions = this.$store.getters.getOptions();
                     self.ripe.setOptions(allOptions);
