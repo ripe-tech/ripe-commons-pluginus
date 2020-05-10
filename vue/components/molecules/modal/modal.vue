@@ -80,7 +80,7 @@
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0px 0px 12px #2d2d2d;
     display: inline-block;
-    max-height: 80%;
+    max-height: 85%;
     overflow-y: auto;
     padding: 40px 40px 0px 40px;
     transition: opacity 0.25s ease-out, transform 0.2s ease-out;
@@ -90,9 +90,9 @@
 body.tablet .modal > .modal-container,
 body.mobile .modal > .modal-container {
     box-sizing: border-box;
-    max-height: 90%;
+    max-height: 95%;
     max-width: 100%;
-    padding: 20px 10px 20px 10px;
+    padding: 20px 10px 0px 10px;
 }
 
 .modal.fade-enter > .modal-container {
@@ -112,6 +112,15 @@ body.mobile .modal > .modal-container {
 .modal.fade-leave-to > .modal-container {
     opacity: 0;
     transform: scale(0.97);
+}
+
+.modal > .modal-container > :last-child {
+    padding-bottom: 40px;
+}
+
+body.tablet .modal > .modal-container > :last-child,
+body.mobile .modal > .modal-container > :last-child {
+    padding-bottom: 20px;
 }
 
 .modal > .modal-container > .modal-header {
@@ -193,10 +202,6 @@ body.mobile .modal .modal-content ::v-deep > div > div > .title {
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
 .modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
     color: #000000;
-}
-
-.modal .modal-footer {
-    padding: 0px 0px 40px 0px;
 }
 </style>
 
