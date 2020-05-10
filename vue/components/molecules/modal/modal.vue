@@ -164,34 +164,34 @@ body.mobile .modal > .modal-container > .modal-header > .button.button-close img
     width: 15px;
 }
 
-.modal .modal-content ::v-deep > .title,
-.modal .modal-content ::v-deep > div > .title,
-.modal .modal-content ::v-deep > div > div > .title {
+.modal > .modal-container > .modal-content ::v-deep > .title,
+.modal > .modal-container > .modal-content ::v-deep > div > .title,
+.modal > .modal-container > .modal-content ::v-deep > div > div > .title {
     color: #272a2f;
     font-size: 30px;
     font-weight: normal;
     margin: 0px 0px 10px 0px;
 }
 
-body.mobile .modal .modal-content ::v-deep > .title,
-body.mobile .modal .modal-content ::v-deep > div > .title,
-body.mobile .modal .modal-content ::v-deep > div > div > .title {
+body.mobile .modal > .modal-container > .modal-content ::v-deep > .title,
+body.mobile .modal > .modal-container > .modal-content ::v-deep > div > .title,
+body.mobile .modal > .modal-container > .modal-content ::v-deep > div > div > .title {
     font-size: 15px;
 }
 
-.modal .modal-content ::v-deep > .subtitle,
-.modal .modal-content ::v-deep > div > .subtitle,
-.modal .modal-content ::v-deep > div > div > .subtitle {
+.modal > .modal-container > .modal-content ::v-deep > .subtitle,
+.modal > .modal-container > .modal-content ::v-deep > div > .subtitle,
+.modal > .modal-container > .modal-content ::v-deep > div > div > .subtitle {
     color: #272a2f;
     font-size: 15px;
     margin: 0px 0px 0px 0px;
 }
 
-.modal .modal-content ::v-deep .buttons-container {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container {
     text-align: right;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button {
     display: inline-block;
     font-size: 20px;
     height: 48px;
@@ -199,15 +199,15 @@ body.mobile .modal .modal-content ::v-deep > div > div > .title {
     text-align: center;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel {
     color: #9b9b9b;
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
     color: #000000;
 }
 </style>
