@@ -30,7 +30,8 @@ export const store = {
         error: null,
         hasCustomization: false,
         hasPersonalization: false,
-        hasSize: false
+        hasSize: false,
+        versionConfig: null
     },
     mutations: {
         ripe_url(state, url) {
@@ -120,6 +121,9 @@ export const store = {
         },
         hasSize(state, hasSize) {
             state.hasSize = hasSize;
+        },
+        versionConfig(state, versionConfig) {
+            state.versionConfig = versionConfig;
         }
     },
     getters: {

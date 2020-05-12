@@ -254,6 +254,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
+            this.store.commit("versionConfig", config.version);
         });
 
         // changes some internal structure whenever there's an update
