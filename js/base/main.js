@@ -462,9 +462,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE SDK accordingly
-                this.$store.watch(this.$store.getters.getOptions, options => {
-                    self.ripe.setOptions({ ...self.ripe.options, ...options });
-                    self.ripe.update();
+                this.$store.watch(this.$store.getters.getOptions, async options => {
+                    const changed = Object.entries(options).some(([key, value]) => self.ripe[key] !== value);
+                    if (!changed) return;
+                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...options });
                 });
 
                 // registers a watch operation on the (image) resolution field of
