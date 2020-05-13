@@ -80,9 +80,9 @@
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0px 0px 12px #2d2d2d;
     display: inline-block;
-    max-height: 80%;
+    max-height: 95%;
     overflow-y: auto;
-    padding: 40px 40px 40px 40px;
+    padding: 0px 40px 0px 40px;
     transition: opacity 0.25s ease-out, transform 0.2s ease-out;
     z-index: 1;
 }
@@ -90,9 +90,9 @@
 body.tablet .modal > .modal-container,
 body.mobile .modal > .modal-container {
     box-sizing: border-box;
-    max-height: 90%;
+    max-height: 98%;
     max-width: 100%;
-    padding: 20px 10px 20px 10px;
+    padding: 0px 10px 0px 10px;
 }
 
 .modal.fade-enter > .modal-container {
@@ -114,16 +114,32 @@ body.mobile .modal > .modal-container {
     transform: scale(0.97);
 }
 
+.modal > .modal-container > :nth-child(2) {
+    padding-top: 40px;
+}
+
+body.tablet .modal > .modal-container > :nth-child(2),
+body.mobile .modal > .modal-container > :nth-child(2) {
+    padding-top: 20px;
+}
+
+.modal > .modal-container > :last-child {
+    padding-bottom: 40px;
+}
+
+body.tablet .modal > .modal-container > :last-child,
+body.mobile .modal > .modal-container > :last-child {
+    padding-bottom: 20px;
+}
+
 .modal > .modal-container > .modal-header {
     margin-left: -40px;
-    margin-top: -40px;
     position: fixed;
 }
 
 body.tablet .modal > .modal-container > .modal-header,
 body.mobile .modal > .modal-container > .modal-header {
     margin-left: -10px;
-    margin-top: -35px;
 }
 
 .modal > .modal-container > .modal-header > .button.button-close {
@@ -148,34 +164,34 @@ body.mobile .modal > .modal-container > .modal-header > .button.button-close img
     width: 15px;
 }
 
-.modal .modal-content ::v-deep > .title,
-.modal .modal-content ::v-deep > div > .title,
-.modal .modal-content ::v-deep > div > div > .title {
+.modal > .modal-container > .modal-content ::v-deep > .title,
+.modal > .modal-container > .modal-content ::v-deep > div > .title,
+.modal > .modal-container > .modal-content ::v-deep > div > div > .title {
     color: #272a2f;
     font-size: 30px;
     font-weight: normal;
     margin: 0px 0px 10px 0px;
 }
 
-body.mobile .modal .modal-content ::v-deep > .title,
-body.mobile .modal .modal-content ::v-deep > div > .title,
-body.mobile .modal .modal-content ::v-deep > div > div > .title {
+body.mobile .modal > .modal-container > .modal-content ::v-deep > .title,
+body.mobile .modal > .modal-container > .modal-content ::v-deep > div > .title,
+body.mobile .modal > .modal-container > .modal-content ::v-deep > div > div > .title {
     font-size: 15px;
 }
 
-.modal .modal-content ::v-deep > .subtitle,
-.modal .modal-content ::v-deep > div > .subtitle,
-.modal .modal-content ::v-deep > div > div > .subtitle {
+.modal > .modal-container > .modal-content ::v-deep > .subtitle,
+.modal > .modal-container > .modal-content ::v-deep > div > .subtitle,
+.modal > .modal-container > .modal-content ::v-deep > div > div > .subtitle {
     color: #272a2f;
     font-size: 15px;
     margin: 0px 0px 0px 0px;
 }
 
-.modal .modal-content ::v-deep .buttons-container {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container {
     text-align: right;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button {
     display: inline-block;
     font-size: 20px;
     height: 48px;
@@ -183,15 +199,15 @@ body.mobile .modal .modal-content ::v-deep > div > div > .title {
     text-align: center;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel {
     color: #9b9b9b;
     margin-right: 20px;
     padding: 0px 20px 0px 20px;
     transition: color 0.25s ease-in-out;
 }
 
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
-.modal .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel:hover,
+.modal > .modal-container > .modal-content ::v-deep .buttons-container > .button.button-cancel:active {
     color: #000000;
 }
 </style>
