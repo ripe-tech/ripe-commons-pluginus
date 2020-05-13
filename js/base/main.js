@@ -238,6 +238,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
             );
             this.store.commit("config", config);
+            this.store.commit("modelConfig", config);
             this.store.commit("model", {
                 brand: this.ripe.brand,
                 model: this.ripe.model,
