@@ -17,7 +17,6 @@ export const store = {
         backgroundColor: "",
         parts: {},
         config: {},
-        modelConfig: {},
         defaults: {},
         options: {},
         price: null,
@@ -83,9 +82,6 @@ export const store = {
             state.defaults = defaults;
             state.options = options;
             state.sync = config.sync;
-        },
-        modelConfig(state, modelConfig) {
-            state.modelConfig = modelConfig;
         },
         price(state, price) {
             state.price = price;
