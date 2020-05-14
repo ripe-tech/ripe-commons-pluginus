@@ -251,19 +251,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
-
-            this.store.commit("currency", this.ripe.currency);
-            this.store.commit("country", this.ripe.country);
-            this.store.commit("locale", this.ripe.locale);
-            this.store.commit("flag", this.ripe.flag);
-            this.store.commit("guess", this.ripe.guess);
-            this.store.commit("guessUrl", this.ripe.guessUrl);
-            this.store.commit("remoteCalls", this.ripe.remoteCalls);
-            this.store.commit("useBundles", this.ripe.useBundles);
-            this.store.commit("useDefaults", this.ripe.useDefaults);
-            this.store.commit("useCombinations", this.ripe.useCombinations);
-            this.store.commit("usePrice", this.ripe.usePrice);
-            this.store.commit("useDiag", this.ripe.useDiag);
+            this.store.commit("sdkOptions", this.ripe.options);
 
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
@@ -462,10 +450,10 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE SDK accordingly
-                this.$store.watch(this.$store.getters.getOptions, async options => {
-                    const changed = Object.entries(options).some(([key, value]) => self.ripe[key] !== value);
+                this.$store.watch(state => state.sdkOptions, async sdkOptions => {
+                    const changed = Object.entries(sdkOptions).some(([key, value]) => self.ripe.options[key] !== value);
                     if (!changed) return;
-                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...options });
+                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...sdkOptions });
                 });
 
                 // registers a watch operation on the (image) resolution field of
