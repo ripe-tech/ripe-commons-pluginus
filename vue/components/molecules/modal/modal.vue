@@ -135,6 +135,7 @@ body.mobile .modal > .modal-container > :last-child {
 .modal > .modal-container > .modal-header {
     margin-left: -40px;
     position: fixed;
+    z-index: 1;
 }
 
 body.tablet .modal > .modal-container > .modal-header,
