@@ -442,9 +442,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 );
 
                 // registers a watch operation on all options
-                // and updates the RIPE SDK accordingly
+                // and updates the RIPE instance accordingly
                 this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
-                    const changed = Object.entries(ripeOptions).some(([key, value]) => self.ripe.options[key] !== value);
+                    const changed = Object.entries(ripeOptions).some(
+                        ([key, value]) => self.ripe.options[key] !== value
+                    );
                     if (!changed) return;
                     await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
                 });
