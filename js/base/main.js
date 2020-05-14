@@ -251,7 +251,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
-            this.store.commit("sdkOptions", this.ripe.options);
+            this.store.commit("ripeOptions", this.ripe.options);
 
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
@@ -441,20 +441,20 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     }
                 );
 
+                // registers a watch operation on all options
+                // and updates the RIPE SDK accordingly
+                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
+                    const changed = Object.entries(ripeOptions).some(([key, value]) => self.ripe.options[key] !== value);
+                    if (!changed) return;
+                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
+                });
+
                 // registers a watch operation on the (image) format field of
                 // the data store so that the change is propagated to the ripe
                 // instance and then to the user interface
                 this.$store.watch(this.$store.getters.getFormat, format =>
                     this.$bus.trigger("format_change", format)
                 );
-
-                // registers a watch operation on all options
-                // and updates the RIPE SDK accordingly
-                this.$store.watch(state => state.sdkOptions, async sdkOptions => {
-                    const changed = Object.entries(sdkOptions).some(([key, value]) => self.ripe.options[key] !== value);
-                    if (!changed) return;
-                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...sdkOptions });
-                });
 
                 // registers a watch operation on the (image) resolution field of
                 // the data store so that the change is propagated to the ripe

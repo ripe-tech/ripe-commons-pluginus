@@ -31,7 +31,7 @@ export const store = {
         hasCustomization: false,
         hasPersonalization: false,
         hasSize: false,
-        sdkOptions: null
+        ripeOptions: null
     },
     mutations: {
         ripe_url(state, url) {
@@ -122,8 +122,8 @@ export const store = {
         hasSize(state, hasSize) {
             state.hasSize = hasSize;
         },
-        sdkOptions(state, sdkOptions) {
-            state.sdkOptions = sdkOptions;
+        ripeOptions(state, ripeOptions) {
+            state.ripeOptions = ripeOptions;
         }
     },
     getters: {
@@ -177,6 +177,7 @@ export const store = {
         getFormat: state => () => state.format,
         getResolution: state => () => state.resolution,
         getBackgroundColor: state => () => state.backgroundColor,
+        getRipeOptions: state => () => state.ripeOptions,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
