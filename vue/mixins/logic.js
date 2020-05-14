@@ -32,6 +32,13 @@ const logicMixin = {
         customerIdInput() {
             return this.$store.state.customerIdInput;
         },
+        brandNormalized() {
+            if (!this.brand) return null;
+            return this.brand
+                .split("_")
+                .map(v => v[0].toUpperCase() + v.slice(1))
+                .join(" ");
+        },
         modelNormalized() {
             if (!this.model) return null;
             return this.model
