@@ -30,6 +30,7 @@ export const store = {
         error: null,
         hasCustomization: false,
         hasPersonalization: false,
+        hasSize: false,
         sdkOptions: null
     },
     mutations: {
