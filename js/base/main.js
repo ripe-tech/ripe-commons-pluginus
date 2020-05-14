@@ -441,16 +441,6 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     }
                 );
 
-                // registers a watch operation on all options
-                // and updates the RIPE instance accordingly
-                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
-                    const changed = Object.entries(ripeOptions).some(
-                        ([key, value]) => self.ripe.options[key] !== value
-                    );
-                    if (!changed) return;
-                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
-                });
-
                 // registers a watch operation on the (image) format field of
                 // the data store so that the change is propagated to the ripe
                 // instance and then to the user interface
@@ -471,6 +461,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(this.$store.getters.getBackgroundColor, backgroundColor =>
                     this.$bus.trigger("background_color_change", backgroundColor)
                 );
+
+                // registers a watch operation on all options
+                // and updates the RIPE instance accordingly
+                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
+                    const changed = Object.entries(ripeOptions).some(
+                        ([key, value]) => self.ripe.options[key] !== value
+                    );
+                    if (!changed) return;
+                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
+                });
             }
         });
 
