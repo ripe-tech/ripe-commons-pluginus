@@ -1,3 +1,5 @@
+import { normalize } from "../../js";
+
 const logicMixin = {
     inject: {
         manager: {
@@ -33,18 +35,10 @@ const logicMixin = {
             return this.$store.state.customerIdInput;
         },
         brandNormalized() {
-            if (!this.brand) return null;
-            return this.brand
-                .split("_")
-                .map(v => v[0].toUpperCase() + v.slice(1))
-                .join(" ");
+            return this.brand ? this._normalizeText(this.brand) : null;
         },
         modelNormalized() {
-            if (!this.model) return null;
-            return this.model
-                .split("_")
-                .map(v => v[0].toUpperCase() + v.slice(1))
-                .join(" ");
+            return this.model ? this._normalizeText(this.model) : null;
         },
         ripeUrl() {
             return this.$store.state.ripe_url;
@@ -111,6 +105,13 @@ const logicMixin = {
                 };
             });
             return initialsExtraS;
+        },
+        _normalizeText(value) {
+            if (!value) return value;
+            return normalize(value)
+                .split(" ")
+                .map(v => v[0].toUpperCase() + v.slice(1))
+                .join(" ");
         },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
