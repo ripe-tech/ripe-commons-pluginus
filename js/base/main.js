@@ -251,6 +251,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
+            this.store.commit("ripeOptions", this.ripe.options);
+
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
@@ -459,6 +461,16 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(this.$store.getters.getBackgroundColor, backgroundColor =>
                     this.$bus.trigger("background_color_change", backgroundColor)
                 );
+
+                // registers a watch operation on all options
+                // and updates the RIPE instance accordingly
+                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
+                    const changed = Object.entries(ripeOptions).some(
+                        ([key, value]) => self.ripe.options[key] !== value
+                    );
+                    if (!changed) return;
+                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
+                });
             }
         });
 
