@@ -31,7 +31,7 @@ export const store = {
         hasCustomization: false,
         hasPersonalization: false,
         hasSize: false,
-        ripeOptions: null
+        ripeOptions: {}
     },
     mutations: {
         ripe_url(state, url) {
