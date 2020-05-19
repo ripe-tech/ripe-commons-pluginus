@@ -251,7 +251,37 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
-            this.store.commit("ripeOptions", this.ripe.options);
+            this.store.commit("ripeOptions", {
+                options: this.ripe.options,
+                variant: this.ripe.variant,
+                version: this.ripe.version,
+                dku: this.ripe.dku,
+                url: this.ripe.url,
+                webUrl: this.ripe.webUrl,
+                parts: this.ripe.parts,
+                country: this.ripe.country,
+                currency: this.ripe.currency,
+                locale: this.ripe.locale,
+                flag: this.ripe.flag,
+                format: this.ripe.format,
+                backgroundColor: this.ripe.backgroundColor,
+                guess: this.ripe.guess,
+                guessUrl: this.ripe.guessUrl,
+                remoteCalls: this.ripe.remoteCalls,
+                remoteOnConfig: this.ripe.remoteOnConfig,
+                remoteOnPart: this.ripe.remoteOnPart,
+                remoteOnInitials: this.ripe.remoteOnInitials,
+                noBundles: this.ripe.noBundles,
+                useBundles: this.ripe.useBundles,
+                noDefaults: this.ripe.noDefaults,
+                useDefaults: this.ripe.useDefaults,
+                noCombinations: this.ripe.noCombinations,
+                useCombinations: this.ripe.useCombinations,
+                noPrice: this.ripe.noPrice,
+                usePrice: this.ripe.usePrice,
+                noDiag: this.ripe.noDiag,
+                useDiag: this.ripe.useDiag
+            });
 
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
