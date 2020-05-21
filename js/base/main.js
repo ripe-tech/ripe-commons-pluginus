@@ -227,11 +227,11 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this.setModel(this.options);
     }
 
-    async setRipeOptions(options) {
+    async setRipeOptions(options, force = false) {
         const changed = Object.entries(options).some(
             ([key, value]) => this.ripe.options[key] !== value
         );
-        if (!changed) return;
+        if (!changed && !force) return;
         await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
     }
 
