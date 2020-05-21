@@ -31,7 +31,8 @@ export const store = {
         hasCustomization: false,
         hasPersonalization: false,
         hasSize: false,
-        ripeOptions: {}
+        ripeOptions: {},
+        ripeState: {}
     },
     mutations: {
         ripe_url(state, url) {
@@ -124,6 +125,9 @@ export const store = {
         },
         ripeOptions(state, ripeOptions) {
             state.ripeOptions = ripeOptions;
+        },
+        ripeState(state, ripeState) {
+            state.ripeState = ripeState;
         }
     },
     getters: {
@@ -178,6 +182,7 @@ export const store = {
         getResolution: state => () => state.resolution,
         getBackgroundColor: state => () => state.backgroundColor,
         getRipeOptions: state => () => state.ripeOptions,
+        getRipeState: state => () => state.ripeState,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>

@@ -227,6 +227,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this.setModel(this.options);
     }
 
+    async setRipeOptions(options) {
+        const changed = Object.entries(options).some(
+            ([key, value]) => this.ripe.options[key] !== value
+        );
+        if (!changed) return;
+        await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
+    }
+
     _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
@@ -251,8 +259,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
-            this.store.commit("ripeOptions", {
-                options: this.ripe.options,
+            this.store.commit("ripeOptions", this.ripe.options);
+            this.store.commit("ripeState", {
                 variant: this.ripe.variant,
                 version: this.ripe.version,
                 dku: this.ripe.dku,
@@ -494,13 +502,8 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE instance accordingly
-                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
-                    const changed = Object.entries(ripeOptions).some(
-                        ([key, value]) => self.ripe.options[key] !== value
-                    );
-                    if (!changed) return;
-                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
-                });
+                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => await self.setRipeOptions(ripeOptions));
+                this.$store.watch(this.$store.getters.getRipeState, async ripeState => await self.setRipeOptions(ripeState));
             }
         });
 
