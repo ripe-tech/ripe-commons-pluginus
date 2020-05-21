@@ -502,8 +502,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE instance accordingly
-                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => await self.setRipeOptions(ripeOptions));
-                this.$store.watch(this.$store.getters.getRipeState, async ripeState => await self.setRipeOptions(ripeState));
+                this.$store.watch(
+                    this.$store.getters.getRipeOptions,
+                    async ripeOptions => await self.setRipeOptions(ripeOptions)
+                );
+                this.$store.watch(
+                    this.$store.getters.getRipeState,
+                    async ripeState => await self.setRipeOptions(ripeState)
+                );
             }
         });
 
