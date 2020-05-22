@@ -53,6 +53,21 @@ export const InitialsImages = {
             initialsImages: []
         };
     },
+    watch: {
+        async groups(value) {
+            await Promise.all(this.initialsImages.map(async image => this.$ripe.unbindImage(image)));
+
+            const initialsImages = this.$refs.initialsImages || [];
+            for (const initialsImage of initialsImages) {
+                const image = this.$ripe.bindImage(initialsImage, {
+                    showInitials: true,
+                    initialsGroup: initialsImage.dataset.group,
+                    initialsBuilder: this.initialsBuilder
+                });
+                this.initialsImages.push(image);
+            }
+        }
+    },
     mounted: function() {
         const initialsImages = this.$refs.initialsImages || [];
         for (const initialsImage of initialsImages) {
