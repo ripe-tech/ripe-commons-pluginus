@@ -14,6 +14,7 @@
 
     "ripe_commons.personalization.personalization": "Personalisation",
     "ripe_commons.personalization.add_initials": "Add initials",
+    "ripe_commons.personalization.group": "Group",
 
     "ripe_commons.size.size": "Size",
     "ripe_commons.size.select_size": "Select Size",

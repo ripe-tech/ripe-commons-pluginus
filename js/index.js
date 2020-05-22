@@ -8,7 +8,7 @@ import {
     ModelLocaleResolverPlugin
 } from "./locale";
 
-import { BaseSizePlugin } from "./ui";
+import { BasePersonalizationPlugin, BaseSizePlugin } from "./ui";
 
 export * from "./abstract";
 export * from "./base";
@@ -22,6 +22,7 @@ const registerPlugins = owner => {
     LocalePlugin.register(owner);
     ModelLocaleLoaderPlugin.register(owner);
     ModelLocaleResolverPlugin.register(owner);
+    BasePersonalizationPlugin.register(owner);
     BaseSizePlugin.register(owner);
     DevicePlugin.register(owner);
     UrlChangerPlugin.register(owner);
