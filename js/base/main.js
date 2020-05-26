@@ -230,7 +230,7 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     async setRipeOptions(options, force = false) {
         const ripeState = this._getRipeState();
         const changed = Object.entries(ripeState).filter(
-            ([key, value]) => options[key] !== undefined && options[key] !== value
+            ([key, value]) => options[key] && options[key] !== value
         );
         if (changed.length === 0 && !force) return;
         await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
