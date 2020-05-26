@@ -2,7 +2,7 @@
     <img
         class="image"
         v-bind:class="classes"
-        v-bind:src="src"
+        v-bind:src="srcData"
         v-bind:alt="alt"
         v-bind:style="style"
         v-on:load="onLoad"
@@ -59,10 +59,15 @@ export const Image = {
         hideError: {
             type: Boolean,
             default: true
+        },
+        srcError: {
+            type: String,
+            default: null
         }
     },
     data: function() {
         return {
+            srcData: this.src,
             loaded: false,
             errored: false
         };
@@ -96,6 +101,7 @@ export const Image = {
         onError(event) {
             this.loaded = false;
             this.errored = true;
+            if (this.srcError) this.srcData = this.srcError;
             this.$emit("error", event);
         }
     }
