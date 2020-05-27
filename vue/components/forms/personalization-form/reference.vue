@@ -4,7 +4,6 @@
             v-bind:brand="brand"
             v-bind:model="model"
             v-bind:groups="groups"
-            v-bind:active-group="activeGroup"
             v-bind:initials-builder="__initialsBuilder"
             ref="initialsImages"
         />
@@ -49,7 +48,7 @@
                 <form-input v-bind:header="'Initials*'" v-bind:header-size="'large'">
                     <input-ripe
                         v-bind:placeholder="'Add Initials'"
-                        v-bind:value.sync="initialsData[group]"
+                        v-bind:value.sync="initialsTextData[group]"
                     />
                 </form-input>
             </div>
@@ -109,10 +108,9 @@ export const Reference = {
             positionData: {},
             styleData: {},
             fontData: {},
-            initialsData: {},
+            initialsTextData: {},
             activeGroup: "",
             groups: [],
-            initials: {},
             fontEngraving: ""
         };
     },
@@ -138,18 +136,10 @@ export const Reference = {
                 .filter(property => property.type === "style")
                 .map(property => ({ value: property.name, label: property.name }));
         },
-        profile() {
-            const profileUsed = this.$store.state.config.initials.profile;
-            return this.$store.state.config.initials.$profiles[profileUsed];
-        },
         state() {
             return this.groups.length > 1
-                ? {
-                      initialsExtra: this.__getInitials()
-                  }
-                : {
-                      initials: this.initialsData[this.groups[0]]
-                  };
+                ? { initialsExtra: this.__getInitialsExtra(), engraving: this.fontEngraving } // TODO: not sure if engraving is needed here
+                : this.__getInitials();
         }
     },
     watch: {
@@ -168,62 +158,76 @@ export const Reference = {
             await this.getGroups();
         },
         reset() {
-            return this.setState({
-                initials: {}
-            });
+            this.positionData = {};
+            this.fontData = {};
+            this.styleData = {};
+            this.initialsTextData = {};
+            this.fontEngraving = "";
+
+            return this.setState({});
         },
         setState(state) {
-            const initials = {};
+            // TODO: support for both initials and initialsExtra
+            // TODO: Weird behaviour is happening in one group builds =>
+            // the initials_extra param in URL appears with a part null,
+            // not similar to dummy build behaviour
             const initialsExtra = state.initialsExtra || {};
             for (const name of this.groups) {
                 const group = initialsExtra[name] || {};
                 const engraving = group.engraving || this.fontEngraving;
-                initials[name] = {
-                    initials: group.initials || "",
-                    engraving: engraving
-                };
-                this.style = engraving;
+
+                this.initialsTextData[name] = group.initials || "";
+                this.fontData[name] = engraving.split(":")[0];
             }
-            this.initials = initials;
         },
         getState() {
             return this.state;
         },
-        getTabMessage() {},
+        getTabMessage() {
+            const initials = [];
+            const engravings = [];
+            for (const name in this.initialsTextData) {
+                const initialsText = this.initialsTextData[name];
+                if (!initialsText) continue;
+                initials.push(initialsText);
+
+                const engraving = this.locale(
+                    "properties.font." + this.fontData[name].split(":")[0],
+                    this.readable(this.capitalize(this.fontData[name]))
+                );
+                engravings.push(engraving);
+            }
+            return initials.length > 0 ? initials.join(" ") + " " + engravings.join(" ") : "";
+        },
         async getGroups() {
             this.groups = await this.$ripe.getLogicP({
                 brand: this.$store.state.brand,
                 model: this.$store.state.model,
                 method: "groups"
             });
-            if (this.groups && this.groups.length > 0) this.activeGroup = this.groups[0];
         },
         __initialsBuilder(initials, engraving, element) {
-            if (this.groups.length > 1) {
-                const group = element.getAttribute("data-group");
-                const viewport = "large";
-                const profiles = [];
+            const group = element.getAttribute("data-group");
+            const viewport = "large";
+            const profiles = [];
 
-                if (this.fontData[group]) {
-                    profiles.push(this.font + ":" + group, this.font + ":" + viewport);
-                }
-
-                profiles.push(group + ":" + viewport);
-
-                if (this.fontData[group]) {
-                    profiles.push(this.font);
-                }
-
-                profiles.push(group, viewport);
-
-                return {
-                    initials: initials,
-                    profile: profiles
-                };
+            if (this.fontData[group]) {
+                this.groups.length > 1 && profiles.push(this.fontData[group] + ":" + group);
+                profiles.push(this.fontData[group] + ":" + viewport, this.fontData[group]);
             }
 
-            const profiles = [];
-            profiles.push(engraving);
+            if (this.positionData[group]) {
+                this.groups.length > 1 && profiles.push(this.positionData[group] + ":" + group);
+                profiles.push(this.positionData[group]);
+            }
+
+            if (this.styleData[group]) {
+                this.groups.length > 1 && profiles.push(this.styleData[group] + ":" + group);
+                profiles.push(this.styleData[group]);
+            }
+
+            this.groups.length > 1 && profiles.push(group + ":" + viewport, group);
+            profiles.push(viewport);
 
             return {
                 initials: initials,
@@ -231,10 +235,21 @@ export const Reference = {
             };
         },
         __getInitials() {
+            if (Object.keys(this.initialsTextData).length === 0) {
+                return { initials: "", engraving: "" };
+            }
+
+            const mainGroup = Object.keys(this.initialsTextData)[0];
+            return {
+                initials: this.initialsTextData[mainGroup],
+                engraving: this.__buildEngraving(mainGroup)
+            };
+        },
+        __getInitialsExtra() {
             const _initials = {};
-            for (const name in this.initialsData) {
+            for (const name in this.initialsTextData) {
                 const group = {
-                    initials: this.initialsData[name],
+                    initials: this.initialsTextData[name],
                     engraving: this.__buildEngraving(name)
                 };
                 _initials[name] = group;
