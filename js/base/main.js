@@ -227,6 +227,48 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this.setModel(this.options);
     }
 
+    async setRipeOptions(options, force = false) {
+        const ripeState = this._getRipeState();
+        const changed = Object.entries(ripeState).filter(
+            ([key, value]) => options[key] && options[key] !== value
+        );
+        if (changed.length === 0 && !force) return;
+        await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
+    }
+
+    _getRipeState() {
+        return {
+            variant: this.ripe.variant,
+            version: this.ripe.version,
+            dku: this.ripe.dku,
+            url: this.ripe.url,
+            webUrl: this.ripe.webUrl,
+            parts: this.ripe.parts,
+            country: this.ripe.country,
+            currency: this.ripe.currency,
+            locale: this.ripe.locale,
+            flag: this.ripe.flag,
+            format: this.ripe.format,
+            backgroundColor: this.ripe.backgroundColor,
+            guess: this.ripe.guess,
+            guessUrl: this.ripe.guessUrl,
+            remoteCalls: this.ripe.remoteCalls,
+            remoteOnConfig: this.ripe.remoteOnConfig,
+            remoteOnPart: this.ripe.remoteOnPart,
+            remoteOnInitials: this.ripe.remoteOnInitials,
+            noBundles: this.ripe.noBundles,
+            useBundles: this.ripe.useBundles,
+            noDefaults: this.ripe.noDefaults,
+            useDefaults: this.ripe.useDefaults,
+            noCombinations: this.ripe.noCombinations,
+            useCombinations: this.ripe.useCombinations,
+            noPrice: this.ripe.noPrice,
+            usePrice: this.ripe.usePrice,
+            noDiag: this.ripe.noDiag,
+            useDiag: this.ripe.useDiag
+        };
+    }
+
     _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
@@ -252,6 +294,36 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
             this.store.commit("ripeOptions", this.ripe.options);
+            this.store.commit("ripeState", {
+                variant: this.ripe.variant,
+                version: this.ripe.version,
+                dku: this.ripe.dku,
+                url: this.ripe.url,
+                webUrl: this.ripe.webUrl,
+                parts: this.ripe.parts,
+                country: this.ripe.country,
+                currency: this.ripe.currency,
+                locale: this.ripe.locale,
+                flag: this.ripe.flag,
+                format: this.ripe.format,
+                backgroundColor: this.ripe.backgroundColor,
+                guess: this.ripe.guess,
+                guessUrl: this.ripe.guessUrl,
+                remoteCalls: this.ripe.remoteCalls,
+                remoteOnConfig: this.ripe.remoteOnConfig,
+                remoteOnPart: this.ripe.remoteOnPart,
+                remoteOnInitials: this.ripe.remoteOnInitials,
+                noBundles: this.ripe.noBundles,
+                useBundles: this.ripe.useBundles,
+                noDefaults: this.ripe.noDefaults,
+                useDefaults: this.ripe.useDefaults,
+                noCombinations: this.ripe.noCombinations,
+                useCombinations: this.ripe.useCombinations,
+                noPrice: this.ripe.noPrice,
+                usePrice: this.ripe.usePrice,
+                noDiag: this.ripe.noDiag,
+                useDiag: this.ripe.useDiag
+            });
 
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
@@ -464,13 +536,14 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // registers a watch operation on all options
                 // and updates the RIPE instance accordingly
-                this.$store.watch(this.$store.getters.getRipeOptions, async ripeOptions => {
-                    const changed = Object.entries(ripeOptions).some(
-                        ([key, value]) => self.ripe.options[key] !== value
-                    );
-                    if (!changed) return;
-                    await self.ripe.config(self.ripe.brand, self.ripe.model, { ...ripeOptions });
-                });
+                this.$store.watch(
+                    this.$store.getters.getRipeOptions,
+                    async ripeOptions => await self.setRipeOptions(ripeOptions)
+                );
+                this.$store.watch(
+                    this.$store.getters.getRipeState,
+                    async ripeState => await self.setRipeOptions(ripeState)
+                );
             }
         });
 
