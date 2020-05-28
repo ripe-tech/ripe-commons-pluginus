@@ -169,7 +169,6 @@ export const Reference = {
         },
         setState(state) {
             const initialsExtra = state.initialsExtra || {};
-            console.log("INITIALS EXTRA", JSON.stringify(initialsExtra));
             for (const name in initialsExtra) {
                 this.initialsText[name] = initialsExtra[name].initials || "";
                 this.fontData[name] =
@@ -178,7 +177,6 @@ export const Reference = {
                     "";
                 this.fontEngraving = this.fontData[name] || "";
             }
-            console.log("INITIALS EXTRA AFTER", JSON.stringify(this.initialsText), JSON.stringify(this.fontData));
         },
         getState() {
             return this.state;
