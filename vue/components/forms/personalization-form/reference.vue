@@ -214,7 +214,7 @@ export const Reference = {
                     method: "groups"
                 });
             } catch (err) {
-                // if a build has no support for groups, had a default
+                // gives a default group if builds does not support logic
                 this.groups = ["main"];
             }
         },
