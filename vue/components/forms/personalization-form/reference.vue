@@ -64,8 +64,8 @@
 
 .generic-personalization > .initials-images ::v-deep .initials-image {
     border-radius: 50%;
-    max-height: 300px;
     margin-right: 30px;
+    max-height: 300px;
 }
 
 .generic-personalization > .initials-images ::v-deep .initials-image:last-of-type {
@@ -78,8 +78,8 @@
 }
 
 .generic-personalization > .form > .form-group {
-    width: 100%;
     margin-right: 30px;
+    width: 100%;
 }
 
 .generic-personalization > .form > .form-group:last-of-type {
@@ -87,13 +87,13 @@
 }
 
 .generic-personalization > .form > .form-group > .subtitle {
-    text-transform: capitalize;
     margin-top: 10px;
+    text-transform: capitalize;
 }
 
 .generic-personalization > .form > .form-group > .form-input {
-    text-align: left;
     margin-bottom: 20px;
+    text-align: left;
 }
 </style>
 
@@ -136,7 +136,7 @@ export const Reference = {
                 .map(property => ({ value: property.name, label: property.name }));
         },
         state() {
-            // Fonf engraving is used to force the refresh of state after setState
+            // font engraving is used to force the refresh of state after setState
             return {
                 initials: this.__getInitialsText(),
                 engraving: this.__getEngraving() || this.fontEngraving,
@@ -169,14 +169,16 @@ export const Reference = {
         },
         setState(state) {
             const initialsExtra = state.initialsExtra || {};
+            console.log("INITIALS EXTRA", JSON.stringify(initialsExtra));
             for (const name in initialsExtra) {
                 this.initialsText[name] = initialsExtra[name].initials || "";
                 this.fontData[name] =
                     (initialsExtra[name].engraving &&
                         initialsExtra[name].engraving.split(":")[0]) ||
                     "";
-                this.fontEngraving = this.fontData[name];
+                this.fontEngraving = this.fontData[name] || "";
             }
+            console.log("INITIALS EXTRA AFTER", JSON.stringify(this.initialsText), JSON.stringify(this.fontData));
         },
         getState() {
             return this.state;
@@ -201,15 +203,20 @@ export const Reference = {
             return initials.length ? initials.join(" ") + " " + engravings.join(" ") : "";
         },
         async getGroups() {
-            this.groups = await this.$ripe.getLogicP({
-                brand: this.$store.state.brand,
-                model: this.$store.state.model,
-                method: "groups"
-            });
+            try {
+                this.groups = await this.$ripe.getLogicP({
+                    brand: this.$store.state.brand,
+                    model: this.$store.state.model,
+                    method: "groups"
+                });
+            } catch (err) {
+                // if a build has no support for groups, had a default
+                this.groups = ["main"];
+            }
         },
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
-            const viewport = "large";
+            const viewport = this.__getViewport(group);
             const profiles = [];
 
             if (this.fontData[group]) {
@@ -258,15 +265,26 @@ export const Reference = {
                 Object.keys(this.fontData).length > 0 ? Object.keys(this.fontData)[0] : null;
             return group ? this.fontData[group] : "";
         },
+        __getViewport(group) {
+            const alias = this.$store.state.config.initials.$alias;
+            const position = this.positionData[group] || "";
+            const personalizationAlias = [];
+
+            // gets viewports related to positions
+            personalizationAlias.push.apply(personalizationAlias, alias[`step::personalization:${position}`]);
+            personalizationAlias.push.apply(personalizationAlias, alias["step::personalization"]);
+
+            if (personalizationAlias.length === 0) return "";
+            return personalizationAlias.map(viewport => viewport.split("::")[1])[0];
+        },
         __buildEngraving(group) {
-            let font = "";
             if (this.styleData[group]) {
-                font = `${this.styleData[group]}:style`;
+                return `${this.styleData[group]}:style`;
             }
             if (this.fontData[group]) {
-                font = `${this.fontData[group]}:font`;
+                return `${this.fontData[group]}:font`;
             }
-            return font;
+            return "";
         }
     }
 };
