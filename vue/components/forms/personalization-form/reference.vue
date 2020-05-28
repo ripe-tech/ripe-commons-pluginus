@@ -150,6 +150,12 @@ export const Reference = {
                 this.$emit("changed", this);
             },
             deep: true
+        },
+        positionData: {
+            handler: function() {
+                this.$ripe.update();
+            },
+            deep: true
         }
     },
     mounted: async function() {
@@ -265,11 +271,15 @@ export const Reference = {
         },
         __getViewport(group) {
             const alias = this.$store.state.config.initials.$alias;
+            if (!alias) return "";
             const position = this.positionData[group] || "";
             const personalizationAlias = [];
 
             // gets viewports related to positions
-            personalizationAlias.push.apply(personalizationAlias, alias[`step::personalization:${position}`]);
+            personalizationAlias.push.apply(
+                personalizationAlias,
+                alias[`step::personalization:${position}`]
+            );
             personalizationAlias.push.apply(personalizationAlias, alias["step::personalization"]);
 
             if (personalizationAlias.length === 0) return "";
