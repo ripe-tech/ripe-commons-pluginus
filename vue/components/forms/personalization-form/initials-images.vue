@@ -55,7 +55,11 @@ export const InitialsImages = {
     },
     watch: {
         async groups(value) {
-            await Promise.all(this.initialsImages.map(async image => this.$ripe.unbindImage(image)));
+            // unbind all images and clean all binds, so that new ones can be bound
+            await Promise.all(
+                this.initialsImages.map(async image => this.$ripe.unbindImage(image))
+            );
+            this.initialsImages = [];
 
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
