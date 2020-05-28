@@ -195,7 +195,10 @@ export const Reference = {
                 if (!initialsText) continue;
                 initials.push(initialsText);
 
-                const engraving = this.fontData[name]
+                // when entering with a null engraving,
+                // replace string null value so that it
+                // does not appear in tab message
+                const engraving = this.fontData[name] && this.fontData[name] !== "null"
                     ? this.locale(
                           "properties.font." + this.fontData[name].split(":")[0],
                           this.readable(this.capitalize(this.fontData[name]))
