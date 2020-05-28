@@ -48,7 +48,7 @@
                 <form-input v-bind:header="'Initials*'" v-bind:header-size="'large'">
                     <input-ripe
                         v-bind:placeholder="'Add Initials'"
-                        v-bind:value.sync="initialsTextData[group]"
+                        v-bind:value.sync="initialsText[group]"
                     />
                 </form-input>
             </div>
@@ -108,8 +108,7 @@ export const Reference = {
             positionData: {},
             styleData: {},
             fontData: {},
-            initialsTextData: {},
-            activeGroup: "",
+            initialsText: {},
             groups: [],
             fontEngraving: ""
         };
@@ -137,9 +136,12 @@ export const Reference = {
                 .map(property => ({ value: property.name, label: property.name }));
         },
         state() {
-            return this.groups.length > 1
-                ? { initialsExtra: this.__getInitialsExtra(), engraving: this.fontEngraving } // TODO: not sure if engraving is needed here
-                : this.__getInitials();
+            // Fonf engraving is used to force the refresh of state after setState
+            return {
+                initials: this.__getInitialsText(),
+                engraving: this.__getEngraving() || this.fontEngraving,
+                initialsExtra: this.__getInitials()
+            };
         }
     },
     watch: {
@@ -159,25 +161,21 @@ export const Reference = {
         },
         reset() {
             this.positionData = {};
-            this.fontData = {};
             this.styleData = {};
-            this.initialsTextData = {};
-            this.fontEngraving = "";
+            this.fontData = {};
+            this.initialsText = {};
 
-            return this.setState({});
+            this.setState({});
         },
         setState(state) {
-            // TODO: support for both initials and initialsExtra
-            // TODO: Weird behaviour is happening in one group builds =>
-            // the initials_extra param in URL appears with a part null,
-            // not similar to dummy build behaviour
             const initialsExtra = state.initialsExtra || {};
-            for (const name of this.groups) {
-                const group = initialsExtra[name] || {};
-                const engraving = group.engraving || this.fontEngraving;
-
-                this.initialsTextData[name] = group.initials || "";
-                this.fontData[name] = engraving.split(":")[0];
+            for (const name in initialsExtra) {
+                this.initialsText[name] = initialsExtra[name].initials || "";
+                this.fontData[name] =
+                    (initialsExtra[name].engraving &&
+                        initialsExtra[name].engraving.split(":")[0]) ||
+                    "";
+                this.fontEngraving = this.fontData[name];
             }
         },
         getState() {
@@ -186,18 +184,21 @@ export const Reference = {
         getTabMessage() {
             const initials = [];
             const engravings = [];
-            for (const name in this.initialsTextData) {
-                const initialsText = this.initialsTextData[name];
+            for (const name in this.initialsText) {
+                const initialsText = this.initialsText[name];
                 if (!initialsText) continue;
                 initials.push(initialsText);
 
-                const engraving = this.locale(
-                    "properties.font." + this.fontData[name].split(":")[0],
-                    this.readable(this.capitalize(this.fontData[name]))
-                );
+                const engraving = this.fontData[name]
+                    ? this.locale(
+                          "properties.font." + this.fontData[name].split(":")[0],
+                          this.readable(this.capitalize(this.fontData[name]))
+                      )
+                    : "";
                 engravings.push(engraving);
             }
-            return initials.length > 0 ? initials.join(" ") + " " + engravings.join(" ") : "";
+
+            return initials.length ? initials.join(" ") + " " + engravings.join(" ") : "";
         },
         async getGroups() {
             this.groups = await this.$ripe.getLogicP({
@@ -235,35 +236,37 @@ export const Reference = {
             };
         },
         __getInitials() {
-            if (Object.keys(this.initialsTextData).length === 0) {
-                return { initials: "", engraving: "" };
-            }
-
-            const mainGroup = Object.keys(this.initialsTextData)[0];
-            return {
-                initials: this.initialsTextData[mainGroup],
-                engraving: this.__buildEngraving(mainGroup)
-            };
-        },
-        __getInitialsExtra() {
             const _initials = {};
-            for (const name in this.initialsTextData) {
+            for (const name in this.initialsText) {
                 const group = {
-                    initials: this.initialsTextData[name],
+                    initials: this.initialsText[name],
                     engraving: this.__buildEngraving(name)
                 };
                 _initials[name] = group;
             }
             return _initials;
         },
+        __getInitialsText() {
+            const group =
+                Object.keys(this.initialsText).length > 0
+                    ? Object.keys(this.initialsText)[0]
+                    : null;
+            return group ? this.initialsText[group] : "";
+        },
+        __getEngraving() {
+            const group =
+                Object.keys(this.fontData).length > 0 ? Object.keys(this.fontData)[0] : null;
+            return group ? this.fontData[group] : "";
+        },
         __buildEngraving(group) {
+            let font = "";
             if (this.styleData[group]) {
-                this.fontEngraving = `${this.styleData[group]}:style`;
+                font = `${this.styleData[group]}:style`;
             }
             if (this.fontData[group]) {
-                this.fontEngraving = `${this.fontData[group]}:font`;
+                font = `${this.fontData[group]}:font`;
             }
-            return this.fontEngraving;
+            return font;
         }
     }
 };
