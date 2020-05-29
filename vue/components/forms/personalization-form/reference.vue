@@ -183,9 +183,13 @@ export const Reference = {
             const initialsExtra = state.initialsExtra || {};
             for (const name in initialsExtra) {
                 this.$set(this.initialsText, name, initialsExtra[name].initials || "");
-                this.$set(this.fontData, name, (initialsExtra[name].engraving &&
+                this.$set(
+                    this.fontData,
+                    name,
+                    (initialsExtra[name].engraving &&
                         initialsExtra[name].engraving.split(":")[0]) ||
-                    "");
+                        ""
+                );
                 this.fontEngraving = this.fontData[name] || "";
             }
         },
