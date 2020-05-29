@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-const readable = value => {
+export const readable = value => {
     if (!value) {
         return "";
     }
@@ -9,5 +9,3 @@ const readable = value => {
 };
 
 Vue.filter("readable", readable);
-
-export { readable };

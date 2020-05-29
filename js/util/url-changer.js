@@ -1,7 +1,7 @@
 import { Ripe } from "ripe-sdk";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class UrlChangerPlugin extends RipeCommonsPlugin {
+export class UrlChangerPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.model = null;
@@ -108,5 +108,3 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
 }
 
 UrlChangerPlugin.register();
-
-export { UrlChangerPlugin };

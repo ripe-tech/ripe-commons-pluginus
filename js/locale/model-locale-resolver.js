@@ -1,6 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
+export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     constructor(owner) {
         super(owner);
         this._bind();
@@ -182,5 +182,3 @@ class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
 }
 
 ModelLocaleResolverPlugin.register();
-
-export { ModelLocaleResolverPlugin };

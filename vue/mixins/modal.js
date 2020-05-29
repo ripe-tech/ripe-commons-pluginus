@@ -1,4 +1,4 @@
-const modalMixin = {
+export const modalMixin = {
     data: function() {
         return {
             modalComponent: null,
@@ -74,5 +74,3 @@ const modalMixin = {
         modalLeaveCancelled() {}
     }
 };
-
-export { modalMixin };

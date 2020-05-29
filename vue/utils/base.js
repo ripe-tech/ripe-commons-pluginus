@@ -1,9 +1,9 @@
-const getFavicon = function() {
+export const getFavicon = function() {
     const link = document.getElementById("favicon");
     return link.href;
 };
 
-const setFavicon = function(src) {
+export const setFavicon = function(src) {
     const link = document.createElement("link");
     const oldLink = document.getElementById("favicon");
     link.id = "favicon";
@@ -15,10 +15,8 @@ const setFavicon = function(src) {
     document.head.appendChild(link);
 };
 
-const waitP = async function(timeout) {
+export const waitP = async function(timeout) {
     await new Promise(resolve => {
         setTimeout(() => resolve(), timeout);
     });
 };
-
-export { getFavicon, setFavicon, waitP };

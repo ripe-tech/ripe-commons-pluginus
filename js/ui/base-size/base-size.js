@@ -1,7 +1,7 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../../abstract";
 import { BaseSize } from "./base-size.vue";
 
-class BaseSizePlugin extends RipeCommonsPlugin {
+export class BaseSizePlugin extends RipeCommonsPlugin {
     getCapabilities() {
         return [
             RipeCommonsCapability.new("component"),
@@ -24,5 +24,3 @@ class BaseSizePlugin extends RipeCommonsPlugin {
 }
 
 BaseSizePlugin.register();
-
-export { BaseSizePlugin };

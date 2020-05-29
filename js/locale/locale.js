@@ -1,6 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class LocalePlugin extends RipeCommonsPlugin {
+export class LocalePlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.loaderPlugins = await this.owner.getPluginsByCapability("locale-loader"); // TODO better loader priority
@@ -93,5 +93,3 @@ class LocalePlugin extends RipeCommonsPlugin {
 }
 
 LocalePlugin.register();
-
-export { LocalePlugin };

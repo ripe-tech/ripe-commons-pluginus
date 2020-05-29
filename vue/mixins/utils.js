@@ -1,6 +1,6 @@
 import { normalize } from "../../js";
 
-const utilsMixin = {
+export const utilsMixin = {
     methods: {
         capitalize(value) {
             if (!value) return "";
@@ -67,5 +67,3 @@ const utilsMixin = {
         }
     }
 };
-
-export { utilsMixin };

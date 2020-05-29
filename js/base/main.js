@@ -8,7 +8,7 @@ import { Ripe } from "ripe-sdk";
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class RipeCommonsMainPlugin extends RipeCommonsPlugin {
+export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     /**
      * Static method that retrieve the value of the field for the
      * provided URL or query string, if provided otherwise uses
@@ -556,5 +556,3 @@ class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         alert(err.message ? err.message : String(err));
     }
 }
-
-export { RipeCommonsMainPlugin };

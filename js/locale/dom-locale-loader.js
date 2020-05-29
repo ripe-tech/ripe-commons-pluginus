@@ -1,6 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class DomLocaleLoaderPlugin extends RipeCommonsPlugin {
+export class DomLocaleLoaderPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
     }
@@ -29,5 +29,3 @@ class DomLocaleLoaderPlugin extends RipeCommonsPlugin {
 }
 
 DomLocaleLoaderPlugin.register();
-
-export { DomLocaleLoaderPlugin };

@@ -39,7 +39,7 @@ export const Tab = {
     props: {
         tab: {
             type: Object,
-            default: () => {}
+            default: () => ({})
         },
         active: {
             type: Boolean,

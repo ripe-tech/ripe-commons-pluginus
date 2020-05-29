@@ -1,5 +1,3 @@
 import { Capability } from "pluginus";
 
-class RipeCommonsCapability extends Capability {}
-
-export { RipeCommonsCapability };
+export class RipeCommonsCapability extends Capability {}

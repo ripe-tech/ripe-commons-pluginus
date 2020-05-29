@@ -1,4 +1,4 @@
-const localePlugin = {
+export const localePlugin = {
     install(Vue, localePlugin) {
         Vue.filter("locale", function(value, defaultValue) {
             if (!value) {
@@ -14,5 +14,3 @@ const localePlugin = {
         });
     }
 };
-
-export { localePlugin };
