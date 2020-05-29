@@ -68,6 +68,11 @@
     max-height: 300px;
 }
 
+body.tablet .generic-personalization > .initials-images ::v-deep .initials-image,
+body.mobile .generic-personalization > .initials-images ::v-deep .initials-image {
+    width: auto;
+}
+
 .generic-personalization > .initials-images ::v-deep .initials-image:last-of-type {
     margin-right: 0px;
 }
@@ -89,6 +94,7 @@
 .generic-personalization > .form > .form-group > .subtitle {
     margin-top: 10px;
     text-transform: capitalize;
+    font-size: 14px;
 }
 
 .generic-personalization > .form > .form-group > .form-input {
