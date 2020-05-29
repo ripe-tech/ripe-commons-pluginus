@@ -4,7 +4,7 @@ import Molecules from "./molecules";
 import Organisms from "./organisms";
 import Logic from "./logic";
 
-const install = Vue => {
+export const install = Vue => {
     Vue.use(Atoms);
     Vue.use(Forms);
     Vue.use(Molecules);
@@ -17,7 +17,5 @@ export * from "./forms";
 export * from "./molecules";
 export * from "./organisms";
 export * from "./logic";
-
-export { install };
 
 export default install;
