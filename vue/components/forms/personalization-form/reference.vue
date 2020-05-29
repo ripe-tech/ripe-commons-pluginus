@@ -193,15 +193,14 @@ export const Reference = {
             }
 
             for (const name in initialsExtra) {
-                this.$set(this.initialsText, name, initialsExtra[name].initials || "");
-                this.$set(
-                    this.fontData,
-                    name,
+                const initials = initialsExtra[name].initials || "";
+                const engraving =
                     (initialsExtra[name].engraving &&
                         initialsExtra[name].engraving.split(":")[0]) ||
-                        ""
-                );
-                this.fontEngraving = this.fontData[name] || "";
+                    "";
+                this.$set(this.initialsText, name, initials);
+                this.$set(this.fontData, name, engraving);
+                this.fontEngraving = this.fontData[name];
             }
         },
         getState() {
@@ -299,7 +298,7 @@ export const Reference = {
             const position = this.positionData[group] || "";
             const personalizationAlias = [];
 
-            // gets viewports related to positions
+            // gets viewports related to the current position
             personalizationAlias.push.apply(
                 personalizationAlias,
                 alias[`step::personalization:${position}`]
@@ -307,6 +306,9 @@ export const Reference = {
             personalizationAlias.push.apply(personalizationAlias, alias["step::personalization"]);
 
             if (personalizationAlias.length === 0) return "";
+            // returns the first viewport for the step personalization
+            // if there is a viewport more specific to the current position
+            // it will be positioned first in the array
             return personalizationAlias.map(viewport => viewport.split("::")[1])[0];
         },
         __buildEngraving(group) {
