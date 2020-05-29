@@ -92,9 +92,9 @@ body.mobile .generic-personalization > .initials-images ::v-deep .initials-image
 }
 
 .generic-personalization > .form > .form-group > .subtitle {
+    font-size: 14px;
     margin-top: 10px;
     text-transform: capitalize;
-    font-size: 14px;
 }
 
 .generic-personalization > .form > .form-group > .form-input {
@@ -204,12 +204,13 @@ export const Reference = {
                 // when entering with a null engraving,
                 // replace string null value so that it
                 // does not appear in tab message
-                const engraving = this.fontData[name] && this.fontData[name] !== "null"
-                    ? this.locale(
-                          "properties.font." + this.fontData[name].split(":")[0],
-                          this.readable(this.capitalize(this.fontData[name]))
-                      )
-                    : "";
+                const engraving =
+                    this.fontData[name] && this.fontData[name] !== "null"
+                        ? this.locale(
+                              "properties.font." + this.fontData[name].split(":")[0],
+                              this.readable(this.capitalize(this.fontData[name]))
+                          )
+                        : "";
                 engravings.push(engraving);
             }
 
