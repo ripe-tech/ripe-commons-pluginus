@@ -7,6 +7,4 @@ import { Plugin } from "pluginus";
  * Should contain the abstract functionality within the
  * RIPE Commons functionality.
  */
-class RipeCommonsPlugin extends Plugin {}
-
-export { RipeCommonsPlugin };
+export class RipeCommonsPlugin extends Plugin {}

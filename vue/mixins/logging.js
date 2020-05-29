@@ -1,6 +1,6 @@
 import { logError, logInfo, logDebug } from "../../js";
 
-const loggingMixin = {
+export const loggingMixin = {
     methods: {
         logError(...args) {
             logError(...args);
@@ -13,5 +13,3 @@ const loggingMixin = {
         }
     }
 };
-
-export { loggingMixin };

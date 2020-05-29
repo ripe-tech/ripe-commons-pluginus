@@ -1,4 +1,4 @@
-const logicMixin = {
+export const logicMixin = {
     inject: {
         manager: {
             default: null
@@ -131,5 +131,3 @@ const logicMixin = {
         }
     }
 };
-
-export { logicMixin };

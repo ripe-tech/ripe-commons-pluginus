@@ -1,4 +1,4 @@
-const localeMixin = {
+export const localeMixin = {
     computed: {
         __localeModel() {
             return this.manager.pluginsName.ModelLocaleResolverPlugin;
@@ -49,5 +49,3 @@ const localeMixin = {
         }
     }
 };
-
-export { localeMixin };

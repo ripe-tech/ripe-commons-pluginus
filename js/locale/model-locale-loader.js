@@ -7,7 +7,7 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
  * Should attach itself to the proper event `ripe` and then "injects"
  * the associated locales in the locale plugin context.
  */
-class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
+export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
     constructor(owner) {
         super(owner);
         this._bind();
@@ -43,5 +43,3 @@ class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
 }
 
 ModelLocaleLoaderPlugin.register();
-
-export { ModelLocaleLoaderPlugin };
