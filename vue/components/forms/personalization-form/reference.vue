@@ -181,6 +181,17 @@ export const Reference = {
         },
         setState(state) {
             const initialsExtra = state.initialsExtra || {};
+            // if there is no initialsExtra entries, clean all input data
+            // it occurs when the modal closes without the user applying
+            // the configuration
+            if (Object.keys(initialsExtra).length === 0) {
+                this.positionData = {};
+                this.styleData = {};
+                this.fontData = {};
+                this.initialsText = {};
+                return;
+            }
+
             for (const name in initialsExtra) {
                 this.$set(this.initialsText, name, initialsExtra[name].initials || "");
                 this.$set(
