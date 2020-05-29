@@ -200,6 +200,7 @@ export const Reference = {
                     "";
                 this.$set(this.initialsText, name, initials);
                 this.$set(this.fontData, name, engraving);
+                this.$set(this.styleData, name, engraving);
                 this.fontEngraving = this.fontData[name];
             }
         },
