@@ -194,13 +194,14 @@ export const Reference = {
 
             for (const name in initialsExtra) {
                 const initials = initialsExtra[name].initials || "";
-                const engraving =
-                    (initialsExtra[name].engraving &&
-                        initialsExtra[name].engraving.split(":")[0]) ||
-                    "";
+                const engravings =
+                    (initialsExtra[name].engraving && initialsExtra[name].engraving.split(".")) ||
+                    [];
+
+                // parses engraving to get font and style engraving options
                 this.$set(this.initialsText, name, initials);
-                this.$set(this.fontData, name, engraving);
-                this.$set(this.styleData, name, engraving);
+                this.$set(this.fontData, name, this.__getSpecificEngraving(engravings, "font"));
+                this.$set(this.styleData, name, this.__getSpecificEngraving(engravings, "style"));
                 this.fontEngraving = this.fontData[name];
             }
         },
@@ -215,16 +216,23 @@ export const Reference = {
                 if (!initialsText) continue;
                 initials.push(initialsText);
 
-                // when entering with a null engraving,
-                // replace string null value so that it
-                // does not appear in tab message
-                const engraving =
+                // when entering with a null value, replace string null value so that it
+                // does not appear in tab message. Shows font and style options in engraving
+                const fontEngraving =
                     this.fontData[name] && this.fontData[name] !== "null"
                         ? this.locale(
                               "properties.font." + this.fontData[name].split(":")[0],
                               this.readable(this.capitalize(this.fontData[name]))
                           )
                         : "";
+                const styleEngraving =
+                    this.styleData[name] && this.styleData[name] !== "null"
+                        ? this.locale(
+                              "properties.style." + this.styleData[name].split(":")[0],
+                              this.readable(this.capitalize(this.styleData[name]))
+                          )
+                        : "";
+                const engraving = `${fontEngraving} ${styleEngraving}`;
                 engravings.push(engraving);
             }
 
@@ -291,7 +299,12 @@ export const Reference = {
         __getEngraving() {
             const group =
                 Object.keys(this.fontData).length > 0 ? Object.keys(this.fontData)[0] : null;
-            return group ? this.fontData[group] : "";
+            return group ? this.__buildEngraving(group) : "";
+        },
+        __getSpecificEngraving(engravings, property) {
+            const engraving = engravings.filter(item => item.includes(`:${property}`));
+            if (engraving.length === 0) return "";
+            return engraving[0].split(":")[0];
         },
         __getViewport(group) {
             const alias = this.$store.state.config.initials.$alias;
@@ -313,13 +326,14 @@ export const Reference = {
             return personalizationAlias.map(viewport => viewport.split("::")[1])[0];
         },
         __buildEngraving(group) {
+            let engraving = "";
             if (this.styleData[group]) {
-                return `${this.styleData[group]}:style`;
+                engraving += `${this.styleData[group]}:style`;
             }
             if (this.fontData[group]) {
-                return `${this.fontData[group]}:font`;
+                engraving += `${engraving === "" ? "" : "."}${this.fontData[group]}:font`;
             }
-            return "";
+            return engraving;
         }
     }
 };
