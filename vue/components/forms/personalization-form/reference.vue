@@ -127,19 +127,13 @@ export const Reference = {
             return this.$store.state.model;
         },
         fonts() {
-            return this.$store.state.config.initials.properties
-                .filter(property => property.type === "font")
-                .map(property => ({ value: property.name, label: property.name }));
+            return this.getPropertyOptions("font");
         },
         positions() {
-            return this.$store.state.config.initials.properties
-                .filter(property => property.type === "position")
-                .map(property => ({ value: property.name, label: property.name }));
+            return this.getPropertyOptions("position");
         },
         styles() {
-            return this.$store.state.config.initials.properties
-                .filter(property => property.type === "style")
-                .map(property => ({ value: property.name, label: property.name }));
+            return this.getPropertyOptions("style");
         },
         state() {
             // font engraving is used to force the refresh of state after setState
@@ -237,6 +231,11 @@ export const Reference = {
             }
 
             return initials.length ? initials.join(" ") + " " + engravings.join(" ") : "";
+        },
+        getPropertyOptions(propertyType) {
+            return this.$store.state.config.initials.properties
+                .filter(property => property.type === propertyType)
+                .map(property => ({ value: property.name, label: property.name }));
         },
         async getGroups() {
             try {
