@@ -55,12 +55,25 @@ export const InitialsImages = {
     },
     watch: {
         async groups(value) {
-            // unbind all images and clean all binds, so that new ones can be bound
-            await Promise.all(
-                this.initialsImages.map(async image => this.$ripe.unbindImage(image))
-            );
+            await this.unbindImages();
+            this.bindImages();
+        }
+    },
+    mounted: function() {
+        this.bindImages();
+    },
+    destroyed: async function() {
+        await this.unbindImages();
+    },
+    methods: {
+        groupKey(group) {
+            return [this.brand, this.model, group].join(":");
+        },
+        imageSelected(group) {
+            this.$emit("image-selected", group);
+        },
+        bindImages() {
             this.initialsImages = [];
-
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
                 const image = this.$ripe.bindImage(initialsImage, {
@@ -70,28 +83,11 @@ export const InitialsImages = {
                 });
                 this.initialsImages.push(image);
             }
-        }
-    },
-    mounted: function() {
-        const initialsImages = this.$refs.initialsImages || [];
-        for (const initialsImage of initialsImages) {
-            const image = this.$ripe.bindImage(initialsImage, {
-                showInitials: true,
-                initialsGroup: initialsImage.dataset.group,
-                initialsBuilder: this.initialsBuilder
-            });
-            this.initialsImages.push(image);
-        }
-    },
-    destroyed: async function() {
-        await Promise.all(this.initialsImages.map(async image => this.$ripe.unbindImage(image)));
-    },
-    methods: {
-        groupKey(group) {
-            return [this.brand, this.model, group].join(":");
         },
-        imageSelected(group) {
-            this.$emit("image-selected", group);
+        async unbindImages() {
+            await Promise.all(
+                this.initialsImages.map(async image => this.$ripe.unbindImage(image))
+            );
         }
     }
 };
