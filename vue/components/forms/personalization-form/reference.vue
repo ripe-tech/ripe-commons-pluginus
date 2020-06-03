@@ -5,7 +5,6 @@
             v-bind:model="model"
             v-bind:groups="groups"
             v-bind:initials-builder="__initialsBuilder"
-            ref="initialsImages"
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
@@ -126,6 +125,9 @@ export const Reference = {
         model() {
             return this.$store.state.model;
         },
+        configInitials() {
+            return this.$store.state.config.initials;
+        },
         fonts() {
             return this.getPropertyOptions("font");
         },
@@ -233,15 +235,15 @@ export const Reference = {
             return initials.length ? initials.join(" ") + " " + engravings.join(" ") : "";
         },
         getPropertyOptions(propertyType) {
-            return this.$store.state.config.initials.properties
+            return this.configInitials.properties
                 .filter(property => property.type === propertyType)
                 .map(property => ({ value: property.name, label: property.name }));
         },
         async getGroups() {
             try {
                 this.groups = await this.$ripe.getLogicP({
-                    brand: this.$store.state.brand,
-                    model: this.$store.state.model,
+                    brand: this.brand,
+                    model: this.model,
                     method: "groups"
                 });
             } catch (err) {
@@ -251,12 +253,11 @@ export const Reference = {
         },
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
-            const viewport = this.__getViewport(group);
-            const profiles = [];
+            const personalizationProfiles = this.__getPersonalizationProfiles(group);
+            const profiles = [...personalizationProfiles];
 
             if (this.fontData[group]) {
                 this.groups.length > 1 && profiles.push(this.fontData[group] + ":" + group);
-                profiles.push(this.fontData[group] + ":" + viewport, this.fontData[group]);
             }
 
             if (this.positionData[group]) {
@@ -269,13 +270,19 @@ export const Reference = {
                 profiles.push(this.styleData[group]);
             }
 
-            this.groups.length > 1 && profiles.push(group + ":" + viewport, group);
-            profiles.push(viewport);
-
             return {
                 initials: initials,
                 profile: profiles
             };
+        },
+        __getPersonalizationProfiles(group) {
+            const alias = this.configInitials.$alias;
+            if (!alias) return [];
+
+            const position = this.positionData[group] || "";
+            return []
+                .concat(alias[`step::personalization:${position}`], alias["step::personalization"])
+                .filter(v => v !== undefined);
         },
         __getInitials() {
             const _initials = {};
@@ -304,25 +311,6 @@ export const Reference = {
             const engraving = engravings.filter(item => item.includes(`:${property}`));
             if (engraving.length === 0) return "";
             return engraving[0].split(":")[0];
-        },
-        __getViewport(group) {
-            const alias = this.$store.state.config.initials.$alias;
-            if (!alias) return "";
-            const position = this.positionData[group] || "";
-            const personalizationAlias = [];
-
-            // gets viewports related to the current position
-            personalizationAlias.push.apply(
-                personalizationAlias,
-                alias[`step::personalization:${position}`]
-            );
-            personalizationAlias.push.apply(personalizationAlias, alias["step::personalization"]);
-
-            if (personalizationAlias.length === 0) return "";
-            // returns the first viewport for the step personalization
-            // if there is a viewport more specific to the current position
-            // it will be positioned first in the array
-            return personalizationAlias.map(viewport => viewport.split("::")[1])[0];
         },
         __buildEngraving(group) {
             let engraving = "";
