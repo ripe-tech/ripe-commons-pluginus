@@ -12,36 +12,16 @@
                     {{ "ripe_commons.personalization.group" | locale }} {{ group }}
                 </p>
                 <form-input
-                    v-bind:header="'Position'"
+                    v-bind:header="capitalize(type)"
                     v-bind:header-size="'large'"
-                    v-if="positions.length !== 0"
+                    v-for="[type, options] in Object.entries(properties)"
+                    v-bind:key="type"
                 >
                     <select-ripe
                         v-bind:placeholder="'Select the position'"
-                        v-bind:options="positions"
-                        v-bind:value.sync="positionData[group]"
-                    />
-                </form-input>
-                <form-input
-                    v-bind:header="'Style'"
-                    v-bind:header-size="'large'"
-                    v-if="styles.length !== 0"
-                >
-                    <select-ripe
-                        v-bind:placeholder="'Select the style'"
-                        v-bind:options="styles"
-                        v-bind:value.sync="styleData[group]"
-                    />
-                </form-input>
-                <form-input
-                    v-bind:header="'Font'"
-                    v-bind:header-size="'large'"
-                    v-if="fonts.length !== 0"
-                >
-                    <select-ripe
-                        v-bind:placeholder="'Select the font'"
-                        v-bind:options="fonts"
-                        v-bind:value.sync="fontData[group]"
+                        v-bind:options="options"
+                        v-bind:value="propertiesData[group][type]"
+                        v-on:update:value="value => onValueUpdate(value, group, type)"
                     />
                 </form-input>
                 <form-input v-bind:header="'Initials*'" v-bind:header-size="'large'">
@@ -110,15 +90,25 @@ export const Reference = {
     mixins: [formInterface],
     data: function() {
         return {
-            positionData: {},
-            styleData: {},
-            fontData: {},
+            propertiesData: {},
             initialsText: {},
-            groups: [],
-            fontEngraving: ""
+            groups: []
         };
     },
     computed: {
+        properties() {
+            const properties = this.configInitials.properties.map(property => ({
+                value: property.name,
+                label: property.name,
+                type: property.type
+            }));
+            const result = {};
+            properties.forEach(property => {
+                result[property.type] = result[property.type] || [];
+                result[property.type].push(property);
+            });
+            return result;
+        },
         brand() {
             return this.$store.state.brand;
         },
@@ -128,20 +118,10 @@ export const Reference = {
         configInitials() {
             return this.$store.state.config.initials;
         },
-        fonts() {
-            return this.getPropertyOptions("font");
-        },
-        positions() {
-            return this.getPropertyOptions("position");
-        },
-        styles() {
-            return this.getPropertyOptions("style");
-        },
         state() {
-            // font engraving is used to force the refresh of state after setState
             return {
                 initials: this.__getInitialsText(),
-                engraving: this.__getEngraving() || this.fontEngraving,
+                engraving: this.propertiesToEngraving(),
                 initialsExtra: this.__getInitials()
             };
         }
@@ -153,93 +133,24 @@ export const Reference = {
             },
             deep: true
         },
-        positionData: {
+        propertiesData: {
             handler: function() {
                 this.$ripe.update();
-            },
-            deep: true
+            }
         }
     },
-    mounted: async function() {
-        await this.getGroups();
+    created: async function() {
+        this.onPostConfig = this.$bus.bind(
+            "post_config",
+            async (config, options) => await this.refresh()
+        );
+        await this.refresh();
+    },
+    destroyed: function() {
+        if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
-        async show() {
-            await this.getGroups();
-        },
-        reset() {
-            this.positionData = {};
-            this.styleData = {};
-            this.fontData = {};
-            this.initialsText = {};
-
-            this.setState({});
-        },
-        setState(state) {
-            const initialsExtra = state.initialsExtra || {};
-            // if there is no initialsExtra entries, clean all input data
-            // it occurs when the modal closes without the user applying
-            // the configuration
-            if (Object.keys(initialsExtra).length === 0) {
-                this.positionData = {};
-                this.styleData = {};
-                this.fontData = {};
-                this.initialsText = {};
-                return;
-            }
-
-            for (const name in initialsExtra) {
-                const initials = initialsExtra[name].initials || "";
-                const engravings =
-                    (initialsExtra[name].engraving && initialsExtra[name].engraving.split(".")) ||
-                    [];
-
-                // parses engraving to get font and style engraving options
-                this.$set(this.initialsText, name, initials);
-                this.$set(this.fontData, name, this.__getSpecificEngraving(engravings, "font"));
-                this.$set(this.styleData, name, this.__getSpecificEngraving(engravings, "style"));
-                this.fontEngraving = this.fontData[name];
-            }
-        },
-        getState() {
-            return this.state;
-        },
-        getTabMessage() {
-            const initials = [];
-            const engravings = [];
-            for (const name in this.initialsText) {
-                const initialsText = this.initialsText[name];
-                if (!initialsText) continue;
-                initials.push(initialsText);
-
-                // when entering with a null value, replace string null value so that it
-                // does not appear in tab message. Shows font and style options in engraving
-                const fontEngraving =
-                    this.fontData[name] && this.fontData[name] !== "null"
-                        ? this.locale(
-                              "properties.font." + this.fontData[name].split(":")[0],
-                              this.readable(this.capitalize(this.fontData[name]))
-                          )
-                        : "";
-                const styleEngraving =
-                    this.styleData[name] && this.styleData[name] !== "null"
-                        ? this.locale(
-                              "properties.style." + this.styleData[name].split(":")[0],
-                              this.readable(this.capitalize(this.styleData[name]))
-                          )
-                        : "";
-                const engraving = `${fontEngraving} ${styleEngraving}`;
-                engravings.push(engraving);
-            }
-
-            return initials.length ? initials.join(" ") + " " + engravings.join(" ") : "";
-        },
-        getPropertyOptions(propertyType) {
-            return this.configInitials.properties
-                .filter(property => property.type === propertyType)
-                .map(property => ({ value: property.name, label: property.name }));
-        },
-        async getGroups() {
+        async refresh() {
             try {
                 this.groups = await this.$ripe.getLogicP({
                     brand: this.brand,
@@ -250,26 +161,78 @@ export const Reference = {
                 // gives a default group if builds does not support logic
                 this.groups = ["main"];
             }
+            this.reset();
+        },
+        reset() {
+            this.propertiesData = {};
+            this.groups.forEach(group => {
+                this.propertiesData[group] = {};
+            });
+            this.initialsText = {};
+        },
+        setState(state) {
+            this.reset();
+
+            const initialsExtra = state.initialsExtra || {};
+            for (const group in initialsExtra) {
+                const initials = initialsExtra[group].initials || "";
+                this.$set(this.initialsText, group, initials);
+
+                const engraving = initialsExtra[group].engraving || "";
+                this.engravingToProperties(engraving, group);
+            }
+        },
+        getState() {
+            return this.state;
+        },
+        getTabMessage() {
+            return Object.entries(this.initialsText)
+                .map(([group, initials]) => {
+                    const text = [initials];
+
+                    ["font", "style"].forEach(propertyName => {
+                        const property = this.propertiesData[group][propertyName];
+                        if (property) {
+                            text.push(
+                                this.locale(
+                                    `properties.${propertyName}.${property}`,
+                                    this.readable(this.capitalize(property))
+                                )
+                            );
+                        }
+                    });
+
+                    return text.join(" ");
+                })
+                .join(" ");
+        },
+        getPropertyOptions(propertyType) {
+            return this.configInitials.properties
+                .filter(property => property.type === propertyType)
+                .map(property => ({ value: property.name, label: property.name }));
+        },
+        propertiesToEngraving(group = null) {
+            group = group || Object.keys(this.propertiesData)[0];
+            if (!group) return "";
+            return Object.entries(this.propertiesData[group])
+                .map(([type, value]) => `${type}:${value}`)
+                .join(".");
+        },
+        engravingToProperties(engraving, group) {
+            engraving.split(".").map(engravingPart => {
+                const [property, value] = engravingPart.split(":", 2);
+                this.onValueUpdate(value, group, property);
+            });
         },
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
             const personalizationProfiles = this.__getPersonalizationProfiles(group);
             const profiles = [...personalizationProfiles];
 
-            if (this.fontData[group]) {
-                this.groups.length > 1 && profiles.push(this.fontData[group] + ":" + group);
-                profiles.push(this.fontData[group]);
-            }
-
-            if (this.positionData[group]) {
-                this.groups.length > 1 && profiles.push(this.positionData[group] + ":" + group);
-                profiles.push(this.positionData[group]);
-            }
-
-            if (this.styleData[group]) {
-                this.groups.length > 1 && profiles.push(this.styleData[group] + ":" + group);
-                profiles.push(this.styleData[group]);
-            }
+            Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
+                this.groups.length > 1 && profiles.push(value + ":" + group);
+                profiles.push(value);
+            });
 
             return {
                 initials: initials,
@@ -280,11 +243,12 @@ export const Reference = {
             const alias = this.configInitials.$alias;
             if (!alias) return [];
 
-            const position = this.positionData[group] || "";
+            const position = this.propertiesData[group] && this.propertiesData[group].position;
+
             return []
                 .concat(
-                    alias[`step::personalization:${position}`],
-                    alias[`step::personalization:${position}:${group}`],
+                    position ? alias[`step::personalization:${position}`] : [],
+                    position ? alias[`step::personalization:${position}:${group}`] : [],
                     alias["step::personalization"]
                 )
                 .filter(v => v !== undefined);
@@ -294,7 +258,7 @@ export const Reference = {
             for (const name in this.initialsText) {
                 const group = {
                     initials: this.initialsText[name],
-                    engraving: this.__buildEngraving(name)
+                    engraving: this.propertiesToEngraving(name)
                 };
                 _initials[name] = group;
             }
@@ -307,25 +271,10 @@ export const Reference = {
                     : null;
             return group ? this.initialsText[group] : "";
         },
-        __getEngraving() {
-            const group =
-                Object.keys(this.fontData).length > 0 ? Object.keys(this.fontData)[0] : null;
-            return group ? this.__buildEngraving(group) : "";
-        },
-        __getSpecificEngraving(engravings, property) {
-            const engraving = engravings.filter(item => item.includes(`:${property}`));
-            if (engraving.length === 0) return "";
-            return engraving[0].split(":")[0];
-        },
-        __buildEngraving(group) {
-            let engraving = "";
-            if (this.styleData[group]) {
-                engraving += `${this.styleData[group]}:style`;
-            }
-            if (this.fontData[group]) {
-                engraving += `${engraving === "" ? "" : "."}${this.fontData[group]}:font`;
-            }
-            return engraving;
+        onValueUpdate(value, group, type) {
+            const newProperties = { ...this.propertiesData };
+            newProperties[group][type] = value;
+            this.propertiesData = newProperties;
         }
     }
 };
