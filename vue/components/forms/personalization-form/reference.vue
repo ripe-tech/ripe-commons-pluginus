@@ -18,7 +18,7 @@
                     v-bind:key="type"
                 >
                     <select-ripe
-                        v-bind:placeholder="'Select the position'"
+                        v-bind:placeholder="`Select the ${type}`"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
                         v-on:update:value="value => onValueUpdate(value, group, type)"
@@ -72,7 +72,7 @@ body.mobile .generic-personalization > .initials-images ::v-deep .initials-image
 
 .generic-personalization > .form > .form-group > .subtitle {
     font-size: 14px;
-    margin-top: 10px;
+    margin: 16px 0px 20px 0px;
     text-transform: capitalize;
 }
 
