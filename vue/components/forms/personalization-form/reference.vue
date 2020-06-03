@@ -258,6 +258,7 @@ export const Reference = {
 
             if (this.fontData[group]) {
                 this.groups.length > 1 && profiles.push(this.fontData[group] + ":" + group);
+                profiles.push(this.fontData[group]);
             }
 
             if (this.positionData[group]) {
@@ -281,7 +282,11 @@ export const Reference = {
 
             const position = this.positionData[group] || "";
             return []
-                .concat(alias[`step::personalization:${position}`], alias["step::personalization"])
+                .concat(
+                    alias[`step::personalization:${position}`],
+                    alias[`step::personalization:${position}:${group}`],
+                    alias["step::personalization"]
+                )
                 .filter(v => v !== undefined);
         },
         __getInitials() {
