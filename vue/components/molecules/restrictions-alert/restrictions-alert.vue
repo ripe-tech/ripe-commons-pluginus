@@ -10,10 +10,17 @@
                         {{ "ripe_commons.restrictions_alert.close_button" | locale }}
                     </a>
                 </div>
-                <div class="message-container">
-                    <span v-if="customMessage">
-                        {{ customMessage }}
-                    </span>
+                <div class="message-container" v-bind:style="{width: messages.length > 0 ? '100%' : null}">
+                    <div v-if="messages.length > 0">
+                        <div class="messages" v-for="(message, index) in messages" v-bind:key="index">
+                            <div class="name">
+                                {{ `${message[0]}:` }}
+                            </div>
+                            <div class="value">
+                                {{ message[1] }}
+                            </div>
+                        </div>
+                    </div>
                     <span v-else>
                         {{ "ripe_commons.restrictions_alert.limited" | locale }}
                         {{ "ripe_commons.restrictions_alert.back" | locale }}
@@ -70,6 +77,17 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     text-decoration: underline;
     user-select: none;
 }
+
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container .messages .name,
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container .messages .value {
+    display: inline-block;
+}
+
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container .messages .name {
+    font-weight: 600;
+    padding: 0px 2px 0px 0px;
+    text-transform: capitalize;
+}
 </style>
 
 <script>
@@ -84,16 +102,19 @@ export const RestrictionsAlert = {
     data: function() {
         return {
             visible: false,
-            customMessage: null
+            messages: []
         };
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
-            this.customMessage = null;
+            this.messages = [];
             this.visible = changes.length > 0;
         });
-        this.$bus.bind("message", message => {
-            this.customMessage = message;
+
+        this.$bus.bind("messages", messages => {
+            if (messages.length === 0) return;
+
+            this.messages = messages;
             this.visible = true;
         });
     },

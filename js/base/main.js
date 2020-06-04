@@ -373,7 +373,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("initials_extra", (...args) =>
             this.owner.trigger("initials_extra", ...args)
         );
-        this.ripe.bind("message", (...args) => this.owner.trigger("message", ...args));
     }
 
     _getExtraComponents() {
@@ -477,6 +476,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 self.restrictionsPlugin.bind("restrictions", (...args) =>
                     this.$bus.trigger("restrictions", ...args)
                 );
+                self.ripe.bind("messages", (...args) => this.$bus.trigger("messages", ...args));
                 self.syncPlugin.bind("sync", (...args) => this.$bus.trigger("sync", ...args));
 
                 // updates the ripe instance when a part or personalization
