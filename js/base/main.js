@@ -373,6 +373,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("initials_extra", (...args) =>
             this.owner.trigger("initials_extra", ...args)
         );
+        this.ripe.bind("message", (...args) => this.owner.trigger("message", ...args));
     }
 
     _getExtraComponents() {

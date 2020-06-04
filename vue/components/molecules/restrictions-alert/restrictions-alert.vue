@@ -11,7 +11,10 @@
                     </a>
                 </div>
                 <div class="message-container">
-                    <span>
+                    <span v-if="customMessage">
+                        {{ customMessage }}
+                    </span>
+                    <span v-else>
                         {{ "ripe_commons.restrictions_alert.limited" | locale }}
                         {{ "ripe_commons.restrictions_alert.back" | locale }}
                     </span>
@@ -72,14 +75,26 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 <script>
 export const RestrictionsAlert = {
     name: "restrictions-alert",
+    props: {
+        defaultRestrictions: {
+            type: Boolean,
+            default: true
+        }
+    },
     data: function() {
         return {
-            visible: false
+            visible: false,
+            customMessage: null
         };
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
+            this.customMessage = null;
             this.visible = changes.length > 0;
+        });
+        this.$bus.bind("message", message => {
+            this.customMessage = message;
+            this.visible = true;
         });
     },
     methods: {
