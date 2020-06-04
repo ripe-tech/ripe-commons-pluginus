@@ -10,7 +10,7 @@
             v-on:click="showModal"
         >
             <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
-            <p>{{ buttonText | locale }}</p>
+            <p class="button-text">{{ buttonText | locale }}</p>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
@@ -50,6 +50,12 @@
     background-color: transparent;
     border-color: transparent;
     pointer-events: none;
+}
+
+.personalization > .button-personalization > .button-text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .personalization ::v-deep .tabs {
