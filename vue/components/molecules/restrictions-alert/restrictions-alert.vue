@@ -100,12 +100,6 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
 <script>
 export const RestrictionsAlert = {
     name: "restrictions-alert",
-    props: {
-        defaultRestrictions: {
-            type: Boolean,
-            default: true
-        }
-    },
     data: function() {
         return {
             visible: false,
