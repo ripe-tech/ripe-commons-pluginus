@@ -10,9 +10,16 @@
                         {{ "ripe_commons.restrictions_alert.close_button" | locale }}
                     </a>
                 </div>
-                <div class="message-container" v-bind:style="{width: messages.length > 0 ? '100%' : null}">
+                <div
+                    class="message-container"
+                    v-bind:style="{ width: messages.length > 0 ? '100%' : null }"
+                >
                     <div v-if="messages.length > 0">
-                        <div class="messages" v-for="(message, index) in messages" v-bind:key="index">
+                        <div
+                            class="messages"
+                            v-for="(message, index) in messages"
+                            v-bind:key="index"
+                        >
                             <div class="name">
                                 {{ `${message[0]}:` }}
                             </div>
