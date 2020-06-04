@@ -150,10 +150,12 @@ export const Reference = {
         }
     },
     created: async function() {
-        this.onPostConfig = this.$bus.bind(
-            "post_config",
-            async (config, options) => await this.refresh()
-        );
+        this.onPostConfig = this.$bus.bind("post_config", async (config, options) => {
+            await this.refresh();
+
+            // clean personalization when switching models
+            this.reset();
+        });
         await this.refresh();
     },
     destroyed: function() {
@@ -172,6 +174,15 @@ export const Reference = {
                 this.groups = ["main"];
             }
             this.reset();
+
+            // when loading a model with a personalization already set (URL)
+            // the setState is called first, so the state of personalization
+            // must be conserved
+            this.groups.forEach(group => {
+                this.propertiesData[group] = this.propertiesData[group]
+                    ? this.propertiesData[group]
+                    : {};
+            });
         },
         reset() {
             this.propertiesData = {};
@@ -283,6 +294,7 @@ export const Reference = {
         },
         onValueUpdate(value, group, type) {
             const newProperties = { ...this.propertiesData };
+            if (!newProperties[group]) newProperties[group] = {};
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
         }
