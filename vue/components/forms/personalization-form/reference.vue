@@ -41,6 +41,16 @@
     min-width: 600px;
 }
 
+body.tablet .generic-personalization,
+body.mobile .generic-personalization {
+    min-width: 100%;
+}
+
+body.tablet .generic-personalization > .initials-images,
+body.mobile .generic-personalization > .initials-images {
+    display: flex;
+}
+
 .generic-personalization > .initials-images ::v-deep .initials-image {
     border-radius: 50%;
     margin-right: 30px;
