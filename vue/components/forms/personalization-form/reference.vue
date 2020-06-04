@@ -173,7 +173,6 @@ export const Reference = {
                 // gives a default group if builds does not support logic
                 this.groups = ["main"];
             }
-            this.reset();
 
             // when loading a model with a personalization already set (URL)
             // the setState is called first, so the state of personalization
