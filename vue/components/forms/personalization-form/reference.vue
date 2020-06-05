@@ -268,8 +268,9 @@ export const Reference = {
 
             return []
                 .concat(
+                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
                     position ? alias[`step::personalization:${position}`] : [],
-                    position ? alias[`step::personalization:${position}:${group}`] : [],
+                    group ? alias[`step::personalization:${group}`] : [],
                     alias["step::personalization"]
                 )
                 .filter(v => v !== undefined);
