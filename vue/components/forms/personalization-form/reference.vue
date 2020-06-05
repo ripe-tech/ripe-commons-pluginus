@@ -12,21 +12,24 @@
                     {{ "ripe_commons.personalization.group" | locale }} {{ group }}
                 </p>
                 <form-input
-                    v-bind:header="capitalize(type)"
+                    v-bind:header="locale(`properties.${type}`, readable(capitalize(type)))"
                     v-bind:header-size="'large'"
                     v-for="[type, options] in Object.entries(properties)"
                     v-bind:key="type"
                 >
                     <select-ripe
-                        v-bind:placeholder="`Select the ${type}`"
+                        v-bind:placeholder="`ripe_commons.personalization.select.${type}` | locale"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
                         v-on:update:value="value => onValueUpdate(value, group, type)"
                     />
                 </form-input>
-                <form-input v-bind:header="'Initials*'" v-bind:header-size="'large'">
+                <form-input
+                    v-bind:header="'ripe_commons.personalization.initials' | locale"
+                    v-bind:header-size="'large'"
+                >
                     <input-ripe
-                        v-bind:placeholder="'Add Initials'"
+                        v-bind:placeholder="'ripe_commons.personalization.add_initials' | locale"
                         v-bind:value.sync="initialsText[group]"
                     />
                 </form-input>
@@ -109,7 +112,10 @@ export const Reference = {
         properties() {
             const properties = this.configInitials.properties.map(property => ({
                 value: property.name,
-                label: property.name,
+                label: this.locale(
+                    `properties.${property.type}.${property.name}`,
+                    this.readable(this.capitalize(property.name))
+                ),
                 type: property.type
             }));
             const result = {};
