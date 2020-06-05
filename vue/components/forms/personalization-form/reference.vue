@@ -12,7 +12,7 @@
                     {{ "ripe_commons.personalization.group" | locale }} {{ group }}
                 </p>
                 <form-input
-                    v-bind:header="locale(`properties.${type}`, readable(capitalize(type)))"
+                    v-bind:header="(`properties.${type}`, readable(capitalize(type))) | locale"
                     v-bind:header-size="'large'"
                     v-for="[type, options] in Object.entries(properties)"
                     v-bind:key="type"
