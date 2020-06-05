@@ -255,6 +255,8 @@ export const Reference = {
                 profiles.push(value);
             });
 
+            profiles.push(group);
+
             return {
                 initials: initials,
                 profile: profiles
