@@ -14,6 +14,9 @@
                     class="message-container"
                     v-bind:style="{ width: messages.length > 0 ? '100%' : null }"
                 >
+                    <span v-if="hasRestrictions">
+                        {{ restrictionMessage }}
+                    </span>
                     <div v-if="messages.length > 0">
                         <div
                             class="messages"
@@ -21,17 +24,13 @@
                             v-bind:key="index"
                         >
                             <div class="name">
-                                {{ `${message[0]}:` }}
+                                {{ `${message.name}:` }}
                             </div>
                             <div class="value">
-                                {{ message[1] }}
+                                {{ message.value }}
                             </div>
                         </div>
                     </div>
-                    <span v-else>
-                        {{ "ripe_commons.restrictions_alert.limited" | locale }}
-                        {{ "ripe_commons.restrictions_alert.back" | locale }}
-                    </span>
                 </div>
             </div>
         </div>
@@ -85,6 +84,11 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     user-select: none;
 }
 
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container .messages .name,
 .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .message-container .messages .value {
     display: inline-block;
@@ -103,29 +107,47 @@ export const RestrictionsAlert = {
     data: function() {
         return {
             visible: false,
-            messages: []
+            messages: [],
+            hasRestrictions: false
         };
+    },
+    computed: {
+        restrictionMessage() {
+            return `${this.locale("ripe_commons.restrictions_alert.limited")}
+                    ${this.locale("ripe_commons.restrictions_alert.back")}`;
+        }
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
-            this.messages = [];
-            this.visible = changes.length > 0;
+            if (changes.length > 0) {
+                this.messages = [];
+                this.visible = true;
+                this.hasRestrictions = true;
+            }
+            else {
+                this.visible = false;
+                this.hasRestrictions = false;
+            }
         });
 
-        this.$bus.bind("messages", messages => {
-            if (messages.length === 0) return;
-
-            this.messages = messages;
+        this.$bus.bind("message", (name, value) => {
+            this.messages.push({ name: name, value: value });
             this.visible = true;
+        });
+
+        this.$bus.bind("clear_messages", () => {
+            this.messages = [];
         });
     },
     methods: {
         undo() {
             this.visible = false;
+            this.messages = [];
             this.$bus.trigger("undo");
         },
         close() {
             this.visible = false;
+            this.messages = [];
         }
     }
 };
