@@ -119,15 +119,7 @@ export const RestrictionsAlert = {
     },
     mounted: function() {
         this.$bus.bind("restrictions", (changes, newPart) => {
-            if (changes.length > 0) {
-                this.messages = [];
-                this.visible = true;
-                this.hasRestrictions = true;
-            }
-            else {
-                this.visible = false;
-                this.hasRestrictions = false;
-            }
+            this.visible = this.hasRestrictions = changes.length > 0;
         });
 
         this.$bus.bind("message", (name, value) => {
