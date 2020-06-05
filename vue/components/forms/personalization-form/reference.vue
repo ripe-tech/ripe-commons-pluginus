@@ -235,6 +235,7 @@ export const Reference = {
             group = group || Object.keys(this.propertiesData)[0];
             if (!group) return "";
             return Object.entries(this.propertiesData[group])
+                .filter(([type, value]) => Boolean(value))
                 .map(([type, value]) => `${type}:${value}`)
                 .join(".");
         },
