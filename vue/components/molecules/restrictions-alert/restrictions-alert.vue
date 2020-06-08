@@ -92,12 +92,36 @@ export const RestrictionsAlert = {
         });
         
         this.onMessage = this.$bus.bind("message", (name, value) => {
+            console.log("message:", name, value);
             this.messages.push({ name: name, value: value });
+        });
+        
+
+
+        this.onConfig = this.$bus.bind("config", () => {
+            console.log("config");
+            this.messages = [];
+        });
+        this.onPart= this.$bus.bind("part", () => {
+            console.log("part");
+            this.messages = [];
+        });  
+        this.onInitials = this.$bus.bind("initials", () => {
+            console.log("initials");
+            this.messages = [];
+        });     
+        this.onInitialsExtra = this.$bus.bind("initials_extra", () => {
+            console.log("initials_extra");
+            this.messages = [];
         });
     },
     destroyed: function() {
         if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
         if (this.onMessage) this.$bus.unbind("message", this.onMessage);
+        if (this.onConfig) this.$bus.unbind("config", this.onConfig);
+        if (this.onPart) this.$bus.unbind("part", this.onPart);
+        if (this.onInitials) this.$bus.unbind("initials", this.onInitials);
+        if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
     },
     methods: {
         undo() {

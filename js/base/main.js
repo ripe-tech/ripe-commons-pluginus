@@ -477,6 +477,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("restrictions", ...args)
                 );
                 self.ripe.bind("message", (...args) => this.$bus.trigger("message", ...args));
+                self.ripe.bind("part", (...args) => this.$bus.trigger("part", ...args));
                 self.syncPlugin.bind("sync", (...args) => this.$bus.trigger("sync", ...args));
 
                 // updates the ripe instance when a part or personalization
