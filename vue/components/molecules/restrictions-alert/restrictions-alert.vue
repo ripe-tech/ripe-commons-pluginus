@@ -112,7 +112,6 @@ export const RestrictionsAlert = {
         });
 
         this.onMessage = this.$bus.bind("message", (name, value) => {
-            console.log("message:", name, value);
             this.messages.push({ name: name, value: value });
         });
 
@@ -139,8 +138,8 @@ export const RestrictionsAlert = {
             this.$bus.trigger("undo");
         },
         close() {
-            this.clearMessages();
             this.restrictions = false;
+            this.clearMessages();
         }
     }
 };
