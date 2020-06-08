@@ -15,9 +15,14 @@
                         {{ "ripe_commons.restrictions_alert.limited" | locale }}
                         {{ "ripe_commons.restrictions_alert.back" | locale }}
                     </span>
-                    <span v-if="messages.length > 0">
-                        {{ messages }}
-                    </span>
+                    <div class="message" v-for="(message, index) in messages" v-bind:key="index">
+                        <div class="name">
+                            {{ `${message.name}:` }}
+                        </div>
+                        <div class="value">
+                            {{ message.value }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,6 +74,21 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     padding: 10px 10px 10px 10px;
     text-decoration: underline;
     user-select: none;
+}
+
+.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container {
+    min-width: 300px;
+}
+
+.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .name,
+.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .value {
+    display: inline-block;
+}
+
+.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .name {
+    font-weight: 600;
+    padding: 0px 2px 0px 0px;
+    text-transform: capitalize;
 }
 </style>
 
