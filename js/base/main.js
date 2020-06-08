@@ -473,7 +473,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
-                self.ripe.bind("part", (...args) => this.$bus.trigger("part", ...args));
                 self.restrictionsPlugin.bind("restrictions", (...args) =>
                     this.$bus.trigger("restrictions", ...args)
                 );
