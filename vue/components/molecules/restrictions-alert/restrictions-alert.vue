@@ -77,19 +77,22 @@ export const RestrictionsAlert = {
     name: "restrictions-alert",
     data: function() {
         return {
-            visible: false,
             restrictions: false,
             messages: []
         };
     },
+    computed: {
+        visible() {
+            return this.restrictions || this.messages.length > 0;
+        }
+    },
     created: function() {
         this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
-            this.visible = this.restrictions = changes.length > 0;
+            this.restrictions = changes.length > 0;
         });
         
         this.onMessage = this.$bus.bind("message", (name, value) => {
             this.messages.push({ name: name, value: value });
-            this.visible = true;
         });
     },
     destroyed: function() {
@@ -98,11 +101,13 @@ export const RestrictionsAlert = {
     },
     methods: {
         undo() {
-            this.visible = false;
+            this.restrictions = false;
+            this.messages = [];
             this.$bus.trigger("undo");
         },
         close() {
-            this.visible = false;
+            this.messages = [];
+            this.restrictions = false;
         }
     }
 };
