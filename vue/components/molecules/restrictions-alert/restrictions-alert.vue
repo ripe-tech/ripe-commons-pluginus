@@ -130,15 +130,14 @@ export const RestrictionsAlert = {
     },
     methods: {
         clearMessages() {
+            this.restrictions = false;
             this.messages = [];
         },
         undo() {
-            this.restrictions = false;
             this.clearMessages();
             this.$bus.trigger("undo");
         },
         close() {
-            this.restrictions = false;
             this.clearMessages();
         }
     }
