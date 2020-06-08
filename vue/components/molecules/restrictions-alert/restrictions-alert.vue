@@ -74,13 +74,24 @@ export const RestrictionsAlert = {
     name: "restrictions-alert",
     data: function() {
         return {
-            visible: false
+            visible: false,
+            messages: []
         };
     },
-    mounted: function() {
-        this.$bus.bind("restrictions", (changes, newPart) => {
+    created: function() {
+        this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
+        
+        this.onMessage = this.$bus.bind("message", (name, value) => {
+            console.log("message:", name, value)
+            this.messages.push({ name: name, value: value });
+            //this.visible = true;
+        });
+    },
+    destroyed: function() {
+        if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
+        if (this.onMessage) this.$bus.unbind("message", this.onMessage);
     },
     methods: {
         undo() {
