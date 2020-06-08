@@ -90,7 +90,6 @@ export const RestrictionsAlert = {
     },
     methods: {
         undo() {
-            this.close();
             this.$bus.trigger("undo");
         },
         close() {
