@@ -85,8 +85,8 @@ export const RestrictionsAlert = {
         this.onUndo = this.$bus.bind("undo", () => this.close());
     },
     destroyed: function() {
-        if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
         if (this.onUndo) this.$bus.unbind("undo", this.onUndo);
+        if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
     },
     methods: {
         undo() {
