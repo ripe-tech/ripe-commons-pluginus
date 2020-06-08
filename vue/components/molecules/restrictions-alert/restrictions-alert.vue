@@ -90,30 +90,16 @@ export const RestrictionsAlert = {
         this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
             this.restrictions = changes.length > 0;
         });
-        
+
         this.onMessage = this.$bus.bind("message", (name, value) => {
             console.log("message:", name, value);
             this.messages.push({ name: name, value: value });
         });
-        
 
-
-        this.onConfig = this.$bus.bind("config", () => {
-            console.log("config");
-            this.messages = [];
-        });
-        this.onPart= this.$bus.bind("part", () => {
-            console.log("part");
-            this.messages = [];
-        });  
-        this.onInitials = this.$bus.bind("initials", () => {
-            console.log("initials");
-            this.messages = [];
-        });     
-        this.onInitialsExtra = this.$bus.bind("initials_extra", () => {
-            console.log("initials_extra");
-            this.messages = [];
-        });
+        this.onConfig = this.$bus.bind("config", () => this.clearMessages());
+        this.onPart = this.$bus.bind("part", () => this.clearMessages());
+        this.onInitials = this.$bus.bind("initials", () => this.clearMessages());
+        this.onInitialsExtra = this.$bus.bind("initials_extra", () => this.clearMessages());
     },
     destroyed: function() {
         if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
@@ -124,13 +110,16 @@ export const RestrictionsAlert = {
         if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
     },
     methods: {
+        clearMessages() {
+            this.messages = [];
+        },
         undo() {
             this.restrictions = false;
-            this.messages = [];
+            this.clearMessages();
             this.$bus.trigger("undo");
         },
         close() {
-            this.messages = [];
+            this.clearMessages();
             this.restrictions = false;
         }
     }
