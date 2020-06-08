@@ -11,9 +11,12 @@
                     </a>
                 </div>
                 <div class="message-container">
-                    <span>
+                    <span v-if="restrictions">
                         {{ "ripe_commons.restrictions_alert.limited" | locale }}
                         {{ "ripe_commons.restrictions_alert.back" | locale }}
+                    </span>
+                    <span v-if="messages.length > 0">
+                        {{ messages }}
                     </span>
                 </div>
             </div>
@@ -75,18 +78,18 @@ export const RestrictionsAlert = {
     data: function() {
         return {
             visible: false,
+            restrictions: false,
             messages: []
         };
     },
     created: function() {
         this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
-            this.visible = changes.length > 0;
+            this.visible = this.restrictions = changes.length > 0;
         });
         
         this.onMessage = this.$bus.bind("message", (name, value) => {
-            console.log("message:", name, value)
             this.messages.push({ name: name, value: value });
-            //this.visible = true;
+            this.visible = true;
         });
     },
     destroyed: function() {
