@@ -77,10 +77,24 @@ export const RestrictionsAlert = {
             visible: false
         };
     },
-    mounted: function() {
-        this.$bus.bind("restrictions", (changes, newPart) => {
+    created: function() {
+        this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
+
+        this.onConfig = this.$bus.bind("config", () => this.close());
+        this.onPart = this.$bus.bind("part", () => this.close());
+        this.onPart = this.$bus.bind("parts", () => this.close());
+        this.onInitials = this.$bus.bind("initials", () => this.close());
+        this.onInitialsExtra = this.$bus.bind("initials_extra", () => this.close());
+    },
+    destroyed: function() {
+        if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
+        if (this.onMessage) this.$bus.unbind("message", this.onMessage);
+        if (this.onConfig) this.$bus.unbind("config", this.onConfig);
+        if (this.onPart) this.$bus.unbind("part", this.onPart);
+        if (this.onInitials) this.$bus.unbind("initials", this.onInitials);
+        if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
     },
     methods: {
         undo() {
