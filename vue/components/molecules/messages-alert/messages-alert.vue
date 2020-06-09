@@ -16,12 +16,8 @@
                 </div>
             </div>
             <div class="buttons">
-                <div class="undo" v-on:click="undo">
-                    Undo
-                </div>
-                <div class="back" v-on:click="close">
-                    Back
-                </div>
+                <div class="undo" v-on:click="undo">{{ "ripe_commons.messages_alert.undo_button" | locale }}</div>
+                <div class="close" v-on:click="close">{{ "ripe_commons.messages_alert.close_button" | locale }}</div>
             </div>
         </div>
     </transition>
