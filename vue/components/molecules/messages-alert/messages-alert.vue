@@ -41,42 +41,10 @@
     left: 0;
     right: 0;
     z-index: 3;
+
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-
-.messages-alert.slide-transition-enter {
-    background-color: red;
-}
-
-.messages-alert.slide-transition-enter-active {
-    background-color: blue;
-}
-
-.messages-alert.slide-transition-enter-to {
-    background-color: green;
-}
-.messages-alert.slide-transition-leave {
-    background-color: orange;
-}
-.messages-alert.slide-transition-leave-active {
-    background-color: aqua;
-}
-.messages-alert.slide-transition-leave-to {
-    background-color: yellow;
-}
-
-
-
-.messages-alert.slide-transition-enter-active {
-    background-color: red;
-    transition: all 2.2s cubic-bezier(0.645, 0.045, 0.355, 1),
-        opacity 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
-}
-
-.messages-alert.slide-transition-leave-active {
-    transition: all 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s,
-        opacity 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
-}
 
 .messages-alert.slide-transition-enter,
 .messages-alert.slide-transition-leave-to {
