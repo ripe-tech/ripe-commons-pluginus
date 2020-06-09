@@ -88,16 +88,40 @@ export const MessagesAlert = {
     name: "messages-alert",
     data: function() {
         return {
-            messages: [
-                { name: "Name 1 afafaf", value: "Value 1" },
-                {
-                    name: "Name 2 ff",
-                    value:
-                        "Value 2 faihfaiofh aºoifhg apoughago iah goah goiahfgoºaiwgh aiowºghaw oºgihaw ºoghaw oºgwahgºoaihgaoighawpuiohg awipuhgawpugha wpugihawpguih a"
-                },
-                { name: "Name 3", value: "Value 3" }
-            ]
+            messages: []
         };
+    },
+    computed: {
+        visible() {
+            return this.messages.length > 0;
+        }
+    },
+    created: function() {
+        this.onMessage = this.$bus.bind("message", (name, value) => {
+            this.messages.push({ name: name, value: value });
+        });
+        this.onConfig = this.$bus.bind("config", () => this.close());
+        this.onPart = this.$bus.bind("part", () => this.close());
+        this.onParts = this.$bus.bind("parts", () => this.close());
+        this.onInitials = this.$bus.bind("initials", () => this.close());
+        this.onInitialsExtra = this.$bus.bind("initials_extra", () => this.close());
+    },
+    destroyed: function() {
+        if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
+        if (this.onInitials) this.$bus.unbind("initials", this.onInitials);
+        if (this.onParts) this.$bus.unbind("parts", this.onParts);
+        if (this.onPart) this.$bus.unbind("part", this.onPart);
+        if (this.onConfig) this.$bus.unbind("config", this.onConfig);
+        if (this.onMessage) this.$bus.unbind("message", this.onMessage);
+    },
+    methods: {
+        undo() {
+            this.close();
+            this.$bus.trigger("undo");
+        },
+        close() {
+            this.messages = [];
+        }
     }
 };
 export default MessagesAlert;
