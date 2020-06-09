@@ -170,7 +170,7 @@ export const Reference = {
     methods: {
         async refresh() {
             try {
-                this.groups = await this.$ripe.getLogicP({
+                this.groups = await this.$ripe.runLogicP({
                     brand: this.brand,
                     model: this.model,
                     method: "groups"
