@@ -1,12 +1,12 @@
 <template>
     <div class="messages-alert">
         <div class="messages">
-            <div class="message">
+            <div class="message" v-for="(message, index) in messages" v-bind:key="index">
                 <div class="name">
-                    Name
+                    {{ `${message.name}:` }}
                 </div>
                 <div class="value">
-                    Value
+                    {{ message.value }}
                 </div>
             </div>
         </div>
@@ -33,7 +33,26 @@
 
 .messages-alert > .messages {
     flex: 1;
-    margin-right: 16px;
+    margin: 0px 16px 0px 0px;
+}
+
+.messages-alert > .messages > .message {
+    margin: 0px 0px 10px 0px;
+}
+
+.messages-alert > .messages > .message:last-child {
+    margin: 0px 0px 0px 0px;
+}
+
+.messages-alert > .messages > .message > .name,
+.messages-alert > .messages > .message > .value {
+    display: inline-block;
+}
+
+.messages-alert > .messages > .message > .name {
+    font-weight: 600;
+    padding: 0px 2px 0px 0px;
+    text-transform: capitalize;
 }
 
 .messages-alert > .buttons {
@@ -66,7 +85,20 @@
 
 <script>
 export const MessagesAlert = {
-    name: "messages-alert"
+    name: "messages-alert",
+    data: function() {
+        return {
+            messages: [
+                { name: "Name 1 afafaf", value: "Value 1" },
+                {
+                    name: "Name 2 ff",
+                    value:
+                        "Value 2 faihfaiofh aºoifhg apoughago iah goah goiahfgoºaiwgh aiowºghaw oºgihaw ºoghaw oºgwahgºoaihgaoighawpuiohg awipuhgawpugha wpugihawpguih a"
+                },
+                { name: "Name 3", value: "Value 3" }
+            ]
+        };
+    }
 };
 export default MessagesAlert;
 </script>
