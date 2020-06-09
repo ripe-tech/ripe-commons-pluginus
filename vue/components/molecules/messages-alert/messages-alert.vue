@@ -14,8 +14,8 @@
             <div class="undo">
                 Undo
             </div>
-            <div class="redo">
-                Redo
+            <div class="back">
+                Back
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
 }
 
 .messages-alert > .buttons > .undo,
-.messages-alert > .buttons > .redo {
+.messages-alert > .buttons > .back {
     box-sizing: border-box;
     color: #5d5d5d;
     cursor: pointer;
@@ -54,12 +54,12 @@
 }
 
 .messages-alert > .buttons > .undo:hover,
-.messages-alert > .buttons > .redo:hover {
+.messages-alert > .buttons > .back:hover {
     color: #000000;
 }
 
 .messages-alert > .buttons > .undo:active,
-.messages-alert > .buttons > .redo:active {
+.messages-alert > .buttons > .back:active {
     color: #737373;
 }
 </style>
