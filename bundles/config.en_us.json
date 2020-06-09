@@ -6,6 +6,9 @@
     "ripe_commons.modal.apply": "Apply",
     "ripe_commons.modal.select": "Select",
 
+    "ripe_commons.messages_alert.undo_button": "Undo",
+    "ripe_commons.messages_alert.close_button": "Close",
+
     "ripe_commons.restrictions_alert.restrictions_alert": "Undo",
     "ripe_commons.restrictions_alert.back_button": "Back",
     "ripe_commons.restrictions_alert.close_button": "Close",

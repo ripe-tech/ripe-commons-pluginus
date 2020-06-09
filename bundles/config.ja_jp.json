@@ -6,6 +6,9 @@
     "ripe_commons.modal.apply": "申し込み",
     "ripe_commons.modal.select": "申し込み",
 
+    "ripe_commons.messages_alert.undo_button": "元に戻る",
+    "ripe_commons.messages_alert.close_button": "閉じる",
+    
     "ripe_commons.restrictions_alert.restrictions_alert": "元に戻る",
     "ripe_commons.restrictions_alert.back_button": "バック",
     "ripe_commons.restrictions_alert.close_button": "閉じる",

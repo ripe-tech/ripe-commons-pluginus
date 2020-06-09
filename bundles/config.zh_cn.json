@@ -6,6 +6,9 @@
     "ripe_commons.modal.apply": "采用",
     "ripe_commons.modal.select": "采用",
 
+    "ripe_commons.messages_alert.undo_button": "复原",
+    "ripe_commons.messages_alert.close_button": "关",
+
     "ripe_commons.restrictions_alert.restrictions_alert": "复原",
     "ripe_commons.restrictions_alert.back_button": "背部",
     "ripe_commons.restrictions_alert.close_button": "关",
