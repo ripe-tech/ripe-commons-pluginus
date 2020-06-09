@@ -80,7 +80,7 @@
 }
 
 .messages-alert > .buttons > .undo,
-.messages-alert > .buttons > .back {
+.messages-alert > .buttons > .close {
     color: #5d5d5d;
     cursor: pointer;
     display: inline-block;
@@ -92,12 +92,12 @@
 }
 
 .messages-alert > .buttons > .undo:hover,
-.messages-alert > .buttons > .back:hover {
+.messages-alert > .buttons > .close:hover {
     color: #000000;
 }
 
 .messages-alert > .buttons > .undo:active,
-.messages-alert > .buttons > .back:active {
+.messages-alert > .buttons > .close:active {
     color: #737373;
 }
 </style>
