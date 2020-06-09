@@ -43,7 +43,7 @@
 .messages-alert > .buttons > .undo,
 .messages-alert > .buttons > .redo {
     box-sizing: border-box;
-    color: #4d4d4d;
+    color: #5d5d5d;
     cursor: pointer;
     display: inline-block;
     font-size: 15px;
@@ -56,6 +56,11 @@
 .messages-alert > .buttons > .undo:hover,
 .messages-alert > .buttons > .redo:hover {
     color: #000000;
+}
+
+.messages-alert > .buttons > .undo:active,
+.messages-alert > .buttons > .redo:active {
+    color: #737373;
 }
 </style>
 
