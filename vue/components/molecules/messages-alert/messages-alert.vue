@@ -57,7 +57,6 @@
 }
 
 .messages-alert > .messages {
-    flex: 1;
     margin: 0px 16px 0px 0px;
 }
 
@@ -80,13 +79,8 @@
     text-transform: capitalize;
 }
 
-.messages-alert > .buttons {
-    display: inline-block;
-}
-
 .messages-alert > .buttons > .undo,
 .messages-alert > .buttons > .back {
-    box-sizing: border-box;
     color: #5d5d5d;
     cursor: pointer;
     display: inline-block;
