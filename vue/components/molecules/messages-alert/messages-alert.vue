@@ -145,7 +145,7 @@ export const MessagesAlert = {
             this.$bus.trigger("undo");
         },
         close() {
-            if (this.visible) this.allowVisible = false;
+            this.allowVisible = !this.visible;
             this.messages = [];
         }
     }
