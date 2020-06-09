@@ -27,22 +27,33 @@
 .messages-alert > .messages{
     flex: 1;
     background-color: lightgreen;
+    margin-right: 16px;
 }
 
 .messages-alert > .buttons{
     display: inline-block;
-    background-color: lightblue;
 }
-
-
-
 
 .messages-alert > .buttons > .undo,
 .messages-alert > .buttons > .redo
 {
     display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4d4d4d;
+    user-select: none;
+    box-sizing: border-box;
+    margin: 0px 5px 0px 5px;
+    cursor: pointer;
     text-decoration: underline;
 }
+
+.messages-alert > .buttons > .undo:hover,
+.messages-alert > .buttons > .redo:hover
+{
+    color: #000000;
+}
+
 
 .messages-alert > .buttons > .undo {
     
