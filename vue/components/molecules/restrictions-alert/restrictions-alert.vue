@@ -81,7 +81,6 @@ export const RestrictionsAlert = {
         this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
-
         this.onUndo = this.$bus.bind("undo", () => this.close());
     },
     destroyed: function() {
