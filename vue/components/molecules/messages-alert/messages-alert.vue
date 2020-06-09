@@ -1,35 +1,94 @@
 <template>
-    <div class="messages-alert">
-        <div class="messages">
-            <div class="message" v-for="(message, index) in messages" v-bind:key="index">
-                <div class="name">
-                    {{ `${message.name}:` }}
+    <transition name="slide-transition" v-on:after-leave="onSlideTransitionAfterLeave">
+        <div class="messages-alert" v-show="visible">
+            <div class="messages">
+                <div class="message" v-for="(message, index) in messages" v-bind:key="index">
+                    <div class="name">
+                        {{ `${message.name}:` }}
+                    </div>
+                    <div class="value">
+                        {{ message.value }}
+                    </div>
                 </div>
-                <div class="value">
-                    {{ message.value }}
+            </div>
+            <div class="buttons">
+                <div class="undo">
+                    Undo
+                </div>
+                <div class="back">
+                    Back
                 </div>
             </div>
         </div>
-        <div class="buttons">
-            <div class="undo">
-                Undo
-            </div>
-            <div class="back">
-                Back
-            </div>
-        </div>
-    </div>
+    </transition>
 </template>
 
 <style scoped>
 .messages-alert {
     align-items: center;
-    background-color: "#ffffff";
+    background-color: #ffffff;
     border-radius: 6px;
     box-shadow: 0px 8px 12px 0px rgba(98, 110, 117, 0.15);
     display: flex;
     padding: 16px 20px 16px 20px;
+
+
+    width: 300px;
+
+    position: fixed;
+    margin: auto;
+    top: 90px;
+    left: 0;
+    right: 0;
+    z-index: 3;
 }
+
+
+.messages-alert.slide-transition-enter {
+    background-color: red;
+}
+
+.messages-alert.slide-transition-enter-active {
+    background-color: blue;
+}
+
+.messages-alert.slide-transition-enter-to {
+    background-color: green;
+}
+.messages-alert.slide-transition-leave {
+    background-color: orange;
+}
+.messages-alert.slide-transition-leave-active {
+    background-color: aqua;
+}
+.messages-alert.slide-transition-leave-to {
+    background-color: yellow;
+}
+
+
+
+.messages-alert.slide-transition-enter-active {
+    background-color: red;
+    transition: all 2.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+        opacity 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
+}
+
+.messages-alert.slide-transition-leave-active {
+    transition: all 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s,
+        opacity 2.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
+}
+
+.messages-alert.slide-transition-enter,
+.messages-alert.slide-transition-leave-to {
+    top: 0px;
+    opacity: 0;
+}
+
+.messages-alert.slide-transition-enter-to {
+    top: 90px;
+}
+
+
 
 .messages-alert > .messages {
     flex: 1;
@@ -88,38 +147,42 @@ export const MessagesAlert = {
     name: "messages-alert",
     data: function() {
         return {
-            messages: []
+            allowVisible: true,
+            messages: [],
         };
     },
     computed: {
         visible() {
-            return this.messages.length > 0;
+            return this.messages.length > 0 && this.allowVisible;
         }
     },
     created: function() {
         this.onMessage = this.$bus.bind("message", (name, value) => {
             this.messages.push({ name: name, value: value });
+            console.log("received message", this.messages.length > 0)
         });
         this.onConfig = this.$bus.bind("config", () => this.close());
         this.onPart = this.$bus.bind("part", () => this.close());
-        this.onParts = this.$bus.bind("parts", () => this.close());
         this.onInitials = this.$bus.bind("initials", () => this.close());
         this.onInitialsExtra = this.$bus.bind("initials_extra", () => this.close());
     },
     destroyed: function() {
         if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
         if (this.onInitials) this.$bus.unbind("initials", this.onInitials);
-        if (this.onParts) this.$bus.unbind("parts", this.onParts);
         if (this.onPart) this.$bus.unbind("part", this.onPart);
         if (this.onConfig) this.$bus.unbind("config", this.onConfig);
         if (this.onMessage) this.$bus.unbind("message", this.onMessage);
     },
     methods: {
+        onSlideTransitionAfterLeave() {
+            this.allowVisible = true;
+        },
         undo() {
             this.close();
             this.$bus.trigger("undo");
         },
         close() {
+            if(this.visible) this.allowVisible = false;
             this.messages = [];
         }
     }
