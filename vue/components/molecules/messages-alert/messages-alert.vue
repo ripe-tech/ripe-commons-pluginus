@@ -1,8 +1,11 @@
 <template>
-    <transition name="slide-transition" v-on:after-leave="onSlideTransitionAfterLeave">
+    <transition name="slide-transition" 
+        v-on:before-enter="onSlideTransitionBeforeEnter"
+        v-on:after-leave="onSlideTransitionAfterLeave"
+    >
         <div class="messages-alert" v-show="visible">
             <div class="messages">
-                <div class="message" v-for="(message, index) in messages" v-bind:key="index">
+                <div class="message" v-for="(message, index) in visibleMessages" v-bind:key="index">
                     <div class="name">
                         {{ `${message.name}:` }}
                     </div>
@@ -115,8 +118,9 @@ export const MessagesAlert = {
     name: "messages-alert",
     data: function() {
         return {
-            allowVisible: true,
             messages: [],
+            allowVisible: true,
+            visibleMessages: [],
         };
     },
     computed: {
@@ -127,7 +131,6 @@ export const MessagesAlert = {
     created: function() {
         this.onMessage = this.$bus.bind("message", (name, value) => {
             this.messages.push({ name: name, value: value });
-            console.log("received message", this.messages.length > 0)
         });
         this.onConfig = this.$bus.bind("config", () => this.close());
         this.onPart = this.$bus.bind("part", () => this.close());
@@ -142,6 +145,9 @@ export const MessagesAlert = {
         if (this.onMessage) this.$bus.unbind("message", this.onMessage);
     },
     methods: {
+        onSlideTransitionBeforeEnter() {
+            this.visibleMessages = [...this.messages]
+        },
         onSlideTransitionAfterLeave() {
             this.allowVisible = true;
         },
