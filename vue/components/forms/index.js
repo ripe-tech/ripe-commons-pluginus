@@ -11,6 +11,4 @@ export const InitialsInputs = personalizationForm.InitialsInputs;
 
 export { personalizationForm, sizeForm };
 
-debugger;
-
 export default install;

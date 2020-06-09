@@ -34,7 +34,6 @@ const getComponent = function(
     if (route) {
         options.mocks.$route = route;
     }
-    debugger;
     const wrapper = testUtils.mount(components[component], options);
     return wrapper;
 };
