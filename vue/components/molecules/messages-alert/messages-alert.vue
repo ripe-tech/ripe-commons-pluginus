@@ -16,10 +16,10 @@
                 </div>
             </div>
             <div class="buttons">
-                <div class="undo">
+                <div class="undo" v-on:click="undo">
                     Undo
                 </div>
-                <div class="back">
+                <div class="back" v-on:click="close">
                     Back
                 </div>
             </div>
