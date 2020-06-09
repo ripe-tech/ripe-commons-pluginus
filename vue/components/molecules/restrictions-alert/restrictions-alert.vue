@@ -77,14 +77,19 @@ export const RestrictionsAlert = {
             visible: false
         };
     },
-    mounted: function() {
-        this.$bus.bind("restrictions", (changes, newPart) => {
+    created: function() {
+        this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
             this.visible = changes.length > 0;
         });
+
+        this.onUndo = this.$bus.bind("undo", () => this.close());
+    },
+    destroyed: function() {
+        if (this.onUndo) this.$bus.unbind("undo", this.onUndo);
+        if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
     },
     methods: {
         undo() {
-            this.visible = false;
             this.$bus.trigger("undo");
         },
         close() {
