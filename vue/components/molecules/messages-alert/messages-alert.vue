@@ -1,5 +1,6 @@
 <template>
-    <transition name="slide-transition" 
+    <transition
+        name="slide-transition"
         v-on:before-enter="onSlideTransitionBeforeEnter"
         v-on:after-leave="onSlideTransitionAfterLeave"
     >
@@ -33,33 +34,27 @@
     border-radius: 6px;
     box-shadow: 0px 8px 12px 0px rgba(98, 110, 117, 0.15);
     display: flex;
-    padding: 16px 20px 16px 20px;
-
-
-    width: 300px;
-
-    position: fixed;
+    left: 0px;
     margin: auto;
+    padding: 16px 20px 16px 20px;
+    position: fixed;
+    right: 0px;
     top: 90px;
-    left: 0;
-    right: 0;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1),
+        opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    width: 300px;
     z-index: 3;
-
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-
 
 .messages-alert.slide-transition-enter,
 .messages-alert.slide-transition-leave-to {
-    top: 0px;
     opacity: 0;
+    top: 0px;
 }
 
 .messages-alert.slide-transition-enter-to {
     top: 90px;
 }
-
-
 
 .messages-alert > .messages {
     flex: 1;
@@ -120,7 +115,7 @@ export const MessagesAlert = {
         return {
             messages: [],
             allowVisible: true,
-            visibleMessages: [],
+            visibleMessages: []
         };
     },
     computed: {
@@ -146,7 +141,7 @@ export const MessagesAlert = {
     },
     methods: {
         onSlideTransitionBeforeEnter() {
-            this.visibleMessages = [...this.messages]
+            this.visibleMessages = [...this.messages];
         },
         onSlideTransitionAfterLeave() {
             this.allowVisible = true;
@@ -156,7 +151,7 @@ export const MessagesAlert = {
             this.$bus.trigger("undo");
         },
         close() {
-            if(this.visible) this.allowVisible = false;
+            if (this.visible) this.allowVisible = false;
             this.messages = [];
         }
     }
