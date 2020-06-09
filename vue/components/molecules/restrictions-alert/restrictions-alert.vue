@@ -11,18 +11,10 @@
                     </a>
                 </div>
                 <div class="message-container">
-                    <span v-if="restrictions">
+                    <span>
                         {{ "ripe_commons.restrictions_alert.limited" | locale }}
                         {{ "ripe_commons.restrictions_alert.back" | locale }}
                     </span>
-                    <div class="message" v-for="(message, index) in messages" v-bind:key="index">
-                        <div class="name">
-                            {{ `${message.name}:` }}
-                        </div>
-                        <div class="value">
-                            {{ message.value }}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -75,21 +67,6 @@ body.mobile .restrictions-alert .message-restrictions-alert .button-container {
     text-decoration: underline;
     user-select: none;
 }
-
-.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container {
-    min-width: 300px;
-}
-
-.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .name,
-.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .value {
-    display: inline-block;
-}
-
-.restrictions-alert > .message-restrictions-alert-container > .message-restrictions-alert > .message-container > .message > .name {
-    font-weight: 600;
-    padding: 0px 2px 0px 0px;
-    text-transform: capitalize;
-}
 </style>
 
 <script>
@@ -97,48 +74,25 @@ export const RestrictionsAlert = {
     name: "restrictions-alert",
     data: function() {
         return {
-            restrictions: false,
-            messages: []
+            visible: false
         };
-    },
-    computed: {
-        visible() {
-            return this.restrictions || this.messages.length > 0;
-        }
     },
     created: function() {
         this.onRestrictions = this.$bus.bind("restrictions", (changes, newPart) => {
-            this.restrictions = changes.length > 0;
+            this.visible = changes.length > 0;
         });
-
-        this.onMessage = this.$bus.bind("message", (name, value) => {
-            this.messages.push({ name: name, value: value });
-        });
-
-        this.onConfig = this.$bus.bind("config", () => this.clearMessages());
-        this.onPart = this.$bus.bind("part", () => this.clearMessages());
-        this.onInitials = this.$bus.bind("initials", () => this.clearMessages());
-        this.onInitialsExtra = this.$bus.bind("initials_extra", () => this.clearMessages());
+        this.onUndo = this.$bus.bind("undo", () => this.close());
     },
     destroyed: function() {
+        if (this.onUndo) this.$bus.unbind("undo", this.onUndo);
         if (this.onRestrictions) this.$bus.unbind("restrictions", this.onRestrictions);
-        if (this.onMessage) this.$bus.unbind("message", this.onMessage);
-        if (this.onConfig) this.$bus.unbind("config", this.onConfig);
-        if (this.onPart) this.$bus.unbind("part", this.onPart);
-        if (this.onInitials) this.$bus.unbind("initials", this.onInitials);
-        if (this.onInitialsExtra) this.$bus.unbind("initials_extra", this.onInitialsExtra);
     },
     methods: {
-        clearMessages() {
-            this.messages = [];
-        },
         undo() {
-            this.close();
             this.$bus.trigger("undo");
         },
         close() {
-            this.restrictions = false;
-            this.clearMessages();
+            this.visible = false;
         }
     }
 };
