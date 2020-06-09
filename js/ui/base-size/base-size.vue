@@ -1,8 +1,8 @@
 <script>
-import { components } from "../../../vue";
+import { sizeForm } from "../../../vue/components/forms";
 
 export const BaseSize = {
-    extends: components.sizeForm.ReferenceMulti
+    extends: sizeForm.ReferenceMulti
 };
 
 export default BaseSize;
