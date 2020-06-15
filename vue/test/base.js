@@ -1,4 +1,3 @@
-const pluginus = require("pluginus");
 const testUtils = require("@vue/test-utils");
 const globalEvents = require("vue-global-events");
 
@@ -13,7 +12,6 @@ localVue.use(plugins.busPlugin);
 localVue.use(components.install);
 localVue.component("global-events", globalEvents.default);
 localVue.mixin(mocks.deviceMockMixin);
-localVue.prototype.$bus = new pluginus.Observable();
 
 /**
  * Initializes a mounted component.
