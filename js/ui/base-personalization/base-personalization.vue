@@ -1,8 +1,8 @@
 <script>
-import { components } from "../../../vue";
+import { personalizationForm } from "../../../vue/components/forms";
 
 export const BasePersonalization = {
-    extends: components.personalizationForm.Reference
+    extends: personalizationForm.Reference
 };
 
 export default BasePersonalization;
