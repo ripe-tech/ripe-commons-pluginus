@@ -1,5 +1,5 @@
 <template>
-    <div class="generic-personalization">
+    <div class="reference-personalization">
         <initials-images
             v-bind:brand="brand"
             v-bind:model="model"
@@ -39,57 +39,57 @@
 </template>
 
 <style scoped>
-.generic-personalization {
+.reference-personalization {
     max-width: 100%;
     min-width: 600px;
 }
 
-body.tablet .generic-personalization,
-body.mobile .generic-personalization {
+body.tablet .reference-personalization,
+body.mobile .reference-personalization {
     min-width: 100%;
 }
 
-body.tablet .generic-personalization > .initials-images,
-body.mobile .generic-personalization > .initials-images {
+body.tablet .reference-personalization > .initials-images,
+body.mobile .reference-personalization > .initials-images {
     display: flex;
 }
 
-.generic-personalization > .initials-images ::v-deep .initials-image {
+.reference-personalization > .initials-images ::v-deep .initials-image {
     border-radius: 50%;
     margin-right: 30px;
     max-height: 300px;
 }
 
-body.tablet .generic-personalization > .initials-images ::v-deep .initials-image,
-body.mobile .generic-personalization > .initials-images ::v-deep .initials-image {
+body.tablet .reference-personalization > .initials-images ::v-deep .initials-image,
+body.mobile .reference-personalization > .initials-images ::v-deep .initials-image {
     width: auto;
 }
 
-.generic-personalization > .initials-images ::v-deep .initials-image:last-of-type {
+.reference-personalization > .initials-images ::v-deep .initials-image:last-of-type {
     margin-right: 0px;
 }
 
-.generic-personalization > .form {
+.reference-personalization > .form {
     display: flex;
     justify-content: center;
 }
 
-.generic-personalization > .form > .form-group {
+.reference-personalization > .form > .form-group {
     margin-right: 30px;
     width: 100%;
 }
 
-.generic-personalization > .form > .form-group:last-of-type {
+.reference-personalization > .form > .form-group:last-of-type {
     margin-right: 0px;
 }
 
-.generic-personalization > .form > .form-group > .subtitle {
+.reference-personalization > .form > .form-group > .subtitle {
     font-size: 14px;
     margin: 16px 0px 20px 0px;
     text-transform: capitalize;
 }
 
-.generic-personalization > .form > .form-group > .form-input {
+.reference-personalization > .form > .form-group > .form-input {
     margin-bottom: 20px;
     text-align: left;
 }
