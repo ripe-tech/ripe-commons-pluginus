@@ -14,6 +14,12 @@
 
     "ripe_commons.personalization.personalization": "Personalisation",
     "ripe_commons.personalization.add_initials": "Add initials",
+    "ripe_commons.personalization.group": "Group",
+    "ripe_commons.personalization.initials": "Initials",
+    "ripe_commons.personalization.select.style": "Select the style",
+    "ripe_commons.personalization.select.font": "Select the font",
+    "ripe_commons.personalization.select.position": "Select the position",
+    "ripe_commons.personalization.select.color": "Select the color",
 
     "ripe_commons.size.size": "Size",
     "ripe_commons.size.select_size": "Select size",
