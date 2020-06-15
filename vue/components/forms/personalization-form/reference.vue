@@ -218,14 +218,14 @@ export const Reference = {
 
                     ["font", "style"].forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
-                        if (property) {
-                            text.push(
-                                this.locale(
-                                    `properties.${propertyName}.${property}`,
-                                    this.readable(this.capitalize(property))
-                                )
-                            );
-                        }
+                        if (!property) return;
+
+                        text.push(
+                            this.locale(
+                                `properties.${propertyName}.${property}`,
+                                this.readable(this.capitalize(property))
+                            )
+                        );
                     });
 
                     return text.join(" ");
