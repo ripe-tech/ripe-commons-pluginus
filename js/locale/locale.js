@@ -1,6 +1,11 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 export class LocalePlugin extends RipeCommonsPlugin {
+    constructor(owner) {
+        super(owner);
+        this._bind();
+    }
+
     async load() {
         await super.load();
         this.loaderPlugins = await this.owner.getPluginsByCapability("locale-loader"); // TODO better loader priority
@@ -45,8 +50,10 @@ export class LocalePlugin extends RipeCommonsPlugin {
         return this.getLocaleValue(key, defaultValue, locale, fallback);
     }
 
-    setLocale(locale) {
+    async setLocale(locale) {
+        await this.owner.trigger("pre_set_locale", locale);
         this.locale = locale;
+        await this.owner.trigger("post_set_locale", locale);
         this.owner.trigger("locale_changed", locale);
     }
 
@@ -92,6 +99,12 @@ export class LocalePlugin extends RipeCommonsPlugin {
             }
         }
         return locales;
+    }
+
+    _bind() {
+        this.owner.bind("locale_change", async locale => {
+            await this.setLocale(locale);
+        });
     }
 }
 

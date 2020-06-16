@@ -69,8 +69,9 @@ export const Size = {
             return this.sizeTextState
                 ? (this.isMobileWidth() || this.isTabletWidth()
                       ? ""
-                      : this.locale("ripe_commons.size.size") + " - ") + this.sizeTextState
-                : this.locale("ripe_commons.size.select_size");
+                      : this.locale("ripe_commons.size.size", undefined, this.$store.state.locale) +
+                        " - ") + this.sizeTextState
+                : this.locale("ripe_commons.size.select_size", undefined, this.$store.state.locale);
         },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
@@ -209,11 +210,12 @@ export const Size = {
             this.enabled = false;
         },
         sizeChanged(form) {
+            console.info(form.getSizeText());
             this.state = form.getState();
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
-            !this.visible && this.apply();
-            !this.visible && this.updateSizeText();
+            if (!this.visible) this.apply();
+            if (!this.visible) this.updateSizeText();
         },
         updateSizeText() {
             this.sizeTextState = this.sizeText;

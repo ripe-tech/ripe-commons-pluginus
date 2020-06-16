@@ -21,24 +21,34 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         return {};
     }
 
+    async loadModelLocale(brand = null, model = null, locale = null) {
+        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        const currentLocale = locale || localePlugin.getLocale();
+
+        brand = brand || ripeProvider.ripe?.brand;
+        model = model || ripeProvider.ripe?.model;
+        if (!brand || !model) return;
+
+        const result = await ripeProvider.ripe.getLocaleModelP({
+            brand: brand,
+            model: model,
+            locale: currentLocale
+        });
+
+        for (const key in result) {
+            localePlugin.setLocaleValue(key, result[key], currentLocale);
+        }
+    }
+
     _bind() {
         this.owner.bind("config", async config => {
-            if (!config) {
-                return;
-            }
-            const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
-            const localePlugin = await this.owner.getPluginByName("LocalePlugin");
-            const currentLocale = localePlugin.getLocale();
+            if (!config) return;
             const { brand, name } = config;
-            const result = await ripeProvider.ripe.getLocaleModelP({
-                brand: brand,
-                model: name,
-                locale: currentLocale
-            });
-            for (const key in result) {
-                localePlugin.setLocaleValue(key, result[key], currentLocale);
-            }
+            await this.loadModelLocale(brand, name);
         });
+
+        this.owner.bind("post_set_locale", async () => await this.loadModelLocale());
     }
 }
 

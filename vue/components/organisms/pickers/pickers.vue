@@ -575,6 +575,9 @@ export const Pickers = {
         this.$bus.bind("post_config", () => {
             this.loading = false;
         });
+        this.$bus.bind("locale_changed", () => {
+            this.$forceUpdate();
+        });
         this.$bus.bind("choices", choices => {
             this.choices = choices;
             this.$forceUpdate();

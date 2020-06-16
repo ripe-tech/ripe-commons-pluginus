@@ -470,6 +470,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 manager.bind("initials_extra", (...args) =>
                     this.$bus.trigger("initials_extra", ...args)
                 );
+                manager.bind("locale_changed", (...args) =>
+                    this.$bus.trigger("locale_changed", ...args)
+                );
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes
@@ -543,6 +546,14 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$store.watch(
                     this.$store.getters.getRipeState,
                     async ripeState => await self.setRipeOptions(ripeState)
+                );
+
+                // register for the change on locale setting from the store
+                // so that the change locale even is triggered allowing the
+                // change of the locale through the application
+                this.$store.watch(
+                    state => state.locale,
+                    locale => manager.trigger("locale_change", locale)
                 );
             }
         });
