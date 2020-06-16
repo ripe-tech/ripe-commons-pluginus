@@ -7,6 +7,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.resolverPlugins = await this.owner.getPluginsByCapability("locale-resolver");
         this.localeMap = await this._loadLocales();
         this.locale = null;
+        this.localeD = "en_us";
     }
 
     async unload() {
@@ -27,10 +28,12 @@ export class LocalePlugin extends RipeCommonsPlugin {
         return Object.keys(this.localeMap);
     }
 
-    getLocaleValue(key, defaultValue, locale) {
+    getLocaleValue(key, defaultValue, locale, fallback = true) {
         locale = locale || this.locale;
         const localeKeys = this.localeMap[locale] || {};
-        return localeKeys[key] || defaultValue;
+        if (localeKeys[key] !== undefined) return localeKeys[key];
+        if (fallback) return this.getLocaleValue(key, defaultValue, this.localeD, false);
+        return defaultValue;
     }
 
     hasLocale(key, locale) {
@@ -38,8 +41,8 @@ export class LocalePlugin extends RipeCommonsPlugin {
         return key in keys;
     }
 
-    toLocale(key, defaultValue, locale) {
-        return this.getLocaleValue(key, defaultValue, locale);
+    toLocale(key, defaultValue, locale, fallback = true) {
+        return this.getLocaleValue(key, defaultValue, locale, fallback);
     }
 
     setLocale(locale) {
