@@ -210,7 +210,6 @@ export const Size = {
             this.enabled = false;
         },
         sizeChanged(form) {
-            console.info(form.getSizeText());
             this.state = form.getState();
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
