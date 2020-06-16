@@ -26,8 +26,8 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
         const currentLocale = locale || localePlugin.getLocale();
 
-        brand = brand || ripeProvider.ripe?.brand;
-        model = model || ripeProvider.ripe?.model;
+        brand = brand || ripeProvider.ripe ? ripeProvider.ripe.brand : null;
+        model = model || ripeProvider.ripe ? ripeProvider.ripe.model : null;
         if (!brand || !model) return;
 
         const result = await ripeProvider.ripe.getLocaleModelP({
