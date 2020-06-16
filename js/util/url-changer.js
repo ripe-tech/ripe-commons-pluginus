@@ -30,7 +30,11 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         this.model = model || this.model;
         this.locale = locale || this.locale;
 
+        // validates that the current model structure contains
+        // a valid object structure and the model name is set,
+        // this avoids unnecessary URL updates
         if (!this.model) return;
+        if (!this.model.model) return;
 
         const query = this._generateQuery(this.model, this.locale, false);
         const href = query ? "?" + query : "";
