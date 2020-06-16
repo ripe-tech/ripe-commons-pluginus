@@ -5,12 +5,19 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.model = null;
-        this.onModelChanged = this.owner.bind("model_changed", model => this.updateQuery(model));
+        this.locale = null;
+        this.onModelChanged = this.owner.bind("model_changed", model =>
+            this.updateQuery({ model: model })
+        );
+        this.onLocaleChanged = this.owner.bind("locale_changed", locale =>
+            this.updateQuery({ locale: locale })
+        );
         this.onUpdateQuery = this.owner.bind("update_query", () => this.updateQuery());
     }
 
     async unload() {
         this.owner.unbind("update_query", this.onUpdateQuery);
+        this.owner.unbind("locale_changed", this.onLocaleChanged);
         this.owner.unbind("model_changed", this.onModelChanged);
         await super.unload();
     }
@@ -19,18 +26,18 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("helper")];
     }
 
-    updateQuery(model = null) {
-        model = model || this.model;
-        if (!model) return;
+    updateQuery({ model = null, locale = null } = {}) {
+        this.model = model || this.model;
+        this.locale = locale || this.locale;
 
-        this.model = model;
+        if (!this.model) return;
 
-        const query = this._generateQuery(model, false);
+        const query = this._generateQuery(this.model, this.locale, false);
         const href = query ? "?" + query : "";
         window.history.replaceState({}, null, href);
     }
 
-    _generateQuery(model, decode = true) {
+    _generateQuery(model, locale, decode = true) {
         const search = window.location.search;
         const query = new URLSearchParams(search);
         const parts = model.parts || {};
@@ -56,6 +63,9 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
 
         if (model.flag) query.set("flag", model.flag);
         else query.delete("flag");
+
+        if (locale) query.set("locale", locale);
+        else query.delete("locale");
 
         if (model.personalization) {
             if (model.personalization.initials) {
