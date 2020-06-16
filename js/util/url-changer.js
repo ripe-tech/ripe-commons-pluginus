@@ -42,6 +42,9 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
     }
 
     _generateQuery(model, locale, decode = true) {
+        // retrieves the current search query value and parses it,
+        // then unpacks the parts for the current model to be used
+        // in the part triplets generation
         const search = window.location.search;
         const query = new URLSearchParams(search);
         const parts = model.parts || {};
