@@ -1,6 +1,6 @@
 {
     "name": "ripe-commons-pluginus",
-    "version": "0.6.0",
+    "version": "0.6.2",
     "description": "RIPE Commons Pluginus",
     "keywords": [
         "commons",
@@ -45,8 +45,8 @@
         "stylelint-fix": "stylelint \"./**/*.{css,scss,vue}\" --fix",
         "svgo": "svgo -r . --disable='removeDimensions,removeViewBox,minifyStyles'",
         "test": "mocha --recursive test",
-        "test-debug": "cross-env NODE_ENV=development node --inspect node_modules/.bin/mochapack --webpack-config vue/test/webpack.config.js --require vue/test/setup.js vue/**/*.test.js",
         "test-all": "npm run test && npm run test-vue",
+        "test-debug": "cross-env NODE_ENV=development node --inspect node_modules/.bin/mochapack --webpack-config vue/test/webpack.config.js --require vue/test/setup.js vue/**/*.test.js",
         "test-vue": "cross-env NODE_ENV=development mochapack --webpack-config vue/test/webpack.config.js --require vue/test/setup.js vue/test/**/*.test.js",
         "test-vue-watch": "npm run test-vue -- --watch",
         "upgrade": "npx sort-package-json && ncu -u",
@@ -56,7 +56,7 @@
     "dependencies": {
         "loaders.css": "^0.1.2",
         "pluginus": "^0.3.9",
-        "ripe-sdk": "^1.11.1",
+        "ripe-sdk": "^1.11.3",
         "vue": "^2.6.11",
         "vue-global-events": "^1.1.2",
         "vuex": "^3.4.0"

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="reference-size">
         <h3 class="title">{{ "ripe_commons.size.size" | locale }}</h3>
         <div class="size-selector">
             <div class="genders" v-show="modelGenders && modelGenders.length > 1">
@@ -55,11 +55,11 @@
 </template>
 
 <style scoped>
-.size .size-selector {
+.reference-size > .size-selector {
     margin-bottom: 40px;
 }
 
-.size .size-selector .sizes-container.multiple {
+.reference-size > .size-selector .sizes-container.multiple {
     border: 1px solid #e9eaee;
     border-bottom-left-radius: 24px;
     border-bottom-right-radius: 24px;
@@ -67,13 +67,13 @@
     padding: 46px 40px 40px 40px;
 }
 
-.size .size-selector .genders {
+.reference-size > .size-selector .genders {
     border-bottom: 1px solid #e9eaee;
     font-size: 0px;
     height: 70px;
 }
 
-.size .size-selector .genders .button.button-gender {
+.reference-size > .size-selector .genders .button.button-gender {
     background-color: #f5f5f5;
     border: 1px solid transparent;
     border-bottom-color: #e9eaee;
@@ -86,16 +86,16 @@
     width: calc(50% - 2px);
 }
 
-.size .size-selector .genders .button.button-gender:first-child {
+.reference-size > .size-selector .genders .button.button-gender:first-child {
     border-top-left-radius: 8px;
 }
 
-.size .size-selector .genders .button.button-gender:last-child {
+.reference-size > .size-selector .genders .button.button-gender:last-child {
     border-top-right-radius: 8px;
 }
 
-.size .size-selector .genders .button.button-gender.active,
-.size .size-selector .genders .button.button-gender:active {
+.reference-size > .size-selector .genders .button.button-gender.active,
+.reference-size > .size-selector .genders .button.button-gender:active {
     background-color: #ffffff;
     border-color: #e9eaee #e9eaee transparent #e9eaee;
     border-top-left-radius: 8px;
@@ -104,18 +104,18 @@
     line-height: 100px;
 }
 
-.size .size-selector .sizes-container {
+.reference-size > .size-selector .sizes-container {
     font-size: 0px;
     padding: 32px 0px 0px 0px;
     position: relative;
     text-align: center;
 }
 
-.size .size-selector .sizes-container .scales {
+.reference-size > .size-selector .sizes-container .scales {
     font-size: 0px;
 }
 
-.size .size-selector .sizes-container .scales .button.button-scale {
+.reference-size > .size-selector .sizes-container .scales .button.button-scale {
     color: #9299a3;
     cursor: pointer;
     display: inline-block;
@@ -127,16 +127,16 @@
     text-transform: uppercase;
 }
 
-.size .size-selector .sizes-container .scales .button.button-scale:last-child {
+.reference-size > .size-selector .sizes-container .scales .button.button-scale:last-child {
     margin-right: 0px;
 }
 
-.size .size-selector .sizes-container .scales .button.button-scale.active {
+.reference-size > .size-selector .sizes-container .scales .button.button-scale.active {
     color: #000000;
     font-weight: 900;
 }
 
-.size .size-selector .sizes-container .sizes {
+.reference-size > .size-selector .sizes-container .sizes {
     display: inline-block;
     font-size: 0px;
     margin-top: 10px;
@@ -144,8 +144,8 @@
     text-align: left;
 }
 
-.size .size-selector .sizes-container .sizes.fade-enter,
-.size .size-selector .sizes-container .sizes.fade-enter-active {
+.reference-size > .size-selector .sizes-container .sizes.fade-enter,
+.reference-size > .size-selector .sizes-container .sizes.fade-enter-active {
     left: 0px;
     margin: auto auto auto auto;
     margin-top: 10px;
@@ -155,7 +155,7 @@
     transition-duration: 0.25s;
 }
 
-.size .size-selector .sizes .button.button-size {
+.reference-size > .size-selector .sizes .button.button-size {
     border: 1px solid #e5e5e5;
     border-radius: 4px 4px 4px 4px;
     box-sizing: border-box;
@@ -174,12 +174,12 @@
     white-space: nowrap;
 }
 
-.size .size-selector .sizes .button.button-size.active,
-.size .size-selector .sizes .button.button-size:active {
+.reference-size > .size-selector .sizes .button.button-size.active,
+.reference-size > .size-selector .sizes .button.button-size:active {
     background-color: #e5e5e5;
 }
 
-.size .size-selector .sizes .button.button-size:last-child {
+.reference-size > .size-selector .sizes .button.button-size:last-child {
     margin-right: 0px;
 }
 </style>

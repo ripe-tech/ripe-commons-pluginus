@@ -1,15 +1,17 @@
-const Vue = require("vue");
 const testUtils = require("@vue/test-utils");
 const globalEvents = require("vue-global-events");
 
+const plugins = require("../plugins");
 const components = require("../components");
 
 const mocks = require("./mocks");
 
 const localVue = testUtils.createLocalVue();
+
+localVue.use(plugins.busPlugin);
+localVue.use(components.install);
 localVue.component("global-events", globalEvents.default);
 localVue.mixin(mocks.deviceMockMixin);
-localVue.prototype.$bus = new Vue();
 
 /**
  * Initializes a mounted component.
