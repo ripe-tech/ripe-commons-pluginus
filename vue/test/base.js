@@ -1,8 +1,6 @@
 const testUtils = require("@vue/test-utils");
 const globalEvents = require("vue-global-events");
 
-const Ripe = require("ripe-sdk").Ripe;
-
 const plugins = require("../plugins");
 const components = require("../components");
 
@@ -10,12 +8,6 @@ const mocks = require("./mocks");
 
 const localVue = testUtils.createLocalVue();
 
-const restrictions = [[{ color: "black" }, { color: "white" }]];
-const ripePlugins = [new Ripe.plugins.RestrictionsPlugin(restrictions)];
-const ripe = new Ripe(null, null, { plugins: ripePlugins });
-
-localVue.use(plugins.ripePlugin, ripe);
-// localVue.use(plugins.ripePlugin, new Ripe());
 localVue.use(plugins.busPlugin);
 localVue.use(components.install);
 localVue.component("global-events", globalEvents.default);
