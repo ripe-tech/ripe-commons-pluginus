@@ -3,32 +3,17 @@ const base = require("../../base");
 
 describe("Restrictions Alert", () => {
     it("Closes on Undo", () => {
+        const changes = ["change1", "change2"];
+        const partSet = null;
+
         const component = base.getComponent("RestrictionsAlert");
-        
 
+        assert.strictEqual(component.vm.$data.visible, false);
 
-        console.log("\n\n--------\n", "testing stuff:\n");
+        component.vm.$bus.trigger("restrictions", changes, partSet);
+        assert.strictEqual(component.vm.$data.visible, true);
 
-        // component.vm.$ripe.plugins[0] is the "RestrictionsPlugin"
-        component.vm.$ripe.plugins[0].bind("restrictions", (...args) =>
-            component.vm.$bus.trigger("restrictions", ...args)
-        );
-        component.vm.$bus.bind("restrictions", (changes, partSet) =>
-            console.log("Testing restrictions event:", changes, partSet)
-        ); // TODO remove
-
-        component.vm.$ripe.plugins[0]._applyRestrictions("name test", "value test");
-
-
-
-
-
-
-        // TODO
-        // - event "restrictions"
-        // - see if alert is open
-        // - event "undo"
-        // - see if alert is closed
-        assert.strictEqual(true, true);
+        component.vm.$bus.trigger("undo");
+        assert.strictEqual(component.vm.$data.visible, false);
     });
 });
