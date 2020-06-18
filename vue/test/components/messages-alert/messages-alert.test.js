@@ -41,7 +41,7 @@ describe("Messages Alert", () => {
         assert.strictEqual(component.vm.$data.messages.length, 1);
     });
 
-    it('Clears when the close button is clicked', () => {
+    it("Clears when the close button is clicked", () => {
         const name = "test name";
         const value = "random test message";
 
@@ -65,7 +65,7 @@ describe("Messages Alert", () => {
 
         const component = base.getComponent("MessagesAlert");
 
-        component.vm.$bus.bind("undo", () => undoTriggered = true);
+        component.vm.$bus.bind("undo", () => (undoTriggered = true));
 
         assert.strictEqual(component.vm.$data.messages.length, 0);
 
