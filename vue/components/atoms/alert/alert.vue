@@ -27,6 +27,10 @@
     z-index: 9;
 }
 
+body.round .alert {
+    border-radius: 4px 4px 4px 4px;
+}
+
 .alert.fade-leave-active {
     animation: fade-shrink-visibility 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
 }

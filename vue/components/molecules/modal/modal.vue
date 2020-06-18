@@ -92,7 +92,7 @@ body.mobile .modal > .modal-container {
     box-sizing: border-box;
     max-height: 98%;
     max-width: 100%;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 20px 0px 20px;
 }
 
 .modal.fade-enter > .modal-container {
@@ -140,7 +140,7 @@ body.mobile .modal > .modal-container > :last-child {
 
 body.tablet .modal > .modal-container > .modal-header,
 body.mobile .modal > .modal-container > .modal-header {
-    margin-left: -10px;
+    margin-left: -20px;
 }
 
 .modal > .modal-container > .modal-header > .button.button-close {
