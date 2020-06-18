@@ -16,7 +16,7 @@
                             {{ `${message.name}:` | locale }}
                         </div>
                         <div class="value">
-                            {{ message.value | locale}}
+                            {{ message.value | locale }}
                         </div>
                     </div>
                 </div>
