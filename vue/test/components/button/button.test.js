@@ -2,7 +2,7 @@ const assert = require("assert");
 const base = require("../../base");
 
 describe("Button", () => {
-    it("Has text", () => {
+    it("has a valid text", () => {
         const text = "This is text";
         const component = base.getComponent("Button", {
             props: { text: text }
