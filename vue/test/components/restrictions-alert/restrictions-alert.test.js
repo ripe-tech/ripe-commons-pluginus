@@ -16,4 +16,16 @@ describe("Restrictions Alert", () => {
         component.vm.$bus.trigger("undo");
         assert.strictEqual(component.vm.$data.visible, false);
     });
+
+    it('Doesn\'t open when an "restrictions" event with no changes is triggered', () => {
+        const changes = [];
+        const partSet = null;
+
+        const component = base.getComponent("RestrictionsAlert");
+
+        assert.strictEqual(component.vm.$data.visible, false);
+
+        component.vm.$bus.trigger("restrictions", changes, partSet);
+        assert.strictEqual(component.vm.$data.visible, false);
+    });
 });
