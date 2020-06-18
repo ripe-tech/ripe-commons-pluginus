@@ -17,7 +17,7 @@ describe("Restrictions Alert", () => {
         assert.strictEqual(component.vm.$data.visible, false);
     });
 
-    it('Doesn\'t open when an "restrictions" event with no changes is triggered', () => {
+    it('Doesn\'t open when an "restrictions" event, with no changes, is triggered', () => {
         const changes = [];
         const partSet = null;
 
