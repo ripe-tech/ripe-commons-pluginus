@@ -72,6 +72,24 @@ body.mobile .messages-alert .message-messages-alert .button-container {
     user-select: none;
 }
 
+.messages-alert .message-messages-alert-container .message-messages-alert .messages .message {
+    margin: 0px 0px 10px 0px;
+}
+
+.messages-alert .message-messages-alert-container .message-messages-alert .messages .message:last-child {
+    margin: 0px 0px 0px 0px;
+}
+
+.messages-alert .message-messages-alert-container .message-messages-alert .messages .message .name,
+.messages-alert .message-messages-alert-container .message-messages-alert .messages .message .value {
+    display: inline-block;
+}
+
+.messages-alert .message-messages-alert-container .message-messages-alert .messages .message .name {
+    font-weight: 600;
+    padding: 0px 2px 0px 0px;
+    text-transform: capitalize;
+}
 </style>
 
 <script>
