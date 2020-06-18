@@ -1,9 +1,9 @@
 <template>
-    <div class="restrictions-alert">
-        <div class="message-restrictions-alert-container">
-            <div class="message-restrictions-alert" v-bind:class="{ visible: messages.length > 0 }">
+    <div class="messages-alert">
+        <div class="message-messages-alert-container">
+            <div class="message-messages-alert" v-bind:class="{ visible: messages.length > 0 }">
                 <div class="button-container">
-                    <a class="button button-restrictions-alert" v-on:click="undo">
+                    <a class="button button-messages-alert" v-on:click="undo">
                         {{ "ripe_commons.restrictions_alert.restrictions_alert" | locale }}
                     </a>
                     <a class="button button-back" v-on:click="close">
@@ -22,13 +22,13 @@
 </template>
 
 <style scoped>
-.restrictions-alert .message-restrictions-alert-container {
+.messages-alert .message-messages-alert-container {
     display: flex;
     flex-direction: row-reverse;
     overflow: hidden;
 }
 
-.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert {
+.messages-alert .message-messages-alert-container .message-messages-alert {
     align-items: center;
     display: flex;
     flex-direction: row-reverse;
@@ -38,24 +38,24 @@
     z-index: 2;
 }
 
-body.mobile .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert,
-body.tablet .restrictions-alert .message-restrictions-alert-container .message-restrictions-alert {
+body.mobile .messages-alert .message-messages-alert-container .message-messages-alert,
+body.tablet .messages-alert .message-messages-alert-container .message-messages-alert {
     flex-direction: column-reverse;
     max-width: 70%;
 }
 
-.restrictions-alert .message-restrictions-alert .button-container {
+.messages-alert .message-messages-alert .button-container {
     display: flex;
     flex-direction: row;
 }
 
-body.tablet .restrictions-alert .message-restrictions-alert .button-container,
-body.mobile .restrictions-alert .message-restrictions-alert .button-container {
+body.tablet .messages-alert .message-messages-alert .button-container,
+body.mobile .messages-alert .message-messages-alert .button-container {
     justify-content: flex-end;
     width: 100%;
 }
 
-.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert .button {
+.messages-alert .message-messages-alert-container .message-messages-alert .button {
     align-items: center;
     border: none;
     cursor: pointer;
