@@ -4,17 +4,21 @@
             <div class="message-messages-alert" v-bind:class="{ visible: messages.length > 0 }">
                 <div class="button-container">
                     <a class="button button-messages-alert" v-on:click="undo">
-                        {{ "ripe_commons.restrictions_alert.restrictions_alert" | locale }}
+                        {{ "ripe_commons.messages_alert.undo_button" | locale }}
                     </a>
                     <a class="button button-back" v-on:click="close">
-                        {{ "ripe_commons.restrictions_alert.close_button" | locale }}
+                        {{ "ripe_commons.messages_alert.close_button" | locale }}
                     </a>
                 </div>
-                <div class="message-container">
-                    <span>
-                        {{ "ripe_commons.restrictions_alert.limited" | locale }}
-                        {{ "ripe_commons.restrictions_alert.back" | locale }}
-                    </span>
+                <div class="messages">
+                    <div class="message" v-for="(message, index) in messages" v-bind:key="index">
+                        <div class="name">
+                            {{ `${message.name}:` | locale }}
+                        </div>
+                        <div class="value">
+                            {{ message.value | locale}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,6 +71,7 @@ body.mobile .messages-alert .message-messages-alert .button-container {
     text-decoration: underline;
     user-select: none;
 }
+
 </style>
 
 <script>
