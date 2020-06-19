@@ -1,7 +1,7 @@
 const assert = require("assert");
 const base = require("../../base");
 
-describe("Restrictions Alert", () => {
+describe("RestrictionsAlert", () => {
     it("should open on restrictions", () => {
         const component = base.getComponent("RestrictionsAlert");
         assert.strictEqual(component.vm.$data.visible, false);
