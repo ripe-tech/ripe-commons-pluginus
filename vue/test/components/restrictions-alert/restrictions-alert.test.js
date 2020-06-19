@@ -2,7 +2,7 @@ const assert = require("assert");
 const base = require("../../base");
 
 describe("Restrictions Alert", () => {
-    it("Open on restrictions", () => {
+    it("should open on restrictions", () => {
         const component = base.getComponent("RestrictionsAlert");
         assert.strictEqual(component.vm.$data.visible, false);
 
@@ -13,7 +13,7 @@ describe("Restrictions Alert", () => {
         assert.strictEqual(component.vm.$data.visible, false);
     });
 
-    it("Doesn't open without restrictions", () => {
+    it("should not open without restrictions", () => {
         const component = base.getComponent("RestrictionsAlert");
         assert.strictEqual(component.vm.$data.visible, false);
 
@@ -21,7 +21,7 @@ describe("Restrictions Alert", () => {
         assert.strictEqual(component.vm.$data.visible, false);
     });
 
-    it("Closes on undo", () => {
+    it("should close on undo", () => {
         const component = base.getComponent("RestrictionsAlert");
         assert.strictEqual(component.vm.$data.visible, false);
 
@@ -32,7 +32,7 @@ describe("Restrictions Alert", () => {
         assert.strictEqual(component.vm.$data.visible, false);
     });
 
-    it("Closes on no restrictions", () => {
+    it("should close on no restrictions", () => {
         const component = base.getComponent("RestrictionsAlert");
         assert.strictEqual(component.vm.$data.visible, false);
 
