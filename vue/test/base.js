@@ -11,7 +11,7 @@ const localVue = testUtils.createLocalVue();
 localVue.use(plugins.busPlugin);
 localVue.use(components.install);
 localVue.component("global-events", globalEvents.default);
-localVue.mixin(mocks.deviceMockMixin);
+localVue.use(mocks);
 
 /**
  * Initializes a mounted component.
