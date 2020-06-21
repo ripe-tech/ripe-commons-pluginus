@@ -8,7 +8,7 @@
                     v-bind:class="{ active: modelGender === visibleGender }"
                     v-for="modelGender in modelGenders"
                     v-bind:key="modelGender"
-                    v-on:click="gender = modelGender"
+                    v-on:click="__changeGender(modelGender)"
                 >
                     {{ modelGender | locale }}
                 </div>
@@ -398,7 +398,23 @@ export const Reference = {
                 return "";
             }
             const sizes = this.sizeOptions[gender][scale];
-            return sizes[String(size)].locale;
+            const sizeM = sizes[String(size)];
+            if (!sizeM) return "";
+            return sizeM.locale;
+        },
+        __changeGender(gender) {
+            // updates the internal setting for the gender (effective change)
+            this.gender = gender;
+
+            // verifies if the size is already ready for selection (all values are set)
+            // if not there's not remaining to be done
+            const isReady = this.gender && this.scale && this.size;
+            if (!isReady) return;
+
+            // in case there's so size available for the scale in the new gender
+            // then we must "reset" the size, avoiding possible errors
+            const hasSize = Boolean(this.sizeOptions[this.gender][this.scale][String(this.size)]);
+            if (!hasSize) this.size = null;
         }
     }
 };
