@@ -62,7 +62,7 @@
         "vuex": "^3.4.0"
     },
     "devDependencies": {
-        "@babel/plugin-transform-runtime": "^7.10.1",
+        "@babel/plugin-transform-runtime": "^7.10.3",
         "@babel/polyfill": "^7.10.1",
         "@storybook/addon-knobs": "^5.3.19",
         "@storybook/addon-storysource": "^5.3.19",
