@@ -473,6 +473,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 manager.bind("locale_changed", (...args) =>
                     this.$bus.trigger("locale_changed", ...args)
                 );
+                manager.bind("localeMap_updated", (...args) =>
+                    this.$bus.trigger("localeMap_updated", ...args)
+                );
 
                 // pipes the ripe plugins events to the vue bus, allows
                 // so that UI components can "respond" to changes

@@ -72,6 +72,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
                 this.setLocaleValue(`${prefix}${key}`, bundle[key], locale);
             }
         }
+        this.owner.trigger("localeMap_updated");
     }
 
     unsetLocaleValue(key, locale) {

@@ -578,6 +578,9 @@ export const Pickers = {
         this.$bus.bind("locale_changed", () => {
             this.$forceUpdate();
         });
+        this.$bus.bind("localeMap_updated", () => {
+            this.$forceUpdate();
+        });
         this.$bus.bind("choices", choices => {
             this.choices = choices;
             this.$forceUpdate();
