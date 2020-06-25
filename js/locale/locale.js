@@ -64,6 +64,11 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale", key, value, locale);
     }
 
+    unsetLocaleValue(key, locale) {
+        const localeKeys = this.localeMap[locale] || {};
+        delete localeKeys[key];
+    }
+
     setLocaleMap(localeMap, prefix = "") {
         prefix = prefix.length === 0 || prefix.endsWith(".") ? prefix : `${prefix}.`;
         for (const locale in localeMap) {
@@ -75,11 +80,6 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale_map_changed");
     }
 
-    unsetLocaleValue(key, locale) {
-        const localeKeys = this.localeMap[locale] || {};
-        delete localeKeys[key];
-    }
-
     unsetLocaleMap(localeMap, prefix = "") {
         prefix = prefix.length === 0 || prefix.endsWith(".") ? prefix : `${prefix}.`;
         for (const locale in localeMap) {
@@ -88,6 +88,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
                 this.unsetLocaleValue(`${prefix}.${key}`, locale);
             }
         }
+        this.owner.trigger("locale_map_changed");
     }
 
     async _loadLocales() {
