@@ -577,6 +577,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
 class DynamicComponent {
     constructor(componentClass, { parent, props, injectionPoint = document.body } = {}) {
+        injectionPoint =
+            typeof injectionPoint === "string"
+                ? document.body.querySelector(injectionPoint)
+                : injectionPoint;
         this.componentClass = componentClass;
         this.injectionPoint = injectionPoint;
         this.parent = parent;
