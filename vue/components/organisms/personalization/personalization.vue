@@ -18,6 +18,7 @@
             <div v-show="enabled">
                 <h3 class="title">{{ "ripe_commons.personalization.personalization" | locale }}</h3>
                 <component
+                    v-if="form"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
