@@ -567,3 +567,5 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         alert(err.message ? err.message : String(err));
     }
 }
+
+export const VueClass = Vue;
