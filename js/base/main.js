@@ -128,6 +128,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
+    async buildComponent(componentClass, options) {
+        return new DynamicComponent(componentClass, options);
+    }
+
     async setModel(options = null, safe = true) {
         if (safe && this.configuring) {
             this.app.logInfo(() => "Delaying set model, still configuring...");
@@ -568,5 +572,29 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     async _handleCritical(err) {
         alert(err.message ? err.message : String(err));
+    }
+}
+
+class DynamicComponent {
+    constructor(componentClass, { parent, props, injectionPoint = document.body } = {}) {
+        this.componentClass = componentClass;
+        this.injectionPoint = injectionPoint;
+        this.parent = parent;
+        this.props = props;
+    }
+
+    mount() {
+        const ExtendedClass = Vue.extend(this.componentClass);
+        this.component = new ExtendedClass({
+            parent: this.parent,
+            propsData: this.props
+        });
+        this.component.$mount();
+        this.element = this.injectionPoint.appendChild(this.component.$el);
+    }
+
+    unmount() {
+        if (this.element) this.element.remove();
+        if (this.component) this.component.$destroy();
     }
 }
