@@ -39,6 +39,10 @@
     transform: scale(1.025, 1.025);
 }
 
+body.round .button.button-platforme {
+    border-radius: 4px 4px 4px 4px;
+}
+
 .button.button-platforme > span.button-logo {
     background-color: #151515;
     height: 44px;
