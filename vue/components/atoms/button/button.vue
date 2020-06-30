@@ -55,6 +55,12 @@
     color: #ffffff;
 }
 
+.button.disabled {
+    cursor: default;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
 .button.button-design-default:active {
     background-color: #a5a5a5;
     color: #000000;
@@ -94,6 +100,10 @@ export const Button = {
             type: Boolean,
             default: false
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         loading: {
             type: Boolean,
             default: false
@@ -120,7 +130,8 @@ export const Button = {
         classes() {
             const base = {
                 active: this.active,
-                loading: this.loading
+                loading: this.loading,
+                disabled: this.disabled
             };
             if (this.design) base["button-design-" + this.design] = this.design;
             if (this.alignmentStyle) {
