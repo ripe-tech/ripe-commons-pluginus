@@ -18,6 +18,7 @@
                     v-bind:key="type"
                 >
                     <select-ripe
+                        v-bind:class="(`properties.${type}`, readable(type)) | locale"
                         v-bind:placeholder="`ripe_commons.personalization.select.${type}` | locale"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
@@ -29,6 +30,7 @@
                     v-bind:header-size="'large'"
                 >
                     <input-ripe
+                        class="add-initials"
                         v-bind:placeholder="'ripe_commons.personalization.add_initials' | locale"
                         v-bind:value.sync="initialsText[group]"
                     />
