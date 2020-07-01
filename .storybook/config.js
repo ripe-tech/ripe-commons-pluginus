@@ -1,13 +1,17 @@
 import Vue from "vue";
 import { configure } from "@storybook/vue";
 
-import { install as RipeCommonsPluginusVue } from "../vue";
+import { install as RipeCommonsPluginusVue, plugins } from "../vue";
 
 import "./styles.css";
 
-Vue.use(RipeCommonsPluginusVue);
+// initializes the event bus that will be used for
+// UI related communication between the components
+Vue.use(plugins.busPlugin);
 
-Vue.prototype.$bus = new Vue();
+// initializes the main commons plugins structure
+// registering all of its components
+Vue.use(RipeCommonsPluginusVue);
 
 const req = require.context("../vue", true, /\.stories\.js$/);
 function loadStories() {

@@ -1,12 +1,18 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class LocalePlugin extends RipeCommonsPlugin {
+export class LocalePlugin extends RipeCommonsPlugin {
+    constructor(owner) {
+        super(owner);
+        this._bind();
+    }
+
     async load() {
         await super.load();
         this.loaderPlugins = await this.owner.getPluginsByCapability("locale-loader"); // TODO better loader priority
         this.resolverPlugins = await this.owner.getPluginsByCapability("locale-resolver");
         this.localeMap = await this._loadLocales();
         this.locale = null;
+        this.localeD = "en_us";
     }
 
     async unload() {
@@ -27,10 +33,12 @@ class LocalePlugin extends RipeCommonsPlugin {
         return Object.keys(this.localeMap);
     }
 
-    getLocaleValue(key, defaultValue, locale) {
+    getLocaleValue(key, defaultValue, locale, fallback = true) {
         locale = locale || this.locale;
         const localeKeys = this.localeMap[locale] || {};
-        return localeKeys[key] || defaultValue;
+        if (localeKeys[key] !== undefined) return localeKeys[key];
+        if (fallback) return this.getLocaleValue(key, defaultValue, this.localeD, false);
+        return defaultValue;
     }
 
     hasLocale(key, locale) {
@@ -38,12 +46,14 @@ class LocalePlugin extends RipeCommonsPlugin {
         return key in keys;
     }
 
-    toLocale(key, defaultValue, locale) {
-        return this.getLocaleValue(key, defaultValue, locale);
+    toLocale(key, defaultValue, locale, fallback = true) {
+        return this.getLocaleValue(key, defaultValue, locale, fallback);
     }
 
-    setLocale(locale) {
+    async setLocale(locale) {
+        await this.owner.trigger("pre_set_locale", locale);
         this.locale = locale;
+        await this.owner.trigger("post_set_locale", locale);
         this.owner.trigger("locale_changed", locale);
     }
 
@@ -54,6 +64,11 @@ class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale", key, value, locale);
     }
 
+    unsetLocaleValue(key, locale) {
+        const localeKeys = this.localeMap[locale] || {};
+        delete localeKeys[key];
+    }
+
     setLocaleMap(localeMap, prefix = "") {
         prefix = prefix.length === 0 || prefix.endsWith(".") ? prefix : `${prefix}.`;
         for (const locale in localeMap) {
@@ -62,11 +77,7 @@ class LocalePlugin extends RipeCommonsPlugin {
                 this.setLocaleValue(`${prefix}${key}`, bundle[key], locale);
             }
         }
-    }
-
-    unsetLocaleValue(key, locale) {
-        const localeKeys = this.localeMap[locale] || {};
-        delete localeKeys[key];
+        this.owner.trigger("locale_map_changed");
     }
 
     unsetLocaleMap(localeMap, prefix = "") {
@@ -77,6 +88,7 @@ class LocalePlugin extends RipeCommonsPlugin {
                 this.unsetLocaleValue(`${prefix}.${key}`, locale);
             }
         }
+        this.owner.trigger("locale_map_changed");
     }
 
     async _loadLocales() {
@@ -90,8 +102,12 @@ class LocalePlugin extends RipeCommonsPlugin {
         }
         return locales;
     }
+
+    _bind() {
+        this.owner.bind("locale_change", async locale => {
+            await this.setLocale(locale);
+        });
+    }
 }
 
 LocalePlugin.register();
-
-export { LocalePlugin };

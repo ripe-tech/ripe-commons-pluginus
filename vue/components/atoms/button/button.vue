@@ -1,6 +1,12 @@
 <template>
     <button class="button" v-bind:class="classes" v-on:click="onClick">
-        <slot>
+        <loader
+            loader="ball-scale-multiple"
+            class="loader"
+            v-bind:loader-style="loaderStyle"
+            v-show="loading"
+        />
+        <slot v-if="!loading">
             {{ text }}
         </slot>
     </button>
@@ -30,24 +36,16 @@
     padding: 0px 20px 0px 20px;
 }
 
-.button.button-variant-default:hover {
-    background-color: #0d0d0d;
-    color: #ffffff;
+.button.button-alignment-left {
+    text-align: left;
 }
 
-.button.button-variant-black {
-    background-color: #0d0d0d;
-    border: 1px solid #0d0d0d;
-    box-sizing: border-box;
-    color: #ffffff;
-    display: inline-block;
-    font-family: MarkPro, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    height: 44px;
-    letter-spacing: 1.17px;
-    line-height: 44px;
-    padding: 0px 20px 0px 20px;
+.button.button-alignment-right {
+    text-align: right;
+}
+
+.button:hover {
+    border: 1px solid #2d2d2d;
 }
 
 .button.button-variant-black:hover {
@@ -60,9 +58,28 @@
     color: #ffffff;
 }
 
-.button.button-variant-default:active {
+.button.disabled {
+    cursor: default;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.button.button-design-default:active {
     background-color: #a5a5a5;
     color: #000000;
+}
+
+.button .loader {
+    display: inline-block;
+    transform: translateY(-21px);
+    width: 32px;
+}
+
+.button ::v-deep .loader > div {
+    background-color: transparent;
+    height: 32px;
+    left: 0px;
+    width: 32px;
 }
 </style>
 
@@ -78,22 +95,61 @@ export const Button = {
             type: String,
             default: "default"
         },
+        alignment: {
+            type: String,
+            default: null
+        },
         active: {
             type: Boolean,
             default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        loaderStyle: {
+            type: Object,
+            default: () => ({})
+        },
+        href: {
+            type: String,
+            default: null
+        },
+        target: {
+            type: String,
+            default: null
         }
     },
     computed: {
+        alignmentStyle() {
+            if (this.alignment) return this.alignment;
+            if (this.icon) return "right";
+            return "center";
+        },
         classes() {
             const base = {
-                active: this.active
+                active: this.active,
+                loading: this.loading,
+                disabled: this.disabled
             };
-            if (this.theme) base["button-variant-" + this.theme] = this.theme;
+            if (this.design) base["button-design-" + this.design] = this.design;
+            if (this.alignmentStyle) {
+                base["button-alignment-" + this.alignmentStyle] = this.alignmentStyle;
+            }
             return base;
         }
     },
     methods: {
         onClick(event) {
+            if (this.disabled) return;
+            if (this.href) {
+                if (this.target) window.open(this.href, this.target);
+                else document.location = this.href;
+            }
             this.$emit("click", event);
         }
     }

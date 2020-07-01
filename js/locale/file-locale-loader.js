@@ -3,7 +3,7 @@ import configEnUs from "../../bundles/config.en_us";
 import configJaJp from "../../bundles/config.ja_jp";
 import configZhCn from "../../bundles/config.zh_cn";
 
-class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
+export class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
     /**
      * Loads the complete set of locale bundles from a file based data
      * sourcing structure.
@@ -51,5 +51,3 @@ class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
 }
 
 FileLocaleLoaderPlugin.register();
-
-export { FileLocaleLoaderPlugin };

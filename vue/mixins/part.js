@@ -1,4 +1,4 @@
-const partMixin = {
+export const partMixin = {
     methods: {
         isMobile() {
             return this.$root.$device && this.$root.$device.isMobile;
@@ -29,5 +29,3 @@ const partMixin = {
         }
     }
 };
-
-export { partMixin };

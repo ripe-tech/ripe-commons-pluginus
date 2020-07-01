@@ -1,4 +1,4 @@
-const localeMixin = {
+export const localeMixin = {
     computed: {
         __localeModel() {
             return this.manager.pluginsName.ModelLocaleResolverPlugin;
@@ -35,8 +35,17 @@ const localeMixin = {
                 return options.defaultValue || "";
             }
             return this.__localeModel.localeProperty(name, options);
+        },
+        localeEngraving(engraving, separator = " ") {
+            if (!this.config || !this.config.initials) return engraving;
+            const { values } = this.$ripe.parseEngraving(
+                engraving,
+                this.config.initials.properties
+            );
+            return values
+                .map(property => this.localeModelProperty(property.name, property.type))
+                .filter(localizedProperty => localizedProperty.length)
+                .join(separator);
         }
     }
 };
-
-export { localeMixin };

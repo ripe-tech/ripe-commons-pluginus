@@ -1,14 +1,24 @@
 import { Ripe } from "ripe-sdk";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class UrlChangerPlugin extends RipeCommonsPlugin {
+export class UrlChangerPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
-        this.handler = this.owner.bind("model_changed", model => this.updateQuery(model));
+        this.model = null;
+        this.locale = null;
+        this.onModelChanged = this.owner.bind("model_changed", model =>
+            this.updateQuery({ model: model })
+        );
+        this.onLocaleChanged = this.owner.bind("locale_changed", locale =>
+            this.updateQuery({ locale: locale })
+        );
+        this.onUpdateQuery = this.owner.bind("update_query", () => this.updateQuery());
     }
 
     async unload() {
-        this.owner.unbind("model_changed", this.handler);
+        this.owner.unbind("update_query", this.onUpdateQuery);
+        this.owner.unbind("locale_changed", this.onLocaleChanged);
+        this.owner.unbind("model_changed", this.onModelChanged);
         await super.unload();
     }
 
@@ -16,16 +26,35 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("helper")];
     }
 
-    updateQuery(model) {
-        const query = this._generateQuery(model, false);
+    updateQuery({ model = null, locale = null } = {}) {
+        this.model = model || this.model;
+        this.locale = locale || this.locale;
+
+        // validates that the current model structure contains
+        // a valid object structure and the model name is set,
+        // this avoids unnecessary URL updates
+        if (!this.model) return;
+        if (!this.model.model) return;
+
+        const query = this._generateQuery(this.model, this.locale, false);
         const href = query ? "?" + query : "";
         window.history.replaceState({}, null, href);
     }
 
-    _generateQuery(model, decode = true) {
+    _generateQuery(model, locale, decode = true) {
+        // retrieves the current search query value and parses it,
+        // then unpacks the parts for the current model to be used
+        // in the part triplets generation
         const search = window.location.search;
         const query = new URLSearchParams(search);
         const parts = model.parts || {};
+
+        // a full query will be generated, so clear the parameters
+        // that are exclusively used as entry points since they
+        // aren't needed anymore and might be outdated with regards
+        // to the current model configuration
+        query.delete("dku");
+        query.delete("product_id");
 
         if (model.brand) query.set("brand", model.brand);
         else query.delete("brand");
@@ -36,8 +65,14 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
         if (model.variant) query.set("variant", model.variant);
         else query.delete("variant");
 
+        if (model.version) query.set("version", model.version);
+        else query.delete("version");
+
         if (model.flag) query.set("flag", model.flag);
         else query.delete("flag");
+
+        if (locale) query.set("locale", locale);
+        else query.delete("locale");
 
         if (model.personalization) {
             if (model.personalization.initials) {
@@ -82,11 +117,11 @@ class UrlChangerPlugin extends RipeCommonsPlugin {
             query.append("p", partQ);
         }
 
+        this.owner.trigger("generate_query", query);
+
         const queryS = query.toString();
         return decode ? decodeURIComponent(queryS) : queryS;
     }
 }
 
 UrlChangerPlugin.register();
-
-export { UrlChangerPlugin };

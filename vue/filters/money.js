@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-const Money = {};
+export const Money = {};
 
 Money.SYMBOLS = {
     EUR: ["€", 1],
@@ -84,7 +84,7 @@ Money._formatCurrency = function(money, currency, useSymbol) {
 };
 
 Money.formatMoney = function(value, currency, places, separator, thousands, useSymbol) {
-    if (!value) {
+    if (value === null || value === undefined) {
         return "";
     }
     useSymbol = useSymbol === undefined ? true : useSymbol;
@@ -117,5 +117,3 @@ Money.formatMoney = function(value, currency, places, separator, thousands, useS
 Vue.filter("money", function(value, currency, places, separator, thousands, useSymbol) {
     return Money.formatMoney(value, currency, places, separator, thousands, useSymbol);
 });
-
-export { Money };

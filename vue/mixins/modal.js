@@ -1,4 +1,4 @@
-const modalMixin = {
+export const modalMixin = {
     data: function() {
         return {
             modalComponent: null,
@@ -43,23 +43,19 @@ const modalMixin = {
         }
     },
     methods: {
-        willHideModal() {
-            return true;
+        showModal(...args) {
+            const show = this.willShowModal(...args);
+            if (show !== false) this.modalOptions.visible = true;
         },
         hideModal(...args) {
             const hide = this.willHideModal(...args);
-            if (hide) {
-                this.modalOptions.visible = false;
-            }
+            if (hide !== false) this.modalOptions.visible = false;
         },
-        willShowModal() {
+        willShowModal(...args) {
             return true;
         },
-        showModal(...args) {
-            const show = this.willShowModal(...args);
-            if (show) {
-                this.modalOptions.visible = true;
-            }
+        willHideModal(...args) {
+            return true;
         },
         modalShown() {},
         modalHidden() {},
@@ -78,5 +74,3 @@ const modalMixin = {
         modalLeaveCancelled() {}
     }
 };
-
-export { modalMixin };

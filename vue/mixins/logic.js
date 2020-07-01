@@ -1,4 +1,4 @@
-const logicMixin = {
+export const logicMixin = {
     inject: {
         manager: {
             default: null
@@ -14,11 +14,14 @@ const logicMixin = {
         model() {
             return this.$store.state.model;
         },
+        modelVariant() {
+            return this.$store.state.variant;
+        },
+        modelVersion() {
+            return this.$store.state.version;
+        },
         productId() {
             return this.$store.state.product_id;
-        },
-        variant() {
-            return this.$store.state.variant;
         },
         flag() {
             return this.$store.state.flag;
@@ -128,5 +131,3 @@ const logicMixin = {
         }
     }
 };
-
-export { logicMixin };

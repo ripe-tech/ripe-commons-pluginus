@@ -1,6 +1,6 @@
 import { Observable } from "pluginus";
 
-const busPlugin = {
+export const busPlugin = {
     install(Vue) {
         const bus = new Observable();
         Object.defineProperty(Vue.prototype, "$bus", {
@@ -8,5 +8,3 @@ const busPlugin = {
         });
     }
 };
-
-export { busPlugin };

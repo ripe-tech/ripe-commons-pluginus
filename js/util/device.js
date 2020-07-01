@@ -1,6 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-class DevicePlugin extends RipeCommonsPlugin {
+export class DevicePlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.init();
@@ -61,5 +61,3 @@ class DevicePlugin extends RipeCommonsPlugin {
 }
 
 DevicePlugin.register();
-
-export { DevicePlugin };

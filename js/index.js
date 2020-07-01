@@ -8,7 +8,7 @@ import {
     ModelLocaleResolverPlugin
 } from "./locale";
 
-import { BaseSizePlugin } from "./ui";
+import { BasePersonalizationPlugin, BaseSizePlugin } from "./ui";
 
 export * from "./abstract";
 export * from "./base";
@@ -16,15 +16,14 @@ export * from "./locale";
 export * from "./ui";
 export * from "./util";
 
-const registerPlugins = owner => {
+export const registerPlugins = owner => {
     DomLocaleLoaderPlugin.register(owner);
     FileLocaleLoaderPlugin.register(owner);
     LocalePlugin.register(owner);
     ModelLocaleLoaderPlugin.register(owner);
     ModelLocaleResolverPlugin.register(owner);
+    BasePersonalizationPlugin.register(owner);
     BaseSizePlugin.register(owner);
     DevicePlugin.register(owner);
     UrlChangerPlugin.register(owner);
 };
-
-export { registerPlugins };

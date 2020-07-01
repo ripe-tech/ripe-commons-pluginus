@@ -9,9 +9,12 @@ export const store = {
         dku: "",
         product_id: "",
         variant: "",
+        version: "",
         description: "",
         flag: "",
         format: "",
+        resolution: "",
+        backgroundColor: "",
         parts: {},
         config: {},
         defaults: {},
@@ -27,7 +30,9 @@ export const store = {
         error: null,
         hasCustomization: false,
         hasPersonalization: false,
-        hasSize: false
+        hasSize: false,
+        ripeOptions: {},
+        ripeState: {}
     },
     mutations: {
         ripe_url(state, url) {
@@ -39,6 +44,7 @@ export const store = {
             state.dku = model.dku;
             state.product_id = model.product_id;
             state.variant = model.variant;
+            state.version = model.version;
             state.description = model.description;
             state.parts = model.parts;
         },
@@ -47,6 +53,12 @@ export const store = {
         },
         format(state, format) {
             state.format = format;
+        },
+        resolution(state, resolution) {
+            state.resolution = resolution;
+        },
+        backgroundColor(state, backgroundColor) {
+            state.backgroundColor = backgroundColor;
         },
         parts(state, parts) {
             state.parts = Object.assign({}, parts);
@@ -110,6 +122,12 @@ export const store = {
         },
         hasSize(state, hasSize) {
             state.hasSize = hasSize;
+        },
+        ripeOptions(state, ripeOptions) {
+            state.ripeOptions = ripeOptions;
+        },
+        ripeState(state, ripeState) {
+            state.ripeState = ripeState;
         }
     },
     getters: {
@@ -120,8 +138,11 @@ export const store = {
             brand: state.brand,
             model: state.model,
             variant: state.variant,
+            version: state.version,
             flag: state.flag,
             format: state.format,
+            resolution: state.resolution,
+            backgroundColor: state.backgroundColor,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
@@ -138,6 +159,7 @@ export const store = {
                 scale: state.size.scale,
                 size: state.size.size,
                 variant: state.variant,
+                version: state.version,
                 parts: state.parts,
                 country: state.country,
                 currency: state.currency,
@@ -156,6 +178,11 @@ export const store = {
         },
         getCurrentFrame: state => () => state.currentFrame,
         getConfig: state => () => state.config,
+        getFormat: state => () => state.format,
+        getResolution: state => () => state.resolution,
+        getBackgroundColor: state => () => state.backgroundColor,
+        getRipeOptions: state => () => state.ripeOptions,
+        getRipeState: state => () => state.ripeState,
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
