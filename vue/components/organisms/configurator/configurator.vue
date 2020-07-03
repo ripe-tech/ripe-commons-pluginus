@@ -118,6 +118,10 @@
 export const Configurator = {
     name: "configurator",
     props: {
+        ripe: {
+            type: Object,
+            default: null
+        },
         options: {
             type: Object,
             default: function() {
@@ -164,6 +168,7 @@ export const Configurator = {
     },
     data: function() {
         return {
+            ripeInstance: this.ripe ? this.ripe : this.$ripe,
             /**
              * The frame that is currently being shown in the
              * configurator.
@@ -200,7 +205,7 @@ export const Configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.$ripe.bindConfigurator(
+        this.configurator = this.ripeInstance.bindConfigurator(
             this.$refs.configurator,
             this.mergedOptions
         );
@@ -314,7 +319,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        if (this.configurator) await this.$ripe.unbindConfigurator(this.configurator);
+        if (this.configurator) await this.$ripeInstance.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
 };
