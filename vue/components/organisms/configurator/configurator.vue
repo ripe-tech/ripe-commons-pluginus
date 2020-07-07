@@ -319,7 +319,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        if (this.configurator) await this.$ripeInstance.unbindConfigurator(this.configurator);
+        if (this.configurator) await this.ripeInstance.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
 };
