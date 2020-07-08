@@ -236,6 +236,7 @@ export const Configurator = {
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
             this.$store.commit("current_frame", frame);
+            this.$emit("loaded");
         });
 
         this.configurator.bind("highlighted_part", part => {
