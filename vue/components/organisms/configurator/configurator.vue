@@ -260,7 +260,6 @@ export const Configurator = {
         });
 
         this.$bus.bind("pre_config", () => {
-            console.log("pre_config", this.ignoreBusData);
             if(this.ignoreBusData) return;
 
             this.loading = true;
@@ -322,7 +321,6 @@ export const Configurator = {
             else this.configurator.disableMasks();
         },
         ignoreBus(value) {
-            console.log("\n\nignoreBus changed!!!1", value);
             this.ignoreBusData = value;
         }
     },
