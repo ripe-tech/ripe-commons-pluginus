@@ -173,7 +173,6 @@ export const Configurator = {
     data: function() {
         return {
             ripeInstance: this.ripe ? this.ripe : this.$ripe,
-            ignoreBusData: this.ignoreBus,
             /**
              * The frame that is currently being shown in the
              * configurator.
@@ -253,20 +252,22 @@ export const Configurator = {
         });
 
         this.$bus.bind("error", error => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
+
             if (!this.loading) return;
             this.loading = false;
             this.loadingError = error;
         });
 
         this.$bus.bind("pre_config", () => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
 
             this.loading = true;
         });
 
         this.$bus.bind("changed_frame", (configurator, frame) => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
+
             // avoid infinite loop, by checking if the frame
             // is the one we're currently on
             if (this.frame === frame) {
@@ -286,7 +287,8 @@ export const Configurator = {
         });
 
         this.$bus.bind("show_frame", frame => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
+
             if (!this.configurator || !this.configurator.ready) return;
             const currentView = this.frame.split("-")[0];
             const newView = frame.split("-")[0];
@@ -300,12 +302,14 @@ export const Configurator = {
         });
 
         this.$bus.bind("highlight_part", part => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
+
             this.configurator.ready && this.configurator.highlight(part);
         });
 
         this.$bus.bind("lowlight_part", part => {
-            if(this.ignoreBusData) return;
+            if (this.ignoreBus) return;
+
             this.configurator.ready && this.configurator.lowlight(part);
         });
 
@@ -319,9 +323,6 @@ export const Configurator = {
             if (!this.configurator) return;
             if (this.useMasks) this.configurator.enableMasks();
             else this.configurator.disableMasks();
-        },
-        ignoreBus(value) {
-            this.ignoreBusData = value;
         }
     },
     methods: {
