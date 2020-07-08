@@ -240,7 +240,6 @@ export const Configurator = {
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
             this.$store.commit("current_frame", frame);
-            this.$emit("loaded");
         });
 
         this.configurator.bind("highlighted_part", part => {
@@ -323,6 +322,9 @@ export const Configurator = {
             if (!this.configurator) return;
             if (this.useMasks) this.configurator.enableMasks();
             else this.configurator.disableMasks();
+        },
+        loading(value) {
+            this.$emit("update:loading", value);
         }
     },
     methods: {
