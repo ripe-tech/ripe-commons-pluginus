@@ -204,6 +204,9 @@ export const Configurator = {
             holderTimedOut: false
         };
     },
+    created: function() {
+        console.log("---------- configurator created !")
+    },
     mounted: function() {
         setTimeout(() => {
             this.holderTimedOut = true;
