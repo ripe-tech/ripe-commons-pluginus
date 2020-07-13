@@ -18,7 +18,7 @@
                     v-bind:key="type"
                 >
                     <select-ripe
-                        class="select-type"
+                        v-bind:class="`select-${type}`"
                         v-bind:placeholder="`ripe_commons.personalization.select.${type}` | locale"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
