@@ -128,6 +128,8 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         if (locales.includes(locale)) {
         } else if (locales.includes(language)) {
             locale = language;
+        } else if (locales.some(l => l.startsWith(`${language}_`))) {
+            locale = locales.filter(l => l.startsWith(`${language}_`))[0];
         } else if (fallback) {
             locale = locales[0];
         }

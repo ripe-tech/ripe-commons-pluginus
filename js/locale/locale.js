@@ -57,7 +57,8 @@ export class LocalePlugin extends RipeCommonsPlugin {
         return this.getLocaleValue(key, defaultValue, locale, fallback);
     }
 
-    async setLocale(locale) {
+    async setLocale(locale, coerce = true) {
+        if (coerce) locale = this._coerceLocale(locale);
         await this.owner.trigger("pre_set_locale", locale);
         this.locale = locale;
         await this.owner.trigger("post_set_locale", locale);
@@ -114,6 +115,15 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.bind("locale_change", async locale => {
             await this.setLocale(locale);
         });
+    }
+
+    _coerceLocale(locale) {
+        for (const _locale of this.getSupportedLocales()) {
+            if (!_locale.startsWith(locale)) continue;
+            locale = _locale;
+            break;
+        }
+        return locale;
     }
 }
 
