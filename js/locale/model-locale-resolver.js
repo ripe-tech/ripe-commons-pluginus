@@ -166,7 +166,21 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             }
         }
 
-        return defaultValue === null ? values[0] : defaultValue;
+        if (defaultValue !== null) return defaultValue;
+
+        const localeFallback = this.localePlugin.getLocaleFallback();
+        if (localeFallback !== locale) {
+            return this._toLocale(values, brand, model, {
+                locale: localeFallback,
+                defaultValue: defaultValue,
+                prefix: prefix,
+                fallback: fallback,
+                compatibility: compatibility,
+                hack: hack
+            });
+        }
+
+        return values[0];
     }
 
     _permutations(value) {

@@ -29,6 +29,13 @@ export class LocalePlugin extends RipeCommonsPlugin {
         return this.locale;
     }
 
+    getLocaleFallback() {
+        const locales = this.getSupportedLocales();
+        if (locales.includes(this.localeD)) return this.localeD;
+        if (locales.length > 0) return locales[0];
+        return null;
+    }
+
     getSupportedLocales() {
         return Object.keys(this.localeMap);
     }
