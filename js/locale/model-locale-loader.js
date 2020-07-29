@@ -21,6 +21,14 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         return {};
     }
 
+    async loadModelLocales(brand = null, model = null) {
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        const locales = [localePlugin.getLocale(), localePlugin.getLocaleFallback()];
+        for (const locale of new Set(locales)) {
+            await this.loadModelLocale(brand, model, locale);
+        }
+    }
+
     async loadModelLocale(brand = null, model = null, locale = null) {
         const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
@@ -37,6 +45,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         });
 
         for (const key in result) {
+            if (key === "_" && result[key] === null) continue;
             localePlugin.setLocaleValue(key, result[key], currentLocale);
         }
     }
@@ -45,10 +54,10 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         this.owner.bind("config", async config => {
             if (!config) return;
             const { brand, name } = config;
-            await this.loadModelLocale(brand, name);
+            await this.loadModelLocales(brand, name);
         });
 
-        this.owner.bind("post_set_locale", async () => await this.loadModelLocale());
+        this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
     }
 }
 
