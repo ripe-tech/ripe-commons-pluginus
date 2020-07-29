@@ -14,7 +14,7 @@
                 <form-input
                     v-bind:header="(`properties.${type}`, readable(capitalize(type))) | locale"
                     v-bind:header-size="'large'"
-                    v-for="[type, options] in Object.entries(properties)"
+                    v-for="[type, options] in Object.entries(properties())"
                     v-bind:key="type"
                 >
                     <select-ripe
@@ -111,22 +111,6 @@ export const Reference = {
         };
     },
     computed: {
-        properties() {
-            const properties = this.configInitials.properties.map(property => ({
-                value: property.name,
-                label: this.locale(
-                    `properties.${property.type}.${property.name}`,
-                    this.readable(this.capitalize(property.name))
-                ),
-                type: property.type
-            }));
-            const result = {};
-            properties.forEach(property => {
-                result[property.type] = result[property.type] || [];
-                result[property.type].push(property);
-            });
-            return result;
-        },
         brand() {
             return this.$store.state.brand;
         },
@@ -164,9 +148,12 @@ export const Reference = {
             // clean personalization when switching models
             this.reset();
         });
+        this.onLocaleMapChanged = this.$bus.bind("locale_map_changed", () => this.$forceUpdate());
+
         await this.refresh();
     },
     destroyed: function() {
+        if (this.onLocaleMapChanged) this.$bus.unbind(this.onLocaleMapChanged);
         if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
@@ -238,6 +225,22 @@ export const Reference = {
             return this.configInitials.properties
                 .filter(property => property.type === propertyType)
                 .map(property => ({ value: property.name, label: property.name }));
+        },
+        properties() {
+            const properties = this.configInitials.properties.map(property => ({
+                value: property.name,
+                label: this.locale(
+                    `properties.${property.type}.${property.name}`,
+                    this.readable(this.capitalize(property.name))
+                ),
+                type: property.type
+            }));
+            const result = {};
+            properties.forEach(property => {
+                result[property.type] = result[property.type] || [];
+                result[property.type].push(property);
+            });
+            return result;
         },
         propertiesToEngraving(group = null) {
             group = group || Object.keys(this.propertiesData)[0];
