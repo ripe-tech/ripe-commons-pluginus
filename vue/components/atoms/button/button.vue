@@ -14,26 +14,24 @@
 
 <style scoped>
 .button {
-    border: 1px solid #0d0d0d;
+    background-color: transparent;
+    border: 1px solid #cccccc;
     cursor: pointer;
     font-size: 14px;
-    max-width: 250px;
     outline: none;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    width: 100%;
 }
 
-.button.button-variant-default {
+.button.button-design-default {
+    background-color: #e5e5e5;
+    border: none;
+    border-radius: 4px 4px 4px 4px;
     color: #000000;
     font-family: Lato, "Open Sans", arial, sans-serif;
     font-size: 16px;
-    font-weight: bold;
-    height: 44px;
+    font-weight: 500;
     letter-spacing: 0.25px;
     min-width: 100px;
-    padding: 0px 20px 0px 20px;
+    padding: 6px 10px 6px 10px;
 }
 
 .button.button-alignment-left {
@@ -48,9 +46,8 @@
     border: 1px solid #2d2d2d;
 }
 
-.button.button-variant-black:hover {
-    background-color: #444444;
-    border-color: #444444;
+.button.button-design-default:hover {
+    border: none;
 }
 
 .button:active {
@@ -91,9 +88,9 @@ export const Button = {
             type: String,
             default: ""
         },
-        theme: {
+        design: {
             type: String,
-            default: "default"
+            default: null
         },
         alignment: {
             type: String,

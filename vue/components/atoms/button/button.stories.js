@@ -6,16 +6,16 @@ storiesOf("Atoms", module)
     .add("Button", () => ({
         props: {
             text: {
-                default: text("Text", "Create Order")
+                default: text("Text", "Button")
             },
-            theme: {
+            design: {
                 default: select(
                     "Design",
                     {
-                        default: "default",
-                        black: "black"
+                        Unset: null,
+                        Default: "default"
                     },
-                    "default"
+                    null
                 )
             },
             active: {
