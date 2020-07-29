@@ -3,14 +3,25 @@
         <h3 class="title">{{ "ripe_commons.size.size" | locale }}</h3>
         <div class="size-selector">
             <div class="genders" v-show="modelGenders && modelGenders.length > 1">
-                <div
-                    class="button button-gender"
-                    v-bind:class="{ active: modelGender === visibleGender }"
-                    v-for="modelGender in modelGenders"
-                    v-bind:key="modelGender"
-                    v-on:click="__changeGender(modelGender)"
-                >
-                    {{ modelGender | locale }}
+                <div class="gender-buttons" v-if="!hasGender">
+                    <div
+                        class="button button-gender"
+                        v-bind:class="{ active: modelGender === visibleGender }"
+                        v-for="modelGender in modelGenders"
+                        v-bind:key="modelGender"
+                        v-on:click="__changeGender(modelGender)"
+                    >
+                        {{ modelGender | locale }}
+                    </div>
+                </div>
+                <div class="gender-buttons" v-else>
+                    <div
+                        class="button button-gender"
+                        v-bind:class="'active'"
+                        v-bind:key="gender"
+                    >
+                        {{ gender | locale }}
+                    </div>
                 </div>
             </div>
             <div
@@ -200,7 +211,7 @@ export const Reference = {
         return {
             sizes: {},
             sizeOptions: {},
-            gender: "",
+            gender: this.$store.state.gender,
             scale: "",
             size: null,
             sizesLoaded: false
@@ -210,7 +221,7 @@ export const Reference = {
         state() {
             return {
                 scale: this.scale,
-                gender: this.gender,
+                gender: this.$store.state.gender,
                 size: this.size,
                 visibleScale: this.scale,
                 visibleSize: this.__convertSize(this.gender, this.scale, this.size)
@@ -218,6 +229,9 @@ export const Reference = {
         },
         modelGenders() {
             return Object.keys(this.sizeOptions);
+        },
+        hasGender() {
+            return !!this.$store.state.gender;
         },
         allowApply() {
             return this.size && this.scale && this.gender;
