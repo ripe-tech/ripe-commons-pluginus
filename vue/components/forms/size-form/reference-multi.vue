@@ -28,11 +28,10 @@ export const ReferenceMulti = {
                 // their sizes if the scale has been defined as available
                 // (to be shown to the user has a selection option)
                 const sizes = {};
-                const allowedSizesGenders = ["male"]; // TODO dont use hardcoded stuff "male", "female", "*" (this one to not restrict)
                 for (const key in config.sizes) {
                     const scale = key.substring(0, key.lastIndexOf(":"));
                     const gender = key.substring(key.lastIndexOf(":") + 1, key.length);
-                    if (!allowedSizesGenders.includes("*") && !allowedSizesGenders.includes(gender)) continue;
+                    if (!options.allowedGenders.includes("*") && !options.allowedGenders.includes(gender)) continue;
 
                     sizes[gender] = sizes[gender] || {};
                     sizes[gender][scale] = config.sizes[key];
