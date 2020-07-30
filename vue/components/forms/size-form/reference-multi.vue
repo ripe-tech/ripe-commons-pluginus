@@ -31,7 +31,7 @@ export const ReferenceMulti = {
                 for (const key in config.sizes) {
                     const scale = key.substring(0, key.lastIndexOf(":"));
                     const gender = key.substring(key.lastIndexOf(":") + 1, key.length);
-                    if (!options.allowedGenders.includes("*") && !options.allowedGenders.includes(gender)) continue;
+                    if (options.genders !== null && !options.genders.includes(gender)) continue;
 
                     sizes[gender] = sizes[gender] || {};
                     sizes[gender][scale] = config.sizes[key];

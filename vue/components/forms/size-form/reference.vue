@@ -253,7 +253,7 @@ export const Reference = {
     created: async function() {
         this.sizes = await this.__getSizes({
             config: this.config,
-            allowedGenders: this.$store.state.allowedGenders
+            genders: this.$store.state.genders
         });
         this.__showSizes();
     },
