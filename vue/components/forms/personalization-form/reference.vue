@@ -143,9 +143,12 @@ export const Reference = {
     },
     created: async function() {
         this.onPostConfig = this.$bus.bind("post_config", async (config, options) => {
+            // re-runs the refresh operation so that the
+            // target groups for personalization are updated
             await this.refresh();
 
             // clean personalization when switching models
+            // as it may not be directly compatible
             this.reset();
         });
         this.onLocaleMapChanged = this.$bus.bind("locale_map_changed", () => this.$forceUpdate());
@@ -159,13 +162,16 @@ export const Reference = {
     methods: {
         async refresh() {
             try {
+                // runs the remote business logic to obtain the multiple
+                // target groups available for initials
                 this.groups = await this.$ripe.runLogicP({
                     brand: this.brand,
                     model: this.model,
                     method: "groups"
                 });
             } catch (err) {
-                // gives a default group if builds does not support logic
+                // gives a default group if builds does not support remote
+                // business logic (for the groups "method")
                 this.groups = ["main"];
             }
 
