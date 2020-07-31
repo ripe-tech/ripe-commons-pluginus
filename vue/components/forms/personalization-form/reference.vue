@@ -14,7 +14,7 @@
                 <form-input
                     v-bind:header="(`properties.${type}`, readable(capitalize(type))) | locale"
                     v-bind:header-size="'large'"
-                    v-for="[type, options] in Object.entries(properties)"
+                    v-for="[type, options] in Object.entries(properties())"
                     v-bind:key="type"
                 >
                     <select-ripe
@@ -103,6 +103,17 @@ import formInterface from "./interface.js";
 export const Reference = {
     name: "reference-personalization",
     mixins: [formInterface],
+    props: {
+        /**
+         * The sequence of property names for the properties that are
+         * going to have their values used as part of the tab message
+         * string construction process.
+         */
+        tabProperties: {
+            type: Array,
+            default: () => ["font", "style"]
+        }
+    },
     data: function() {
         return {
             propertiesData: {},
@@ -111,22 +122,6 @@ export const Reference = {
         };
     },
     computed: {
-        properties() {
-            const properties = this.configInitials.properties.map(property => ({
-                value: property.name,
-                label: this.locale(
-                    `properties.${property.type}.${property.name}`,
-                    this.readable(this.capitalize(property.name))
-                ),
-                type: property.type
-            }));
-            const result = {};
-            properties.forEach(property => {
-                result[property.type] = result[property.type] || [];
-                result[property.type].push(property);
-            });
-            return result;
-        },
         brand() {
             return this.$store.state.brand;
         },
@@ -159,38 +154,25 @@ export const Reference = {
     },
     created: async function() {
         this.onPostConfig = this.$bus.bind("post_config", async (config, options) => {
+            // re-runs the refresh operation so that the
+            // target groups for personalization are updated
             await this.refresh();
 
             // clean personalization when switching models
+            // as it may not be directly compatible
             this.reset();
         });
+        this.onLocaleMapChanged = this.$bus.bind("locale_map_changed", () => this.$forceUpdate());
+
+        // runs the initial refresh operation to obtain the
+        // model's target initials groups
         await this.refresh();
     },
     destroyed: function() {
+        if (this.onLocaleMapChanged) this.$bus.unbind(this.onLocaleMapChanged);
         if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
-        async refresh() {
-            try {
-                this.groups = await this.$ripe.runLogicP({
-                    brand: this.brand,
-                    model: this.model,
-                    method: "groups"
-                });
-            } catch (err) {
-                // gives a default group if builds does not support logic
-                this.groups = ["main"];
-            }
-
-            // when loading a model with a personalization already set (URL)
-            // the setState is called first, so the state of personalization
-            // must be conserved
-            this.groups.forEach(group => {
-                this.propertiesData[group] = this.propertiesData[group]
-                    ? this.propertiesData[group]
-                    : {};
-            });
-        },
         reset() {
             this.propertiesData = {};
             this.groups.forEach(group => {
@@ -218,7 +200,7 @@ export const Reference = {
                 .map(([group, initials]) => {
                     const text = [initials];
 
-                    ["font", "style"].forEach(propertyName => {
+                    this.tabProperties.forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
                         if (!property) return;
 
@@ -234,10 +216,45 @@ export const Reference = {
                 })
                 .join(" ");
         },
-        getPropertyOptions(propertyType) {
-            return this.configInitials.properties
-                .filter(property => property.type === propertyType)
-                .map(property => ({ value: property.name, label: property.name }));
+        async refresh() {
+            try {
+                // runs the remote business logic to obtain the multiple
+                // target groups available for initials
+                this.groups = await this.$ripe.runLogicP({
+                    brand: this.brand,
+                    model: this.model,
+                    method: "groups"
+                });
+            } catch (err) {
+                // gives a default group if builds does not support remote
+                // business logic (for the groups "method")
+                this.groups = ["main"];
+            }
+
+            // when loading a model with a personalization already set (URL)
+            // the setState is called first, so the state of personalization
+            // must be conserved
+            this.groups.forEach(group => {
+                this.propertiesData[group] = this.propertiesData[group]
+                    ? this.propertiesData[group]
+                    : {};
+            });
+        },
+        properties() {
+            const properties = this.configInitials.properties.map(property => ({
+                value: property.name,
+                label: this.locale(
+                    `properties.${property.type}.${property.name}`,
+                    this.readable(this.capitalize(property.name))
+                ),
+                type: property.type
+            }));
+            const result = {};
+            properties.forEach(property => {
+                result[property.type] = result[property.type] || [];
+                result[property.type].push(property);
+            });
+            return result;
         },
         propertiesToEngraving(group = null) {
             group = group || Object.keys(this.propertiesData)[0];
@@ -253,10 +270,15 @@ export const Reference = {
                 this.onValueUpdate(value, group, property);
             });
         },
+        onValueUpdate(value, group, type) {
+            const newProperties = { ...this.propertiesData };
+            if (!newProperties[group]) newProperties[group] = {};
+            newProperties[group][type] = value;
+            this.propertiesData = newProperties;
+        },
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
-            const personalizationProfiles = this.__getPersonalizationProfiles(group);
-            const profiles = [...personalizationProfiles];
+            const profiles = this.__getPersonalizationProfiles(group);
 
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
                 this.groups.length > 1 && profiles.push(value + ":" + group);
@@ -302,12 +324,6 @@ export const Reference = {
                     ? Object.keys(this.initialsText)[0]
                     : null;
             return group ? this.initialsText[group] : "";
-        },
-        onValueUpdate(value, group, type) {
-            const newProperties = { ...this.propertiesData };
-            if (!newProperties[group]) newProperties[group] = {};
-            newProperties[group][type] = value;
-            this.propertiesData = newProperties;
         }
     }
 };
