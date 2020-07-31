@@ -103,6 +103,17 @@ import formInterface from "./interface.js";
 export const Reference = {
     name: "reference-personalization",
     mixins: [formInterface],
+    props: {
+        /**
+         * The sequence of property names for the properties that are
+         * going to have their values used as part of the tab message
+         * string construction process.
+         */
+        tabProperties: {
+            type: Array,
+            default: () => ["font", "style"]
+        }
+    },
     data: function() {
         return {
             propertiesData: {},
@@ -162,30 +173,6 @@ export const Reference = {
         if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
-        async refresh() {
-            try {
-                // runs the remote business logic to obtain the multiple
-                // target groups available for initials
-                this.groups = await this.$ripe.runLogicP({
-                    brand: this.brand,
-                    model: this.model,
-                    method: "groups"
-                });
-            } catch (err) {
-                // gives a default group if builds does not support remote
-                // business logic (for the groups "method")
-                this.groups = ["main"];
-            }
-
-            // when loading a model with a personalization already set (URL)
-            // the setState is called first, so the state of personalization
-            // must be conserved
-            this.groups.forEach(group => {
-                this.propertiesData[group] = this.propertiesData[group]
-                    ? this.propertiesData[group]
-                    : {};
-            });
-        },
         reset() {
             this.propertiesData = {};
             this.groups.forEach(group => {
@@ -213,7 +200,7 @@ export const Reference = {
                 .map(([group, initials]) => {
                     const text = [initials];
 
-                    ["font", "style"].forEach(propertyName => {
+                    this.tabProperties.forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
                         if (!property) return;
 
@@ -229,10 +216,29 @@ export const Reference = {
                 })
                 .join(" ");
         },
-        getPropertyOptions(propertyType) {
-            return this.configInitials.properties
-                .filter(property => property.type === propertyType)
-                .map(property => ({ value: property.name, label: property.name }));
+        async refresh() {
+            try {
+                // runs the remote business logic to obtain the multiple
+                // target groups available for initials
+                this.groups = await this.$ripe.runLogicP({
+                    brand: this.brand,
+                    model: this.model,
+                    method: "groups"
+                });
+            } catch (err) {
+                // gives a default group if builds does not support remote
+                // business logic (for the groups "method")
+                this.groups = ["main"];
+            }
+
+            // when loading a model with a personalization already set (URL)
+            // the setState is called first, so the state of personalization
+            // must be conserved
+            this.groups.forEach(group => {
+                this.propertiesData[group] = this.propertiesData[group]
+                    ? this.propertiesData[group]
+                    : {};
+            });
         },
         properties() {
             const properties = this.configInitials.properties.map(property => ({
@@ -264,10 +270,15 @@ export const Reference = {
                 this.onValueUpdate(value, group, property);
             });
         },
+        onValueUpdate(value, group, type) {
+            const newProperties = { ...this.propertiesData };
+            if (!newProperties[group]) newProperties[group] = {};
+            newProperties[group][type] = value;
+            this.propertiesData = newProperties;
+        },
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
-            const personalizationProfiles = this.__getPersonalizationProfiles(group);
-            const profiles = [...personalizationProfiles];
+            const profiles = this.__getPersonalizationProfiles(group);
 
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
                 this.groups.length > 1 && profiles.push(value + ":" + group);
@@ -313,12 +324,6 @@ export const Reference = {
                     ? Object.keys(this.initialsText)[0]
                     : null;
             return group ? this.initialsText[group] : "";
-        },
-        onValueUpdate(value, group, type) {
-            const newProperties = { ...this.propertiesData };
-            if (!newProperties[group]) newProperties[group] = {};
-            newProperties[group][type] = value;
-            this.propertiesData = newProperties;
         }
     }
 };
