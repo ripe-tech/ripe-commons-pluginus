@@ -153,6 +153,8 @@ export const Reference = {
         });
         this.onLocaleMapChanged = this.$bus.bind("locale_map_changed", () => this.$forceUpdate());
 
+        // runs the initial refresh operation to obtain the
+        // model's target initials groups
         await this.refresh();
     },
     destroyed: function() {
