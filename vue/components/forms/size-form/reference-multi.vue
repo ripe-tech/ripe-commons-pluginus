@@ -31,6 +31,12 @@ export const ReferenceMulti = {
                 for (const key in config.sizes) {
                     const scale = key.substring(0, key.lastIndexOf(":"));
                     const gender = key.substring(key.lastIndexOf(":") + 1, key.length);
+
+                    // verifies if the current gender in iteration is allowed
+                    // within the set of allowed genders (in case one is defined)
+                    const isAllowed = options.genders ? options.genders.includes(gender) : true;
+                    if (!isAllowed) continue;
+
                     sizes[gender] = sizes[gender] || {};
                     sizes[gender][scale] = config.sizes[key];
                 }
