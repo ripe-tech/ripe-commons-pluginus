@@ -261,14 +261,14 @@ export const Reference = {
             if (!group) return "";
             return Object.entries(this.propertiesData[group])
                 .filter(([type, value]) => Boolean(value))
-                .map(([type, value]) => `${type}:${value}`)
+                .map(([type, value]) => `${value}:${type}`)
                 .join(".");
         },
         engravingToProperties(engraving, group) {
-            engraving.split(".").map(engravingPart => {
-                const [property, value] = engravingPart.split(":", 2);
+            const { valuesM } = this.$ripe.parseEngraving(engraving);
+            Object.entries(valuesM).forEach(([property, value]) => {
                 this.onValueUpdate(value, group, property);
-            });
+            })
         },
         onValueUpdate(value, group, type) {
             const newProperties = { ...this.propertiesData };
