@@ -268,7 +268,7 @@ export const Reference = {
             const { valuesM } = this.$ripe.parseEngraving(engraving);
             Object.entries(valuesM).forEach(([property, value]) => {
                 this.onValueUpdate(value, group, property);
-            })
+            });
         },
         onValueUpdate(value, group, type) {
             const newProperties = { ...this.propertiesData };
