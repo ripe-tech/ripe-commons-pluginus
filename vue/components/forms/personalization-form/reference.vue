@@ -189,6 +189,7 @@ export const Reference = {
                 this.$set(this.initialsText, group, initials);
 
                 const engraving = initialsExtra[group].engraving || "";
+                this.$set(this.propertiesData, group, {});
                 this.engravingToProperties(engraving, group);
             }
         },
