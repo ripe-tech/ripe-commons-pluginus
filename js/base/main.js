@@ -523,6 +523,12 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     }
                 );
 
+                // registers a watch operation on the theme
+                // to be used in UI presentation layer
+                this.$store.watch(this.$store.getters.getTheme, theme =>
+                    manager.trigger("theme_changed", theme)
+                );
+
                 // registers a watch operation on the (image) format field of
                 // the data store so that the change is propagated to the ripe
                 // instance and then to the user interface
@@ -542,12 +548,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 // instance and then to the user interface
                 this.$store.watch(this.$store.getters.getBackgroundColor, backgroundColor =>
                     this.$bus.trigger("background_color_change", backgroundColor)
-                );
-
-                // registers a watch operation on the theme
-                // to be used in UI presentation layer
-                this.$store.watch(this.$store.getters.getTheme, theme =>
-                    manager.trigger("theme_changed", theme)
                 );
 
                 // registers a watch operation on all options
