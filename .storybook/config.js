@@ -7,16 +7,17 @@ import { install as RipeCommonsPluginusVue, plugins } from "../vue";
 
 import "./styles.css";
 
+Vue.use(Vuex);
+
 // initializes the event bus that will be used for
 // UI related communication between the components
 Vue.use(plugins.busPlugin);
 
-Vue.use(Vuex);
-Vue.prototype.$ripe = new Ripe("swear", "vyner");
-
 // initializes the main commons plugins structure
 // registering all of its components
 Vue.use(RipeCommonsPluginusVue);
+
+Vue.prototype.$ripe = new Ripe("swear", "vyner");
 
 const req = require.context("../vue", true, /\.stories\.js$/);
 function loadStories() {
