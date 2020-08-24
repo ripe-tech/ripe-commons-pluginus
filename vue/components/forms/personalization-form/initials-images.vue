@@ -3,11 +3,12 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
-            v-bind:class="{ active: group === activeGroup }"
+            v-bind:class="{ active: group === activeGroup, loaded: loaded[group] }"
             v-for="group in groups"
             v-bind:key="groupKey(group)"
             ref="initialsImages"
             v-on:click="() => imageSelected(group)"
+            v-on:load="() => onLoaded(group)"
         />
     </div>
 </template>
@@ -50,7 +51,8 @@ export const InitialsImages = {
     },
     data: function() {
         return {
-            initialsImages: []
+            initialsImages: [],
+            loaded: {}
         };
     },
     watch: {
@@ -73,6 +75,7 @@ export const InitialsImages = {
             this.$emit("image-selected", group);
         },
         bindImages() {
+            this.loaded = {};
             this.initialsImages = [];
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
@@ -88,6 +91,9 @@ export const InitialsImages = {
             await Promise.all(
                 this.initialsImages.map(async image => this.$ripe.unbindImage(image))
             );
+        },
+        onLoaded(group) {
+            this.$set(this.loaded, group, true);
         }
     }
 };
