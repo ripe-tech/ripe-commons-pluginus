@@ -544,6 +544,12 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("background_color_change", backgroundColor)
                 );
 
+                // registers a watch operation on the theme
+                // to be used in UI presentation layer
+                this.$store.watch(this.$store.getters.getTheme, theme =>
+                    manager.trigger("theme_changed", theme)
+                );
+
                 // registers a watch operation on all options
                 // and updates the RIPE instance accordingly
                 this.$store.watch(

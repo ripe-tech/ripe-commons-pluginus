@@ -6,11 +6,15 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         await super.load();
         this.model = null;
         this.locale = null;
+        this.theme = null;
         this.onModelChanged = this.owner.bind("model_changed", model =>
             this.updateQuery({ model: model })
         );
         this.onLocaleChanged = this.owner.bind("locale_changed", locale =>
             this.updateQuery({ locale: locale })
+        );
+        this.onThemeChanged = this.owner.bind("theme_changed", theme =>
+            this.updateQuery({ theme: theme })
         );
         this.onUpdateQuery = this.owner.bind("update_query", () => this.updateQuery());
     }
@@ -18,6 +22,7 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
     async unload() {
         this.owner.unbind("update_query", this.onUpdateQuery);
         this.owner.unbind("locale_changed", this.onLocaleChanged);
+        this.owner.unbind("theme_changed", this.onThemeChanged);
         this.owner.unbind("model_changed", this.onModelChanged);
         await super.unload();
     }
@@ -26,9 +31,10 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("helper")];
     }
 
-    updateQuery({ model = null, locale = null } = {}) {
+    updateQuery({ model = null, locale = null, theme = null } = {}) {
         this.model = model || this.model;
         this.locale = locale || this.locale;
+        this.theme = theme || this.theme;
 
         // validates that the current model structure contains
         // a valid object structure and the model name is set,
@@ -36,12 +42,12 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         if (!this.model) return;
         if (!this.model.model) return;
 
-        const query = this._generateQuery(this.model, this.locale, false);
+        const query = this._generateQuery(this.model, this.locale, this.theme, false);
         const href = query ? "?" + query : "";
         window.history.replaceState({}, null, href);
     }
 
-    _generateQuery(model, locale, decode = true) {
+    _generateQuery(model, locale, theme, decode = true) {
         // retrieves the current search query value and parses it,
         // then unpacks the parts for the current model to be used
         // in the part triplets generation
@@ -73,6 +79,10 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
 
         if (locale) query.set("locale", locale);
         else query.delete("locale");
+
+        if (theme && theme !== "default") {
+            query.set("theme", theme);
+        } else query.delete("theme");
 
         if (model.personalization) {
             if (model.personalization.initials) {
