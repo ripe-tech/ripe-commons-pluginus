@@ -20,6 +20,16 @@ const install = Vue => {
     Vue.component("thumbnails-groups", ThumbnailsGroups);
 };
 
-export { Ask, ComponentPlugin, Keyboard, Modal, RestrictionsAlert, Tab, Tabs, Thumbnails, ThumbnailsGroups };
+export {
+    Ask,
+    ComponentPlugin,
+    Keyboard,
+    Modal,
+    RestrictionsAlert,
+    Tab,
+    Tabs,
+    Thumbnails,
+    ThumbnailsGroups
+};
 
 export default install;

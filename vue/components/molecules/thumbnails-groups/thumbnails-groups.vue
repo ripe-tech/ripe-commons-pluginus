@@ -6,8 +6,8 @@
         v-bind:active-group="activeGroup"
         v-bind:groups="groups"
         v-bind:initials-builder="__initialsBuilder"
-        v-on:image-selected="onImageSelected"
         ref="thumbnailsContainer"
+        v-on:image-selected="onImageSelected"
     />
 </template>
 
@@ -42,7 +42,7 @@ export const ThumbnailsGroups = {
     data: function() {
         return {
             activeGroupData: this.activeGroup
-        }
+        };
     },
     computed: {
         brand() {
