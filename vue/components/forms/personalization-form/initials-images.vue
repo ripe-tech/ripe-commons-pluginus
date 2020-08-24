@@ -57,7 +57,7 @@ export const InitialsImages = {
         async groups(value) {
             await this.unbindImages();
             this.bindImages();
-            await this.updateImages();
+            await this.$ripe.update();
         }
     },
     mounted: function() {
@@ -88,11 +88,6 @@ export const InitialsImages = {
         async unbindImages() {
             return await Promise.all(
                 this.initialsImages.map(async image => this.$ripe.unbindImage(image))
-            );
-        },
-        async updateImages() {
-            return await Promise.all(
-                this.initialsImages.map(async image => image.update())
             );
         }
     }
