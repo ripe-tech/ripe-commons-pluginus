@@ -8,51 +8,47 @@ storiesOf("Molecules", module)
         props: {
             groups: {
                 type: Array,
-                default: ["main"]
+                default: ["left", "right"]
             },
             activeGroup: {
                 type: String,
-                default: "main"
+                default: "left"
             }
         },
         store: new Vuex.Store({
             state: {
-                brand: "gucci",
-                model: "wool_sweater",
-                personalization: {
-                    initialsExtra: {
-                        sx: {
-                            initials: "123",
-                            engraving: "deco:font.outside:position.azzurro:style"
-                        },
-                        dx: {
-                            initials: "abc",
-                            engraving: "script:font.outside:position"
-                        }
-                    }
-                },
+                brand: "sergio_rossi",
+                model: "sr1_pump075",
+                personalization: {},
                 config: {
                     initials: {
-                        properties: [
-                            { name: "deco", type: "font" },
-                            { name: "script", type: "font" },
-                            { name: "outside", type: "position" },
-                            { name: "oro", type: "style" },
-                            { name: "argento", type: "style" },
-                            { name: "verde", type: "style" },
-                            { name: "rosa", type: "style" },
-                            { name: "arancione", type: "style" },
-                            { name: "azzurro", type: "style" }
-                        ]
+                        $alias: {
+                            report: ["viewport::medium"],
+                            "report:crystal:left": ["viewport::crystal:left:medium"],
+                            "report:crystal:right": ["viewport::crystal:right:medium"],
+                            "report:left": ["viewport::left:medium"],
+                            "report:right": ["viewport::right:medium"],
+                            "step::personalization": ["viewport::large"],
+                            "step::personalization:crystal:left": ["viewport::crystal:left:large"],
+                            "step::personalization:crystal:right": [
+                                "viewport::crystal:right:large"
+                            ],
+                            "step::personalization:left": ["viewport::left:large"],
+                            "step::personalization:right": ["viewport::right:large"],
+                            "step::size": ["viewport::medium"],
+                            "step::size:crystal:left": ["viewport::crystal:left:medium"],
+                            "step::size:crystal:right": ["viewport::crystal:right:medium"],
+                            "step::size:left": ["viewport::left:medium"],
+                            "step::size:right": ["viewport::right:medium"]
+                        }
                     }
                 }
             }
         }),
         template: `
-            <div>
                 <thumbnails-groups
+                    v-bind:size="204"
                     v-bind:groups="groups"
                     v-bind:active-group="activeGroup" />
-            </div>
         `
     }));
