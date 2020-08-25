@@ -17,7 +17,7 @@ Vue.use(plugins.busPlugin);
 // registering all of its components
 Vue.use(RipeCommonsPluginusVue);
 
-Vue.prototype.$ripe = new Ripe("sergio_rossi", "sr1_pump075");
+Vue.prototype.$ripe = new Ripe();
 
 const req = require.context("../vue", true, /\.stories\.js$/);
 function loadStories() {
