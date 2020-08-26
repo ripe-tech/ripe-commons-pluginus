@@ -21,8 +21,10 @@ storiesOf("Molecules", module)
                 model: "vyner",
                 personalization: {
                     initials: "AB",
+                    engraving: null,
                     initialsExtra: {
                         main: {
+                            engraving: null,
                             initials: "AB"
                         }
                     }
