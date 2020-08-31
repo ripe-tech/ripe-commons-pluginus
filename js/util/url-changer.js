@@ -80,9 +80,8 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         if (locale) query.set("locale", locale);
         else query.delete("locale");
 
-        if (theme && theme !== "default") {
-            query.set("theme", theme);
-        } else query.delete("theme");
+        if (theme && theme !== "default") query.set("theme", theme);
+        else query.delete("theme");
 
         if (model.personalization) {
             if (model.personalization.initials) {
