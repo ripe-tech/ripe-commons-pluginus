@@ -56,12 +56,11 @@ export const InitialsImages = {
     watch: {
         async groups(value) {
             await this.unbindImages();
-            this.bindImages();
-            await this.$ripe.update();
+            await this.bindImages();
         }
     },
-    mounted: function() {
-        this.bindImages();
+    mounted: async function() {
+        await this.bindImages();
     },
     destroyed: async function() {
         await this.unbindImages();
@@ -73,7 +72,7 @@ export const InitialsImages = {
         imageSelected(group) {
             this.$emit("image-selected", group);
         },
-        bindImages() {
+        async bindImages(update = true) {
             this.initialsImages = [];
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
@@ -84,6 +83,7 @@ export const InitialsImages = {
                 });
                 this.initialsImages.push(image);
             }
+            await this.$ripe.update();
         },
         async unbindImages() {
             const result = await Promise.all(
