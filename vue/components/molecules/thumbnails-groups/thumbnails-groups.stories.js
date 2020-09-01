@@ -4,7 +4,7 @@ import { withKnobs } from "@storybook/addon-knobs";
 
 storiesOf("Molecules", module)
     .addDecorator(withKnobs)
-    .add("Thumbnails Group", () => ({
+    .add("Thumbnails Groups", () => ({
         props: {
             groups: {
                 type: Array,
@@ -44,9 +44,9 @@ storiesOf("Molecules", module)
             await this.$ripe.config("swear", "vyner");
         },
         template: `
-                <thumbnails-groups
-                    v-bind:size="204"
-                    v-bind:groups="groups"
-                    v-bind:active-group="activeGroup" />
+            <thumbnails-groups
+                v-bind:size="204"
+                v-bind:groups="groups"
+                v-bind:active-group="activeGroup" />
         `
     }));
