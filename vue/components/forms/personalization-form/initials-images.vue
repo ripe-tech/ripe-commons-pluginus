@@ -88,10 +88,11 @@ export const InitialsImages = {
             }
             if (update) await this.$ripe.update();
         },
-        async unbindImages() {
+        async unbindImages(update = false) {
             const result = await Promise.all(
                 this.initialsImages.map(async image => this.$ripe.unbindImage(image))
             );
+            if (update) await this.$ripe.update();
             return result;
         },
         onLoaded(group) {
