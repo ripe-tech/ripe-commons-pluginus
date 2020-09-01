@@ -86,7 +86,7 @@ export const InitialsImages = {
                 });
                 this.initialsImages.push(image);
             }
-            await this.$ripe.update();
+            if (update) await this.$ripe.update();
         },
         async unbindImages() {
             const result = await Promise.all(
