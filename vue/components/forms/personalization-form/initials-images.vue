@@ -86,9 +86,10 @@ export const InitialsImages = {
             }
         },
         async unbindImages() {
-            return await Promise.all(
+            const result = await Promise.all(
                 this.initialsImages.map(async image => this.$ripe.unbindImage(image))
             );
+            return result;
         }
     }
 };
