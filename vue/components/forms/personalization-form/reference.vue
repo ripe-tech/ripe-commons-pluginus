@@ -116,6 +116,10 @@ export const Reference = {
     },
     data: function() {
         return {
+            /**
+             * Dictionary that maps each initials group to tuples that define the
+             * value for each of the initials properties.
+             */
             propertiesData: {},
             initialsText: {},
             groups: []
@@ -233,7 +237,7 @@ export const Reference = {
             }
 
             // when loading a model with a personalization already set (URL)
-            // the setState is called first, so the state of personalization
+            // the `setState()` is called first, so the state of personalization
             // must be conserved
             this.groups.forEach(group => {
                 this.propertiesData[group] = this.propertiesData[group]
@@ -277,12 +281,32 @@ export const Reference = {
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
         },
+        /**
+         * "Generic" initials builder function that uses the current properties
+         * context to build a series of extra profiles.
+         *
+         * This function is compliant with the expected initials builder interface.
+         *
+         * @param {String} initials The value of the initials to compute the computed
+         * initials object.
+         * @param {String} engraving The value of the engraving to compute the computed
+         * initials object.
+         * @param {Element} element The DOM element to be used in the "calculus" of the
+         * final initials object.
+         * @returns {Object} The computed initials object containing both the final
+         * initials string value and profile(s) sequence.
+         */
         __initialsBuilder(initials, engraving, element) {
+            // uses the provided element to obtain the selected group and obtains the
+            // "base" personalization profiles for such group
             const group = element.getAttribute("data-group");
             const profiles = this.__getPersonalizationProfiles(group);
 
+            // iterates over each of the properties for the groups and builds the base
+            // profiles with the property value with the group suffix and the basic
+            // profile with "just" the property value
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
-                this.groups.length > 1 && profiles.push(value + ":" + group);
+                if (this.groups.length > 1) profiles.push(value + ":" + group);
                 profiles.push(value);
             });
 
