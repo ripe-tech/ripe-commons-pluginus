@@ -213,7 +213,7 @@ export const Personalization = {
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
 
-            // verifies that at least one plugin is fond that is able to handle
+            // verifies that at least one plugin is found that is able to handle
             // the requirements for the current configuration scenario
             if (!plugins.length) {
                 this.hidden = true;
