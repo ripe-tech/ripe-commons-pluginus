@@ -8,7 +8,13 @@
 
 <script>
 export const SuggestionsList = {
-    name: "suggestions-list"
+    name: "suggestions-list",
+    props: {
+        queries: {
+            type: Array,
+            default: () => []
+        }
+    }
 };
 
 export default SuggestionsList;
