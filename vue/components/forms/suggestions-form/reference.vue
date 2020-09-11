@@ -1,6 +1,6 @@
 <template>
     <div class="reference-suggestions">
-        Suggestions n stuff
+        <suggestions-list />
     </div>
 </template>
 
