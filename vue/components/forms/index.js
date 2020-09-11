@@ -1,5 +1,6 @@
 import * as personalizationForm from "./personalization-form";
 import * as sizeForm from "./size-form";
+import * as suggestionsForm from "./suggestions-form";
 
 const install = Vue => {
     Vue.component("initials-images", personalizationForm.InitialsImages);
@@ -9,6 +10,6 @@ const install = Vue => {
 export const InitialsImages = personalizationForm.InitialsImages;
 export const InitialsInputs = personalizationForm.InitialsInputs;
 
-export { personalizationForm, sizeForm };
+export { personalizationForm, sizeForm, suggestionsForm };
 
 export default install;
