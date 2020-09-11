@@ -20,7 +20,8 @@ export const Suggestions = {
         }
     },
     created: async function() {
-        this.$bus.bind("post_config", async config => {
+        this.onPreConfig = this.$bus.bind("pre_config", () => (this.form = null));
+        this.onPostConfig = this.$bus.bind("post_config", async config => {
             // in case there's no valid config for this post operation
             // returns control flow immediately, should not happen
             if (!config) {
@@ -55,6 +56,10 @@ export const Suggestions = {
             // by default (initial state)
             this.form = form;
         });
+    },
+    destroyed: function() {
+        if (this.onPostConfig) this.$bus.unbind("post_config", this.onPostConfig);
+        if (this.onPreConfig) this.$bus.unbind("pre_config", this.onPreConfig);
     }
 };
 
