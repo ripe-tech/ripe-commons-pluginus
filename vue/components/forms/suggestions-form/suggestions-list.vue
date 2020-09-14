@@ -33,6 +33,11 @@ export const SuggestionsList = {
             suggestions: []
         };
     },
+    watch: {
+        async queries() {
+            await this.loadSuggestions();
+        }
+    },
     created: async function() {
         await this.loadSuggestions();
     },
