@@ -19,7 +19,7 @@ export const Reference = {
         };
     },
     created: async function() {
-        this.artifact = await this.$ripe.getBuildArtifactP(this.brand, 118);
+        this.artifact = await this.$ripe.getBuildArtifactP(this.brand, this.config.version);
 
         this.queries = this.getQueries();
     },
