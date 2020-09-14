@@ -30,6 +30,8 @@ export const Reference = {
     },
     methods: {
         onSuggestionClick(event, suggestion) {
+            this.$bus.trigger("set_config", { brand: suggestion.brand, model: suggestion.model });
+
             this.$emit("click:suggestion", event, suggestion);
         },
         getQueries() {
