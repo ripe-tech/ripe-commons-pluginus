@@ -7,19 +7,27 @@
 <style scoped></style>
 
 <script>
+import formInterface from "./interface.js";
+
 export const Reference = {
     name: "reference",
+    mixins: [formInterface],
     data: function() {
         return {
             artifact: null,
-            queries: [
-                "http://localhost:3000/?brand=sergio_rossi&model=sr1_running&locale=en_us&tech=1&version=118&p=sole%3Arubber_sr%3Ablack&p=front%3Aroyal_sr%3Ablack&p=back%3Aroyal_sr%3Ablack&p=tongue%3Aroyal_sr%3Ablack&p=side%3Atechnical_fabric_sr%3Ablack&p=loop%3Agrosgrain_sr%3Ablack&p=plate%3Ametal_sr%3Agold24&p=shadow%3Adefault%3Adefault",
-                "http://localhost:3000/?brand=sergio_rossi&model=sr1_slipper"
-            ]
+            queries: []
         };
     },
     created: async function() {
         this.artifact = await this.$ripe.getBuildArtifactP(this.brand, 118);
+
+        this.queries = this.getQueries();
+    },
+    methods: {
+        getQueries() {
+            const models = this.artifact.details.models.filter(model => model !== this.model);
+            return models.map(model => `brand=${this.brand}&model=${model}`);
+        }
     }
 };
 
