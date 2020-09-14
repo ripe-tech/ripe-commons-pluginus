@@ -42,7 +42,6 @@ export const SuggestionsList = {
                 this.queries.map(async _query => {
                     const spec = this.$ripe._queryToSpec(_query);
                     const { query } = await this.$ripe.configInfoP(spec);
-                    console.log("confQuery", query);
 
                     return { ...spec, imgUrl: `${this.$ripe.url}compose?${query}` };
                 })
