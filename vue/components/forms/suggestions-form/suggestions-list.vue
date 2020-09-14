@@ -1,6 +1,11 @@
 <template>
     <div class="suggestions-list">
-        <div class="suggestion" v-for="suggestion in suggestions" v-bind:key="suggestion.model">
+        <div
+            class="suggestion"
+            v-for="suggestion in suggestions"
+            v-bind:key="suggestion.model"
+            v-on:click="event => onSuggestionClick(event, suggestion)"
+        >
             <image-ripe
                 class="thumbnail"
                 v-bind:src="suggestion.imgUrl"
@@ -16,18 +21,20 @@
 
 <style scoped>
 .suggestions-list > .suggestion {
+    color: #d0cece;
+    cursor: pointer;
     display: inline-block;
     margin: 0px 40px 20px 40px;
     text-align: center;
+    text-transform: uppercase;
+}
+
+.suggestions-list > .suggestion:hover {
+    color: #000000;
 }
 
 .suggestions-list > .suggestion > .thumbnail {
     display: block;
-}
-
-.suggestions-list > .suggestion > .model {
-    color: #d0cece;
-    text-transform: uppercase;
 }
 </style>
 
@@ -54,6 +61,9 @@ export const SuggestionsList = {
         await this.loadSuggestions();
     },
     methods: {
+        onSuggestionClick(event, suggestion) {
+            this.$emit("click:suggestion", event, suggestion);
+        },
         async loadSuggestions() {
             this.suggestions = await Promise.all(
                 this.queries.map(async _query => {

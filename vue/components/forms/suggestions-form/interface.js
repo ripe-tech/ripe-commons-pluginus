@@ -9,6 +9,13 @@ export const Interface = {
         getQueries() {
             throw notImplementedMessage("getQueries");
         }
+
+        /**
+         * @events
+         *
+         * "click:suggestion" with the event and suggestion object as arguments.
+         * Should be triggered when a suggestion is clicked
+         */
     }
 };
 

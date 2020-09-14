@@ -1,6 +1,6 @@
 <template>
     <div class="reference-suggestions">
-        <suggestions-list v-bind:queries="queries" />
+        <suggestions-list v-bind:queries="queries" v-on:click:suggestion="onSuggestionClick" />
     </div>
 </template>
 
@@ -29,6 +29,9 @@ export const Reference = {
         this.queries = this.getQueries();
     },
     methods: {
+        onSuggestionClick(event, suggestion) {
+            this.$emit("click:suggestion", event, suggestion);
+        },
         getQueries() {
             const models = this.artifact.details.models.filter(model => model !== this.model);
             return models.map(model => `brand=${this.brand}&model=${model}`);
