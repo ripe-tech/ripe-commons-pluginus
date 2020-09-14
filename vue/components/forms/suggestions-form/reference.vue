@@ -4,7 +4,12 @@
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.suggestions-list {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+</style>
 
 <script>
 import formInterface from "./interface.js";

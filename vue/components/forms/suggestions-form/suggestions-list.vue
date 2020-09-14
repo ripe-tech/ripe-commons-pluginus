@@ -1,7 +1,12 @@
 <template>
     <div class="suggestions-list">
         <div class="suggestion" v-for="suggestion in suggestions" v-bind:key="suggestion.model">
-            <image-ripe class="thumbnail" v-bind:src="suggestion.imgUrl" />
+            <image-ripe
+                class="thumbnail"
+                v-bind:src="suggestion.imgUrl"
+                v-bind:width="185"
+                v-bind:height="185"
+            />
             <div class="model">
                 {{ suggestion.model }}
             </div>
@@ -10,12 +15,19 @@
 </template>
 
 <style scoped>
-.suggestions-list > .suggestion,
-.suggestions-list > .suggestion > .thumbnail,
-.suggestions-list > .suggestion > .model {
+.suggestions-list > .suggestion {
     display: inline-block;
-    height: 100px;
-    width: 100px;
+    margin: 0px 40px 20px 40px;
+    text-align: center;
+}
+
+.suggestions-list > .suggestion > .thumbnail {
+    display: block;
+}
+
+.suggestions-list > .suggestion > .model {
+    color: #d0cece;
+    text-transform: uppercase;
 }
 </style>
 
