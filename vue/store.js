@@ -15,6 +15,7 @@ export const store = {
         format: "",
         resolution: "",
         backgroundColor: "",
+        theme: null,
         parts: {},
         config: {},
         defaults: {},
@@ -59,6 +60,9 @@ export const store = {
         },
         backgroundColor(state, backgroundColor) {
             state.backgroundColor = backgroundColor;
+        },
+        theme(state, theme) {
+            state.theme = theme;
         },
         parts(state, parts) {
             state.parts = Object.assign({}, parts);
@@ -181,6 +185,7 @@ export const store = {
         getFormat: state => () => state.format,
         getResolution: state => () => state.resolution,
         getBackgroundColor: state => () => state.backgroundColor,
+        getTheme: state => () => state.theme,
         getRipeOptions: state => () => state.ripeOptions,
         getRipeState: state => () => state.ripeState,
         priceCurrency: state =>
