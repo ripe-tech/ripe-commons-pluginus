@@ -172,6 +172,10 @@ export const Configurator = {
     },
     data: function() {
         return {
+            /**
+             * Ripe instance used by the configurator. Defaults to the
+             * global ripe instance when the prop ripe isn't set.
+             */
             ripeInstance: this.ripe ? this.ripe : this.$ripe,
             /**
              * The frame that is currently being shown in the
