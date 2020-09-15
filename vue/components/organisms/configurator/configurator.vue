@@ -182,7 +182,7 @@ export const Configurator = {
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
              */
-            loading: true,
+            loading: false,
             /**
              * The reference to the possible loading error instance
              * triggered withing an malfunctioning configurator loading.
@@ -205,6 +205,8 @@ export const Configurator = {
         };
     },
     mounted: function() {
+        this.loading = true;
+
         setTimeout(() => {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
