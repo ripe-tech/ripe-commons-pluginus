@@ -165,6 +165,6 @@ export const logicMixin = {
                     alias["step::personalization"]
                 )
                 .filter(v => v !== undefined);
-        },
+        }
     }
 };
