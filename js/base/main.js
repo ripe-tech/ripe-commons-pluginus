@@ -274,13 +274,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     async getSupportedCharacters(brand, model) {
-        const keysBlob = await this.ripe.runLogicP({
+        const supportedCharsBlob = await this.ripe.runLogicP({
             brand: brand,
             model: model,
             method: "supported_characters"
         });
-        const keys = await keysBlob.text();
-        return [...keys];
+        const supportedChars = await supportedCharsBlob.text();
+        return [...supportedChars];
     }
 
     async refreshInitialGroups(brand, model) {
@@ -290,7 +290,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
             // available characters for personalization
-            const [groups, keys] = await Promise.all([
+            const [groups, supportedChars] = await Promise.all([
                 this.ripe.runLogicP({
                     brand: brand,
                     model: model,
@@ -300,10 +300,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             ]);
 
             this.store.commit("initialGroups", groups);
-            this.store.commit("initialKeys", keys);
+            this.store.commit("initialKeys", supportedChars);
         } catch (err) {
             // gives a default group if builds does not support remote
-            // business logic (for the groups and keys "methods")
+            // business logic (for the groups and supported_characters
+            // "methods")
             this.store.commit("initialGroups", ["main"]);
             this.store.commit("initialKeys", ["abcdefghijklmnopqrstvwxyz"]);
         }
