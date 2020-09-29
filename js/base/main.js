@@ -273,13 +273,49 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         };
     }
 
+    async getSupportedCharacters(brand, model) {
+        const keysBlob = await this.ripe.runLogicP({
+            brand: brand,
+            model: model,
+            method: "supported_characters"
+        });
+        const keys = await keysBlob.text();
+        return [...keys];
+    }
+
+    async refreshInitialGroups(brand, model) {
+        if (!brand || !model) return;
+
+        try {
+            // runs the remote business logic to obtain the multiple
+            // target groups available for initials as well as the
+            // available characters for personalization
+            const [groups, keys] = await Promise.all([
+                this.ripe.runLogicP({
+                    brand: brand,
+                    model: model,
+                    method: "groups"
+                }),
+                this.getSupportedCharacters(brand, model)
+            ]);
+
+            this.store.commit("initialGroups", groups);
+            this.store.commit("initialKeys", keys);
+        } catch (err) {
+            // gives a default group if builds does not support remote
+            // business logic (for the groups and keys "methods")
+            this.store.commit("initialGroups", ["main"]);
+            this.store.commit("initialKeys", ["abcdefghijklmnopqrstvwxyz"]);
+        }
+    }
+
     _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
         this.owner.bind("set_model", this.setModel.bind(this));
 
         // updates the app state when a new model is set
-        this.ripe.bind("post_config", config => {
+        this.ripe.bind("post_config", async config => {
             this.app.logDebug(
                 () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
             );
@@ -332,6 +368,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
+            await this.refreshInitialGroups(this.ripe.brand, this.ripe.model);
         });
 
         // changes some internal structure whenever there's an update

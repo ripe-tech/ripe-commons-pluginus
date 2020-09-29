@@ -62,6 +62,40 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        __initialsBuilder(initials, engraving, element) {
+            const group = element.getAttribute("data-group");
+            const properties = engraving
+                ? this.$ripe.parseEngraving(engraving, this.configInitials.properties).valuesM
+                : {};
+            const profiles = this.__getPersonalizationProfiles(group, properties);
+
+            Object.entries(properties).forEach(([type, value]) => {
+                this.initialGroups.length > 1 && profiles.push(value + ":" + group);
+                profiles.push(value);
+            });
+
+            profiles.push(group);
+
+            return {
+                initials: initials || "$empty",
+                profile: profiles
+            };
+        },
+        __getPersonalizationProfiles(group, properties) {
+            const alias = this.configInitials.$alias;
+            if (!alias) return [];
+
+            const position = properties.position;
+
+            return []
+                .concat(
+                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
+                    position ? alias[`step::personalization:${position}`] : [],
+                    group ? alias[`step::personalization:${group}`] : [],
+                    alias["step::personalization"]
+                )
+                .filter(v => v !== undefined);
+        },
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce

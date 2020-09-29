@@ -33,7 +33,9 @@ export const store = {
         hasPersonalization: false,
         hasSize: false,
         ripeOptions: {},
-        ripeState: {}
+        ripeState: {},
+        initialGroups: [],
+        initialKeys: []
     },
     mutations: {
         ripe_url(state, url) {
@@ -132,6 +134,12 @@ export const store = {
         },
         ripeState(state, ripeState) {
             state.ripeState = ripeState;
+        },
+        initialGroups(state, initialGroups) {
+            state.initialGroups = initialGroups;
+        },
+        initialKeys(state, initialKeys) {
+            state.initialKeys = initialKeys;
         }
     },
     getters: {
