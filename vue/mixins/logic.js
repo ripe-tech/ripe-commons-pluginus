@@ -32,9 +32,6 @@ export const logicMixin = {
         customerIdInput() {
             return this.$store.state.customerIdInput;
         },
-        configInitials() {
-            return this.$store.state.config.initials;
-        },
         modelNormalized() {
             if (!this.model) return null;
             return this.model
@@ -135,7 +132,7 @@ export const logicMixin = {
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
             const properties = engraving
-                ? this.$ripe.parseEngraving(engraving, this.configInitials.properties).valuesM
+                ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
                 : {};
             const profiles = this.__getPersonalizationProfiles(group, properties);
 
@@ -152,7 +149,7 @@ export const logicMixin = {
             };
         },
         __getPersonalizationProfiles(group, properties) {
-            const alias = this.configInitials.$alias;
+            const alias = this.config.initials.$alias;
             if (!alias) return [];
 
             const position = properties.position;
