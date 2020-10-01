@@ -129,12 +129,28 @@ export const logicMixin = {
 
             return true;
         },
+        /**
+         * Default initials builder implementation that uses a series of
+         * pref-defined heuristics that take into account: engraving, group and
+         * properties.
+         *
+         * The results provided should be enough to handle most of the personalization
+         * scenarios.
+         *
+         * @param {String} initials The string that contains the initials that are
+         * going to be used in the building process.
+         * @param {String} engraving The engraving string value to be used.
+         * @param {HTMLElement} element The HTML element reference to the image that
+         * is going to use the generated initials and profile object.
+         * @returns {Object} An object that defined both `initials` and `profiles`
+         * according to the provided parameters.
+         */
         __initialsBuilder(initials, engraving, element) {
             const group = element.getAttribute("data-group");
             const properties = engraving
                 ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
                 : {};
-            const profiles = this.__getPersonalizationProfiles(group, properties);
+            const profiles = this.__buildPersonalizationProfiles(group, properties);
 
             Object.entries(properties).forEach(([type, value]) => {
                 this.initialGroups.length > 1 && profiles.push(value + ":" + group);
@@ -148,7 +164,19 @@ export const logicMixin = {
                 profile: profiles
             };
         },
-        __getPersonalizationProfiles(group, properties) {
+        /**
+         * Builds a series of "personalization oriented" profiles taking
+         * into account a series of pre-defined heuristics that should be
+         * applicable to most initials contexts and structures.
+         *
+         * These profiles are applicable under a series of best practices
+         * and may not provide optimal results.
+         *
+         * @param {String} group The name of the group to obtain the profiles.
+         * @param {Object} properties The properties object that should be
+         * used as the basis for the building of the profiles.
+         */
+        __buildPersonalizationProfiles(group, properties) {
             const alias = this.config.initials.$alias;
             if (!alias) return [];
 
