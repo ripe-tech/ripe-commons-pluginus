@@ -285,13 +285,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // available characters for personalization
             const [groups, supportedCharacters] = await Promise.all([
                 this.ripe.runLogicP({ method: "groups" }),
-                async () => {
+                (async () => {
                     const supportedCharactersBlob = await this.ripe.runLogicP({
                         method: "supported_characters"
                     });
                     const supportedCharacters = await supportedCharactersBlob.text();
                     return [...supportedCharacters];
-                }
+                })()
             ]);
 
             // updates the store with both the groups and the supported

@@ -32,6 +32,12 @@ export const logicMixin = {
         customerIdInput() {
             return this.$store.state.customerIdInput;
         },
+        initialsGroups() {
+            return this.$store.state.initialsGroups;
+        },
+        initialsSupportedCharacters() {
+            return this.$store.state.initialsSupportedCharacters;
+        },
         modelNormalized() {
             if (!this.model) return null;
             return this.model
@@ -130,14 +136,19 @@ export const logicMixin = {
             return true;
         },
         __initialsBuilder(initials, engraving, element) {
+            // uses the provided element to obtain the selected group and obtains the
+            // "base" personalization profiles for such group
             const group = element.getAttribute("data-group");
             const properties = engraving
                 ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
                 : {};
             const profiles = this.__getPersonalizationProfiles(group, properties);
 
+            // iterates over each of the properties for the groups and builds the base
+            // profiles with the property value with the group suffix and the basic
+            // profile with "just" the property value
             Object.entries(properties).forEach(([type, value]) => {
-                this.initialGroups.length > 1 && profiles.push(value + ":" + group);
+                this.initialsGroups.length > 1 && profiles.push(value + ":" + group);
                 profiles.push(value);
             });
 
