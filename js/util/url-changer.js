@@ -54,6 +54,7 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         const search = window.location.search;
         const query = new URLSearchParams(search);
         const parts = model.parts || {};
+        const currency = model.currency || "";
 
         // a full query will be generated, so clear the parameters
         // that are exclusively used as entry points since they
@@ -79,6 +80,9 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
 
         if (locale) query.set("locale", locale);
         else query.delete("locale");
+
+        if (locale) query.set("currency", currency);
+        else query.delete("currency");
 
         if (theme && theme !== "default") query.set("theme", theme);
         else query.delete("theme");

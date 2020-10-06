@@ -151,6 +151,7 @@ export const store = {
             scale: state.scale,
             personalization: state.personalization,
             size: state.size,
+            currency: state.currency,
             parts: state.parts
         }),
         getOrderInfo: state => () => {
