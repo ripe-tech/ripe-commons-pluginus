@@ -32,6 +32,12 @@ export const logicMixin = {
         customerIdInput() {
             return this.$store.state.customerIdInput;
         },
+        initialsGroups() {
+            return this.$store.state.initialsGroups;
+        },
+        initialsSupportedCharacters() {
+            return this.$store.state.initialsSupportedCharacters;
+        },
         modelNormalized() {
             if (!this.model) return null;
             return this.model
@@ -128,6 +134,73 @@ export const logicMixin = {
             }
 
             return true;
+        },
+        /**
+         * Default initials builder implementation that uses a series of
+         * pref-defined heuristics that take into account: engraving, group and
+         * properties.
+         *
+         * The results provided should be enough to handle most of the personalization
+         * scenarios.
+         *
+         * @param {String} initials The string that contains the initials that are
+         * going to be used in the building process.
+         * @param {String} engraving The engraving string value to be used.
+         * @param {HTMLElement} element The HTML element reference to the image that
+         * is going to use the generated initials and profile object.
+         * @returns {Object} An object that defined both `initials` and `profiles`
+         * according to the provided parameters.
+         */
+        __initialsBuilder(initials, engraving, element) {
+            // uses the provided element to obtain the selected group and obtains the
+            // "base" personalization profiles for such group
+            const group = element.getAttribute("data-group");
+            const properties = engraving
+                ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
+                : {};
+            const profiles = this.__buildPersonalizationProfiles(group, properties);
+
+            // iterates over each of the properties for the groups and builds the base
+            // profiles with the property value with the group suffix and the basic
+            // profile with "just" the property value
+            Object.entries(properties).forEach(([type, value]) => {
+                this.initialsGroups.length > 1 && profiles.push(value + ":" + group);
+                profiles.push(value);
+            });
+
+            profiles.push(group);
+
+            return {
+                initials: initials || "$empty",
+                profile: profiles
+            };
+        },
+        /**
+         * Builds a series of "personalization oriented" profiles taking
+         * into account a series of pre-defined heuristics that should be
+         * applicable to most initials contexts and structures.
+         *
+         * These profiles are applicable under a series of best practices
+         * and may not provide optimal results.
+         *
+         * @param {String} group The name of the group to obtain the profiles.
+         * @param {Object} properties The properties object that should be
+         * used as the basis for the building of the profiles.
+         */
+        __buildPersonalizationProfiles(group, properties) {
+            const alias = this.config.initials.$alias;
+            if (!alias) return [];
+
+            const position = properties.position;
+
+            return []
+                .concat(
+                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
+                    position ? alias[`step::personalization:${position}`] : [],
+                    group ? alias[`step::personalization:${group}`] : [],
+                    alias["step::personalization"]
+                )
+                .filter(v => v !== undefined);
         }
     }
 };

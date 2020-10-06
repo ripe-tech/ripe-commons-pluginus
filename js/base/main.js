@@ -273,13 +273,47 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         };
     }
 
+    /**
+     * Runs the remote operation that refreshes both the groups
+     * and the supported characters for the initials of the current
+     * configuration in context.
+     */
+    async refreshInitialsData() {
+        try {
+            // runs the remote business logic to obtain the multiple
+            // target groups available for initials as well as the
+            // available characters for personalization
+            const [groups, supportedCharacters] = await Promise.all([
+                this.ripe.runLogicP({ method: "groups" }),
+                (async () => {
+                    const supportedCharactersBlob = await this.ripe.runLogicP({
+                        method: "supported_characters"
+                    });
+                    const supportedCharacters = await supportedCharactersBlob.text();
+                    return [...supportedCharacters];
+                })()
+            ]);
+
+            // updates the store with both the groups and the supported
+            // characters of the current configuration context
+            this.store.commit("initialsGroups", groups);
+            this.store.commit("initialsSupportedCharacters", supportedCharacters);
+        } catch (err) {
+            // gives a default group if builds does not support remote
+            // business logic (for the `groups` and `supported_characters`
+            // "methods")
+            this.store.commit("initialsGroups", ["main"]);
+            this.store.commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
+        }
+    }
+
     _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
         this.owner.bind("set_model", this.setModel.bind(this));
 
         // updates the app state when a new model is set
-        this.ripe.bind("post_config", config => {
+        this.ripe.bind("post_config", async config => {
             this.app.logDebug(
                 () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
             );
@@ -332,6 +366,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
+
+            // runs the refresh operation on the initials information
+            // this operation is going to trigger remote logic execution
+            await this.refreshInitialsData();
         });
 
         // changes some internal structure whenever there's an update

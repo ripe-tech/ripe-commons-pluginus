@@ -33,7 +33,9 @@ export const store = {
         hasPersonalization: false,
         hasSize: false,
         ripeOptions: {},
-        ripeState: {}
+        ripeState: {},
+        initialsGroups: [],
+        initialsSupportedCharacters: []
     },
     mutations: {
         ripe_url(state, url) {
@@ -132,6 +134,12 @@ export const store = {
         },
         ripeState(state, ripeState) {
             state.ripeState = ripeState;
+        },
+        initialsGroups(state, initialsGroups) {
+            state.initialsGroups = initialsGroups;
+        },
+        initialsSupportedCharacters(state, initialsSupportedCharacters) {
+            state.initialsSupportedCharacters = initialsSupportedCharacters;
         }
     },
     getters: {

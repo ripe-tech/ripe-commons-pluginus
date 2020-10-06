@@ -118,6 +118,14 @@
 export const Configurator = {
     name: "configurator",
     props: {
+        ripe: {
+            type: Object,
+            default: null
+        },
+        ignoreBus: {
+            type: Boolean,
+            default: false
+        },
         options: {
             type: Object,
             default: function() {
@@ -165,6 +173,11 @@ export const Configurator = {
     data: function() {
         return {
             /**
+             * Ripe instance used by the configurator. Defaults to the
+             * global ripe instance when the prop ripe isn't set.
+             */
+            ripeInstance: this.ripe ? this.ripe : this.$ripe,
+            /**
              * The frame that is currently being shown in the
              * configurator.
              */
@@ -173,7 +186,7 @@ export const Configurator = {
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
              */
-            loading: true,
+            loading: false,
             /**
              * The reference to the possible loading error instance
              * triggered withing an malfunctioning configurator loading.
@@ -196,11 +209,13 @@ export const Configurator = {
         };
     },
     mounted: function() {
+        this.loading = true;
+
         setTimeout(() => {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.$ripe.bindConfigurator(
+        this.configurator = this.ripeInstance.bindConfigurator(
             this.$refs.configurator,
             this.mergedOptions
         );
@@ -242,16 +257,22 @@ export const Configurator = {
         });
 
         this.$bus.bind("error", error => {
+            if (this.ignoreBus) return;
+
             if (!this.loading) return;
             this.loading = false;
             this.loadingError = error;
         });
 
         this.$bus.bind("pre_config", () => {
+            if (this.ignoreBus) return;
+
             this.loading = true;
         });
 
         this.$bus.bind("changed_frame", (configurator, frame) => {
+            if (this.ignoreBus) return;
+
             // avoid infinite loop, by checking if the frame
             // is the one we're currently on
             if (this.frame === frame) {
@@ -271,6 +292,8 @@ export const Configurator = {
         });
 
         this.$bus.bind("show_frame", frame => {
+            if (this.ignoreBus) return;
+
             if (!this.configurator || !this.configurator.ready) return;
             const currentView = this.frame.split("-")[0];
             const newView = frame.split("-")[0];
@@ -284,10 +307,14 @@ export const Configurator = {
         });
 
         this.$bus.bind("highlight_part", part => {
+            if (this.ignoreBus) return;
+
             this.configurator.ready && this.configurator.highlight(part);
         });
 
         this.$bus.bind("lowlight_part", part => {
+            if (this.ignoreBus) return;
+
             this.configurator.ready && this.configurator.lowlight(part);
         });
 
@@ -301,6 +328,9 @@ export const Configurator = {
             if (!this.configurator) return;
             if (this.useMasks) this.configurator.enableMasks();
             else this.configurator.disableMasks();
+        },
+        loading(value) {
+            this.$emit("update:loading", value);
         }
     },
     methods: {
@@ -314,7 +344,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        if (this.configurator) await this.$ripe.unbindConfigurator(this.configurator);
+        if (this.configurator) await this.ripeInstance.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
 };
