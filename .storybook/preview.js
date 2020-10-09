@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { configure } from "@storybook/vue";
 import { Ripe } from "ripe-sdk";
 
 import { install as RipeCommonsPluginusVue, plugins } from "../vue";
@@ -22,10 +21,3 @@ Vue.use(RipeCommonsPluginusVue);
 // creates the RIPE instance that is going to be used
 // through the Storybook "testing"
 Vue.prototype.$ripe = new Ripe();
-
-const req = require.context("../vue", true, /\.stories\.js$/);
-function loadStories() {
-    req.keys().forEach(filename => req(filename));
-}
-
-configure(loadStories, module);
