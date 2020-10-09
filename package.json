@@ -55,7 +55,6 @@
         "webpack": "webpack --config webpack.config.js"
     },
     "dependencies": {
-        "core-js": "^3.6.5",
         "loaders.css": "^0.1.2",
         "pluginus": "^0.3.10",
         "ripe-sdk": "^1.12.1",
@@ -69,6 +68,7 @@
         "@storybook/source-loader": "^6.0.21",
         "@storybook/vue": "^6.0.21",
         "@vue/test-utils": "^1.1.0",
+        "core-js": "^3.6.5",
         "jsdom": "^16.4.0",
         "jsdom-global": "^3.0.2",
         "mochapack": "^2.0.3",
