@@ -55,6 +55,7 @@
         "webpack": "webpack --config webpack.config.js"
     },
     "dependencies": {
+        "core-js": "^3.6.5",
         "loaders.css": "^0.1.2",
         "pluginus": "^0.3.10",
         "ripe-sdk": "^1.12.1",
