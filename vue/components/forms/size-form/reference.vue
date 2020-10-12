@@ -10,7 +10,7 @@
                     v-bind:key="modelGender"
                     v-on:click="__changeGender(modelGender)"
                 >
-                    {{ modelGender | locale }}
+                    {{ `ripe_commons.size.${modelGender}` | locale }}
                 </div>
             </div>
             <div
