@@ -5,6 +5,7 @@
             v-bind:model="model"
             v-bind:groups="groups"
             v-bind:initials-builder="__initialsBuilder"
+            v-bind:context-getter="__getContext"
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
@@ -291,46 +292,34 @@ export const Reference = {
          * initials object.
          * @param {String} engraving The value of the engraving to compute the computed
          * initials object.
-         * @param {Element} element The DOM element to be used in the "calculus" of the
-         * final initials object.
+         * @param {Object} properties The initials properties of the build.
+         * @param {String} group The value of the initials group.
          * @returns {Object} The computed initials object containing both the final
          * initials string value and profile(s) sequence.
          */
         __initialsBuilder(initials, engraving, element) {
-            // uses the provided element to obtain the selected group and obtains the
-            // "base" personalization profiles for such group
             const group = element.getAttribute("data-group");
-            const profiles = this.__getPersonalizationProfiles(group);
 
-            // iterates over each of the properties for the groups and builds the base
-            // profiles with the property value with the group suffix and the basic
-            // profile with "just" the property value
+            const profiles = [{ type: group, name: group }];
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
-                if (this.groups.length > 1) profiles.push(value + ":" + group);
-                profiles.push(value);
+                profiles.push({ type: type, name: value });
             });
-
-            profiles.push(group);
 
             return {
                 initials: initials,
                 profile: profiles
             };
         },
-        __getPersonalizationProfiles(group) {
-            const alias = this.configInitials.$alias;
-            if (!alias) return [];
-
+        __getContext(group) {
             const position = this.propertiesData[group] && this.propertiesData[group].position;
+            const contexts = [`step::personalization:${group}`, "step::personalization"];
+            if (!position) return contexts;
 
-            return []
-                .concat(
-                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
-                    position ? alias[`step::personalization:${position}`] : [],
-                    group ? alias[`step::personalization:${group}`] : [],
-                    alias["step::personalization"]
-                )
-                .filter(v => v !== undefined);
+            return [
+                `step::personalization:${position}:${group}`,
+                `step::personalization:${position}`,
+                ...contexts
+            ];
         },
         __getInitials() {
             const _initials = {};

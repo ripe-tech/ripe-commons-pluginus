@@ -47,6 +47,10 @@ export const InitialsImages = {
         initialsBuilder: {
             type: Function,
             default: null
+        },
+        contextGetter: {
+            type: Function,
+            default: null
         }
     },
     data: function() {
@@ -82,7 +86,8 @@ export const InitialsImages = {
                 const image = this.$ripe.bindImage(initialsImage, {
                     showInitials: true,
                     initialsGroup: initialsImage.dataset.group,
-                    initialsBuilder: this.initialsBuilder
+                    baseInitialsBuilder: this.initialsBuilder,
+                    context: this.contextGetter || this.__getContext
                 });
                 this.initialsImages.push(image);
             }
@@ -97,6 +102,9 @@ export const InitialsImages = {
         },
         onLoaded(group) {
             this.$set(this.loaded, group, true);
+        },
+        __getContext(group) {
+            return [`step::personalization:${group}`, "step::personalization"];
         }
     }
 };
