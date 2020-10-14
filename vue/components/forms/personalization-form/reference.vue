@@ -310,7 +310,7 @@ export const Reference = {
                 profile: profiles
             };
         },
-        __getContext(group) {
+        __getContext(engraving, group) {
             const position = this.propertiesData[group] && this.propertiesData[group].position;
             const contexts = [`step::personalization:${group}`, "step::personalization"];
             if (!position) return contexts;

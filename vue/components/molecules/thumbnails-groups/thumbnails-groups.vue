@@ -6,6 +6,7 @@
         v-bind:active-group="activeGroup"
         v-bind:groups="groups"
         v-bind:initials-builder="__initialsBuilder"
+        v-bind:context-getter="__getContext"
         ref="thumbnailsContainer"
         v-on:image-selected="onImageSelected"
     />

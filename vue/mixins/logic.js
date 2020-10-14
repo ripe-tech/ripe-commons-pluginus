@@ -158,49 +158,34 @@ export const logicMixin = {
             const properties = engraving
                 ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
                 : {};
-            const profiles = this.__buildPersonalizationProfiles(group, properties);
+            const profiles = [{ type: group, name: group }];
 
             // iterates over each of the properties for the groups and builds the base
             // profiles with the property value with the group suffix and the basic
             // profile with "just" the property value
             Object.entries(properties).forEach(([type, value]) => {
-                this.initialsGroups.length > 1 && profiles.push(value + ":" + group);
-                profiles.push(value);
+                profiles.push({ type: type, name: value });
             });
-
-            profiles.push(group);
 
             return {
                 initials: initials || "$empty",
                 profile: profiles
             };
         },
-        /**
-         * Builds a series of "personalization oriented" profiles taking
-         * into account a series of pre-defined heuristics that should be
-         * applicable to most initials contexts and structures.
-         *
-         * These profiles are applicable under a series of best practices
-         * and may not provide optimal results.
-         *
-         * @param {String} group The name of the group to obtain the profiles.
-         * @param {Object} properties The properties object that should be
-         * used as the basis for the building of the profiles.
-         */
-        __buildPersonalizationProfiles(group, properties) {
-            const alias = this.config.initials.$alias;
-            if (!alias) return [];
-
+        __getContext(engraving, group) {
+            const properties = engraving
+                ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
+                : {};
             const position = properties.position;
 
-            return []
-                .concat(
-                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
-                    position ? alias[`step::personalization:${position}`] : [],
-                    group ? alias[`step::personalization:${group}`] : [],
-                    alias["step::personalization"]
-                )
-                .filter(v => v !== undefined);
+            const contexts = [`step::personalization:${group}`, "step::personalization"];
+            if (!position) return contexts;
+
+            return [
+                `step::personalization:${position}:${group}`,
+                `step::personalization:${position}`,
+                ...contexts
+            ];
         }
     }
 };
