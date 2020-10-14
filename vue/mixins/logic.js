@@ -172,6 +172,13 @@ export const logicMixin = {
                 profile: profiles
             };
         },
+        /**
+         * "Generic" context builder function that returns the context for te initials
+         * based on the position in the current properties and the current group.
+         *
+         * @param {String} engraving The value of the engraving of the current personalization.
+         * @param {String} group The value of the initials group.
+         */
         __getContext(engraving, group) {
             const properties = engraving
                 ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM

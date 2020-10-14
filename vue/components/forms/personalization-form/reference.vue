@@ -286,20 +286,24 @@ export const Reference = {
          * "Generic" initials builder function that uses the current properties
          * context to build a series of extra profiles.
          *
-         * This function is compliant with the expected initials builder interface.
+         * This function is compliant with the expected base initials builder interface.
          *
          * @param {String} initials The value of the initials to compute the computed
          * initials object.
          * @param {String} engraving The value of the engraving to compute the computed
          * initials object.
-         * @param {Object} properties The initials properties of the build.
-         * @param {String} group The value of the initials group.
+         * @param {Element} element The DOM element to be used in the "calculus" of the
+         * final initials object.
          * @returns {Object} The computed initials object containing both the final
          * initials string value and profile(s) sequence.
          */
         __initialsBuilder(initials, engraving, element) {
+            // uses the provided element to obtain the selected group and obtains the
+            // "base" personalization profiles for such group
             const group = element.getAttribute("data-group");
 
+            // iterates over each of the properties for the group and builds the base
+            // profiles with the property value and type and only with the group
             const profiles = [{ type: group, name: group }];
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
                 profiles.push({ type: type, name: value });
@@ -310,6 +314,13 @@ export const Reference = {
                 profile: profiles
             };
         },
+        /**
+         * "Generic" context builder function that returns the context for te initials
+         * based on the position in the current properties and the current group.
+         *
+         * @param {String} engraving The value of the engraving of the current personalization.
+         * @param {String} group The value of the initials group.
+         */
         __getContext(engraving, group) {
             const position = this.propertiesData[group] && this.propertiesData[group].position;
             const contexts = [`step::personalization:${group}`, "step::personalization"];
