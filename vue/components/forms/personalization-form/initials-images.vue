@@ -103,7 +103,7 @@ export const InitialsImages = {
         onLoaded(group) {
             this.$set(this.loaded, group, true);
         },
-        __getContext(group) {
+        __getContext(initials, engraving, group) {
             return [`step::personalization:${group}`, "step::personalization"];
         }
     }

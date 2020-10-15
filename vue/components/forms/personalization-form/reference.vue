@@ -304,7 +304,7 @@ export const Reference = {
 
             // iterates over each of the properties for the group and builds the base
             // profiles with the property value and type and only with the group
-            const profiles = [{ type: group, name: group }];
+            const profiles = [{ type: "group", name: group }];
             Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
                 profiles.push({ type: type, name: value });
             });
@@ -318,10 +318,12 @@ export const Reference = {
          * "Generic" context builder function that returns the context for te initials
          * based on the position in the current properties and the current group.
          *
+         * @param {String} initials The value of the initials to compute the computed
+         * initials object.
          * @param {String} engraving The value of the engraving of the current personalization.
          * @param {String} group The value of the initials group.
          */
-        __getContext(engraving, group) {
+        __getContext(initials, engraving, group) {
             const position = this.propertiesData[group] && this.propertiesData[group].position;
             const contexts = [`step::personalization:${group}`, "step::personalization"];
             if (!position) return contexts;
