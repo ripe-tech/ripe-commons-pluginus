@@ -286,10 +286,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             const [groups, supportedCharacters] = await Promise.all([
                 this.ripe.runLogicP({ method: "groups" }),
                 (async () => {
-                    const supportedCharactersBlob = await this.ripe.runLogicP({
+                    const supportedCharacters = await this.ripe.runLogicP({
                         method: "supported_characters"
                     });
-                    const supportedCharacters = await supportedCharactersBlob.text();
                     return [...supportedCharacters];
                 })()
             ]);
