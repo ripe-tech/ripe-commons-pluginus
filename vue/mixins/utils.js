@@ -4,7 +4,10 @@ export const utilsMixin = {
     computed: {
         localized() {
             return (value, defaultValue) => {
-                return this.$store.state.locale && this.$options.filters.locale(value, defaultValue);
+                return (
+                    (this.$store.state.locale || "unset") &&
+                    this.$options.filters.locale(value, defaultValue)
+                );
             };
         }
     },
