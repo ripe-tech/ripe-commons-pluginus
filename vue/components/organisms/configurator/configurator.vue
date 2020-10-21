@@ -110,6 +110,8 @@
 </style>
 
 <script>
+import { ripe } from "ripe-sdk";
+
 /**
  * The component that contains the RIPE SDK's configurator, responsible
  * for forwarding its events to the Vue bus, as well the other way
@@ -136,6 +138,14 @@ export const Configurator = {
             }
         },
         initialFrame: {
+            type: String,
+            default: null
+        },
+        /**
+         * The name of the frame to be shown in the configurator using
+         * the normalized frame format (eg: side-1).
+         */
+        frame: {
             type: String,
             default: null
         },
@@ -181,7 +191,7 @@ export const Configurator = {
              * The frame that is currently being shown in the
              * configurator.
              */
-            frame: this.initialFrame,
+            frameData: this.initialFrame || this.frame,
             /**
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
@@ -224,7 +234,7 @@ export const Configurator = {
             // sets the frame changed flag and then updates
             // the frame key to the new one (internal copy)
             this.frameChanged = true;
-            this.frame = frame;
+            this.frameData = frame;
 
             // updates the value of the single frame view
             // variable as the new view may have several frames
@@ -242,7 +252,7 @@ export const Configurator = {
 
         this.configurator.bind("loaded", () => {
             const frame = `${this.configurator.view}-${this.configurator.position}`;
-            this.frame = frame;
+            this.frameData = frame;
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
             this.$store.commit("current_frame", frame);
@@ -275,9 +285,7 @@ export const Configurator = {
 
             // avoid infinite loop, by checking if the frame
             // is the one we're currently on
-            if (this.frame === frame) {
-                return;
-            }
+            if (this.frameData === frame) return;
 
             // in case the configurator is not currently ready
             // then avoids the operation (returns control flow)
@@ -295,7 +303,7 @@ export const Configurator = {
             if (this.ignoreBus) return;
 
             if (!this.configurator || !this.configurator.ready) return;
-            const currentView = this.frame.split("-")[0];
+            const currentView = this.frameData.split("-")[0];
             const newView = frame.split("-")[0];
             const sameView = currentView === newView;
             const type = sameView ? false : "cross";
@@ -321,6 +329,33 @@ export const Configurator = {
         this.resize(this.size);
     },
     watch: {
+        frame(value) {
+            if (this.frameData === value) return;
+            this.frameData = value;
+        },
+        async frameData(value, previous) {
+            // in case the configurator is not currently ready
+            // then avoids the operation (returns control flow)
+            if (!this.configurator || !this.configurator.ready) return;
+
+            // extracts the view part of both the previous and the
+            // current frame to be used for change view comparison
+            const previousView = previous ? ripe.parseFrameKey(previous)[0] : "";
+            const view = ripe.parseFrameKey(value)[0];
+
+            // runs the frame changing operation (possible animation)
+            // according to the newly changed frame value
+            await this.configurator.changeFrame(value, {
+                type: view === previousView ? false : this.animation,
+                revolutionDuration: view === previousView ? this.duration : null,
+                duration: this.duration
+            });
+
+            // only the visible instance of this component
+            // should be sending events it's considered to
+            // be the main/master one
+            if (this.elementDisplayed) this.$emit("update:frame", value);
+        },
         size(size) {
             this.resize(size);
         },
