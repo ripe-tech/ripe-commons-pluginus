@@ -154,6 +154,12 @@ export const Configurator = {
         useMasks: {
             type: Boolean,
             default: true
+        },
+        onError: {
+            type: Function,
+            default: error => {
+                throw error;
+            }
         }
     },
     computed: {
@@ -270,7 +276,7 @@ export const Configurator = {
             this.loading = true;
         });
 
-        this.$bus.bind("changed_frame", (configurator, frame) => {
+        this.$bus.bind("changed_frame", async (configurator, frame) => {
             if (this.ignoreBus) return;
 
             // avoid infinite loop, by checking if the frame
@@ -285,13 +291,17 @@ export const Configurator = {
                 return;
             }
 
-            this.configurator.changeFrame(frame, {
-                type: null,
-                duration: null
-            });
+            try {
+                await this.configurator.changeFrame(frame, {
+                    type: null,
+                    duration: null
+                });
+            } catch (error) {
+                this.onError(error);
+            }
         });
 
-        this.$bus.bind("show_frame", frame => {
+        this.$bus.bind("show_frame", async frame => {
             if (this.ignoreBus) return;
 
             if (!this.configurator || !this.configurator.ready) return;
@@ -300,10 +310,14 @@ export const Configurator = {
             const sameView = currentView === newView;
             const type = sameView ? false : "cross";
             const revolutionDuration = sameView ? 500 : null;
-            this.configurator.changeFrame(frame, {
-                type: type,
-                revolutionDuration: revolutionDuration
-            });
+            try {
+                await this.configurator.changeFrame(frame, {
+                    type: type,
+                    revolutionDuration: revolutionDuration
+                });
+            } catch (error) {
+                this.onError(error);
+            }
         });
 
         this.$bus.bind("highlight_part", part => {
