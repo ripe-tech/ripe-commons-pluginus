@@ -67,7 +67,6 @@ export const InitialsImages = {
         context(value) {
             if (!value.length) return;
             for (const image of this.initialsImages) {
-                console.log(image);
                 image.setContext(value);
             }
         }
