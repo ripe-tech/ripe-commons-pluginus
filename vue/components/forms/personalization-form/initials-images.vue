@@ -50,7 +50,7 @@ export const InitialsImages = {
         },
         context: {
             type: Array,
-            default: ["step::personalization"]
+            default: () => ["step::personalization"]
         }
     },
     data: function() {
