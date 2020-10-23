@@ -6,7 +6,7 @@
         v-bind:active-group="activeGroup"
         v-bind:groups="groups"
         v-bind:initials-builder="__initialsBuilder"
-        v-bind:context-getter="__getContext"
+        v-bind:context="context"
         ref="thumbnailsContainer"
         v-on:image-selected="onImageSelected"
     />
@@ -45,7 +45,8 @@ export const ThumbnailsGroups = {
     },
     data: function() {
         return {
-            activeGroupData: this.activeGroup
+            activeGroupData: this.activeGroup,
+            context: []
         };
     },
     computed: {
@@ -57,6 +58,9 @@ export const ThumbnailsGroups = {
         },
         configInitials() {
             return this.$store.state.config.initials;
+        },
+        engraving() {
+            return this.$store.state.personalization.engraving;
         }
     },
     watch: {
@@ -66,6 +70,9 @@ export const ThumbnailsGroups = {
         activeGroupData(value) {
             this.$emit("update:active-group", value);
         }
+    },
+    mounted: function() {
+        this.context = this.__getContext(this.engraving, this.activeGroupData);
     },
     methods: {
         onImageSelected(group) {

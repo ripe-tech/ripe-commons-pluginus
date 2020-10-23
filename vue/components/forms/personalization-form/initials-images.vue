@@ -48,9 +48,9 @@ export const InitialsImages = {
             type: Function,
             default: null
         },
-        contextGetter: {
-            type: Function,
-            default: null
+        context: {
+            type: Array,
+            default: ["step::personalization"]
         }
     },
     data: function() {
@@ -63,6 +63,13 @@ export const InitialsImages = {
         async groups(value) {
             await this.unbindImages();
             await this.bindImages();
+        },
+        context(value) {
+            if (!value.length) return;
+            for (const image of this.initialsImages) {
+                console.log(image);
+                image.setContext(value);
+            }
         }
     },
     mounted: async function() {
@@ -87,7 +94,7 @@ export const InitialsImages = {
                     showInitials: true,
                     initialsGroup: initialsImage.dataset.group,
                     baseInitialsBuilder: this.initialsBuilder,
-                    context: this.contextGetter || this.__getContext
+                    context: this.context
                 });
                 this.initialsImages.push(image);
             }
@@ -102,9 +109,6 @@ export const InitialsImages = {
         },
         onLoaded(group) {
             this.$set(this.loaded, group, true);
-        },
-        __getContext(initials, engraving, group) {
-            return [`step::personalization:${group}`, "step::personalization"];
         }
     }
 };

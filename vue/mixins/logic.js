@@ -173,20 +173,17 @@ export const logicMixin = {
             };
         },
         /**
-         * "Generic" context builder function that returns the context for te initials
+         * "Generic" context function that returns the context for the initials
          * based on the position in the current properties and the current group.
          *
-         * @param {String} initials The string that contains the initials that are
-         * going to be used in the building process.
          * @param {String} engraving The value of the engraving of the current personalization.
          * @param {String} group The value of the initials group.
          */
-        __getContext(initials, engraving, group) {
+        __getContext(engraving, group) {
             const properties = engraving
                 ? this.$ripe.parseEngraving(engraving, this.config.initials.properties).valuesM
                 : {};
             const position = properties.position;
-
             const contexts = [`step::personalization:${group}`, "step::personalization"];
             if (!position) return contexts;
 

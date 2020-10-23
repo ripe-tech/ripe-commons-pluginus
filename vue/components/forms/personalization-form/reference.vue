@@ -5,7 +5,7 @@
             v-bind:model="model"
             v-bind:groups="groups"
             v-bind:initials-builder="__initialsBuilder"
-            v-bind:context-getter="__getContext"
+            v-bind:context="context"
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
@@ -123,7 +123,8 @@ export const Reference = {
              */
             propertiesData: {},
             initialsText: {},
-            groups: []
+            groups: [],
+            context: []
         };
     },
     computed: {
@@ -281,6 +282,10 @@ export const Reference = {
             if (!newProperties[group]) newProperties[group] = {};
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
+
+            // updates the context based on the new properties selected,
+            // more specifically the position property
+            this.context = this.__getContext(group);
         },
         /**
          * "Generic" initials builder function that uses the current properties
@@ -315,15 +320,12 @@ export const Reference = {
             };
         },
         /**
-         * "Generic" context builder function that returns the context for te initials
+         * "Generic" context function that returns the context for the initials
          * based on the position in the current properties and the current group.
          *
-         * @param {String} initials The value of the initials to compute the computed
-         * initials object.
-         * @param {String} engraving The value of the engraving of the current personalization.
          * @param {String} group The value of the initials group.
          */
-        __getContext(initials, engraving, group) {
+        __getContext(group) {
             const position = this.propertiesData[group] && this.propertiesData[group].position;
             const contexts = [`step::personalization:${group}`, "step::personalization"];
             if (!position) return contexts;
