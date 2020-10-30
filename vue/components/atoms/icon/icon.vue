@@ -91,7 +91,7 @@ export const Icon = {
                 }
                 return resource.default;
             } catch (error) {
-                console.error(`Error loading icon '${this.icon}'.`, error);
+                this.logError(`Error loading icon '${this.icon}'.`, error);
             }
         }
     },
