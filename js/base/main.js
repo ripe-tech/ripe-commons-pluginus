@@ -395,6 +395,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.app.logDebug(() => `SDK price changed: ${price.total.price_final}`);
             this.store.commit("price", price);
         });
+        this.ripe.bind("price_error", error => {
+            this.app.logDebug(() => `SDK price error: ${error.message}`);
+            this.store.commit("price", null);
+        });
 
         // forwards the parts events to the global bus
         this.ripe.bind("pre_parts", (...args) => this.owner.trigger("pre_parts", ...args));
