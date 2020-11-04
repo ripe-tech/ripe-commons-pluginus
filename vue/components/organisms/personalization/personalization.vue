@@ -16,7 +16,9 @@
         </div>
         <modal ref="modal">
             <div v-show="enabled">
-                <h3 class="title">{{ localeReactive("ripe_commons.personalization.personalization") }}</h3>
+                <h3 class="title">
+                    {{ localeReactive("ripe_commons.personalization.personalization") }}
+                </h3>
                 <component
                     v-if="form"
                     v-bind:is="form"
