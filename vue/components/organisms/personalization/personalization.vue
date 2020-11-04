@@ -9,14 +9,14 @@
             v-bind:class="{ disabled: !enabled }"
             v-on:click="showModal"
         >
-            <h3>{{ "ripe_commons.personalization.personalization" | locale }}</h3>
+            <h3>{{ localeReactive("ripe_commons.personalization.personalization") }}</h3>
             <p class="button-text">
                 {{ buttonText | locale }}
             </p>
         </div>
         <modal ref="modal">
             <div v-show="enabled">
-                <h3 class="title">{{ "ripe_commons.personalization.personalization" | locale }}</h3>
+                <h3 class="title">{{ localeReactive("ripe_commons.personalization.personalization") }}</h3>
                 <component
                     v-if="form"
                     v-bind:is="form"
@@ -31,10 +31,10 @@
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
-                            {{ "ripe_commons.modal.cancel" | locale }}
+                            {{ localeReactive("ripe_commons.modal.cancel") }}
                         </div>
                         <div class="button button-color button-apply" v-on:click="apply">
-                            {{ "ripe_commons.modal.apply" | locale }}
+                            {{ localeReactive("ripe_commons.modal.apply") }}
                         </div>
                     </slot>
                 </div>

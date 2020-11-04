@@ -1,6 +1,6 @@
 <template>
     <div class="reference-size">
-        <h3 class="title">{{ "ripe_commons.size.size" | locale }}</h3>
+        <h3 class="title">{{ localeReactive("ripe_commons.size.size") }}</h3>
         <div class="size-selector">
             <div class="genders" v-show="modelGenders && modelGenders.length > 1">
                 <div

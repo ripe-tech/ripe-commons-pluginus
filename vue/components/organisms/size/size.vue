@@ -20,14 +20,14 @@
                         class="button button-color button-color-secondary button-cancel"
                         v-on:click="hideModal"
                     >
-                        {{ "ripe_commons.modal.cancel" | locale }}
+                        {{ localeReactive("ripe_commons.modal.cancel") }}
                     </button-ripe>
                     <button-ripe
                         class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply"
                     >
-                        <span>{{ "ripe_commons.modal.select" | locale }}</span>
+                        <span>{{ localeReactive("ripe_commons.modal.select") }}</span>
                     </button-ripe>
                 </div>
             </div>
