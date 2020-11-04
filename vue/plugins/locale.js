@@ -12,7 +12,7 @@ export const localePlugin = {
                 localeReactive() {
                     return (value, defaultValue, locale, fallback = true) => {
                         return (
-                            (this.$store?.state.locale || "unset") &&
+                            (this.$store && this.$store.state.locale || "unset") &&
                             this.$options.filters.locale(value, defaultValue, locale, fallback)
                         );
                     };
