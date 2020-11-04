@@ -1,16 +1,6 @@
 import { normalize } from "../../js";
 
 export const utilsMixin = {
-    computed: {
-        localized() {
-            return (value, defaultValue) => {
-                return (
-                    (this.$store.state.locale || "unset") &&
-                    this.$options.filters.locale(value, defaultValue)
-                );
-            };
-        }
-    },
     methods: {
         capitalize(value) {
             if (!value) return "";
