@@ -4,16 +4,16 @@
             <div class="message-restrictions-alert" v-bind:class="{ visible: visible }">
                 <div class="button-container">
                     <a class="button button-restrictions-alert" v-on:click="undo">
-                        {{ localeReactive("ripe_commons.restrictions_alert.restrictions_alert") }}
+                        {{ locale("ripe_commons.restrictions_alert.restrictions_alert") }}
                     </a>
                     <a class="button button-back" v-on:click="close">
-                        {{ localeReactive("ripe_commons.restrictions_alert.close_button") }}
+                        {{ locale("ripe_commons.restrictions_alert.close_button") }}
                     </a>
                 </div>
                 <div class="message-container">
                     <span>
-                        {{ localeReactive("ripe_commons.restrictions_alert.limited") }}
-                        {{ localeReactive("ripe_commons.restrictions_alert.back") }}
+                        {{ locale("ripe_commons.restrictions_alert.limited") }}
+                        {{ locale("ripe_commons.restrictions_alert.back") }}
                     </span>
                 </div>
             </div>

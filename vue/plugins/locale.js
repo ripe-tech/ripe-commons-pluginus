@@ -1,6 +1,6 @@
 export const localePlugin = {
     install(Vue, localePlugin) {
-        const _locale = function(value, defaultValue, locale, fallback = true) {
+        const toLocale = function(value, defaultValue, locale, fallback = true) {
             if (!value) return defaultValue || "";
             value = value.toString();
             defaultValue = defaultValue !== undefined ? defaultValue : value;
@@ -8,25 +8,27 @@ export const localePlugin = {
         };
 
         Vue.mixin({
-            computed: {
-                localeReactive() {
-                    return (value, defaultValue, locale, fallback = true) => {
-                        return (
-                            (this.$store && this.$store.state.locale || "unset") &&
-                            this.$options.filters.locale(value, defaultValue, locale, fallback)
-                        );
-                    };
+            data: function() {
+                return {
+                    currentLocale: null
                 }
             },
-            methods: {
-                locale(value, defaultValue, locale, fallback = true) {
-                    return _locale(value, defaultValue, locale, fallback);
+            mounted: function() {
+                localePlugin.owner.bind("post_set_locale", locale => (this.currentLocale = locale));
+                this.currentLocale = localePlugin.locale;
+            },
+            computed: {
+                locale() {
+                    return (value, defaultValue, locale = null, fallback = true) => {
+                        return toLocale(value, defaultValue, locale || this.currentLocale, fallback);
+                    };
                 }
             }
         });
 
         Vue.filter("locale", function(value, defaultValue, locale, fallback = true) {
-            return _locale(value, defaultValue, locale, fallback);
+            console.warn("Using 'locale' as a filter has been deprecated, please use it as a function instead.");
+            return toLocale(value, defaultValue, locale, fallback);
         });
 
         Object.defineProperty(Vue.prototype, "$locale", {

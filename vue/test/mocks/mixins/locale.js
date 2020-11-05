@@ -1,6 +1,6 @@
 export const localeMockMixin = {
     computed: {
-        localeReactive() {
+        locale() {
             return (value, defaultValue) => value || defaultValue;
         }
     },

@@ -16,11 +16,11 @@
             </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
                 <div class="holder-label">
-                    {{ localeReactive("ripe_commons.holder.holder.label") }}
+                    {{ locale("ripe_commons.holder.holder.label") }}
                 </div>
                 <img class="holder-image" src="~./assets/drag.svg" />
                 <div class="holder-second-label">
-                    {{ localeReactive("ripe_commons.holder.holder-second-label.label") }}
+                    {{ locale("ripe_commons.holder.holder-second-label.label") }}
                 </div>
             </div>
         </div>

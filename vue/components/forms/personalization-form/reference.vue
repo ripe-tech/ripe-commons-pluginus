@@ -9,7 +9,7 @@
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
                 <p class="subtitle">
-                    {{ localeReactive("ripe_commons.personalization.group") }} {{ group }}
+                    {{ locale("ripe_commons.personalization.group") }} {{ group }}
                 </p>
                 <form-input
                     v-bind:header="(`properties.${type}`, readable(capitalize(type))) | locale"

@@ -1,7 +1,7 @@
 <template>
     <div class="tab" v-bind:class="{ active: active }" v-on:click="() => $emit('selected')">
         <slot>
-            <h1 class="default">{{ tab.title | locale }}</h1>
+            <h1 class="default">{{ locale(tab.title) }}</h1>
         </slot>
     </div>
 </template>
