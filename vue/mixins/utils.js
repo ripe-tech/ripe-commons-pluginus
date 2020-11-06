@@ -29,9 +29,6 @@ export const utilsMixin = {
         readable(value) {
             return this.$options.filters.readable(value);
         },
-        locale(value, defaultValue) {
-            return this.$options.filters.locale(value, defaultValue);
-        },
         normalize(value) {
             return normalize(value);
         },
