@@ -95,8 +95,16 @@ export const store = {
             state.price = price;
         },
         personalization(state, value) {
-            state.personalization.initials = value.initials;
-            state.personalization.engraving = value.engraving;
+            const groups = Object.keys(value);
+            const mainGroup = groups.includes("main") ? "main" : groups[0];
+            const mainInitials = value[mainGroup] || {};
+
+            const initials = value.initials === undefined ? mainInitials.initials : value.initials;
+            const engraving =
+                value.engraving === undefined ? mainInitials.engraving : value.engraving;
+
+            state.personalization.initials = initials || "";
+            state.personalization.engraving = engraving || null;
             state.personalization.initialsExtra = value.initialsExtra;
         },
         size(state, value) {
