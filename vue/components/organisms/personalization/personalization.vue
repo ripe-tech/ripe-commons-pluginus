@@ -28,14 +28,18 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons">
+                    <slot name="buttons" v-bind:allow-apply="allowApply">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
                             {{ locale("ripe_commons.modal.cancel") }}
                         </div>
-                        <div class="button button-color button-apply" v-on:click="apply">
+                        <div
+                            class="button button-color button-apply"
+                            v-bind:class="{ disabled: !allowApply }"
+                            v-on:click="apply"
+                        >
                             {{ locale("ripe_commons.modal.apply") }}
                         </div>
                     </slot>
@@ -169,6 +173,16 @@ export const Personalization = {
         },
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
+        },
+        allowApply() {
+            if (!this.state.initials || !this.state.engraving) return false;
+            const initialsExtra = this.state.initialsExtra;
+            for (const group in initialsExtra) {
+                if (!initialsExtra[group].initials || !initialsExtra[group].engraving) {
+                    return false;
+                }
+            }
+            return true;
         }
     },
     watch: {
@@ -258,6 +272,7 @@ export const Personalization = {
     },
     methods: {
         apply() {
+            if (!this.allowApply) return;
             this.$store.commit("personalization", this.state);
             this.$bus.trigger("personalization", this.state, this.tabMessage);
             this.hideModal();
