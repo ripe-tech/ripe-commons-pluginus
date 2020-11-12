@@ -248,7 +248,20 @@ export const Personalization = {
 
         this.$bus.bind("initials_extra", initialsExtra => {
             if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
-                this.state.initialsExtra = initialsExtra;
+                const groups = Object.keys(initialsExtra);
+                const isEmpty = groups.length === 0;
+                const mainGroup = groups.includes("main") ? "main" : groups[0];
+                const mainInitials = initialsExtra[mainGroup];
+
+                if (isEmpty) {
+                    this.state.initials = "";
+                    this.state.engraving = null;
+                    this.state.initialsExtra = {};
+                } else {
+                    this.state.initials = mainInitials.initials || "";
+                    this.state.engraving = mainInitials.engraving || null;
+                    this.state.initialsExtra = initialsExtra;
+                }
                 if (this.$refs.form) this.$refs.form.setState(this.state);
             }
         });
