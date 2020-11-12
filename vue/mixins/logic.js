@@ -112,7 +112,8 @@ export const logicMixin = {
             return initialsExtraS;
         },
         /**
-         * Validates `initials`, `engraving` and `initialsExtra`
+         * Checks that the personalization is valid, meaning there should be
+         * an engraving if and only if there are initials.
          *
          * @param {String} initials The initials string value to be used.
          * @param {String} engraving The engraving string value to be used.
@@ -120,11 +121,10 @@ export const logicMixin = {
          * that are going to be used in the validation.
          * @returns {Boolean} `true` only when all arguments are all valid.
          */
-        validPersonalization(initials, engraving, initialsExtra = {}) {
+        validPersonalization(initials, engraving, initialsExtra) {
             if (!initials && engraving) return false;
-            return (
-                Object.values(initialsExtra).find(group => group.initials && !group.engraving) ===
-                undefined
+            return Boolean(
+                Object.values(initialsExtra).find(group => group.initials && !group.engraving)
             );
         },
         _subsetCompare(base, reference) {
