@@ -28,7 +28,7 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons" v-bind:allow-apply="allowApply">
+                    <slot name="buttons" v-bind:invalid-state="invalidState">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
@@ -37,7 +37,7 @@
                         </div>
                         <div
                             class="button button-color button-apply"
-                            v-bind:class="{ disabled: !allowApply }"
+                            v-bind:class="{ disabled: invalidState }"
                             v-on:click="apply"
                         >
                             {{ locale("ripe_commons.modal.apply") }}
@@ -174,15 +174,12 @@ export const Personalization = {
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
         },
-        allowApply() {
-            if (!this.state.initials || !this.state.engraving) return false;
-            const initialsExtra = this.state.initialsExtra;
-            for (const group in initialsExtra) {
-                if (!initialsExtra[group].initials || !initialsExtra[group].engraving) {
-                    return false;
-                }
-            }
-            return true;
+        invalidState() {
+            return !this.validatePersonalization(
+                this.state.initials,
+                this.state.engraving,
+                this.state.initialsExtra
+            );
         }
     },
     watch: {
@@ -272,7 +269,7 @@ export const Personalization = {
     },
     methods: {
         apply() {
-            if (!this.allowApply) return;
+            if (this.invalidState) return;
             this.$store.commit("personalization", this.state);
             this.$bus.trigger("personalization", this.state, this.tabMessage);
             this.hideModal();

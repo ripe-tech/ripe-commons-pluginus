@@ -111,6 +111,22 @@ export const logicMixin = {
             });
             return initialsExtraS;
         },
+        /**
+         * Validates `initials`, `engraving` and `initialsExtra`
+         *
+         * @param {String} initials The initials string value to be used.
+         * @param {String} engraving The engraving string value to be used.
+         * @param {Object} initialsExtra The Object that contains the initials extra
+         * that are going to be used in the validation.
+         * @returns {Boolean} `true` only when all arguments are all valid.
+         */
+        validatePersonalization(initials, engraving, initialsExtra = {}) {
+            if (!initials && engraving) return false;
+            for (const group of Object.values(initialsExtra)) {
+                if (group.initials && !group.engraving) return false;
+            }
+            return true;
+        },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
                 // retrieves the group information for the current
