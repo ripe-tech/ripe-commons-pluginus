@@ -175,7 +175,7 @@ export const Personalization = {
             return this.$store.state.hasPersonalization;
         },
         invalidState() {
-            return !this.validatePersonalization(
+            return !this.validPersonalization(
                 this.state.initials,
                 this.state.engraving,
                 this.state.initialsExtra

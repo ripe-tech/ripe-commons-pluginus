@@ -120,12 +120,12 @@ export const logicMixin = {
          * that are going to be used in the validation.
          * @returns {Boolean} `true` only when all arguments are all valid.
          */
-        validatePersonalization(initials, engraving, initialsExtra = {}) {
+        validPersonalization(initials, engraving, initialsExtra = {}) {
             if (!initials && engraving) return false;
-            for (const group of Object.values(initialsExtra)) {
-                if (group.initials && !group.engraving) return false;
-            }
-            return true;
+            return (
+                Object.values(initialsExtra).find(group => group.initials && !group.engraving) ===
+                undefined
+            );
         },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
