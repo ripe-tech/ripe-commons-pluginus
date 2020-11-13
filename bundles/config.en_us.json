@@ -6,6 +6,19 @@
     "ripe_commons.modal.apply": "Apply",
     "ripe_commons.modal.select": "Select",
 
+    "ripe_commons.group.main": "Main",
+    "ripe_commons.group.left": "Left",
+    "ripe_commons.group.right": "Right",
+    "ripe_commons.group.front": "Front",
+    "ripe_commons.group.back": "Back",
+    "ripe_commons.group.side": "Side",
+
+    "ripe_commons.properties.font": "Font",
+    "ripe_commons.properties.font_size": "Font Size",
+    "ripe_commons.properties.style": "Style",
+    "ripe_commons.properties.position": "Position",
+    "ripe_commons.properties.color": "Color",
+
     "ripe_commons.restrictions_alert.restrictions_alert": "Undo",
     "ripe_commons.restrictions_alert.back_button": "Back",
     "ripe_commons.restrictions_alert.close_button": "Close",

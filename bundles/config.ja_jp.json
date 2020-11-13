@@ -6,6 +6,19 @@
     "ripe_commons.modal.apply": "申し込み",
     "ripe_commons.modal.select": "申し込み",
 
+    "ripe_commons.group.main": "メイン",
+    "ripe_commons.group.left": "左",
+    "ripe_commons.group.right": "正しい",
+    "ripe_commons.group.front": "前面",
+    "ripe_commons.group.back": "バック",
+    "ripe_commons.group.side": "側",
+
+    "ripe_commons.properties.font": "フォント",
+    "ripe_commons.properties.font_size": "フォントサイズ",
+    "ripe_commons.properties.style": "スタイル",
+    "ripe_commons.properties.position": "位置",
+    "ripe_commons.properties.color": "色",
+
     "ripe_commons.restrictions_alert.restrictions_alert": "元に戻る",
     "ripe_commons.restrictions_alert.back_button": "バック",
     "ripe_commons.restrictions_alert.close_button": "閉じる",
@@ -14,6 +27,12 @@
 
     "ripe_commons.personalization.personalization": "パーソナライゼーション",
     "ripe_commons.personalization.add_initials": "イニシャルを追加",
+    "ripe_commons.personalization.group": "グループ",
+    "ripe_commons.personalization.initials": "イニシャル",
+    "ripe_commons.personalization.select.style": "スタイルを選択",
+    "ripe_commons.personalization.select.font": "フォントを選択してください",
+    "ripe_commons.personalization.select.position": "位置を選択してください",
+    "ripe_commons.personalization.select.color": "色を選択してください",
 
     "ripe_commons.size.size": "サイズ",
     "ripe_commons.size.select_size": "サイズ",
