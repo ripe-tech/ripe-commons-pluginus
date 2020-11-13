@@ -211,6 +211,9 @@ export const Reference = {
                     this.tabProperties.forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
                         if (!property) return;
+
+                        // if there is only one single option,
+                        // then don't include it in the tab message
                         const availableProperties = this.properties()[propertyName] || [];
                         if (availableProperties.length < 2) return;
 
