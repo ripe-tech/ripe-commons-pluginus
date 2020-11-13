@@ -111,7 +111,7 @@ export const Reference = {
          */
         tabProperties: {
             type: Array,
-            default: () => ["font", "style"]
+            default: () => ["font", "font_size", "style", "position", "color"]
         }
     },
     data: function() {
