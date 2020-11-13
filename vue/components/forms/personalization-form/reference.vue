@@ -9,29 +9,32 @@
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
                 <p class="subtitle">
-                    {{ locale("ripe_commons.personalization.group") }} {{ group }}
+                    {{ locale("ripe_commons.personalization.group") }}
+                    {{ locale(`ripe_commons.group.${group}`, readable(capitalize(group))) }}
                 </p>
                 <form-input
-                    v-bind:header="(`properties.${type}`, readable(capitalize(type))) | locale"
+                    v-bind:header="
+                        locale(`ripe_commons.properties.${type}`, readable(capitalize(type)))
+                    "
                     v-bind:header-size="'large'"
                     v-for="[type, options] in Object.entries(properties())"
                     v-bind:key="type"
                 >
                     <select-ripe
                         v-bind:class="`select-${type}`"
-                        v-bind:placeholder="`ripe_commons.personalization.select.${type}` | locale"
+                        v-bind:placeholder="locale(`ripe_commons.personalization.select.${type}`)"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
                         v-on:update:value="value => onValueUpdate(value, group, type)"
                     />
                 </form-input>
                 <form-input
-                    v-bind:header="'ripe_commons.personalization.initials' | locale"
+                    v-bind:header="locale('ripe_commons.personalization.initials')"
                     v-bind:header-size="'large'"
                 >
                     <input-ripe
                         class="input-initials"
-                        v-bind:placeholder="'ripe_commons.personalization.add_initials' | locale"
+                        v-bind:placeholder="locale('ripe_commons.personalization.add_initials')"
                         v-bind:value.sync="initialsText[group]"
                     />
                 </form-input>
@@ -111,7 +114,7 @@ export const Reference = {
          */
         tabProperties: {
             type: Array,
-            default: () => ["font", "style"]
+            default: () => ["font", "font_size", "style", "position", "color"]
         }
     },
     data: function() {
@@ -208,6 +211,11 @@ export const Reference = {
                     this.tabProperties.forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
                         if (!property) return;
+
+                        // if there is only one single option,
+                        // then don't include it in the tab message
+                        const availableProperties = this.properties()[propertyName] || [];
+                        if (availableProperties.length < 2) return;
 
                         text.push(
                             this.locale(
