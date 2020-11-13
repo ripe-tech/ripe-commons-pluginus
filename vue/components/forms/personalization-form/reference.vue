@@ -211,6 +211,8 @@ export const Reference = {
                     this.tabProperties.forEach(propertyName => {
                         const property = this.propertiesData[group][propertyName];
                         if (!property) return;
+                        const availableProperties = this.properties()[propertyName] || [];
+                        if (availableProperties.length < 2) return;
 
                         text.push(
                             this.locale(
