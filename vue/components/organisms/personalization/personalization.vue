@@ -140,6 +140,16 @@ body.mobile .personalization ::v-deep .keyboard.text {
 <script>
 import { modalMixin } from "../../../mixins";
 
+/**
+ * Top level personalization component that encapsulated
+ * both the button that will trigger the personalization
+ * and the modal that allows personalization.
+ *
+ * The form that allows personalization is dynamic and is
+ * controlled by the Pluginus system so that it may be
+ * adapted to the current configuration context (for the
+ * best possible experience for the model).
+ */
 export const Personalization = {
     name: "personalization",
     mixins: [modalMixin],
@@ -162,15 +172,39 @@ export const Personalization = {
         };
     },
     computed: {
+        /**
+         * The original personalization state from which the
+         * user has entered the personalization modal.
+         *
+         * @returns {Object} The object containing the personalization
+         * definition considered the original one.
+         */
         originalState() {
             return this.$store.state.personalization;
         },
+        /**
+         * If the current personalization modal is visible.
+         *
+         * @returns {Boolean} If the modal, is visible.
+         */
         visible() {
             return this.$refs.modal.visible;
         },
+        /**
+         * The form's unique key that will identify this form
+         * based on the current counter and model's identifier.
+         *
+         * @returns {String} The unique string for the current modal
+         */
         formKey() {
-            return this.brand + "." + this.model + "." + this.counter;
+            return `${this.brand}.${this.model}.${this.counter}`;
         },
+        /**
+         * If there's a valid personalization set under the current
+         * store state.
+         *
+         * @returns {Boolean} If there's a valid personalization.
+         */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
         },
@@ -344,8 +378,8 @@ export const Personalization = {
 
             // in case there's no visibility of the personalization then applies the
             // changes and then runs the update of the button text
-            !this.visible && this.apply();
-            !this.visible && this.updateButtonText();
+            if (!this.visible) this.apply();
+            if (!this.visible) this.updateButtonText();
         },
         updateButtonText() {
             this.buttonText = this.tabMessage || "ripe_commons.personalization.add_initials";
