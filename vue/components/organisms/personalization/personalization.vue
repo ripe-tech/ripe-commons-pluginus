@@ -28,7 +28,7 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons" v-bind:invalid-state="invalidState">
+                    <slot name="buttons" v-bind:valid-state="validState">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
@@ -37,7 +37,7 @@
                         </div>
                         <div
                             class="button button-color button-apply"
-                            v-bind:class="{ disabled: invalidState }"
+                            v-bind:class="{ disabled: !validState }"
                             v-on:click="apply"
                         >
                             {{ locale("ripe_commons.modal.apply") }}
@@ -183,6 +183,15 @@ export const Personalization = {
             return this.$store.state.personalization;
         },
         /**
+         * If there's a valid personalization set under the current
+         * store state.
+         *
+         * @returns {Boolean} If there's a valid personalization.
+         */
+        hasPersonalization() {
+            return this.$store.state.hasPersonalization;
+        },
+        /**
          * If the current personalization modal is visible.
          *
          * @returns {Boolean} If the modal, is visible.
@@ -200,16 +209,13 @@ export const Personalization = {
             return `${this.brand}.${this.model}.${this.counter}`;
         },
         /**
-         * If there's a valid personalization set under the current
-         * store state.
+         * If the current personalization state is valid meaning that
+         * all of the personalization pre-conditions are met.
          *
-         * @returns {Boolean} If there's a valid personalization.
+         * @returns {Boolean} If the current personalization state is valid.
          */
-        hasPersonalization() {
-            return this.$store.state.hasPersonalization;
-        },
-        invalidState() {
-            return !this.validPersonalization(
+        validState() {
+            return this.validPersonalization(
                 this.state.initials,
                 this.state.engraving,
                 this.state.initialsExtra
@@ -303,7 +309,10 @@ export const Personalization = {
     },
     methods: {
         apply() {
-            if (this.invalidState) return;
+            // in case the current state is not valid "ignores" the
+            // apply operations (safe guard to avoid unwanted mutations)
+            if (!this.validState) return;
+
             this.$store.commit("personalization", this.state);
             this.$bus.trigger("personalization", this.state, this.tabMessage);
             this.hideModal();
