@@ -189,7 +189,7 @@ export const Personalization = {
          * If there's a valid personalization set under the current
          * store state.
          *
-         * @returns {Boolean} IF there's a valid personalization.
+         * @returns {Boolean} If there's a valid personalization.
          */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
@@ -356,8 +356,8 @@ export const Personalization = {
 
             // in case there's no visibility of the personalization then applies the
             // changes and then runs the update of the button text
-            !this.visible && this.apply();
-            !this.visible && this.updateButtonText();
+            if (!this.visible) this.apply();
+            if (!this.visible) this.updateButtonText();
         },
         updateButtonText() {
             this.buttonText = this.tabMessage || "ripe_commons.personalization.add_initials";
