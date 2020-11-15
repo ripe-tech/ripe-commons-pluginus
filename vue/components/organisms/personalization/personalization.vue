@@ -158,15 +158,39 @@ export const Personalization = {
         };
     },
     computed: {
+        /**
+         * The original personalization state from which the
+         * user has entered the personalization modal.
+         *
+         * @returns {Object} The object containing the personalization
+         * definition considered the original one.
+         */
         originalState() {
             return this.$store.state.personalization;
         },
+        /**
+         * If the current personalization modal is visible.
+         *
+         * @returns {Boolean} If the modal, is visible.
+         */
         visible() {
             return this.$refs.modal.visible;
         },
+        /**
+         * The form's unique key that will identify this form
+         * based on the current counter and model's identifier.
+         *
+         * @returns {String} The unique string for the current modal
+         */
         formKey() {
-            return this.brand + "." + this.model + "." + this.counter;
+            return `${this.brand}.${this.model}.${this.counter}`;
         },
+        /**
+         * If there's a valid personalization set under the current
+         * store state.
+         *
+         * @returns {Boolean} IF there's a valid personalization.
+         */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
         }
