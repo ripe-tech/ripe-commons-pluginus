@@ -136,6 +136,16 @@ body.mobile .personalization ::v-deep .keyboard.text {
 <script>
 import { modalMixin } from "../../../mixins";
 
+/**
+ * Top level personalization component that encapsulated
+ * both the button that will trigger the personalization
+ * and the modal that allows personalization.
+ *
+ * The form that allows personalization is dynamic and is
+ * controlled by the Pluginus system so that it may be
+ * adapted to the current configuration context (for the
+ * best possible experience for the model).
+ */
 export const Personalization = {
     name: "personalization",
     mixins: [modalMixin],
