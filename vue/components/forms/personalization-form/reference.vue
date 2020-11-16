@@ -182,14 +182,15 @@ export const Reference = {
     },
     methods: {
         hasValidInput(initials) {
-            if (!initials) return true;
+            if (!initials && initials !== 0) return true;
 
-            const validChars = !initials
-                .split("")
-                .find(char => !this.$store.state.initialsSupportedCharacters.find(c => c === char));
+            const validChars = initials.split("").every(initial => this.$store.state.initialsSupportedCharacters.includes(initial));
+            if (!validChars) return false;
+
             const validLength = initials.length <= this.$store.state.initialsMaxCharacters;
+            if (!validLength) return false;
 
-            return validChars && validLength;
+            return true;
         },
         reset() {
             this.propertiesData = {};

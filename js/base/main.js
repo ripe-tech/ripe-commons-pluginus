@@ -283,7 +283,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
             // available characters for personalization
-            const [groups, minCharacters, maxCharacters, supportedCharacters] = await Promise.all([
+            const [groups, minimumCharacters, maximumCharacters, supportedCharacters] = await Promise.all([
                 this.ripe.runLogicP({ method: "groups" }),
                 this.ripe.runLogicP({ method: "minimum_initials" }),
                 this.ripe.runLogicP({ method: "maximum_initials" }),
@@ -298,8 +298,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // updates the store with both the groups and the supported
             // characters of the current configuration context
             this.store.commit("initialsGroups", groups);
-            this.store.commit("initialsMinCharacters", minCharacters);
-            this.store.commit("initialsMaxCharacters", maxCharacters);
+            this.store.commit("initialsMinCharacters", minimumCharacters);
+            this.store.commit("initialsMaxCharacters", maximumCharacters);
             this.store.commit("initialsSupportedCharacters", supportedCharacters);
         } catch (err) {
             // gives a default group if builds does not support remote
