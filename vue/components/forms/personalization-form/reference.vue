@@ -36,7 +36,7 @@
                         class="input-initials"
                         v-bind:placeholder="locale('ripe_commons.personalization.add_initials')"
                         v-bind:value="initialsText[group]"
-                        v-on:update:value="value => onUpdateValueInitials(value, group)"
+                        v-on:update:value="value => onUpdateValueInput(value, group)"
                     />
                 </form-input>
             </div>
@@ -300,7 +300,7 @@ export const Reference = {
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
         },
-        onUpdateValueInitials(newValue, group) {
+        onUpdateValueInput(newValue, group) {
             if (!this.hasValidInput(newValue)) {
                 // if input is invalid set the input value to null then
                 // to the same previous value only to trigger a fake change
