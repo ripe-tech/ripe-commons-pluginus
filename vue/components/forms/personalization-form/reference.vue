@@ -187,7 +187,9 @@ export const Reference = {
             const validLength = initials.length <= this.$store.state.initialsMaxCharacters;
             if (!validLength) return false;
 
-            const validChars = initials.split("").every(initial => this.$store.state.initialsSupportedCharacters.includes(initial));
+            const validChars = initials
+                .split("")
+                .every(initial => this.$store.state.initialsSupportedCharacters.includes(initial));
             if (!validChars) return false;
 
             return true;
@@ -311,8 +313,7 @@ export const Reference = {
                 this.$nextTick(() => {
                     this.$set(this.initialsText, group, previousValue);
                 });
-            }
-            else {
+            } else {
                 this.$set(this.initialsText, group, newValue);
             }
         },
