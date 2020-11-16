@@ -182,6 +182,8 @@ export const Reference = {
     },
     methods: {
         hasValidInput(initials) {
+            if (!initials) return true;
+
             const validChars = !initials
                 .split("")
                 .find(char => !this.$store.state.initialsSupportedCharacters.find(c => c === char));
