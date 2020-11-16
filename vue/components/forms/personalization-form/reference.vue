@@ -35,6 +35,7 @@
                     <input-ripe
                         class="input-initials"
                         v-bind:placeholder="locale('ripe_commons.personalization.add_initials')"
+                        v-bind:has-valid-input="hasValidInput"
                         v-bind:value.sync="initialsText[group]"
                     />
                 </form-input>
@@ -180,6 +181,14 @@ export const Reference = {
         if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
+        hasValidInput(initials) {
+            const validChars = !initials
+                .split("")
+                .find(char => !this.$store.state.initialsSupportedCharacters.find(c => c === char));
+            const validLength = initials.length <= this.$store.state.initialsMaxCharacters;
+
+            return validChars && validLength;
+        },
         reset() {
             this.propertiesData = {};
             this.groups.forEach(group => {
