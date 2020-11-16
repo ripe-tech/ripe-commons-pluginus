@@ -25,7 +25,7 @@
                         v-bind:placeholder="locale(`ripe_commons.personalization.select.${type}`)"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
-                        v-on:update:value="value => onValueUpdate(value, group, type)"
+                        v-on:update:value="value => onValueUpdateSelect(value, group, type)"
                     />
                 </form-input>
                 <form-input
@@ -35,8 +35,8 @@
                     <input-ripe
                         class="input-initials"
                         v-bind:placeholder="locale('ripe_commons.personalization.add_initials')"
-                        v-bind:has-valid-input="hasValidInput"
-                        v-bind:value.sync="initialsText[group]"
+                        v-bind:value="initialsText[group]"
+                        v-on:update:value="value => onUpdateValueInitials(value, group)"
                     />
                 </form-input>
             </div>
@@ -289,14 +289,29 @@ export const Reference = {
         engravingToProperties(engraving, group) {
             const { valuesM } = this.$ripe.parseEngraving(engraving);
             Object.entries(valuesM).forEach(([property, value]) => {
-                this.onValueUpdate(value, group, property);
+                this.onValueUpdateSelect(value, group, property);
             });
         },
-        onValueUpdate(value, group, type) {
+        onValueUpdateSelect(value, group, type) {
             const newProperties = { ...this.propertiesData };
             if (!newProperties[group]) newProperties[group] = {};
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
+        },
+        onUpdateValueInitials(newValue, group) {
+            if (!this.hasValidInput(newValue)) {
+                // if input is invalid set the input value to null then
+                // to the same previous value only to trigger a fake change
+                // and force the compoennt to fallback to the previous value
+                const previousValue = this.initialsText[group];
+                this.$set(this.initialsText, group, null);
+                this.$nextTick(() => {
+                    this.$set(this.initialsText, group, previousValue);
+                });
+            }
+            else {
+                this.$set(this.initialsText, group, newValue);
+            }
         },
         /**
          * "Generic" initials builder function that uses the current properties
