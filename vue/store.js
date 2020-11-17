@@ -35,8 +35,8 @@ export const store = {
         ripeOptions: {},
         ripeState: {},
         initialsGroups: [],
-        initialsMinCharacters: 0,
-        initialsMaxCharacters: Infinity,
+        initialsMinimumCharacters: 0,
+        initialsMaximumCharacters: Infinity,
         initialsSupportedCharacters: []
     },
     mutations: {
@@ -148,11 +148,11 @@ export const store = {
         initialsGroups(state, initialsGroups) {
             state.initialsGroups = initialsGroups;
         },
-        initialsMinCharacters(state, initialsMinCharacters) {
-            state.initialsMinCharacters = initialsMinCharacters;
+        initialsMinimumCharacters(state, initialsMinimumCharacters) {
+            state.initialsMinimumCharacters = initialsMinimumCharacters;
         },
-        initialsMaxCharacters(state, initialsMaxCharacters) {
-            state.initialsMaxCharacters = initialsMaxCharacters;
+        initialsMaximumCharacters(state, initialsMaximumCharacters) {
+            state.initialsMaximumCharacters = initialsMaximumCharacters;
         },
         initialsSupportedCharacters(state, initialsSupportedCharacters) {
             state.initialsSupportedCharacters = initialsSupportedCharacters;

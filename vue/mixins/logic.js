@@ -35,10 +35,10 @@ export const logicMixin = {
         initialsGroups() {
             return this.$store.state.initialsGroups;
         },
-        initialsMinCharacters() {
+        initialsMinimumCharacters() {
             return this.$store.state.initialsSupportedCharacters;
         },
-        initialsMaxCharacters() {
+        initialsMaximumCharacters() {
             return this.$store.state.initialsSupportedCharacters;
         },
         initialsSupportedCharacters() {

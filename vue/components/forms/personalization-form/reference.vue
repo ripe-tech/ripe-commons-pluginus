@@ -184,7 +184,7 @@ export const Reference = {
         hasValidInput(initials) {
             if (!initials && initials !== 0) return true;
 
-            const validLength = initials.length <= this.$store.state.initialsMaxCharacters;
+            const validLength = initials.length <= this.$store.state.initialsMaximumCharacters;
             if (!validLength) return false;
 
             const validChars = initials

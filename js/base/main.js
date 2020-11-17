@@ -303,16 +303,16 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // updates the store with both the groups and the supported
             // characters of the current configuration context
             this.store.commit("initialsGroups", groups);
-            this.store.commit("initialsMinCharacters", minimumCharacters);
-            this.store.commit("initialsMaxCharacters", maximumCharacters);
+            this.store.commit("initialsMinimumCharacters", minimumCharacters);
+            this.store.commit("initialsMaximumCharacters", maximumCharacters);
             this.store.commit("initialsSupportedCharacters", supportedCharacters);
         } catch (err) {
             // gives a default group if builds does not support remote
             // business logic (for the `groups` and `supported_characters`
             // "methods")
             this.store.commit("initialsGroups", ["main"]);
-            this.store.commit("initialsMinCharacters", 0);
-            this.store.commit("initialsMaxCharacters", Infinity);
+            this.store.commit("initialsMinimumCharacters", 0);
+            this.store.commit("initialsMaximumCharacters", Infinity);
             this.store.commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
         }
     }
