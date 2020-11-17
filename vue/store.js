@@ -105,7 +105,7 @@ export const store = {
 
             state.personalization.initials = initials || "";
             state.personalization.engraving = engraving || null;
-            state.personalization.initialsExtra = value.initialsExtra;
+            state.personalization.initialsExtra = Object.assign({}, value.initialsExtra);
         },
         size(state, value) {
             state.size = value;
