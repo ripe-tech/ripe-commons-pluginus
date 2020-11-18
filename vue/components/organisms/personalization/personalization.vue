@@ -245,7 +245,17 @@ export const Personalization = {
             // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
                 .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
+                .filter(
+                    plugin =>
+                        !plugin.meta.models ||
+                        (plugin.meta.models && plugin.meta.models.includes(this.model))
+                )
+                .map(plugin => {
+                    let value = 0;
+                    value += plugin.meta.brand === this.brand ? 1 : 0;
+                    value += plugin.meta.models && plugin.meta.models.includes(this.model) ? 1 : 0;
+                    return [value, plugin];
+                })
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
 
