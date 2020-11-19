@@ -144,6 +144,15 @@ export const Reference = {
                 engraving: this.propertiesToEngraving(),
                 initialsExtra: this.__getInitials()
             };
+        },
+        valid() {
+            // enable the apply button whenever we don't have
+            // groups that have engraving but no initials
+            return !this.groups.find(
+                group =>
+                    Object.keys(this.propertiesData[group] || {}).length > 0 &&
+                    !(this.initialsText[group] || "")
+            );
         }
     },
     watch: {
@@ -157,6 +166,12 @@ export const Reference = {
             handler: function() {
                 this.$ripe.update();
             }
+        },
+        valid: {
+            handler: function(value) {
+                this.$emit("update:valid", value);
+            },
+            immediate: true
         }
     },
     created: async function() {

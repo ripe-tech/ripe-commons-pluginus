@@ -20,6 +20,7 @@
                     {{ locale("ripe_commons.personalization.personalization") }}
                 </h3>
                 <component
+                    v-bind:valid.sync="valid"
                     v-if="form"
                     v-bind:is="form"
                     ref="form"
@@ -28,14 +29,18 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons">
+                    <slot name="buttons" v-bind="{ valid }">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
                             {{ locale("ripe_commons.modal.cancel") }}
                         </div>
-                        <div class="button button-color button-apply" v-on:click="apply">
+                        <div
+                            class="button button-color button-apply"
+                            v-bind:class="buttonApplyClasses"
+                            v-on:click="apply"
+                        >
                             {{ locale("ripe_commons.modal.apply") }}
                         </div>
                     </slot>
@@ -164,7 +169,8 @@ export const Personalization = {
             buttonText: "",
             state: {},
             counter: 0,
-            initialOptions: null
+            initialOptions: null,
+            valid: true
         };
     },
     computed: {
@@ -203,6 +209,11 @@ export const Personalization = {
          */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
+        },
+        buttonApplyClasses() {
+            return {
+                disabled: !this.valid
+            };
         }
     },
     watch: {
