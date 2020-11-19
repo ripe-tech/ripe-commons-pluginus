@@ -118,8 +118,7 @@ export const logicMixin = {
          * @param {String} engraving The engraving to validate.
          * @param {Object} initialsExtra A map from groups to initials and engraving
          * to validate.
-         * @returns {Boolean} `true` if there is any group with engraving but
-         * no initials.
+         * @returns {Boolean} If there is any group with engraving but no initials.
          */
         engravingWithoutInitials(initials, engraving, initialsExtra = {}) {
             return Boolean(
