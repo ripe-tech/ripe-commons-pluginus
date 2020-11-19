@@ -458,7 +458,6 @@ export const Personalization = {
             };
         },
         onEnableApply(enableApply) {
-            console.log("handle", enableApply);
             this.enableApply = enableApply;
         }
     }
