@@ -146,7 +146,11 @@ export const Reference = {
             };
         },
         enableApply() {
-            return !this.groups.find(group => !this.initialsText[group] && this.propertiesData[group]);
+            // enable the apply button whenever we don't have
+            // groups that have engraving but no initials
+            return !this.groups.find(group =>
+                this.engravingWithoutInitials(this.initialsText[group], this.propertiesData[group])
+            );
         }
     },
     watch: {

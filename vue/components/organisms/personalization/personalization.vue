@@ -20,16 +20,17 @@
                     {{ locale("ripe_commons.personalization.personalization") }}
                 </h3>
                 <component
+                    v-bind:enable-apply="enableApply"
                     v-if="form"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
                     v-on:changed="formChanged"
-                    v-bind:enable-apply.sync="enableApply"
+                    v-on:update:enableApply="onEnableApply"
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons">
+                    <slot name="buttons" v-bind="{ enableApply }">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
@@ -38,7 +39,7 @@
                         </div>
                         <div
                             class="button button-color button-apply"
-                            v-bind:class="{ disabled: !enableApply }"
+                            v-bind:class="buttonApplyClasses"
                             v-on:click="apply"
                         >
                             {{ locale("ripe_commons.modal.apply") }}
@@ -209,6 +210,11 @@ export const Personalization = {
          */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
+        },
+        buttonApplyClasses() {
+            return {
+                disabled: !this.enableApply
+            };
         }
     },
     watch: {
@@ -450,6 +456,10 @@ export const Personalization = {
                 initials: "",
                 engraving: ""
             };
+        },
+        onEnableApply(enableApply) {
+            console.log("handle", enableApply);
+            this.enableApply = enableApply;
         }
     }
 };

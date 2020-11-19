@@ -123,8 +123,8 @@ export const logicMixin = {
          */
         engravingWithoutInitials(initials, engraving, initialsExtra = {}) {
             return Boolean(
-                !initials && engraving ||
-                Object.values(initialsExtra).find(group => !group.initials && group.engraving)
+                (!initials && engraving) ||
+                    Object.values(initialsExtra).find(group => !group.initials && group.engraving)
             );
         },
         _subsetCompare(base, reference) {
