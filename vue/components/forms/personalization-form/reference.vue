@@ -145,11 +145,13 @@ export const Reference = {
                 initialsExtra: this.__getInitials()
             };
         },
-        enableApply() {
+        valid() {
             // enable the apply button whenever we don't have
             // groups that have engraving but no initials
-            return !this.groups.find(group =>
-                this.engravingWithoutInitials(this.initialsText[group], this.propertiesData[group])
+            return !this.groups.find(
+                group =>
+                    Object.keys(this.propertiesData[group] || {}).length > 0 &&
+                    !(this.initialsText[group] || "")
             );
         }
     },
@@ -165,9 +167,9 @@ export const Reference = {
                 this.$ripe.update();
             }
         },
-        enableApply: {
+        valid: {
             handler: function(value) {
-                this.$emit("update:enableApply", value);
+                this.$emit("update:valid", value);
             },
             immediate: true
         }
