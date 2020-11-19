@@ -31,6 +31,7 @@
     "ripe_commons.personalization.initials": "イニシャル",
     "ripe_commons.personalization.select.style": "スタイルを選択",
     "ripe_commons.personalization.select.font": "フォントを選択してください",
+    "ripe_commons.personalization.select.font_size": "フォントサイズを選択します",
     "ripe_commons.personalization.select.position": "位置を選択してください",
     "ripe_commons.personalization.select.color": "色を選択してください",
 

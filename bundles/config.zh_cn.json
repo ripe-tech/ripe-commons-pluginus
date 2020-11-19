@@ -31,6 +31,7 @@
     "ripe_commons.personalization.initials": "首字母",
     "ripe_commons.personalization.select.style": "选择样式",
     "ripe_commons.personalization.select.font": "选择字体",
+    "ripe_commons.personalization.select.font_size": "选择字体大小",
     "ripe_commons.personalization.select.position": "选择职位",
     "ripe_commons.personalization.select.color": "选择颜色",
 
