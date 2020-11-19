@@ -144,6 +144,9 @@ export const Reference = {
                 engraving: this.propertiesToEngraving(),
                 initialsExtra: this.__getInitials()
             };
+        },
+        enableApply() {
+            return !this.groups.find(group => !this.initialsText[group] && this.propertiesData[group]);
         }
     },
     watch: {
@@ -157,6 +160,12 @@ export const Reference = {
             handler: function() {
                 this.$ripe.update();
             }
+        },
+        enableApply: {
+            handler: function(value) {
+                this.$emit("update:enableApply", value);
+            },
+            immediate: true
         }
     },
     created: async function() {
