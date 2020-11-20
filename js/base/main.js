@@ -60,20 +60,23 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
-        // initializes the RIPE object and its required plugins
+        // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
         this.ripe = new Ripe(null, null, {
+            init: false,
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
         });
 
+        // binds to the necessary events sent through the owner
+        // before initializing the RIPE object
+        await this._bind();
+        this.ripe.init();
+
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded
         await this.ripe.isReady();
-
-        // binds to the necessary events sent through the owner
-        this._bind();
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
@@ -306,7 +309,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         }
     }
 
-    _bind() {
+    async _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
         this.owner.bind("set_model", this.setModel.bind(this));
@@ -370,6 +373,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // this operation is going to trigger remote logic execution
             await this.refreshInitialsData();
         });
+
+        // listens for the 'bundles' event to change the
+        // locale bundles in localePlugin
+        this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
 
         // changes some internal structure whenever there's an update
         // on the underlying ripe instance
