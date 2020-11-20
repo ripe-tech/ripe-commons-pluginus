@@ -50,12 +50,26 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         }
     }
 
+    async loadSdkBundle() {
+        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        const currentLocale = localePlugin.getLocale();
+        const sdkBundle = ripeProvider.ripe.getBundle()[currentLocale];
+
+        for (const key in sdkBundle) {
+            if (key === "_" && sdkBundle[key] === null) continue;
+            localePlugin.setLocaleValue(key, sdkBundle[key], currentLocale);
+        }
+    }
+
     _bind() {
         this.owner.bind("config", async config => {
             if (!config) return;
             const { brand, name } = config;
             await this.loadModelLocales(brand, name);
         });
+
+        this.owner.bind("bundles", async () => await this.loadSdkBundle());
 
         this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
     }
