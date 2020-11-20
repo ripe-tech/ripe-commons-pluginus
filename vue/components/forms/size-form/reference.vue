@@ -26,7 +26,7 @@
                         v-bind:key="modelScale"
                         v-on:click="scale = modelScale"
                     >
-                        {{ locale(modelScale) }}
+                        {{ $ripe.localeLocal(`scales.${modelScale}`) }}
                     </div>
                 </div>
                 <div
