@@ -396,6 +396,7 @@ body.mobile .button-scroll-materials {
     left: 0px;
 }
 
+body.tablet .button-scroll-colors,
 body.mobile .button-scroll-colors {
     height: 100px;
     width: 50px;
@@ -633,7 +634,12 @@ export const Pickers = {
             this.scrollMaterial =
                 this.$refs.materialsPicker.scrollWidth > this.$refs.materialsPicker.clientWidth;
             this.scrollColor =
-                this.$refs.colorsPicker.scrollWidth > this.$refs.colorsPicker.clientWidth;
+                this.$refs.colorsList.$el.scrollWidth > this.$refs.colorsList.$el.clientWidth;
+            
+            console.log("PART", this.scrollParts, this.$refs.partsPicker.scrollWidth, this.$refs.partsPicker.clientWidth);
+            console.log("MAT", this.scrollMaterial, this.$refs.materialsPicker.scrollWidth, this.$refs.materialsPicker.clientWidth);
+            console.log("COL", this.scrollColor, this.$refs.colorsPicker.scrollWidth, this.$refs.colorsPicker.clientWidth);
+            console.log("COL SPAN", this.scrollColor, this.$refs.colorsList.$el, this.$refs.colorsList.$el.scrollWidth, this.$refs.colorsList.$el.clientWidth);
         },
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
