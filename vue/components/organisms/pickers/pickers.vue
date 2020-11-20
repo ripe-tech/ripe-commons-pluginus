@@ -635,11 +635,6 @@ export const Pickers = {
                 this.$refs.materialsPicker.scrollWidth > this.$refs.materialsPicker.clientWidth;
             this.scrollColor =
                 this.$refs.colorsList.$el.scrollWidth > this.$refs.colorsList.$el.clientWidth;
-            
-            console.log("PART", this.scrollParts, this.$refs.partsPicker.scrollWidth, this.$refs.partsPicker.clientWidth);
-            console.log("MAT", this.scrollMaterial, this.$refs.materialsPicker.scrollWidth, this.$refs.materialsPicker.clientWidth);
-            console.log("COL", this.scrollColor, this.$refs.colorsPicker.scrollWidth, this.$refs.colorsPicker.clientWidth);
-            console.log("COL SPAN", this.scrollColor, this.$refs.colorsList.$el, this.$refs.colorsList.$el.scrollWidth, this.$refs.colorsList.$el.clientWidth);
         },
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
