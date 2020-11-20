@@ -146,13 +146,20 @@ export const Reference = {
             };
         },
         valid() {
-            // enable the apply button whenever we don't have
-            // groups that have engraving but no initials
-            return !this.groups.find(
-                group =>
-                    Object.keys(this.propertiesData[group] || {}).length > 0 &&
-                    !(this.initialsText[group] || "")
-            );
+            const nrExpectedProperties = Object.keys(this.properties()).length;
+            // enable the apply button whenever, for all groups,
+            // we either have no initials or we have initials
+            // and all properties are set
+            return this.groups.every(group => {
+                const hasInitials = Boolean(this.initialsText[group] || "");
+                const nrProperties = Object.values(this.propertiesData[group] || {}).filter(
+                    v => v !== null && v !== undefined
+                ).length;
+                return (
+                    (!hasInitials && nrProperties === 0) ||
+                    (hasInitials && nrProperties === nrExpectedProperties)
+                );
+            });
         }
     },
     watch: {
