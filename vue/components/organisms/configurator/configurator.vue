@@ -292,30 +292,39 @@ export const Configurator = {
             }
 
             try {
+                // triggers the async change frame operation on
+                // the current configurator
                 await this.configurator.changeFrame(frame, {
                     type: null,
                     duration: null
                 });
             } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
                 this.onError(error);
             }
         });
 
         this.$bus.bind("show_frame", async frame => {
             if (this.ignoreBus) return;
-
             if (!this.configurator || !this.configurator.ready) return;
+
             const currentView = this.frame.split("-")[0];
             const newView = frame.split("-")[0];
             const sameView = currentView === newView;
             const type = sameView ? false : "cross";
             const revolutionDuration = sameView ? 500 : null;
+
             try {
+                // triggers the async change frame operation on
+                // the current configurator
                 await this.configurator.changeFrame(frame, {
                     type: type,
                     revolutionDuration: revolutionDuration
                 });
             } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
                 this.onError(error);
             }
         });
