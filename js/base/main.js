@@ -3,7 +3,7 @@ import "ripe-sdk/src/css/ripe.css";
 import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
-import { LOCALES_BASE, Ripe } from "ripe-sdk";
+import { Ripe } from "ripe-sdk";
 
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
@@ -63,15 +63,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe(null, null, {
+        this.ripe = new Ripe({
             init: false,
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
         });
-
-        // stores a reference to the
-        // locales map from RIPE SDK
-        this.ripeLocales = LOCALES_BASE;
 
         // binds to the necessary events sent through the owner
         this._bind();

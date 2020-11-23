@@ -25,11 +25,37 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
         const locales = [localePlugin.getLocale(), localePlugin.getLocaleFallback()];
         for (const locale of new Set(locales)) {
-            await this.loadModelLocale(brand, model, locale);
+            await this._loadModelLocale(brand, model, locale);
         }
     }
 
-    async loadModelLocale(brand = null, model = null, locale = null) {
+    async loadRipeSdkLocales() {
+        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        const locales = [localePlugin.getLocale(), localePlugin.getLocaleFallback()];
+
+        for (const locale of new Set(locales)) {
+            const bundle = ripeProvider.ripe.getBundle(locale);
+            for (const [key, value] of Object.entries(bundle)) {
+                if (key === "_" && value === null) continue;
+                localePlugin.setLocaleValue(key, value, locale);
+            }
+        }
+    }
+
+    _bind() {
+        this.owner.bind("config", async config => {
+            if (!config) return;
+            const { brand, name } = config;
+            await this.loadModelLocales(brand, name);
+        });
+
+        this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
+
+        this.owner.bind("bundles", async () => await this.loadRipeSdkLocales());
+    }
+
+    async _loadModelLocale(brand = null, model = null, locale = null) {
         const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
         const currentLocale = locale || localePlugin.getLocale();
@@ -48,30 +74,6 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             if (key === "_" && result[key] === null) continue;
             localePlugin.setLocaleValue(key, result[key], currentLocale);
         }
-    }
-
-    async loadSdkBundle() {
-        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
-        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
-        const currentLocale = localePlugin.getLocale();
-        const sdkBundle = ripeProvider.ripeLocales[currentLocale];
-
-        for (const key in sdkBundle) {
-            if (key === "_" && sdkBundle[key] === null) continue;
-            localePlugin.setLocaleValue(key, sdkBundle[key], currentLocale);
-        }
-    }
-
-    _bind() {
-        this.owner.bind("config", async config => {
-            if (!config) return;
-            const { brand, name } = config;
-            await this.loadModelLocales(brand, name);
-        });
-
-        this.owner.bind("bundles", async () => await this.loadSdkBundle());
-
-        this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
     }
 }
 
