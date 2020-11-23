@@ -69,17 +69,16 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             ...this.options
         });
 
-        // binds to the necessary events sent through the owner
-        // before initializing the RIPE object
-        await this._bind();
-        this.ripe.init();
-
-        // assigns locales map from RIPE SDK
+        // stores a reference to the
+        // locales map from RIPE SDK
         this.ripeLocales = LOCALES_BASE;
+
+        // binds to the necessary events sent through the owner
+        await this._bind();
 
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded
-        await this.ripe.isReady();
+        await this.ripe.init();
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
