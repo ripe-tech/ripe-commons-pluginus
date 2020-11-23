@@ -372,10 +372,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             await this.refreshInitialsData();
         });
 
-        // listens for the 'bundles' event to change the
-        // locale bundles in localePlugin
-        this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
-
         // changes some internal structure whenever there's an update
         // on the underlying ripe instance
         this.ripe.bind("post_update", options => {
@@ -418,6 +414,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // forwards the some other events to the global bus
         this.ripe.bind("selected_part", (...args) => this.owner.trigger("selected_part", ...args));
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
+        this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
 
         this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
         this.ripe.bind("initials_extra", (...args) =>
