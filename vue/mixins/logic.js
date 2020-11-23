@@ -1,3 +1,5 @@
+import { initialsFromExtra } from "../../js/util";
+
 export const logicMixin = {
     inject: {
         manager: {
@@ -68,6 +70,9 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        initialsFromExtra(initialsExtra, initials, engraving) {
+            return initialsFromExtra(initialsExtra, initials, engraving);
+        },
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce
