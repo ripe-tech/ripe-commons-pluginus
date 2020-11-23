@@ -6,6 +6,19 @@
     "ripe_commons.modal.apply": "采用",
     "ripe_commons.modal.select": "采用",
 
+    "ripe_commons.group.main": "主要",
+    "ripe_commons.group.left": "左",
+    "ripe_commons.group.right": "右",
+    "ripe_commons.group.front": "面前",
+    "ripe_commons.group.back": "背部",
+    "ripe_commons.group.side": "侧",
+
+    "ripe_commons.properties.font": "字体",
+    "ripe_commons.properties.font_size": "字体大小",
+    "ripe_commons.properties.style": "样式",
+    "ripe_commons.properties.position": "位置",
+    "ripe_commons.properties.color": "颜色",
+
     "ripe_commons.restrictions_alert.restrictions_alert": "复原",
     "ripe_commons.restrictions_alert.back_button": "背部",
     "ripe_commons.restrictions_alert.close_button": "关",
@@ -14,6 +27,13 @@
 
     "ripe_commons.personalization.personalization": "个性化定制",
     "ripe_commons.personalization.add_initials": "专属刻字",
+    "ripe_commons.personalization.group": "组",
+    "ripe_commons.personalization.initials": "首字母",
+    "ripe_commons.personalization.select.style": "选择样式",
+    "ripe_commons.personalization.select.font": "选择字体",
+    "ripe_commons.personalization.select.font_size": "选择字体大小",
+    "ripe_commons.personalization.select.position": "选择职位",
+    "ripe_commons.personalization.select.color": "选择颜色",
 
     "ripe_commons.size.size": "尺码",
     "ripe_commons.size.select_size": "尺码",

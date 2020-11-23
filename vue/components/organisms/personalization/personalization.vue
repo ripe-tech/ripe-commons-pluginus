@@ -20,6 +20,7 @@
                     {{ locale("ripe_commons.personalization.personalization") }}
                 </h3>
                 <component
+                    v-bind:valid.sync="valid"
                     v-if="form"
                     v-bind:is="form"
                     ref="form"
@@ -28,14 +29,18 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons">
+                    <slot name="buttons" v-bind="{ valid }">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
                             {{ locale("ripe_commons.modal.cancel") }}
                         </div>
-                        <div class="button button-color button-apply" v-on:click="apply">
+                        <div
+                            class="button button-color button-apply"
+                            v-bind:class="buttonApplyClasses"
+                            v-on:click="apply"
+                        >
                             {{ locale("ripe_commons.modal.apply") }}
                         </div>
                     </slot>
@@ -136,6 +141,16 @@ body.mobile .personalization ::v-deep .keyboard.text {
 <script>
 import { modalMixin } from "../../../mixins";
 
+/**
+ * Top level personalization component that encapsulated
+ * both the button that will trigger the personalization
+ * and the modal that allows personalization.
+ *
+ * The form that allows personalization is dynamic and is
+ * controlled by the Pluginus system so that it may be
+ * adapted to the current configuration context (for the
+ * best possible experience for the model).
+ */
 export const Personalization = {
     name: "personalization",
     mixins: [modalMixin],
@@ -154,21 +169,51 @@ export const Personalization = {
             buttonText: "",
             state: {},
             counter: 0,
-            initialOptions: null
+            initialOptions: null,
+            valid: true
         };
     },
     computed: {
+        /**
+         * The original personalization state from which the
+         * user has entered the personalization modal.
+         *
+         * @returns {Object} The object containing the personalization
+         * definition considered the original one.
+         */
         originalState() {
             return this.$store.state.personalization;
         },
+        /**
+         * If the current personalization modal is visible.
+         *
+         * @returns {Boolean} If the modal, is visible.
+         */
         visible() {
             return this.$refs.modal.visible;
         },
+        /**
+         * The form's unique key that will identify this form
+         * based on the current counter and model's identifier.
+         *
+         * @returns {String} The unique string for the current modal
+         */
         formKey() {
-            return this.brand + "." + this.model + "." + this.counter;
+            return `${this.brand}.${this.model}.${this.counter}`;
         },
+        /**
+         * If there's a valid personalization set under the current
+         * store state.
+         *
+         * @returns {Boolean} If there's a valid personalization.
+         */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
+        },
+        buttonApplyClasses() {
+            return {
+                disabled: !this.valid
+            };
         }
     },
     watch: {
@@ -211,7 +256,17 @@ export const Personalization = {
             // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
                 .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
+                .filter(
+                    plugin =>
+                        !plugin.meta.models ||
+                        (plugin.meta.models && plugin.meta.models.includes(this.model))
+                )
+                .map(plugin => {
+                    let value = 0;
+                    value += plugin.meta.brand === this.brand ? 1 : 0;
+                    value += plugin.meta.models && plugin.meta.models.includes(this.model) ? 1 : 0;
+                    return [value, plugin];
+                })
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
 
@@ -345,8 +400,8 @@ export const Personalization = {
 
             // in case there's no visibility of the personalization then applies the
             // changes and then runs the update of the button text
-            !this.visible && this.apply();
-            !this.visible && this.updateButtonText();
+            if (!this.visible) this.apply();
+            if (!this.visible) this.updateButtonText();
         },
         updateButtonText() {
             this.buttonText = this.tabMessage || "ripe_commons.personalization.add_initials";
