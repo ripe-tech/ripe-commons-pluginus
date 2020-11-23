@@ -311,7 +311,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         }
     }
 
-    async _bind() {
+    _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
         this.owner.bind("set_model", this.setModel.bind(this));
