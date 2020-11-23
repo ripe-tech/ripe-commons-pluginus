@@ -124,7 +124,11 @@
             />
             <transition name="fade">
                 <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
-                    <transition-group name="list" ref="colorsList" v-on:after-enter="onColorsAnimationAfterEnter">
+                    <transition-group
+                        name="list"
+                        ref="colorsList"
+                        v-on:after-enter="onColorsAnimationAfterEnter"
+                    >
                         <li
                             class="color button button-color-option"
                             v-bind:data-index="colorOption.index"
