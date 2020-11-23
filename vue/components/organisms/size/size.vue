@@ -69,9 +69,8 @@ export const Size = {
             return this.sizeTextState
                 ? (this.isMobileWidth() || this.isTabletWidth()
                       ? ""
-                      : this.locale("ripe_commons.size.size", undefined, this.$store.state.locale) +
-                        " - ") + this.sizeTextState
-                : this.locale("ripe_commons.size.select_size", undefined, this.$store.state.locale);
+                      : this.locale("ripe_commons.size.size") + " - ") + this.sizeTextState
+                : this.locale("ripe_commons.size.select_size");
         },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
