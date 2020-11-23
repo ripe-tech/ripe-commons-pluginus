@@ -124,7 +124,7 @@
             />
             <transition name="fade">
                 <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
-                    <transition-group name="list" ref="colorsList">
+                    <transition-group name="list" ref="colorsList" v-on:after-enter="onColorsAnimationAfterEnter">
                         <li
                             class="color button button-color-option"
                             v-bind:data-index="colorOption.index"
@@ -634,7 +634,7 @@ export const Pickers = {
             this.scrollMaterial =
                 this.$refs.materialsPicker.scrollWidth > this.$refs.materialsPicker.clientWidth;
             this.scrollColor =
-                this.$refs.colorsList.$el.scrollWidth > this.$refs.colorsList.$el.clientWidth;
+                this.$refs.colorsPicker.scrollWidth > this.$refs.colorsPicker.clientWidth;
         },
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
@@ -968,8 +968,14 @@ export const Pickers = {
             requestAnimationFrame(() => {
                 this.scrollMaterials(this.activeMaterial, false);
                 this.scrollColors(this.activeMaterial, null, false);
-                this.updateScrollFlags();
             });
+        },
+        onColorsAnimationAfterEnter(el) {
+            // update scroll flags after the last element in the list
+            // enters the animation, so that the sizes of the components
+            // are finalized and the dataset it set
+            if (el.dataset.index < this.colorOptions.length - 1) return;
+            this.updateScrollFlags();
         },
         selectMaterial(material, scroll) {
             scroll = scroll === undefined ? this.multipleMaterials : scroll;
