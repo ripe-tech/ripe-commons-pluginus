@@ -74,7 +74,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripeLocales = LOCALES_BASE;
 
         // binds to the necessary events sent through the owner
-        await this._bind();
+        this._bind();
 
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded
