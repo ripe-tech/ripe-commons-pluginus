@@ -54,7 +54,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
         const currentLocale = localePlugin.getLocale();
-        const sdkBundle = ripeProvider.ripe.getBundle()[currentLocale];
+        const sdkBundle = ripeProvider.ripeLocales[currentLocale];
 
         for (const key in sdkBundle) {
             if (key === "_" && sdkBundle[key] === null) continue;
