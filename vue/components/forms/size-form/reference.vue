@@ -26,7 +26,7 @@
                         v-bind:key="modelScale"
                         v-on:click="scale = modelScale"
                     >
-                        {{ locale(modelScale) }}
+                        {{ locale(`scales.${modelScale}`) }}
                     </div>
                 </div>
                 <div
