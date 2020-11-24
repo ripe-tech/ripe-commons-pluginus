@@ -137,10 +137,6 @@ export const Configurator = {
                 };
             }
         },
-        initialFrame: {
-            type: String,
-            default: null
-        },
         /**
          * The name of the frame to be shown in the configurator using
          * the normalized frame format (eg: side-1).
@@ -191,7 +187,7 @@ export const Configurator = {
              * The frame that is currently being shown in the
              * configurator.
              */
-            frameData: this.initialFrame || this.frame,
+            frameData: this.frame,
             /**
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
@@ -268,8 +264,8 @@ export const Configurator = {
 
         this.$bus.bind("error", error => {
             if (this.ignoreBus) return;
-
             if (!this.loading) return;
+
             this.loading = false;
             this.loadingError = error;
         });
@@ -281,6 +277,8 @@ export const Configurator = {
         });
 
         this.$bus.bind("changed_frame", (configurator, frame) => {
+            // in case the global bus should be ignore nothing is
+            // done as a consequence of a changed frame
             if (this.ignoreBus) return;
 
             // avoid infinite loop, by checking if the frame
@@ -301,22 +299,11 @@ export const Configurator = {
 
         this.$bus.bind("show_frame", frame => {
             if (this.ignoreBus) return;
-
-            if (!this.configurator || !this.configurator.ready) return;
-            const currentView = this.frameData.split("-")[0];
-            const newView = frame.split("-")[0];
-            const sameView = currentView === newView;
-            const type = sameView ? false : "cross";
-            const revolutionDuration = sameView ? 500 : null;
-            this.configurator.changeFrame(frame, {
-                type: type,
-                revolutionDuration: revolutionDuration
-            });
+            this.frameData = frame;
         });
 
         this.$bus.bind("highlight_part", part => {
             if (this.ignoreBus) return;
-
             this.configurator.ready && this.configurator.highlight(part);
         });
 
@@ -351,10 +338,9 @@ export const Configurator = {
                 duration: this.duration
             });
 
-            // only the visible instance of this component
-            // should be sending events it's considered to
-            // be the main/master one
-            if (this.elementDisplayed) this.$emit("update:frame", value);
+            // triggers the update frame event allow bi-directional
+            // binding of the prop value frame
+            this.$emit("update:frame", value);
         },
         size(size) {
             this.resize(size);
