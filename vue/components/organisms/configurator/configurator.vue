@@ -16,11 +16,11 @@
             </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
                 <div class="holder-label">
-                    {{ "ripe_commons.holder.holder.label" | locale }}
+                    {{ locale("ripe_commons.holder.holder.label") }}
                 </div>
                 <img class="holder-image" src="~./assets/drag.svg" />
                 <div class="holder-second-label">
-                    {{ "ripe_commons.holder.holder-second-label.label" | locale }}
+                    {{ locale("ripe_commons.holder.holder-second-label.label") }}
                 </div>
             </div>
         </div>
@@ -160,6 +160,12 @@ export const Configurator = {
         useMasks: {
             type: Boolean,
             default: true
+        },
+        onError: {
+            type: Function,
+            default: error => {
+                throw error;
+            }
         }
     },
     computed: {
@@ -276,7 +282,7 @@ export const Configurator = {
             this.loading = true;
         });
 
-        this.$bus.bind("changed_frame", (configurator, frame) => {
+        this.$bus.bind("changed_frame", async (configurator, frame) => {
             // in case the global bus should be ignore nothing is
             // done as a consequence of a changed frame
             if (this.ignoreBus) return;
@@ -291,13 +297,21 @@ export const Configurator = {
                 return;
             }
 
-            this.configurator.changeFrame(frame, {
-                type: null,
-                duration: null
-            });
+            try {
+                // triggers the async change frame operation on
+                // the current configurator
+                await this.configurator.changeFrame(frame, {
+                    type: null,
+                    duration: null
+                });
+            } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
+                this.onError(error);
+            }
         });
 
-        this.$bus.bind("show_frame", frame => {
+        this.$bus.bind("show_frame", async frame => {
             if (this.ignoreBus) return;
             this.frameData = frame;
         });
@@ -330,13 +344,19 @@ export const Configurator = {
             const previousView = previous ? ripe.parseFrameKey(previous)[0] : "";
             const view = ripe.parseFrameKey(value)[0];
 
-            // runs the frame changing operation (possible animation)
-            // according to the newly changed frame value
-            await this.configurator.changeFrame(value, {
-                type: view === previousView ? false : this.animation,
-                revolutionDuration: view === previousView ? this.duration : null,
-                duration: this.duration
-            });
+            try {
+                // runs the frame changing operation (possible animation)
+                // according to the newly changed frame value
+                await this.configurator.changeFrame(value, {
+                    type: view === previousView ? false : this.animation,
+                    revolutionDuration: view === previousView ? this.duration : null,
+                    duration: this.duration
+                });
+            } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
+                this.onError(error);
+            }
 
             // triggers the update frame event allow bi-directional
             // binding of the prop value frame

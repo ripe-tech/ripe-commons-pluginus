@@ -60,20 +60,21 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
-        // initializes the RIPE object and its required plugins
+        // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe(null, null, {
+        this.ripe = new Ripe({
+            init: false,
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
         });
 
-        // waits for the complete of the RIPE SDK loading process
-        // so that all the necessary components are loaded
-        await this.ripe.isReady();
-
         // binds to the necessary events sent through the owner
         this._bind();
+
+        // waits for the complete of the RIPE SDK loading process
+        // so that all the necessary components are loaded
+        await this.ripe.init();
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
@@ -395,6 +396,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.app.logDebug(() => `SDK price changed: ${price.total.price_final}`);
             this.store.commit("price", price);
         });
+        this.ripe.bind("price_error", error => {
+            this.app.logDebug(() => `SDK price error: ${error.message}`);
+            this.store.commit("price", null);
+        });
 
         // forwards the parts events to the global bus
         this.ripe.bind("pre_parts", (...args) => this.owner.trigger("pre_parts", ...args));
@@ -409,6 +414,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // forwards the some other events to the global bus
         this.ripe.bind("selected_part", (...args) => this.owner.trigger("selected_part", ...args));
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
+        this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
 
         this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
         this.ripe.bind("initials_extra", (...args) =>

@@ -111,6 +111,21 @@ export const logicMixin = {
             });
             return initialsExtraS;
         },
+        /**
+         * Checks whether the engraving is set when the initials are not.
+         *
+         * @param {String} initials The initials to validate.
+         * @param {String} engraving The engraving to validate.
+         * @param {Object} initialsExtra A map from groups to initials and engraving
+         * to validate.
+         * @returns {Boolean} If there is any group with engraving but no initials.
+         */
+        engravingWithoutInitials(initials, engraving, initialsExtra = {}) {
+            return Boolean(
+                (engraving && !initials) ||
+                    Object.values(initialsExtra).find(group => group.engraving && !group.initials)
+            );
+        },
         _subsetCompare(base, reference) {
             for (const name of Object.keys(base)) {
                 // retrieves the group information for the current
