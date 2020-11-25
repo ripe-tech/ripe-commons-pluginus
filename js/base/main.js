@@ -94,10 +94,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 version: this.options.version || null,
                 parts: this.options.parts || {}
             });
-        } else if (this.options.dku) {
+        }
+        // otherwise in case the DKU value is set in the options
+        // it should be used for the configuration
+        else if (this.options.dku) {
             Object.assign(config, { dku: this.options.dku });
         }
-        // otherwise if there's a valid product id defined then we should resolve
+        // otherwise if there's a valid product ID defined then we should resolve
         // it and update the current options with its resolved values
         else if (this.options.product_id) {
             const isQuery = this.options.product_id.startsWith("query:");
