@@ -63,9 +63,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe({
-            init: false
-        });
+        this.ripe = new Ripe({ init: false });
 
         // binds to the necessary events sent through the owner
         this._bind();
