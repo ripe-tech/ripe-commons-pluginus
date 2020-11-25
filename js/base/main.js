@@ -63,14 +63,14 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe({ init: false });
+        this.ripe = new Ripe(null, null, { init: false });
 
         // binds to the necessary events sent through the owner
         this._bind();
 
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded
-        await this.ripe.init({
+        await this.ripe.init(null, null, {
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options
         });
