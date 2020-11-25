@@ -63,18 +63,17 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe({
-            init: false,
-            plugins: [this.restrictionsPlugin, this.syncPlugin],
-            ...this.options
-        });
+        this.ripe = new Ripe({ init: false });
 
         // binds to the necessary events sent through the owner
         this._bind();
 
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded
-        await this.ripe.init();
+        await this.ripe.init({
+            plugins: [this.restrictionsPlugin, this.syncPlugin],
+            ...this.options
+        });
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
