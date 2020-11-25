@@ -1,13 +1,13 @@
 export const store = {
     state: {
-        ripe_url: "",
+        ripeUrl: "",
         country: "",
         currency: "",
         locale: "",
         brand: "",
         model: "",
         dku: "",
-        product_id: "",
+        productId: "",
         variant: "",
         version: "",
         description: "",
@@ -38,14 +38,14 @@ export const store = {
         initialsSupportedCharacters: []
     },
     mutations: {
-        ripe_url(state, url) {
-            state.ripe_url = url;
+        ripeUrl(state, url) {
+            state.ripeUrl = url;
         },
         model(state, model) {
             state.brand = model.brand;
             state.model = model.model;
             state.dku = model.dku;
-            state.product_id = model.product_id;
+            state.productId = model.product_id;
             state.variant = model.variant;
             state.version = model.version;
             state.description = model.description;
@@ -119,10 +119,10 @@ export const store = {
         country(state, country) {
             state.country = country;
         },
-        order_number(state, orderNumber) {
+        orderNumber(state, orderNumber) {
             state.orderNumber = orderNumber;
         },
-        current_frame(state, currentFrame) {
+        currentFrame(state, currentFrame) {
             state.currentFrame = currentFrame;
         },
         error(state, error) {
@@ -154,7 +154,7 @@ export const store = {
         getParts: state => () => state.parts,
         getModelState: state => () => ({
             dku: state.dku,
-            product_id: state.product_id,
+            product_id: state.productId,
             brand: state.brand,
             model: state.model,
             variant: state.variant,
@@ -162,7 +162,7 @@ export const store = {
             flag: state.flag,
             format: state.format,
             resolution: state.resolution,
-            backgroundColor: state.backgroundColor,
+            background_color: state.backgroundColor,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
@@ -172,7 +172,7 @@ export const store = {
         getOrderInfo: state => () => {
             const orderInfo = {
                 dku: state.dku,
-                product_id: state.product_id,
+                product_id: state.productId,
                 brand: state.brand,
                 model: state.model,
                 gender: state.gender,

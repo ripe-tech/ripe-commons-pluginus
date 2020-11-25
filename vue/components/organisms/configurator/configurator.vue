@@ -247,7 +247,7 @@ export const Configurator = {
             // should be sending events it's considered to
             // be the main/master one
             if (this.elementDisplayed) {
-                this.$store.commit("current_frame", frame);
+                this.$store.commit("currentFrame", frame);
                 this.$bus.trigger("changed_frame", this.configurator, frame);
             }
         });
@@ -257,7 +257,7 @@ export const Configurator = {
             this.frameData = frame;
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
-            this.$store.commit("current_frame", frame);
+            this.$store.commit("currentFrame", frame);
         });
 
         this.configurator.bind("highlighted_part", part => {

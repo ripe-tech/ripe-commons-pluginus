@@ -46,7 +46,7 @@ export const logicMixin = {
                 .join(" ");
         },
         ripeUrl() {
-            return this.$store.state.ripe_url;
+            return this.$store.state.ripeUrl;
         },
         error() {
             return this.$store.state.error;
