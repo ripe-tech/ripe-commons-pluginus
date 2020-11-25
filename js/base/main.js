@@ -69,10 +69,16 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this._bind();
 
         // waits for the complete of the RIPE SDK loading process
-        // so that all the necessary components are loaded
+        // so that all the necessary components are loaded, notice
+        // that both the brand, model, variant and version so that
+        // these values are going to be set latter one
         await this.ripe.init({
             plugins: [this.restrictionsPlugin, this.syncPlugin],
-            ...this.options
+            ...this.options,
+            brand: null,
+            model: null,
+            variant: null,
+            version: null
         });
 
         // loads the vue components and mixins to be used on
