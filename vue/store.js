@@ -34,8 +34,9 @@ export const store = {
         hasSize: false,
         ripeOptions: {},
         ripeState: {},
-        initialsGroups: [],
-        initialsSupportedCharacters: []
+        initialsDataPromise: null,
+        initialsGroups: null,
+        initialsSupportedCharacters: null
     },
     mutations: {
         ripeUrl(state, url) {
@@ -143,11 +144,56 @@ export const store = {
         ripeState(state, ripeState) {
             state.ripeState = ripeState;
         },
+        initialsDataPromise(state, initialsDataPromise) {
+            state.initialsDataPromise = initialsDataPromise;
+        },
         initialsGroups(state, initialsGroups) {
             state.initialsGroups = initialsGroups;
         },
         initialsSupportedCharacters(state, initialsSupportedCharacters) {
             state.initialsSupportedCharacters = initialsSupportedCharacters;
+        }
+    },
+    actions: {
+        async getPersonalizationInfo({ state, commit }) {
+            // in case a request is already ongoing
+            // just reuse it
+            if (state.initialsDataPromise) return state.initialsDataPromise;
+
+            // if the data was already fetched
+            // there is nothing to do
+            if (state.initialsGroups && state.initialsSupportedCharacters) return;
+
+            // runs the remote business logic to obtain the multiple
+            // target groups available for initials as well as the
+            // available characters for personalization
+            const promise = Promise.all([
+                this._vm.$ripe.runLogicP({ method: "groups" }),
+                (async () => {
+                    const supportedCharacters = await this._vm.$ripe.runLogicP({
+                        method: "supported_characters"
+                    });
+                    return [...supportedCharacters];
+                })()
+            ]);
+
+            // store the ongoing request so we
+            // avoid redundant requests
+            commit("initialsDataPromise", promise);
+
+            try {
+                const [groups, supportedCharacters] = await promise;
+                commit("initialsGroups", groups);
+                commit("initialsSupportedCharacters", supportedCharacters);
+            } catch (err) {
+                // gives a default group if builds does not support remote
+                // business logic (for the `groups` and `supported_characters`
+                // "methods")
+                commit("initialsGroups", "main");
+                commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
+            } finally {
+                commit("initialsDataPromise", null);
+            }
         }
     },
     getters: {
