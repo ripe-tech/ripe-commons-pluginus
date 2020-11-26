@@ -147,6 +147,10 @@ export const store = {
         initialsDataPromise(state, initialsDataPromise) {
             state.initialsDataPromise = initialsDataPromise;
         },
+        clearInitialsData(state) {
+            state.initialsGroups = null;
+            state.initialsSupportedCharacters = null;
+        },
         initialsGroups(state, initialsGroups) {
             state.initialsGroups = initialsGroups;
         },
@@ -155,13 +159,11 @@ export const store = {
         }
     },
     actions: {
-        async getPersonalizationInfo({ state, commit }) {
-            // in case a request is already ongoing
-            // just reuse it
+        async getInitialsData({ state, commit }) {
+            // in case a request is already ongoing just reuse it
             if (state.initialsDataPromise) return state.initialsDataPromise;
 
-            // if the data was already fetched
-            // there is nothing to do
+            // if the data was already fetched there is nothing to do
             if (state.initialsGroups && state.initialsSupportedCharacters) return;
 
             // runs the remote business logic to obtain the multiple

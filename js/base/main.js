@@ -342,9 +342,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
 
-            // clear the initials information, as it is possibly outdated
-            this.store.commit("initialsGroups", null);
-            this.store.commit("initialsSupportedCharacters", null);
+            // clear the initials data, as it is possibly outdated
+            this.store.commit("clearInitialsData");
         });
 
         // changes some internal structure whenever there's an update
