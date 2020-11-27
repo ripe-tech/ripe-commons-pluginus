@@ -69,6 +69,29 @@ export const logicMixin = {
     },
     methods: {
         /**
+         * Checks if for every group either has everything set (initials and all properties)
+         * or nothing.
+         *
+         * @param {Number} nrProperties The total number of properties the engraving can have.
+         * @param {Array} groups The possible initials groups.
+         * @param {Object} initialsPerGroup A mapping from a group to the initials of that group.
+         * @param {Object} propertiesPerGroup A mapping from a group to the properties of that group.
+         * @return {Boolean} Whether every group either has everything set (initials and all properties)
+         * or nothing.
+         */
+        allPropertiesOrEmpty(nrProperties, groups, initialsPerGroup, propertiesPerGroup) {
+            return groups.every(group => {
+                const hasInitials = Boolean(initialsPerGroup[group] || "");
+                const propertiesCount = Object.values(propertiesPerGroup[group] || {}).filter(
+                    v => v !== null && v !== undefined
+                ).length;
+                return (
+                    (!hasInitials && propertiesCount === 0) ||
+                    (hasInitials && propertiesCount === nrProperties)
+                );
+            });
+        },
+        /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce
          * the same result after sanitization.
