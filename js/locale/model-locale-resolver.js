@@ -135,19 +135,16 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         }
 
         const prefixes = [`${brand}.${model}`, brand];
-        for (const value of values) {
-            const permutations = this._permutations(value);
-            for (const _prefix of prefixes) {
-                for (const _value of permutations) {
-                    const valueFqn = `${prefix}.${_prefix}.${_value}`;
-                    const hasLocale = this.localePlugin.hasLocale(valueFqn, locale);
-                    if (!hasLocale) {
-                        continue;
-                    }
-                    const result = this.localePlugin.toLocale(valueFqn, null, locale, fallback);
-                    if (result) {
-                        return result;
-                    }
+        for (const _prefix of prefixes) {
+            for (const _value of values) {
+                const valueFqn = `${prefix}.${_prefix}.${_value}`;
+                const hasLocale = this.localePlugin.hasLocale(valueFqn, locale);
+                if (!hasLocale) {
+                    continue;
+                }
+                const result = this.localePlugin.toLocale(valueFqn, null, locale, fallback);
+                if (result) {
+                    return result;
                 }
             }
         }
