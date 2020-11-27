@@ -259,12 +259,17 @@ export const Personalization = {
                 .filter(
                     plugin =>
                         !plugin.meta.models ||
-                        (plugin.meta.models && plugin.meta.models.includes(this.model))
+                        (plugin.meta.models && plugin.meta.models.includes(this.model)) ||
+                        (plugin.isPersonalizationEligible &&
+                            plugin.isPersonalizationEligible(this.brand, this.model))
                 )
                 .map(plugin => {
                     let value = 0;
-                    value += plugin.meta.brand === this.brand ? 1 : 0;
-                    value += plugin.meta.models && plugin.meta.models.includes(this.model) ? 1 : 0;
+                    if (plugin.meta.brand === this.brand) value++;
+                    if (plugin.meta.models && plugin.meta.models.includes(this.model)) value++;
+                    value += plugin.getPersonalizationPoints
+                        ? plugin.getPersonalizationPoints(this.brand, this.mode)
+                        : 0;
                     return [value, plugin];
                 })
                 .sort((a, b) => b[0] - a[0])
