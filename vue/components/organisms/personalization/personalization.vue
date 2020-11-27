@@ -255,17 +255,18 @@ export const Personalization = {
             // that match the requested set of constrains for the new model
             // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
-                .filter(
-                    plugin =>
-                        ((!plugin.meta.brand || plugin.meta.brand === this.brand) &&
-                            (!plugin.meta.models ||
-                                (plugin.meta.models && plugin.meta.models.includes(this.model)))) ||
-                        (plugin.isPersonalizationEligible &&
-                            plugin.isPersonalizationEligible(this.brand, this.model))
-                )
+                .filter(plugin => {
+                    if (plugin.isPersonalizationEligible) {
+                        return plugin.isPersonalizationEligible(this.brand, this.model);
+                    }
+                    return (
+                        (!plugin.meta.brand || plugin.meta.brand === this.brand) &&
+                        (!plugin.meta.models || plugin.meta.models.includes(this.model))
+                    );
+                })
                 .map(plugin => {
                     let value = 0;
-                    if (plugin.meta.brand === this.brand) value++;
+                    if (plugin.meta.brand && plugin.meta.brand === this.brand) value++;
                     if (plugin.meta.models && plugin.meta.models.includes(this.model)) value++;
                     value += plugin.getPersonalizationPoints
                         ? plugin.getPersonalizationPoints(this.brand, this.mode)
