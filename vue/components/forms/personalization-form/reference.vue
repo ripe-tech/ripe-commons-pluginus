@@ -147,10 +147,10 @@ export const Reference = {
         },
         valid() {
             return this.allPropertiesOrEmpty(
-                Object.keys(this.properties()).length,
                 this.groups,
                 this.initialsText,
-                this.propertiesData
+                this.propertiesData,
+                this.properties()
             );
         }
     },

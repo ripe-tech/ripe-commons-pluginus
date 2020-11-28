@@ -69,25 +69,41 @@ export const logicMixin = {
     },
     methods: {
         /**
-         * Checks if for every group either has everything set (initials and all properties)
-         * or nothing.
+         * Checks if for every group either has everything set (initials and
+         * all properties) or nothing, representing a simple validation process.
          *
-         * @param {Number} nrProperties The total number of properties the engraving can have.
-         * @param {Array} groups The possible initials groups.
-         * @param {Object} initialsPerGroup A mapping from a group to the initials of that group.
-         * @param {Object} propertiesPerGroup A mapping from a group to the properties of that group.
-         * @return {Boolean} Whether every group either has everything set (initials and all properties)
-         * or nothing.
+         * This verification can be used to determine if the provided groups
+         * of initials and properties are valid according to general build
+         * based properties definition.
+         *
+         * @param {Array} groups The sequence with the names of the groups that
+         * are going to be validated.
+         * @param {Object} groupInitials Am object that maps a certain group
+         * to the initials associated with that group.
+         * @param {Object} groupProperties An object that maps a group name
+         * into an object that associates a property name to a value.
+         * @param {Number} properties The object that contains the definition of
+         * the properties that are going to be validated, to be used in the
+         * evaluation of the expected properties count.
+         * @return {Boolean} Whether every group either has everything set
+         * (initials and all properties) or nothing.
          */
-        allPropertiesOrEmpty(nrProperties, groups, initialsPerGroup, propertiesPerGroup) {
+        allPropertiesOrEmpty(groups, groupInitials, groupProperties, properties) {
+            // computes the expected number of properties as the length
+            // of the properties dictionary
+            const expectedPropertiesCount = Object.keys(properties.length);
+
+            // consider groups valid whenever, for all groups, we either
+            // have no initials (and no properties for engraving are set)
+            // or we have initials and all expected properties are set
             return groups.every(group => {
-                const hasInitials = Boolean(initialsPerGroup[group] || "");
-                const propertiesCount = Object.values(propertiesPerGroup[group] || {}).filter(
+                const hasInitials = Boolean(groupInitials[group] || "");
+                const propertiesCount = Object.values(groupProperties[group] || {}).filter(
                     v => v !== null && v !== undefined
                 ).length;
                 return (
                     (!hasInitials && propertiesCount === 0) ||
-                    (hasInitials && propertiesCount === nrProperties)
+                    (hasInitials && propertiesCount === expectedPropertiesCount)
                 );
             });
         },
