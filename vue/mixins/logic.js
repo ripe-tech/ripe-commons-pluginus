@@ -88,10 +88,15 @@ export const logicMixin = {
          * @return {Boolean} Whether every group either has everything set
          * (initials and all properties) or nothing.
          */
-        allPropertiesOrEmpty(groups, groupInitials, groupProperties, properties) {
+        allPropertiesOrEmpty(
+            groups = [],
+            groupInitials = {},
+            groupProperties = {},
+            properties = {}
+        ) {
             // computes the expected number of properties as the length
             // of the properties dictionary
-            const expectedPropertiesCount = Object.keys(properties.length);
+            const expectedPropertiesCount = Object.keys(properties).length;
 
             // consider groups valid whenever, for all groups, we either
             // have no initials (and no properties for engraving are set)
