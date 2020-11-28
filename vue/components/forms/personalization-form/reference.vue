@@ -146,23 +146,12 @@ export const Reference = {
             };
         },
         valid() {
-            // computes the expected number of properties as the length
-            // of the properties dictionary
-            const expectedPropertiesCount = Object.keys(this.properties()).length;
-
-            // enable the apply button whenever, for all groups, we either
-            // have no initials (and no properties for engraving are set)
-            // or we have initials and all properties are set
-            return this.groups.every(group => {
-                const hasInitials = Boolean(this.initialsText[group] || "");
-                const propertiesCount = Object.values(this.propertiesData[group] || {}).filter(
-                    v => v !== null && v !== undefined
-                ).length;
-                return (
-                    (!hasInitials && propertiesCount === 0) ||
-                    (hasInitials && propertiesCount === expectedPropertiesCount)
-                );
-            });
+            return this.allPropertiesOrEmpty(
+                this.groups,
+                this.initialsText,
+                this.propertiesData,
+                this.properties()
+            );
         }
     },
     watch: {
