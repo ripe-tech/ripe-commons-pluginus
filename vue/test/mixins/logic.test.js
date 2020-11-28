@@ -4,7 +4,7 @@ const base = require("../base");
 const logic = require("../../mixins/logic");
 
 describe("logicMixin", () => {
-    describe("#allPropertiesOrEmpty()", function () {
+    describe("#allPropertiesOrEmpty()", function() {
         it("should validate a simple scenario", async () => {
             const component = base.getComponent("RestrictionsAlert", {
                 mixins: [logic.logicMixin]
