@@ -84,7 +84,8 @@ export const logicMixin = {
          * into an object that associates a property name to a value.
          * @param {Number} properties The object that contains the definition of
          * the properties that are going to be validated, to be used in the
-         * evaluation of the expected properties count.
+         * evaluation of the expected properties count. This map associates the
+         * property name with a sequence of all of its possible values.
          * @return {Boolean} Whether every group either has everything set
          * (initials and all properties) or nothing.
          */
