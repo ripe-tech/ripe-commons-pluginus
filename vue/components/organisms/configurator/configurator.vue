@@ -320,13 +320,12 @@ export const Configurator = {
 
         this.$bus.bind("highlight_part", part => {
             if (this.ignoreBus) return;
-            this.configurator.ready && this.configurator.highlight(part);
+            if (this.configurator.ready) this.configurator.highlight(part);
         });
 
         this.$bus.bind("lowlight_part", part => {
             if (this.ignoreBus) return;
-
-            this.configurator.ready && this.configurator.lowlight(part);
+            if (this.configurator.ready) this.configurator.lowlight(part);
         });
 
         this.resize(this.size);
@@ -351,6 +350,7 @@ export const Configurator = {
             const sameView = view === previousView;
             const type = sameView ? false : this.options.animation;
             const revolutionDuration = sameView ? this.options.revolutionDuration : null;
+            const duration = this.options.duration;
 
             try {
                 // runs the frame changing operation (possible animation)
@@ -358,7 +358,7 @@ export const Configurator = {
                 await this.configurator.changeFrame(value, {
                     type: type,
                     revolutionDuration: revolutionDuration,
-                    duration: this.options.duration
+                    duration: duration
                 });
             } catch (error) {
                 // calls the registered callback handler for the
