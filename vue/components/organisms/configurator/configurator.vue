@@ -132,7 +132,9 @@ export const Configurator = {
             type: Object,
             default: function() {
                 return {
+                    animation: "cross",
                     duration: 250,
+                    revolutionDuration: 500,
                     configAnimate: false
                 };
             }
@@ -344,13 +346,19 @@ export const Configurator = {
             const previousView = previous ? ripe.parseFrameKey(previous)[0] : "";
             const view = ripe.parseFrameKey(value)[0];
 
+            // calculates the parameters for the frame change taking
+            // into account if the view (face) is going to change
+            const sameView = view === previousView;
+            const type = sameView ? false : this.options.animation;
+            const revolutionDuration = sameView ? this.options.revolutionDuration : null;
+
             try {
                 // runs the frame changing operation (possible animation)
                 // according to the newly changed frame value
                 await this.configurator.changeFrame(value, {
-                    type: view === previousView ? false : this.animation,
-                    revolutionDuration: view === previousView ? this.duration : null,
-                    duration: this.duration
+                    type: type,
+                    revolutionDuration: revolutionDuration,
+                    duration: this.options.duration
                 });
             } catch (error) {
                 // calls the registered callback handler for the
