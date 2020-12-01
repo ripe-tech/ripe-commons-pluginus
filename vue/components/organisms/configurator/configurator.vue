@@ -128,6 +128,10 @@ export const Configurator = {
             type: Boolean,
             default: false
         },
+        /**
+         * The options that are going to be used to configure the
+         * configurator while initializing it.
+         */
         options: {
             type: Object,
             default: function() {
@@ -147,6 +151,10 @@ export const Configurator = {
             type: String,
             default: null
         },
+        /**
+         * The size of the configurator in pixels, this is going to be
+         * applied to both the width and height (square format 1:1).
+         */
         size: {
             type: Number,
             default: null
@@ -159,10 +167,18 @@ export const Configurator = {
             type: Number,
             default: 7500
         },
+        /**
+         * If the masks should be displayed while hovering the mouse
+         * on top of the multiple model parts.
+         */
         useMasks: {
             type: Boolean,
             default: true
         },
+        /**
+         * Callback function to be called when a configurator related
+         * error is thrown, for some operations (eg: while changing frame).
+         */
         onError: {
             type: Function,
             default: error => {
