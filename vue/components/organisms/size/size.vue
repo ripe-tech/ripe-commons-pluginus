@@ -2,7 +2,7 @@
     <div class="size" v-bind:class="{ disabled: !enabled }">
         <div
             class="button button-color button-size"
-            v-bind:class="{ disabled: !enabled }"
+            v-bind:class="buttonClasses"
             v-on:click="showModal"
         >
             <span>{{ buttonText }}</span>
@@ -10,6 +10,7 @@
         <modal ref="modal">
             <div v-show="enabled">
                 <component
+                    v-bind:active.sync="active"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
@@ -61,7 +62,8 @@ export const Size = {
             sizeTextState: "",
             state: {},
             counter: 0,
-            closeCallback: null
+            closeCallback: null,
+            active: true
         };
     },
     computed: {
@@ -72,6 +74,12 @@ export const Size = {
                       : this.locale("ripe_commons.size.size", undefined, this.$store.state.locale) +
                         " - ") + this.sizeTextState
                 : this.locale("ripe_commons.size.select_size", undefined, this.$store.state.locale);
+        },
+        buttonEnabled() {
+            return this.enabled && this.active;
+        },
+        buttonClasses() {
+            return { disabled: !this.buttonEnabled };
         },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
@@ -111,6 +119,7 @@ export const Size = {
 
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
+            this.active = true;
             this.form = null;
         });
 
