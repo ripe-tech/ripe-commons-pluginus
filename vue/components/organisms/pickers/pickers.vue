@@ -463,6 +463,14 @@ export const Pickers = {
             type: Boolean,
             default: false
         },
+        enableCenterParts: {
+            type: Boolean,
+            default: false
+        },
+        enableCenterMaterials: {
+            type: Boolean,
+            default: false
+        },
         beforeButtonsParts: {
             type: Array,
             default: () => []
@@ -708,29 +716,6 @@ export const Pickers = {
             const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.slideRight(colorsPicker, colors);
         },
-        centerElement(elementsContainer, elements, valueLabel, expectedValue) {
-            let scroll = 0;
-            for (const _element of elements) {
-                const style = getComputedStyle(_element);
-                const marginLeft = parseFloat(style.marginLeft);
-                const marginRight = parseFloat(style.marginRight);
-
-                // centers the selected element in the middle of the container
-                if (_element.dataset[valueLabel] === expectedValue) {
-                    scroll += (_element.offsetWidth + marginLeft + marginRight) / 2;
-                    break;
-                }
-
-                // increments the scroll value with the width of the component,
-                // which is composed by both the offset width and the margins
-                scroll += _element.offsetWidth + marginLeft + marginRight;
-            }
-
-            const padding = parseFloat(getComputedStyle(elementsContainer).paddingLeft);
-            const scrollableElementWidth = elementsContainer.clientWidth - padding;
-
-            elementsContainer.scrollLeft = scroll - scrollableElementWidth / 2 + padding / 2;
-        },
         configName(part) {
             return part.split("_").join(" ");
         },
@@ -794,10 +779,7 @@ export const Pickers = {
             this.$bus.trigger("highlight_part", part);
             this.onMaterialsChanged();
             this.onColorsChanged();
-
-            const partsPicker = this.$refs.partsPicker;
-            const parts = partsPicker.querySelectorAll(".button-part");
-            this.centerElement(partsPicker, parts, "part", this.activePart);
+            this.centerParts();
         },
         selectSwatch() {
             const removeOptional = this.activeColor.startsWith("no_");
@@ -881,6 +863,41 @@ export const Pickers = {
                   materialsPicker.clientWidth / 2
                 : 0;
             materialsPicker.style.scrollBehavior = smooth ? "auto" : null;
+        },
+        centerElement(elementsContainer, elements, valueLabel, expectedValue) {
+            let scroll = 0;
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+
+                // centers the selected element in the middle of the container
+                if (_element.dataset[valueLabel] === expectedValue) {
+                    scroll += (_element.offsetWidth + marginLeft + marginRight) / 2;
+                    break;
+                }
+
+                // increments the scroll value with the width of the component,
+                // which is composed by both the offset width and the margins
+                scroll += _element.offsetWidth + marginLeft + marginRight;
+            }
+
+            const padding = parseFloat(getComputedStyle(elementsContainer).paddingLeft);
+            const scrollableElementWidth = elementsContainer.clientWidth - padding;
+
+            elementsContainer.scrollLeft = scroll - scrollableElementWidth / 2 + padding / 2;
+        },
+        centerParts() {
+            if (!this.enableCenterParts) return;
+            const partsPicker = this.$refs.partsPicker;
+            const parts = partsPicker.querySelectorAll(".button-part");
+            this.centerElement(partsPicker, parts, "part", this.activePart);
+        },
+        centerMaterials() {
+            if (!this.enableCenterMaterials) return;
+            const materialsPicker = this.$refs.materialsPicker;
+            const materials = materialsPicker.querySelectorAll(".button-material");
+            this.centerElement(materialsPicker, materials, "material", this.activeMaterial);
         },
         /**
          * Centers the active color inside its scrollable container.
@@ -1002,10 +1019,7 @@ export const Pickers = {
             const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
 
-            const materialsPicker = this.$refs.materialsPicker;
-            const materials = materialsPicker.querySelectorAll(".button-material");
-            this.centerElement(materialsPicker, materials, "material", this.activeMaterial);
-
+            this.centerMaterials();
             scroll &&
                 requestAnimationFrame(() => {
                     this.scrollMaterials(material);
