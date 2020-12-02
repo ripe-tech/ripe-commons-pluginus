@@ -242,6 +242,7 @@ export const Personalization = {
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
             this.form = null;
+            this.valid = true;
         });
 
         this.$bus.bind("post_config", async (config, options) => {
