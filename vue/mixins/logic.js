@@ -69,6 +69,51 @@ export const logicMixin = {
     },
     methods: {
         /**
+         * Checks if for every group either has everything set (initials and
+         * all properties) or nothing, representing a simple validation process.
+         *
+         * This verification can be used to determine if the provided groups
+         * of initials and properties are valid according to general build
+         * based properties definition.
+         *
+         * @param {Array} groups The sequence with the names of the groups that
+         * are going to be validated.
+         * @param {Object} groupInitials Am object that maps a certain group
+         * to the initials associated with that group.
+         * @param {Object} groupProperties An object that maps a group name
+         * into an object that associates a property name to a value.
+         * @param {Number} properties The object that contains the definition of
+         * the properties that are going to be validated, to be used in the
+         * evaluation of the expected properties count. This map associates the
+         * property name with a sequence of all of its possible values.
+         * @return {Boolean} Whether every group either has everything set
+         * (initials and all properties) or nothing.
+         */
+        allPropertiesOrEmpty(
+            groups = [],
+            groupInitials = {},
+            groupProperties = {},
+            properties = {}
+        ) {
+            // computes the expected number of properties as the length
+            // of the properties dictionary
+            const expectedPropertiesCount = Object.keys(properties).length;
+
+            // consider groups valid whenever, for all groups, we either
+            // have no initials (and no properties for engraving are set)
+            // or we have initials and all expected properties are set
+            return groups.every(group => {
+                const hasInitials = Boolean(groupInitials[group] || "");
+                const propertiesCount = Object.values(groupProperties[group] || {}).filter(
+                    v => v !== null && v !== undefined
+                ).length;
+                return (
+                    (!hasInitials && propertiesCount === 0) ||
+                    (hasInitials && propertiesCount === expectedPropertiesCount)
+                );
+            });
+        },
+        /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce
          * the same result after sanitization.
