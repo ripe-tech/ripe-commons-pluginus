@@ -194,6 +194,15 @@ export const Reference = {
         referenceScale: {
             type: String,
             default: "it"
+        },
+        /**
+         * If a possible single option for the size should
+         * be automatically selected, disabling the sizes modal
+         * from being displayed.
+         */
+        autoSingle: {
+            type: Boolean,
+            default: true
         }
     },
     data: function() {
@@ -387,13 +396,15 @@ export const Reference = {
 
             await Promise.all([sizePromise, localePromise]);
 
+            // updates the complete set of available size options for
+            // the current instance from the loaded ones
             this.sizeOptions = sizeOptions;
 
-            if (scales.length === 1 && genders.length === 1 && values.length === 1) {
-                // if there is a single option for some of the
-                // dimensions, pick them automatically and
-                // mark the plugin as not active since nothing
-                // can be changed
+            // if there is a single size option available for selection,
+            // picks it automatically and marks the plugin as not active
+            // since nothing can be changed (no modal is displayed)
+            const isSingle = scales.length === 1 && genders.length === 1 && values.length === 1;
+            if (isSingle && this.autoSingle) {
                 this.__sizeSelected(genders[0], scales[0], values[0]);
                 this.active = false;
             }
