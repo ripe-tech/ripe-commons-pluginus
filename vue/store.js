@@ -34,8 +34,9 @@ export const store = {
         hasSize: false,
         ripeOptions: {},
         ripeState: {},
-        initialsGroups: [],
-        initialsSupportedCharacters: []
+        initialsGroups: null,
+        initialsSupportedCharacters: null,
+        initialsDataPromise: null
     },
     mutations: {
         ripeUrl(state, url) {
@@ -148,6 +149,60 @@ export const store = {
         },
         initialsSupportedCharacters(state, initialsSupportedCharacters) {
             state.initialsSupportedCharacters = initialsSupportedCharacters;
+        },
+        clearInitialsData(state) {
+            state.initialsGroups = null;
+            state.initialsSupportedCharacters = null;
+        },
+        initialsDataPromise(state, initialsDataPromise) {
+            state.initialsDataPromise = initialsDataPromise;
+        }
+    },
+    actions: {
+        async refreshInitialsData({ state, commit }, force = false) {
+            // in case a request is already ongoing just reuse it, this avoids
+            // parallel duplicated requests (race and performance issues)
+            if (state.initialsDataPromise) return state.initialsDataPromise;
+
+            // if the data was already fetched there is nothing to do, we
+            // assume that further requests would be redundant
+            if (state.initialsGroups && state.initialsSupportedCharacters && !force) return;
+
+            // runs the remote business logic to obtain the multiple
+            // target groups available for initials as well as the
+            // available characters for personalization
+            const promise = Promise.all([
+                this._vm.$ripe.runLogicP({ method: "groups" }),
+                (async () => {
+                    const supportedCharacters = await this._vm.$ripe.runLogicP({
+                        method: "supported_characters"
+                    });
+                    return [...supportedCharacters];
+                })()
+            ]);
+
+            // stores the ongoing request so we avoid future redundant requests
+            // this is critical due to performance reasons
+            commit("initialsDataPromise", promise);
+
+            try {
+                // obtains the remote data and updates the local store information
+                // to reflect the remote information
+                const [groups, supportedCharacters] = await promise;
+                commit("initialsGroups", groups);
+                commit("initialsSupportedCharacters", supportedCharacters);
+            } catch (err) {
+                // gives a default group if builds does not support remote
+                // business logic (for the `groups` and `supported_characters`
+                // "methods"), this is a naive implementation for the scenarios
+                // where no server side logic exists for initials (supported_characters)
+                commit("initialsGroups", "main");
+                commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
+            } finally {
+                // releases the "lock" controlled by the initials data promise, so that
+                // future remote requests can go on
+                commit("initialsDataPromise", null);
+            }
         }
     },
     getters: {
