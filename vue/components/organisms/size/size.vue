@@ -10,11 +10,11 @@
         <modal ref="modal">
             <div v-show="enabled">
                 <component
+                    v-bind:active.sync="active"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
                     v-on:changed="sizeChanged"
-                    v-bind:active.sync="active"
                 />
                 <div class="buttons-container">
                     <button-ripe
