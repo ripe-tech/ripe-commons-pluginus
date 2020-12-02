@@ -128,11 +128,17 @@ export const Configurator = {
             type: Boolean,
             default: false
         },
+        /**
+         * The options that are going to be used to configure the
+         * configurator while initializing it.
+         */
         options: {
             type: Object,
             default: function() {
                 return {
+                    animation: "cross",
                     duration: 250,
+                    revolutionDuration: 500,
                     configAnimate: false
                 };
             }
@@ -145,6 +151,10 @@ export const Configurator = {
             type: String,
             default: null
         },
+        /**
+         * The size of the configurator in pixels, this is going to be
+         * applied to both the width and height (square format 1:1).
+         */
         size: {
             type: Number,
             default: null
@@ -157,10 +167,18 @@ export const Configurator = {
             type: Number,
             default: 7500
         },
+        /**
+         * If the masks should be displayed while hovering the mouse
+         * on top of the multiple model parts.
+         */
         useMasks: {
             type: Boolean,
             default: true
         },
+        /**
+         * Callback function to be called when a configurator related
+         * error is thrown, for some operations (eg: while changing frame).
+         */
         onError: {
             type: Function,
             default: error => {
@@ -247,7 +265,7 @@ export const Configurator = {
             // should be sending events it's considered to
             // be the main/master one
             if (this.elementDisplayed) {
-                this.$store.commit("current_frame", frame);
+                this.$store.commit("currentFrame", frame);
                 this.$bus.trigger("changed_frame", this.configurator, frame);
             }
         });
@@ -257,7 +275,7 @@ export const Configurator = {
             this.frameData = frame;
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
-            this.$store.commit("current_frame", frame);
+            this.$store.commit("currentFrame", frame);
         });
 
         this.configurator.bind("highlighted_part", part => {
@@ -318,13 +336,12 @@ export const Configurator = {
 
         this.$bus.bind("highlight_part", part => {
             if (this.ignoreBus) return;
-            this.configurator.ready && this.configurator.highlight(part);
+            if (this.configurator.ready) this.configurator.highlight(part);
         });
 
         this.$bus.bind("lowlight_part", part => {
             if (this.ignoreBus) return;
-
-            this.configurator.ready && this.configurator.lowlight(part);
+            if (this.configurator.ready) this.configurator.lowlight(part);
         });
 
         this.resize(this.size);
@@ -344,13 +361,20 @@ export const Configurator = {
             const previousView = previous ? ripe.parseFrameKey(previous)[0] : "";
             const view = ripe.parseFrameKey(value)[0];
 
+            // calculates the parameters for the frame change taking
+            // into account if the view (face) is going to change
+            const sameView = view === previousView;
+            const type = sameView ? false : this.options.animation;
+            const revolutionDuration = sameView ? this.options.revolutionDuration : null;
+            const duration = this.options.duration;
+
             try {
                 // runs the frame changing operation (possible animation)
                 // according to the newly changed frame value
                 await this.configurator.changeFrame(value, {
-                    type: view === previousView ? false : this.animation,
-                    revolutionDuration: view === previousView ? this.duration : null,
-                    duration: this.duration
+                    type: type,
+                    revolutionDuration: revolutionDuration,
+                    duration: duration
                 });
             } catch (error) {
                 // calls the registered callback handler for the
