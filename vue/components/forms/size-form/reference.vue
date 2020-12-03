@@ -18,7 +18,7 @@
                 v-bind:class="{ multiple: modelGenders && modelGenders.length > 1 }"
                 v-if="sizesLoaded"
             >
-                <div class="scales">
+                <div class="scales" v-show="__getAvailableScales(visibleGender).length > 1">
                     <div
                         class="button button-scale"
                         v-bind:class="{ active: modelScale === visibleScale }"
