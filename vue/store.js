@@ -27,6 +27,11 @@ export const store = {
             initialsExtra: {}
         },
         size: {},
+        /**
+         * If the size operations are active or if instead
+         * they are inactive and no interactive actions
+         * are available (eg: only one size available).
+         */
         sizeActive: null,
         currentFrame: null,
         error: null,
