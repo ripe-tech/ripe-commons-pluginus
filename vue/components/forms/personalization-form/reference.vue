@@ -25,7 +25,7 @@
                         v-bind:placeholder="locale(`ripe_commons.personalization.select.${type}`)"
                         v-bind:options="options"
                         v-bind:value="propertiesData[group][type]"
-                        v-on:update:value="value => onValueUpdateSelect(value, group, type)"
+                        v-on:update:value="value => onValueUpdate(value, group, type)"
                     />
                 </form-input>
                 <form-input
@@ -35,8 +35,7 @@
                     <input-ripe
                         class="input-initials"
                         v-bind:placeholder="locale('ripe_commons.personalization.add_initials')"
-                        v-bind:value="initialsText[group]"
-                        v-on:update:value="value => onUpdateValueInput(value, group)"
+                        v-bind:value.sync="initialsText[group]"
                     />
                 </form-input>
             </div>
@@ -195,19 +194,6 @@ export const Reference = {
         if (this.onPostConfig) this.$bus.unbind(this.onPostConfig);
     },
     methods: {
-        hasValidInput(initials) {
-            if (!initials && initials !== 0) return true;
-
-            const validLength = initials.length <= this.$store.state.initialsMaximumCharacters;
-            if (!validLength) return false;
-
-            const validChars = initials
-                .split("")
-                .every(initial => this.$store.state.initialsSupportedCharacters.includes(initial));
-            if (!validChars) return false;
-
-            return true;
-        },
         reset() {
             this.propertiesData = {};
             this.groups.forEach(group => {
@@ -308,31 +294,17 @@ export const Reference = {
         engravingToProperties(engraving, group) {
             const { valuesM } = this.$ripe.parseEngraving(engraving);
             Object.entries(valuesM).forEach(([property, value]) => {
-                this.onValueUpdateSelect(value, group, property);
+                this.onValueUpdate(value, group, property);
             });
         },
         showGroupLabel(group) {
             return this.groups.length > 1 && group !== "main";
         },
-        onValueUpdateSelect(value, group, type) {
+        onValueUpdate(value, group, type) {
             const newProperties = { ...this.propertiesData };
             if (!newProperties[group]) newProperties[group] = {};
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
-        },
-        onUpdateValueInput(newValue, group) {
-            if (!this.hasValidInput(newValue)) {
-                // if input is invalid set the input value to null then
-                // to the same previous value only to trigger a fake change
-                // and force the compoennt to fallback to the previous value
-                const previousValue = this.initialsText[group];
-                this.$set(this.initialsText, group, null);
-                this.$nextTick(() => {
-                    this.$set(this.initialsText, group, previousValue);
-                });
-            } else {
-                this.$set(this.initialsText, group, newValue);
-            }
         },
         /**
          * "Generic" initials builder function that uses the current properties

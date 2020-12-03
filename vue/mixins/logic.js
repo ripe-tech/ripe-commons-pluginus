@@ -74,6 +74,23 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        validInitials(initials) {
+            if (initials === null || initials === undefined) return true;
+            if (
+                !this.$store.state.initialsGroups ||
+                !this.$store.state.initialsSupportedCharacters ||
+                !this.$store.state.initialsMinimumCharacters ||
+                !this.$store.state.initialsMaximumCharacters
+            )
+                { return true; }
+
+            if (initials.length > this.$store.state.initialsMaximumCharacters) return false;
+            if (initials.length < this.$store.state.initialsMinimumCharacters) return false;
+
+            return [...initials].every(initial =>
+                this.$store.state.initialsSupportedCharacters.includes(initial)
+            );
+        },
         /**
          * Checks if for every group either has everything set (initials and
          * all properties) or nothing, representing a simple validation process.
@@ -109,13 +126,16 @@ export const logicMixin = {
             // have no initials (and no properties for engraving are set)
             // or we have initials and all expected properties are set
             return groups.every(group => {
-                const hasInitials = Boolean(groupInitials[group] || "");
+                const initials = groupInitials[group];
+                const hasInitials = Boolean(initials);
                 const propertiesCount = Object.values(groupProperties[group] || {}).filter(
                     v => v !== null && v !== undefined
                 ).length;
                 return (
                     (!hasInitials && propertiesCount === 0) ||
-                    (hasInitials && propertiesCount === expectedPropertiesCount)
+                    (hasInitials &&
+                        this.validInitials(initials) &&
+                        propertiesCount === expectedPropertiesCount)
                 );
             });
         },

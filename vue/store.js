@@ -180,8 +180,9 @@ export const store = {
                 state.initialsMinimumCharacters &&
                 state.initialsMaximumCharacters &&
                 !force
-            )
-                { return; }
+            ) {
+                return;
+            }
 
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
