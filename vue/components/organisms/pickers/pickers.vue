@@ -1018,7 +1018,6 @@ export const Pickers = {
             scroll = scroll === undefined ? this.multipleMaterials : scroll;
             const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
-
             this.centerMaterials();
             scroll &&
                 requestAnimationFrame(() => {
