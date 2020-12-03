@@ -60,20 +60,26 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
-        // initializes the RIPE object and its required plugins
+        // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe(null, null, {
-            plugins: [this.restrictionsPlugin, this.syncPlugin],
-            ...this.options
-        });
-
-        // waits for the complete of the RIPE SDK loading process
-        // so that all the necessary components are loaded
-        await this.ripe.isReady();
+        this.ripe = new Ripe({ init: false });
 
         // binds to the necessary events sent through the owner
         this._bind();
+
+        // waits for the complete of the RIPE SDK loading process
+        // so that all the necessary components are loaded, notice
+        // that both the brand, model, variant and version so that
+        // these values are going to be set latter one
+        await this.ripe.init({
+            plugins: [this.restrictionsPlugin, this.syncPlugin],
+            ...this.options,
+            brand: null,
+            model: null,
+            variant: null,
+            version: null
+        });
 
         // loads the vue components and mixins to be used on
         // the vue app and starts it
@@ -93,10 +99,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 version: this.options.version || null,
                 parts: this.options.parts || {}
             });
-        } else if (this.options.dku) {
+        }
+        // otherwise in case the DKU value is set in the options
+        // it should be used for the configuration
+        else if (this.options.dku) {
             Object.assign(config, { dku: this.options.dku });
         }
-        // otherwise if there's a valid product id defined then we should resolve
+        // otherwise if there's a valid product ID defined then we should resolve
         // it and update the current options with its resolved values
         else if (this.options.product_id) {
             const isQuery = this.options.product_id.startsWith("query:");
@@ -273,50 +282,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         };
     }
 
-    /**
-     * Runs the remote operation that refreshes both the groups
-     * and the supported characters for the initials of the current
-     * configuration in context.
-     */
-    async refreshInitialsData() {
-        try {
-            // runs the remote business logic to obtain the multiple
-            // target groups available for initials as well as the
-            // available characters for personalization
-            const [
-                groups,
-                minimumCharacters,
-                maximumCharacters,
-                supportedCharacters
-            ] = await Promise.all([
-                this.ripe.runLogicP({ method: "groups" }),
-                this.ripe.runLogicP({ method: "minimum_initials" }),
-                this.ripe.runLogicP({ method: "maximum_initials" }),
-                (async () => {
-                    const supportedCharacters = await this.ripe.runLogicP({
-                        method: "supported_characters"
-                    });
-                    return [...supportedCharacters];
-                })()
-            ]);
-
-            // updates the store with both the groups and the supported
-            // characters of the current configuration context
-            this.store.commit("initialsGroups", groups);
-            this.store.commit("initialsMinimumCharacters", minimumCharacters);
-            this.store.commit("initialsMaximumCharacters", maximumCharacters);
-            this.store.commit("initialsSupportedCharacters", supportedCharacters);
-        } catch (err) {
-            // gives a default group if builds does not support remote
-            // business logic (for the `groups` and `supported_characters`
-            // "methods")
-            this.store.commit("initialsGroups", ["main"]);
-            this.store.commit("initialsMinimumCharacters", 0);
-            this.store.commit("initialsMaximumCharacters", Infinity);
-            this.store.commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
-        }
-    }
-
     _bind() {
         // listens for the 'set_model' event to change the
         // model accordingly
@@ -377,9 +342,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
 
-            // runs the refresh operation on the initials information
-            // this operation is going to trigger remote logic execution
-            await this.refreshInitialsData();
+            // clear the initials data, as it is possibly outdated
+            this.store.commit("clearInitialsData");
         });
 
         // changes some internal structure whenever there's an update
@@ -424,6 +388,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // forwards the some other events to the global bus
         this.ripe.bind("selected_part", (...args) => this.owner.trigger("selected_part", ...args));
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
+        this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
 
         this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
         this.ripe.bind("initials_extra", (...args) =>

@@ -110,6 +110,8 @@
 </style>
 
 <script>
+import { ripe } from "ripe-sdk";
+
 /**
  * The component that contains the RIPE SDK's configurator, responsible
  * for forwarding its events to the Vue bus, as well the other way
@@ -126,19 +128,33 @@ export const Configurator = {
             type: Boolean,
             default: false
         },
+        /**
+         * The options that are going to be used to configure the
+         * configurator while initializing it.
+         */
         options: {
             type: Object,
             default: function() {
                 return {
+                    animation: "cross",
                     duration: 250,
+                    revolutionDuration: 500,
                     configAnimate: false
                 };
             }
         },
-        initialFrame: {
+        /**
+         * The name of the frame to be shown in the configurator using
+         * the normalized frame format (eg: side-1).
+         */
+        frame: {
             type: String,
             default: null
         },
+        /**
+         * The size of the configurator in pixels, this is going to be
+         * applied to both the width and height (square format 1:1).
+         */
         size: {
             type: Number,
             default: null
@@ -151,9 +167,23 @@ export const Configurator = {
             type: Number,
             default: 7500
         },
+        /**
+         * If the masks should be displayed while hovering the mouse
+         * on top of the multiple model parts.
+         */
         useMasks: {
             type: Boolean,
             default: true
+        },
+        /**
+         * Callback function to be called when a configurator related
+         * error is thrown, for some operations (eg: while changing frame).
+         */
+        onError: {
+            type: Function,
+            default: error => {
+                throw error;
+            }
         }
     },
     computed: {
@@ -181,7 +211,7 @@ export const Configurator = {
              * The frame that is currently being shown in the
              * configurator.
              */
-            frame: this.initialFrame,
+            frameData: this.frame,
             /**
              * Flag that controls if the initial loading process for
              * the modal in the configurator is still running.
@@ -224,7 +254,7 @@ export const Configurator = {
             // sets the frame changed flag and then updates
             // the frame key to the new one (internal copy)
             this.frameChanged = true;
-            this.frame = frame;
+            this.frameData = frame;
 
             // updates the value of the single frame view
             // variable as the new view may have several frames
@@ -235,17 +265,17 @@ export const Configurator = {
             // should be sending events it's considered to
             // be the main/master one
             if (this.elementDisplayed) {
-                this.$store.commit("current_frame", frame);
+                this.$store.commit("currentFrame", frame);
                 this.$bus.trigger("changed_frame", this.configurator, frame);
             }
         });
 
         this.configurator.bind("loaded", () => {
             const frame = `${this.configurator.view}-${this.configurator.position}`;
-            this.frame = frame;
+            this.frameData = frame;
             this.loading = false;
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
-            this.$store.commit("current_frame", frame);
+            this.$store.commit("currentFrame", frame);
         });
 
         this.configurator.bind("highlighted_part", part => {
@@ -258,8 +288,8 @@ export const Configurator = {
 
         this.$bus.bind("error", error => {
             if (this.ignoreBus) return;
-
             if (!this.loading) return;
+
             this.loading = false;
             this.loadingError = error;
         });
@@ -270,14 +300,14 @@ export const Configurator = {
             this.loading = true;
         });
 
-        this.$bus.bind("changed_frame", (configurator, frame) => {
+        this.$bus.bind("changed_frame", async (configurator, frame) => {
+            // in case the global bus should be ignore nothing is
+            // done as a consequence of a changed frame
             if (this.ignoreBus) return;
 
             // avoid infinite loop, by checking if the frame
             // is the one we're currently on
-            if (this.frame === frame) {
-                return;
-            }
+            if (this.frameData === frame) return;
 
             // in case the configurator is not currently ready
             // then avoids the operation (returns control flow)
@@ -285,42 +315,77 @@ export const Configurator = {
                 return;
             }
 
-            this.configurator.changeFrame(frame, {
-                type: null,
-                duration: null
-            });
+            try {
+                // triggers the async change frame operation on
+                // the current configurator
+                await this.configurator.changeFrame(frame, {
+                    type: null,
+                    duration: null
+                });
+            } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
+                this.onError(error);
+            }
         });
 
-        this.$bus.bind("show_frame", frame => {
+        this.$bus.bind("show_frame", async frame => {
             if (this.ignoreBus) return;
-
-            if (!this.configurator || !this.configurator.ready) return;
-            const currentView = this.frame.split("-")[0];
-            const newView = frame.split("-")[0];
-            const sameView = currentView === newView;
-            const type = sameView ? false : "cross";
-            const revolutionDuration = sameView ? 500 : null;
-            this.configurator.changeFrame(frame, {
-                type: type,
-                revolutionDuration: revolutionDuration
-            });
+            this.frameData = frame;
         });
 
         this.$bus.bind("highlight_part", part => {
             if (this.ignoreBus) return;
-
-            this.configurator.ready && this.configurator.highlight(part);
+            if (this.configurator.ready) this.configurator.highlight(part);
         });
 
         this.$bus.bind("lowlight_part", part => {
             if (this.ignoreBus) return;
-
-            this.configurator.ready && this.configurator.lowlight(part);
+            if (this.configurator.ready) this.configurator.lowlight(part);
         });
 
         this.resize(this.size);
     },
     watch: {
+        frame(value) {
+            if (this.frameData === value) return;
+            this.frameData = value;
+        },
+        async frameData(value, previous) {
+            // in case the configurator is not currently ready
+            // then avoids the operation (returns control flow)
+            if (!this.configurator || !this.configurator.ready) return;
+
+            // extracts the view part of both the previous and the
+            // current frame to be used for change view comparison
+            const previousView = previous ? ripe.parseFrameKey(previous)[0] : "";
+            const view = ripe.parseFrameKey(value)[0];
+
+            // calculates the parameters for the frame change taking
+            // into account if the view (face) is going to change
+            const sameView = view === previousView;
+            const type = sameView ? false : this.options.animation;
+            const revolutionDuration = sameView ? this.options.revolutionDuration : null;
+            const duration = this.options.duration;
+
+            try {
+                // runs the frame changing operation (possible animation)
+                // according to the newly changed frame value
+                await this.configurator.changeFrame(value, {
+                    type: type,
+                    revolutionDuration: revolutionDuration,
+                    duration: duration
+                });
+            } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
+                this.onError(error);
+            }
+
+            // triggers the update frame event allow bi-directional
+            // binding of the prop value frame
+            this.$emit("update:frame", value);
+        },
         size(size) {
             this.resize(size);
         },

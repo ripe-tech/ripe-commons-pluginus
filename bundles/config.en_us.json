@@ -31,6 +31,7 @@
     "ripe_commons.personalization.initials": "Initials",
     "ripe_commons.personalization.select.style": "Select the style",
     "ripe_commons.personalization.select.font": "Select the font",
+    "ripe_commons.personalization.select.font_size": "Select the font size",
     "ripe_commons.personalization.select.position": "Select the position",
     "ripe_commons.personalization.select.color": "Select the color",
 

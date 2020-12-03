@@ -2,7 +2,7 @@
     <div class="size" v-bind:class="{ disabled: !enabled }">
         <div
             class="button button-color button-size"
-            v-bind:class="{ disabled: !enabled }"
+            v-bind:class="buttonClasses"
             v-on:click="showModal"
         >
             <span>{{ buttonText }}</span>
@@ -10,6 +10,7 @@
         <modal ref="modal">
             <div v-show="enabled">
                 <component
+                    v-bind:active.sync="active"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
@@ -61,7 +62,8 @@ export const Size = {
             sizeTextState: "",
             state: {},
             counter: 0,
-            closeCallback: null
+            closeCallback: null,
+            active: true
         };
     },
     computed: {
@@ -72,6 +74,12 @@ export const Size = {
                       : this.locale("ripe_commons.size.size", undefined, this.$store.state.locale) +
                         " - ") + this.sizeTextState
                 : this.locale("ripe_commons.size.select_size", undefined, this.$store.state.locale);
+        },
+        buttonEnabled() {
+            return this.enabled && this.active;
+        },
+        buttonClasses() {
+            return { disabled: !this.buttonEnabled };
         },
         formKey() {
             return this.brand + "." + this.model + "." + this.counter;
@@ -111,6 +119,7 @@ export const Size = {
 
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
+            this.active = true;
             this.form = null;
         });
 
@@ -126,7 +135,17 @@ export const Size = {
             // the first plugin (best candidate)
             const plugins = (await this.manager.getPluginsByCapability("size"))
                 .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
+                .filter(
+                    plugin =>
+                        !plugin.meta.models ||
+                        (plugin.meta.models && plugin.meta.models.includes(this.model))
+                )
+                .map(plugin => {
+                    let value = 0;
+                    value += plugin.meta.brand === this.brand ? 1 : 0;
+                    value += plugin.meta.models && plugin.meta.models.includes(this.model) ? 1 : 0;
+                    return [value, plugin];
+                })
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
             const plugin = plugins.length ? plugins[0] : null;

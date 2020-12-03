@@ -20,6 +20,7 @@
                     {{ locale("ripe_commons.personalization.personalization") }}
                 </h3>
                 <component
+                    v-bind:valid.sync="valid"
                     v-if="form"
                     v-bind:is="form"
                     ref="form"
@@ -28,14 +29,18 @@
                     v-on:hook:mounted="formMounted"
                 />
                 <div class="buttons-container">
-                    <slot name="buttons">
+                    <slot name="buttons" v-bind="{ valid }">
                         <div
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
                             {{ locale("ripe_commons.modal.cancel") }}
                         </div>
-                        <div class="button button-color button-apply" v-on:click="apply">
+                        <div
+                            class="button button-color button-apply"
+                            v-bind:class="buttonApplyClasses"
+                            v-on:click="apply"
+                        >
                             {{ locale("ripe_commons.modal.apply") }}
                         </div>
                     </slot>
@@ -164,7 +169,8 @@ export const Personalization = {
             buttonText: "",
             state: {},
             counter: 0,
-            initialOptions: null
+            initialOptions: null,
+            valid: true
         };
     },
     computed: {
@@ -203,6 +209,11 @@ export const Personalization = {
          */
         hasPersonalization() {
             return this.$store.state.hasPersonalization;
+        },
+        buttonApplyClasses() {
+            return {
+                disabled: !this.valid
+            };
         }
     },
     watch: {
@@ -231,6 +242,7 @@ export const Personalization = {
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
             this.form = null;
+            this.valid = true;
         });
 
         this.$bus.bind("post_config", async (config, options) => {
@@ -244,8 +256,24 @@ export const Personalization = {
             // that match the requested set of constrains for the new model
             // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
-                .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .map(plugin => (plugin.meta.brand === this.brand ? [1, plugin] : [0, plugin]))
+                .filter(plugin => {
+                    if (plugin.isPersonalizationEligible) {
+                        return plugin.isPersonalizationEligible(this.brand, this.model);
+                    }
+                    return (
+                        (!plugin.meta.brand || plugin.meta.brand === this.brand) &&
+                        (!plugin.meta.models || plugin.meta.models.includes(this.model))
+                    );
+                })
+                .map(plugin => {
+                    let value = 0;
+                    if (plugin.meta.brand && plugin.meta.brand === this.brand) value++;
+                    if (plugin.meta.models && plugin.meta.models.includes(this.model)) value++;
+                    value += plugin.getPersonalizationPoints
+                        ? plugin.getPersonalizationPoints(this.brand, this.mode)
+                        : 0;
+                    return [value, plugin];
+                })
                 .sort((a, b) => b[0] - a[0])
                 .map(v => v[1]);
 

@@ -26,7 +26,7 @@
                         v-bind:key="modelScale"
                         v-on:click="scale = modelScale"
                     >
-                        {{ locale(modelScale) }}
+                        {{ locale(`scales.${modelScale}`) }}
                     </div>
                 </div>
                 <div
@@ -194,6 +194,15 @@ export const Reference = {
         referenceScale: {
             type: String,
             default: "it"
+        },
+        /**
+         * If a possible single option for the size should
+         * be automatically selected, disabling the sizes modal
+         * from being displayed.
+         */
+        autoSingle: {
+            type: Boolean,
+            default: true
         }
     },
     data: function() {
@@ -203,7 +212,8 @@ export const Reference = {
             gender: "",
             scale: "",
             size: null,
-            sizesLoaded: false
+            sizesLoaded: false,
+            active: true
         };
     },
     computed: {
@@ -247,6 +257,11 @@ export const Reference = {
             const scales = this.__getAvailableScales(this.gender);
             if (scales.includes(this.scale) === false) {
                 this.scale = "";
+            }
+        },
+        active: {
+            handler: function(value) {
+                this.$emit("update:active", value);
             }
         }
     },
@@ -381,7 +396,19 @@ export const Reference = {
 
             await Promise.all([sizePromise, localePromise]);
 
+            // updates the complete set of available size options for
+            // the current instance from the loaded ones
             this.sizeOptions = sizeOptions;
+
+            // if there is a single size option available for selection,
+            // picks it automatically and marks the plugin as not active
+            // since nothing can be changed (no modal is displayed)
+            const isSingle = scales.length === 1 && genders.length === 1 && values.length === 1;
+            if (isSingle && this.autoSingle) {
+                this.__sizeSelected(genders[0], scales[0], values[0]);
+                this.active = false;
+            }
+
             this.sizesLoaded = true;
         },
         __getAvailableScales(gender) {
@@ -397,7 +424,7 @@ export const Reference = {
             return this.gender === gender && this.scale === scale && this.size === parseInt(size);
         },
         __convertSize(gender, scale, size) {
-            if (!(this.sizeOptions && gender && scale && size)) {
+            if (!(Object.keys(this.sizeOptions).length > 0 && gender && scale && size)) {
                 return "";
             }
             const sizes = this.sizeOptions[gender][scale];

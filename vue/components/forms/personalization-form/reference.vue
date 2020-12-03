@@ -8,7 +8,7 @@
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
-                <p class="subtitle">
+                <p class="subtitle" v-if="showGroupLabel(group)">
                     {{ locale("ripe_commons.personalization.group") }}
                     {{ locale(`ripe_commons.group.${group}`, readable(capitalize(group))) }}
                 </p>
@@ -145,6 +145,14 @@ export const Reference = {
                 engraving: this.propertiesToEngraving(),
                 initialsExtra: this.__getInitials()
             };
+        },
+        valid() {
+            return this.allPropertiesOrEmpty(
+                this.groups,
+                this.initialsText,
+                this.propertiesData,
+                this.properties()
+            );
         }
     },
     watch: {
@@ -158,6 +166,12 @@ export const Reference = {
             handler: function() {
                 this.$ripe.update();
             }
+        },
+        valid: {
+            handler: function(value) {
+                this.$emit("update:valid", value);
+            },
+            immediate: true
         }
     },
     created: async function() {
@@ -296,6 +310,9 @@ export const Reference = {
             Object.entries(valuesM).forEach(([property, value]) => {
                 this.onValueUpdateSelect(value, group, property);
             });
+        },
+        showGroupLabel(group) {
+            return this.groups.length > 1 && group !== "main";
         },
         onValueUpdateSelect(value, group, type) {
             const newProperties = { ...this.propertiesData };
