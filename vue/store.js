@@ -27,6 +27,7 @@ export const store = {
             initialsExtra: {}
         },
         size: {},
+        sizeActive: null,
         currentFrame: null,
         error: null,
         hasCustomization: false,
@@ -110,6 +111,9 @@ export const store = {
         },
         size(state, value) {
             state.size = value;
+        },
+        sizeActive(state, value) {
+            state.sizeActive = value;
         },
         currency(state, currency) {
             state.currency = currency;

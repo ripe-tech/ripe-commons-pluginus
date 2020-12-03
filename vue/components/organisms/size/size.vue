@@ -98,11 +98,17 @@ export const Size = {
         }
     },
     watch: {
-        enabled(enabled) {
+        enabled: function(enabled) {
             !enabled && this.clear();
         },
-        modelError(error) {
+        modelError: function(error) {
             this.enabled = !error;
+        },
+        active: {
+            handler: function(value) {
+                this.$store.commit("sizeActive", value);
+            },
+            immediate: true
         }
     },
     created: function() {
