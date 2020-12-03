@@ -187,18 +187,8 @@ export const store = {
                     });
                     return [...supportedCharacters];
                 })(),
-                (async () => {
-                    const minimumCharacters = await this._vm.$ripe.runLogicP({
-                        method: "minimum_initials"
-                    });
-                    return minimumCharacters;
-                })(),
-                (async () => {
-                    const maximumCharacters = await this._vm.$ripe.runLogicP({
-                        method: "maximum_initials"
-                    });
-                    return maximumCharacters;
-                })()
+                this._vm.$ripe.runLogicP({ method: "minimum_initials" }),
+                this._vm.$ripe.runLogicP({ method: "maximum_initials" })
             ]);
 
             // stores the ongoing request so we avoid future redundant requests
