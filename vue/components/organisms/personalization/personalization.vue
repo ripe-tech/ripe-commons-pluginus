@@ -329,6 +329,7 @@ export const Personalization = {
         },
         modalBeforeEnter() {
             this.$bus.trigger("open_personalization");
+            this.$store.dispatch("refreshInitialsData");
             this.$refs.form.show();
         },
         modalBeforeLeave() {
