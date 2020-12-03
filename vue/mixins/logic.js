@@ -77,12 +77,12 @@ export const logicMixin = {
         validInitials(initials) {
             if (initials === null || initials === undefined) return true;
             if (
-                !this.$store.state.initialsGroups ||
                 !this.$store.state.initialsSupportedCharacters ||
                 !this.$store.state.initialsMinimumCharacters ||
                 !this.$store.state.initialsMaximumCharacters
-            )
-                { return true; }
+            ) {
+                return true;
+            }
 
             if (initials.length > this.$store.state.initialsMaximumCharacters) return false;
             if (initials.length < this.$store.state.initialsMinimumCharacters) return false;
