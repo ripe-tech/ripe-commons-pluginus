@@ -288,12 +288,16 @@ export const Reference = {
             if (!this.gender || !this.scale || !this.size) {
                 return "";
             }
+            const scaleText = this.locale(`scales.${this.scale}`).toUpperCase();
+            const genderText =
+                this.modelGenders?.length > 1
+                    ? "/" + this.locale("ripe_commons.size." + this.gender + ".small").toUpperCase()
+                    : "";
             return (
                 this.__convertSize(this.gender, this.scale, this.size) +
                 " " +
-                this.locale(this.scale).toUpperCase() +
-                "/" +
-                this.locale("ripe_commons.size." + this.gender + ".small").toUpperCase()
+                scaleText +
+                genderText
             );
         },
         __getSizes(options) {
