@@ -174,7 +174,14 @@ export const store = {
 
             // if the data was already fetched there is nothing to do, we
             // assume that further requests would be redundant
-            if (state.initialsGroups && state.initialsSupportedCharacters && state.initialsMinimumCharacters && state.initialsMaximumCharacters && !force) return;
+            if (
+                state.initialsGroups &&
+                state.initialsSupportedCharacters &&
+                state.initialsMinimumCharacters &&
+                state.initialsMaximumCharacters &&
+                !force
+            )
+                { return; }
 
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
@@ -198,7 +205,12 @@ export const store = {
             try {
                 // obtains the remote data and updates the local store information
                 // to reflect the remote information
-                const [groups, supportedCharacters, minimumCharacters, maximumCharacters] = await promise;
+                const [
+                    groups,
+                    supportedCharacters,
+                    minimumCharacters,
+                    maximumCharacters
+                ] = await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
                 commit("initialsMinimumCharacters", minimumCharacters);
