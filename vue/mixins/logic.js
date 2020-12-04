@@ -74,7 +74,16 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
-        validInitials(initials) {
+        /**
+         * Checks if the initials are valid according to a naive
+         * implementation where validation is done against the
+         * maximum, minimum and supported characters that don't
+         * into account the initials group or the current ctx.
+         *
+         * @param {String} initials The initials to validate.
+         * @return {Boolean} Whether the initials are valid.
+         */
+        initialsWithinRange(initials) {
             if (initials === null || initials === undefined) return true;
             if (
                 !this.$store.state.initialsSupportedCharacters ||
@@ -134,7 +143,7 @@ export const logicMixin = {
                 return (
                     (!hasInitials && propertiesCount === 0) ||
                     (hasInitials &&
-                        this.validInitials(initials) &&
+                        this.initialsWithinRange(initials) &&
                         propertiesCount === expectedPropertiesCount)
                 );
             });
