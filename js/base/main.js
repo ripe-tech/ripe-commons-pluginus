@@ -52,6 +52,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             throw new Error("Element #app not found");
         }
 
+        // create a temporary application object with the logging
+        // methods so that they can be used temporarily until the
+        // final application object is up and running
+        this.app = Object.assign({}, mixins.loggingMixin.methods);
+
         // initializes the Vue.js reactive data store according to the
         // underlying specification defined by `_getStoreDef`
         await this._initStore();
@@ -471,7 +476,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             store: this.store,
             created: function() {
                 // triggers the refresh of the UI when the
-                // locale changes
+                // global locale value changes
                 manager.bind("locale", () => {
                     this.$bus.trigger("refresh");
                 });
