@@ -292,9 +292,10 @@ export const Reference = {
             const sizeText = this.__convertSize(this.gender, this.scale, this.size);
             const scaleText = this.locale(`scales.${this.scale}`).toUpperCase();
             const genderText = hasGenders
-                ? "/" + this.locale("ripe_commons.size." + this.gender + ".small").toUpperCase()
+                ? this.locale("ripe_commons.size." + this.gender + ".small").toUpperCase()
                 : "";
-            return `${sizeText} ${scaleText}${genderText}`;
+            const separatorText = scaleText && genderText ? "/" : "";
+            return `${sizeText} ${scaleText}${separatorText}${genderText}`;
         },
         __getSizes(options) {
             return new Promise((resolve, reject) => {
