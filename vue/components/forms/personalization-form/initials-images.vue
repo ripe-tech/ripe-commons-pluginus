@@ -6,6 +6,7 @@
             v-bind:class="{ active: group === activeGroup, loaded: loaded[group] }"
             v-for="group in groups"
             v-bind:key="groupKey(group)"
+            v-show="!hideInactive || group === activeGroup"
             ref="initialsImages"
             v-on:click="() => imageSelected(group)"
             v-on:load="() => onLoaded(group)"
@@ -43,6 +44,10 @@ export const InitialsImages = {
         activeGroup: {
             type: String,
             default: null
+        },
+        hideInactive: {
+            type: Boolean,
+            default: false
         },
         initialsBuilder: {
             type: Function,
