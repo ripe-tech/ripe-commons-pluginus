@@ -120,11 +120,20 @@ export const Reference = {
     data: function() {
         return {
             /**
-             * Dictionary that maps each initials group to tuples that define the
-             * value for each of the initials properties.
+             * Dictionary that maps each initials group to objects that map each
+             * of the property types with the selected value. This is a dictionary
+             * based representation of the engraving.
              */
             propertiesData: {},
+
+            /**
+             * An object that maps for each group the value of the initials.
+             */
             initialsText: {},
+
+            /**
+             * The name of the groups that are currently available for personalization.
+             */
             groups: []
         };
     },
