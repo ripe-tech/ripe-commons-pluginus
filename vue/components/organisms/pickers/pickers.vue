@@ -463,6 +463,14 @@ export const Pickers = {
             type: Boolean,
             default: false
         },
+        enableCenterParts: {
+            type: Boolean,
+            default: false
+        },
+        enableCenterMaterials: {
+            type: Boolean,
+            default: false
+        },
         beforeButtonsParts: {
             type: Array,
             default: () => []
@@ -638,11 +646,11 @@ export const Pickers = {
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
          *
-         * @param {Element} elementsContainer the HTML element representing the container that the elements are in
+         * @param {Element} container the HTML element representing the container that the elements are in
          * @param {NodeList} elements An array representing the elements.
          */
-        slideRight(elementsContainer, elements) {
-            const scrollLeft = elementsContainer.scrollLeft;
+        slideRight(container, elements) {
+            const scrollLeft = container.scrollLeft;
             let combinedWidth = 0;
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
@@ -655,16 +663,18 @@ export const Pickers = {
                 }
                 combinedWidth += elementWidth;
             }
-            elementsContainer.scrollLeft = combinedWidth;
+            container.scrollLeft = combinedWidth;
         },
         /**
-         * Scrolls in the left direction to show the next element that is still not fully visible.
+         * Scrolls in the left direction to show the next element that is
+         * still not fully visible.
          *
-         * @param {Element} elementsContainer the HTML element representing the container that the elements are in
+         * @param {Element} container the HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          */
-        slideLeft(elementsContainer, elements) {
-            const scrollLeft = elementsContainer.scrollLeft;
+        slideLeft(container, elements) {
+            const scrollLeft = container.scrollLeft;
             let combinedWidth = 0;
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
@@ -676,7 +686,7 @@ export const Pickers = {
                 }
                 combinedWidth += elementWidth;
             }
-            elementsContainer.scrollLeft = combinedWidth;
+            container.scrollLeft = combinedWidth;
         },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
@@ -765,12 +775,13 @@ export const Pickers = {
             }
             this.swatches = swatches;
         },
-        selectPart(part) {
+        selectPart(part, center = true) {
             this.activePart = part;
             this.$bus.trigger("picker_part", part);
             this.$bus.trigger("highlight_part", part);
             this.onMaterialsChanged();
             this.onColorsChanged();
+            if (center) this.centerParts();
         },
         selectSwatch() {
             const removeOptional = this.activeColor.startsWith("no_");
@@ -855,6 +866,45 @@ export const Pickers = {
                 : 0;
             materialsPicker.style.scrollBehavior = smooth ? "auto" : null;
         },
+        centerElement(container, elements, valueLabel, expectedValue) {
+            let scroll = 0;
+
+            // iterates over the complete set of elements to compute the
+            // amount of scroll required to be applied in the parent
+            // container (sum of the complete with of elements)
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+
+                // centers the selected element in the middle of the container
+                if (_element.dataset[valueLabel] === expectedValue) {
+                    scroll += (_element.offsetWidth + marginLeft + marginRight) / 2;
+                    break;
+                }
+
+                // increments the scroll value with the width of the component,
+                // which is composed by both the offset width and the margins
+                scroll += _element.offsetWidth + marginLeft + marginRight;
+            }
+
+            const padding = parseFloat(getComputedStyle(container).paddingLeft);
+            const scrollableElementWidth = container.clientWidth - padding;
+
+            container.scrollLeft = scroll - scrollableElementWidth / 2 + padding / 2;
+        },
+        centerParts() {
+            if (!this.enableCenterParts) return;
+            const partsPicker = this.$refs.partsPicker;
+            const parts = partsPicker.querySelectorAll(".button-part");
+            this.centerElement(partsPicker, parts, "part", this.activePart);
+        },
+        centerMaterials() {
+            if (!this.enableCenterMaterials) return;
+            const materialsPicker = this.$refs.materialsPicker;
+            const materials = materialsPicker.querySelectorAll(".button-material");
+            this.centerElement(materialsPicker, materials, "material", this.activeMaterial);
+        },
         /**
          * Centers the active color inside its scrollable container.
          */
@@ -864,9 +914,7 @@ export const Pickers = {
 
             const part = this.parts[this.activePart];
 
-            if (!part) {
-                return;
-            }
+            if (!part) return;
 
             if (part && part.material !== this.activeMaterial) {
                 colorsPicker.scrollLeft = 0;
@@ -877,7 +925,7 @@ export const Pickers = {
 
             let scrollActiveColor = 0;
             for (const _color of colors) {
-                // ignore all elements being transitioned out
+                // ignores all elements being transitioned out
                 if (_color.dataset.material !== this.activeMaterial) {
                     continue;
                 }
@@ -917,6 +965,9 @@ export const Pickers = {
                 this.centerActiveColor();
                 return;
             }
+
+            // gathers the reference to the proper colors picker and obtains
+            // the references to the complete set of color elements
             const colorsPicker = this.$refs.colorsPicker;
             const colors = colorsPicker.querySelectorAll(".button-color-option");
 
@@ -939,6 +990,7 @@ export const Pickers = {
                     }
                     break;
                 }
+
                 // offset width doesn't account for the margins, so we must sum them explicitly
                 scrollLeft += _color.offsetWidth + marginLeft + marginRight;
             }
@@ -948,10 +1000,11 @@ export const Pickers = {
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
         },
-        selectMaterial(material, scroll) {
-            scroll = scroll === undefined ? this.multipleMaterials : scroll;
+        selectMaterial(material, scroll = null, center = true) {
+            scroll = scroll === null ? this.multipleMaterials : scroll;
             const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
+            if (center) this.centerMaterials();
             if (scroll) {
                 requestAnimationFrame(() => {
                     this.scrollMaterials(material);
