@@ -75,13 +75,17 @@ export const logicMixin = {
     },
     methods: {
         /**
-         * Checks if the initials are valid according to a naive
-         * implementation where validation is done against the
-         * maximum, minimum and supported characters that don't
-         * into account the initials group or the current ctx.
+         * Checks if the initials are valid according to a naive implementation
+         * where validation is done against the maximum, minimum and supported
+         * characters that don't take into account the initials group or the
+         * current ctx.
          *
-         * @param {String} initials The initials to validate.
-         * @return {Boolean} Whether the initials are valid.
+         * This method should be used carefully to avoid erroneous validation
+         * of the initials that don't comply with generic logic implementation.
+         *
+         * @param {String} initials The initials string value to validate.
+         * @return {Boolean} Whether the initials are valid according to the naive
+         * value of maximum and minimum initials.
          */
         initialsWithinRange(initials) {
             if (initials === null || initials === undefined) return true;
