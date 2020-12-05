@@ -773,13 +773,13 @@ export const Pickers = {
             }
             this.swatches = swatches;
         },
-        selectPart(part) {
+        selectPart(part, center = true) {
             this.activePart = part;
             this.$bus.trigger("picker_part", part);
             this.$bus.trigger("highlight_part", part);
             this.onMaterialsChanged();
             this.onColorsChanged();
-            this.centerParts();
+            if (center) this.centerParts();
         },
         selectSwatch() {
             const removeOptional = this.activeColor.startsWith("no_");
@@ -908,9 +908,7 @@ export const Pickers = {
 
             const part = this.parts[this.activePart];
 
-            if (!part) {
-                return;
-            }
+            if (!part) return;
 
             if (part && part.material !== this.activeMaterial) {
                 colorsPicker.scrollLeft = 0;
@@ -921,7 +919,7 @@ export const Pickers = {
 
             let scrollActiveColor = 0;
             for (const _color of colors) {
-                // ignore all elements being transitioned out
+                // ignores all elements being transitioned out
                 if (_color.dataset.material !== this.activeMaterial) {
                     continue;
                 }
@@ -983,6 +981,7 @@ export const Pickers = {
                     }
                     break;
                 }
+
                 // offset width doesn't account for the margins, so we must sum them explicitly
                 scrollLeft += _color.offsetWidth + marginLeft + marginRight;
             }
