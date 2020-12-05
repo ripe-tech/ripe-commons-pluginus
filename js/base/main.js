@@ -52,6 +52,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             throw new Error("Element #app not found");
         }
 
+        // create a temporary application object with the logging
+        // methods so that they can be used temporarily until the
+        // final application object is up and running
+        this.app = Object.assign({}, mixins.loggingMixin.methods);
+
         // initializes the Vue.js reactive data store according to the
         // underlying specification defined by `_getStoreDef`
         await this._initStore();
@@ -240,6 +245,19 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this.setModel(this.options);
     }
 
+    /**
+     * Updates the options currently set in the RIPE instance to reflect
+     * a possible new state provided as parameter.
+     *
+     * This method provides a safe mechanism that detects changes in the
+     * configuration when compared with the current RIPE instance state
+     * so that unwanted option setting is avoided.
+     *
+     * @param {Object} options The new options that are going to be used in the
+     * re-configuration of the RIPE instance.
+     * @param {Boolean} force If the update on config should be performed even
+     * if there are no changed detected in the options.
+     */
     async setRipeOptions(options, force = false) {
         const ripeState = this._getRipeState();
         const changed = Object.entries(ripeState).filter(
@@ -261,7 +279,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             currency: this.ripe.currency,
             locale: this.ripe.locale,
             flag: this.ripe.flag,
-            format: this.ripe.format,
             backgroundColor: this.ripe.backgroundColor,
             guess: this.ripe.guess,
             guessUrl: this.ripe.guessUrl,
@@ -288,6 +305,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.owner.bind("set_model", this.setModel.bind(this));
 
         // updates the app state when a new model is set
+        // changing the internal store values to reflect
+        // the newly updated model related values
         this.ripe.bind("post_config", async config => {
             this.app.logDebug(
                 () => `SDK configuration changed: ${JSON.stringify(config, null, 2)}`
@@ -319,6 +338,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 locale: this.ripe.locale,
                 flag: this.ripe.flag,
                 format: this.ripe.format,
+                formatBase: this.ripe.formatBase,
                 backgroundColor: this.ripe.backgroundColor,
                 guess: this.ripe.guess,
                 guessUrl: this.ripe.guessUrl,
@@ -471,7 +491,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             store: this.store,
             created: function() {
                 // triggers the refresh of the UI when the
-                // locale changes
+                // global locale value changes
                 manager.bind("locale", () => {
                     this.$bus.trigger("refresh");
                 });
@@ -567,8 +587,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("background_color_change", backgroundColor)
                 );
 
-                // registers a watch operation on all options
-                // and updates the RIPE instance accordingly
+                // registers a watch operation on all options and state updates
+                // so sync the RIPE instance accordingly
                 this.$store.watch(
                     this.$store.getters.getRipeOptions,
                     async ripeOptions => await self.setRipeOptions(ripeOptions)

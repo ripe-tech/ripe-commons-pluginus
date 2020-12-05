@@ -27,6 +27,12 @@ export const store = {
             initialsExtra: {}
         },
         size: {},
+        /**
+         * If the size operations are active or if instead
+         * they are inactive and no interactive actions
+         * are available (eg: only one size available).
+         */
+        sizeActive: null,
         currentFrame: null,
         error: null,
         hasCustomization: false,
@@ -35,6 +41,8 @@ export const store = {
         ripeOptions: {},
         ripeState: {},
         initialsGroups: null,
+        initialsMinimumCharacters: null,
+        initialsMaximumCharacters: null,
         initialsSupportedCharacters: null,
         initialsDataPromise: null
     },
@@ -111,6 +119,9 @@ export const store = {
         size(state, value) {
             state.size = value;
         },
+        sizeActive(state, value) {
+            state.sizeActive = value;
+        },
         currency(state, currency) {
             state.currency = currency;
         },
@@ -147,6 +158,12 @@ export const store = {
         initialsGroups(state, initialsGroups) {
             state.initialsGroups = initialsGroups;
         },
+        initialsMinimumCharacters(state, initialsMinimumCharacters) {
+            state.initialsMinimumCharacters = initialsMinimumCharacters;
+        },
+        initialsMaximumCharacters(state, initialsMaximumCharacters) {
+            state.initialsMaximumCharacters = initialsMaximumCharacters;
+        },
         initialsSupportedCharacters(state, initialsSupportedCharacters) {
             state.initialsSupportedCharacters = initialsSupportedCharacters;
         },
@@ -166,7 +183,15 @@ export const store = {
 
             // if the data was already fetched there is nothing to do, we
             // assume that further requests would be redundant
-            if (state.initialsGroups && state.initialsSupportedCharacters && !force) return;
+            if (
+                state.initialsGroups &&
+                state.initialsSupportedCharacters &&
+                state.initialsMinimumCharacters &&
+                state.initialsMaximumCharacters &&
+                !force
+            ) {
+                return;
+            }
 
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
@@ -178,7 +203,9 @@ export const store = {
                         method: "supported_characters"
                     });
                     return [...supportedCharacters];
-                })()
+                })(),
+                this._vm.$ripe.runLogicP({ method: "minimum_initials" }),
+                this._vm.$ripe.runLogicP({ method: "maximum_initials" })
             ]);
 
             // stores the ongoing request so we avoid future redundant requests
@@ -188,9 +215,16 @@ export const store = {
             try {
                 // obtains the remote data and updates the local store information
                 // to reflect the remote information
-                const [groups, supportedCharacters] = await promise;
+                const [
+                    groups,
+                    supportedCharacters,
+                    minimumCharacters,
+                    maximumCharacters
+                ] = await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
+                commit("initialsMinimumCharacters", minimumCharacters);
+                commit("initialsMaximumCharacters", maximumCharacters);
             } catch (err) {
                 // gives a default group if builds does not support remote
                 // business logic (for the `groups` and `supported_characters`
@@ -198,6 +232,8 @@ export const store = {
                 // where no server side logic exists for initials (supported_characters)
                 commit("initialsGroups", "main");
                 commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
+                commit("initialsMinimumCharacters", 0);
+                commit("initialsMaximumCharacters", Infinity);
             } finally {
                 // releases the "lock" controlled by the initials data promise, so that
                 // future remote requests can go on

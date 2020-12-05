@@ -138,7 +138,7 @@
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + ':' + colorOption.color"
-                            v-on:click="() => colorClicked(colorOption)"
+                            v-on:click="() => onColorClick(colorOption)"
                         >
                             <div class="swatch">
                                 <img
@@ -646,11 +646,11 @@ export const Pickers = {
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
          *
-         * @param {Element} elementsContainer the HTML element representing the container that the elements are in
+         * @param {Element} container the HTML element representing the container that the elements are in
          * @param {NodeList} elements An array representing the elements.
          */
-        slideRight(elementsContainer, elements) {
-            const scrollLeft = elementsContainer.scrollLeft;
+        slideRight(container, elements) {
+            const scrollLeft = container.scrollLeft;
             let combinedWidth = 0;
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
@@ -663,16 +663,18 @@ export const Pickers = {
                 }
                 combinedWidth += elementWidth;
             }
-            elementsContainer.scrollLeft = combinedWidth;
+            container.scrollLeft = combinedWidth;
         },
         /**
-         * Scrolls in the left direction to show the next element that is still not fully visible.
+         * Scrolls in the left direction to show the next element that is
+         * still not fully visible.
          *
-         * @param {Element} elementsContainer the HTML element representing the container that the elements are in
+         * @param {Element} container the HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          */
-        slideLeft(elementsContainer, elements) {
-            const scrollLeft = elementsContainer.scrollLeft;
+        slideLeft(container, elements) {
+            const scrollLeft = container.scrollLeft;
             let combinedWidth = 0;
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
@@ -684,7 +686,7 @@ export const Pickers = {
                 }
                 combinedWidth += elementWidth;
             }
-            elementsContainer.scrollLeft = combinedWidth;
+            container.scrollLeft = combinedWidth;
         },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
@@ -864,8 +866,12 @@ export const Pickers = {
                 : 0;
             materialsPicker.style.scrollBehavior = smooth ? "auto" : null;
         },
-        centerElement(elementsContainer, elements, valueLabel, expectedValue) {
+        centerElement(container, elements, valueLabel, expectedValue) {
             let scroll = 0;
+
+            // iterates over the complete set of elements to compute the
+            // amount of scroll required to be applied in the parent
+            // container (sum of the complete with of elements)
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
                 const marginLeft = parseFloat(style.marginLeft);
@@ -882,10 +888,10 @@ export const Pickers = {
                 scroll += _element.offsetWidth + marginLeft + marginRight;
             }
 
-            const padding = parseFloat(getComputedStyle(elementsContainer).paddingLeft);
-            const scrollableElementWidth = elementsContainer.clientWidth - padding;
+            const padding = parseFloat(getComputedStyle(container).paddingLeft);
+            const scrollableElementWidth = container.clientWidth - padding;
 
-            elementsContainer.scrollLeft = scroll - scrollableElementWidth / 2 + padding / 2;
+            container.scrollLeft = scroll - scrollableElementWidth / 2 + padding / 2;
         },
         centerParts() {
             if (!this.enableCenterParts) return;
@@ -991,11 +997,33 @@ export const Pickers = {
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
         },
+        selectMaterial(material, scroll = null, center = true) {
+            scroll = scroll === null ? this.multipleMaterials : scroll;
+            const materialChanged = this.activeMaterial !== material;
+            this.activeMaterial = material;
+            if (center) this.centerMaterials();
+            if (scroll) {
+                requestAnimationFrame(() => {
+                    this.scrollMaterials(material);
+                    if (this.colorToggle && materialChanged) {
+                        this.scrollColors(material);
+                    } else {
+                        this.scrollColors(material);
+                    }
+                });
+            }
+        },
         buttonPartsClasses(button) {
             const base = {};
             if (button.disabled) base.disabled = button.disabled;
             if (button.id) base[`button-part-${button.id}`] = button.id;
             return base;
+        },
+        onColorClick(option) {
+            if (this.isSelected(option)) return;
+            this.selectMaterial(option.material);
+            this.activeColor = option.color;
+            this.selectSwatch();
         },
         onButtonPartClick(buttonEvent, event) {
             this.$emit(buttonEvent, event);
@@ -1012,27 +1040,6 @@ export const Pickers = {
                 this.scrollColors(this.activeMaterial, null, false);
                 this.updateScrollFlags();
             });
-        },
-        selectMaterial(material, scroll) {
-            scroll = scroll === undefined ? this.multipleMaterials : scroll;
-            const materialChanged = this.activeMaterial !== material;
-            this.activeMaterial = material;
-            this.centerMaterials();
-            scroll &&
-                requestAnimationFrame(() => {
-                    this.scrollMaterials(material);
-                    if (this.colorToggle && materialChanged) {
-                        this.scrollColors(material);
-                    } else {
-                        this.scrollColors(material);
-                    }
-                });
-        },
-        colorClicked(option) {
-            if (this.isSelected(option)) return;
-            this.selectMaterial(option.material);
-            this.activeColor = option.color;
-            this.selectSwatch();
         }
     }
 };
