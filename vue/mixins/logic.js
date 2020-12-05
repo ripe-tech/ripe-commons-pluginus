@@ -81,7 +81,7 @@ export const logicMixin = {
          * current ctx.
          *
          * This method should be used carefully to avoid erroneous validation
-         * of the initials that don't comply with generic logic implementation.
+         * of the initials not compliant with generic logic implementation.
          *
          * @param {String} initials The initials string value to validate.
          * @return {Boolean} Whether the initials are valid according to the naive
