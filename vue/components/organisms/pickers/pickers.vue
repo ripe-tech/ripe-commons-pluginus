@@ -138,7 +138,7 @@
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + ':' + colorOption.color"
-                            v-on:click="() => colorClicked(colorOption)"
+                            v-on:click="() => onColorClick(colorOption)"
                         >
                             <div class="swatch">
                                 <img
@@ -948,11 +948,32 @@ export const Pickers = {
             scrollElement.style.scrollBehavior = smooth === false ? null : "auto";
             return true;
         },
+        selectMaterial(material, scroll) {
+            scroll = scroll === undefined ? this.multipleMaterials : scroll;
+            const materialChanged = this.activeMaterial !== material;
+            this.activeMaterial = material;
+            if (scroll) {
+                requestAnimationFrame(() => {
+                    this.scrollMaterials(material);
+                    if (this.colorToggle && materialChanged) {
+                        this.scrollColors(material);
+                    } else {
+                        this.scrollColors(material);
+                    }
+                });
+            }
+        },
         buttonPartsClasses(button) {
             const base = {};
             if (button.disabled) base.disabled = button.disabled;
             if (button.id) base[`button-part-${button.id}`] = button.id;
             return base;
+        },
+        onColorClick(option) {
+            if (this.isSelected(option)) return;
+            this.selectMaterial(option.material);
+            this.activeColor = option.color;
+            this.selectSwatch();
         },
         onButtonPartClick(buttonEvent, event) {
             this.$emit(buttonEvent, event);
@@ -969,26 +990,6 @@ export const Pickers = {
                 this.scrollColors(this.activeMaterial, null, false);
                 this.updateScrollFlags();
             });
-        },
-        selectMaterial(material, scroll) {
-            scroll = scroll === undefined ? this.multipleMaterials : scroll;
-            const materialChanged = this.activeMaterial !== material;
-            this.activeMaterial = material;
-            scroll &&
-                requestAnimationFrame(() => {
-                    this.scrollMaterials(material);
-                    if (this.colorToggle && materialChanged) {
-                        this.scrollColors(material);
-                    } else {
-                        this.scrollColors(material);
-                    }
-                });
-        },
-        colorClicked(option) {
-            if (this.isSelected(option)) return;
-            this.selectMaterial(option.material);
-            this.activeColor = option.color;
-            this.selectSwatch();
         }
     }
 };
