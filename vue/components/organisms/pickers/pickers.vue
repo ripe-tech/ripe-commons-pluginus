@@ -965,6 +965,9 @@ export const Pickers = {
                 this.centerActiveColor();
                 return;
             }
+
+            // gathers the reference to the proper colors picker and obtains
+            // the references to the complete set of color elements
             const colorsPicker = this.$refs.colorsPicker;
             const colors = colorsPicker.querySelectorAll(".button-color-option");
 
