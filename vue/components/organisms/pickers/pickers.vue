@@ -12,7 +12,7 @@
             <div
                 class="button-scroll button-scroll-left button-scroll-parts button-scroll-parts-left"
                 v-if="enableScrollParts"
-                v-show="scrollParts"
+                v-show="scrollParts && !pickersCollapsed"
                 v-on:click.stop="slideLeftParts"
             />
             <ul class="parts-container" ref="partsPicker">
@@ -73,7 +73,7 @@
             <div
                 class="button-scroll button-scroll-right button-scroll-parts button-scroll-parts-right"
                 v-if="enableScrollParts"
-                v-show="scrollParts"
+                v-show="scrollParts && !pickersCollapsed"
                 v-on:click.stop="slideRightParts"
             />
         </div>
@@ -483,6 +483,10 @@ export const Pickers = {
         afterButtonsParts: {
             type: Array,
             default: () => []
+        },
+        pickersCollapsed: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
