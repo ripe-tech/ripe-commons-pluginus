@@ -13,7 +13,7 @@
                 class="button-scroll button-scroll-left button-scroll-parts button-scroll-parts-left"
                 v-if="enableScrollParts"
                 v-show="scrollParts"
-                v-on:click.stop="slideLeftParts"
+                v-on:click="slideLeftParts"
             />
             <ul class="parts-container" ref="partsPicker">
                 <slot name="before-buttons-parts">
@@ -74,7 +74,7 @@
                 class="button-scroll button-scroll-right button-scroll-parts button-scroll-parts-right"
                 v-if="enableScrollParts"
                 v-show="scrollParts"
-                v-on:click.stop="slideRightParts"
+                v-on:click="slideRightParts"
             />
         </div>
         <div class="materials-wrapper">
