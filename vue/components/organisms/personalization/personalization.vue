@@ -242,6 +242,7 @@ export const Personalization = {
         this.$bus.bind("pre_config", () => {
             this.enabled = false;
             this.form = null;
+            this.valid = true;
         });
 
         this.$bus.bind("post_config", async (config, options) => {
@@ -255,16 +256,22 @@ export const Personalization = {
             // that match the requested set of constrains for the new model
             // in configuration (if any) and sort them by matching similarity
             const plugins = (await this.manager.getPluginsByCapability("personalization"))
-                .filter(plugin => !plugin.meta.brand || plugin.meta.brand === this.brand)
-                .filter(
-                    plugin =>
-                        !plugin.meta.models ||
-                        (plugin.meta.models && plugin.meta.models.includes(this.model))
-                )
+                .filter(plugin => {
+                    if (plugin.isPersonalizationEligible) {
+                        return plugin.isPersonalizationEligible(this.brand, this.model);
+                    }
+                    return (
+                        (!plugin.meta.brand || plugin.meta.brand === this.brand) &&
+                        (!plugin.meta.models || plugin.meta.models.includes(this.model))
+                    );
+                })
                 .map(plugin => {
                     let value = 0;
-                    value += plugin.meta.brand === this.brand ? 1 : 0;
-                    value += plugin.meta.models && plugin.meta.models.includes(this.model) ? 1 : 0;
+                    if (plugin.meta.brand && plugin.meta.brand === this.brand) value++;
+                    if (plugin.meta.models && plugin.meta.models.includes(this.model)) value++;
+                    value += plugin.getPersonalizationPoints
+                        ? plugin.getPersonalizationPoints(this.brand, this.mode)
+                        : 0;
                     return [value, plugin];
                 })
                 .sort((a, b) => b[0] - a[0])
@@ -322,6 +329,7 @@ export const Personalization = {
         },
         modalBeforeEnter() {
             this.$bus.trigger("open_personalization");
+            this.$store.dispatch("refreshInitialsData");
             this.$refs.form.show();
         },
         modalBeforeLeave() {

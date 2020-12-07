@@ -3,11 +3,12 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
-            v-bind:class="{ active: group === activeGroup, loaded: loaded[group] }"
+            v-bind:class="groupClasses(group)"
             v-for="group in groups"
+            v-show="groupVisible(group)"
             v-bind:key="groupKey(group)"
             ref="initialsImages"
-            v-on:click="() => imageSelected(group)"
+            v-on:click="() => onClick(group)"
             v-on:load="() => onLoaded(group)"
         />
     </div>
@@ -44,6 +45,15 @@ export const InitialsImages = {
             type: String,
             default: null
         },
+        /**
+         * If the images associated with the groups that are
+         * currently "inactive" should be hidden from the
+         * viewport instead of "just" being marked as not active.
+         */
+        hideInactive: {
+            type: Boolean,
+            default: false
+        },
         initialsBuilder: {
             type: Function,
             default: null
@@ -68,12 +78,6 @@ export const InitialsImages = {
         await this.unbindImages();
     },
     methods: {
-        groupKey(group) {
-            return [this.brand, this.model, group].join(":");
-        },
-        imageSelected(group) {
-            this.$emit("image-selected", group);
-        },
         async bindImages(update = true) {
             this.loaded = {};
             this.initialsImages = [];
@@ -94,6 +98,23 @@ export const InitialsImages = {
             );
             if (update) await this.$ripe.update();
             return result;
+        },
+        groupKey(group) {
+            return [this.brand, this.model, group].join(":");
+        },
+        groupVisible(group) {
+            if (!this.hideInactive) return true;
+            return group === this.activeGroup;
+        },
+        groupClasses(group) {
+            const base = {
+                active: group === this.activeGroup,
+                loaded: this.loaded[group]
+            };
+            return base;
+        },
+        onClick(group) {
+            this.$emit("image-selected", group);
         },
         onLoaded(group) {
             this.$set(this.loaded, group, true);

@@ -1,5 +1,6 @@
 const testUtils = require("@vue/test-utils");
 const globalEvents = require("vue-global-events");
+const vuex = require("vuex");
 
 const plugins = require("../plugins");
 const components = require("../components");
@@ -8,6 +9,7 @@ const mocks = require("./mocks");
 
 const localVue = testUtils.createLocalVue();
 
+localVue.use(vuex);
 localVue.use(plugins.busPlugin);
 localVue.use(components.install);
 localVue.component("global-events", globalEvents.default);
@@ -25,18 +27,19 @@ localVue.use(mocks);
  */
 const getComponent = function(
     component,
-    { props = {}, route = null, mixins = [], mocks = {} } = {}
+    { props = {}, route = null, mixins = [], mocks = {}, store = {} } = {}
 ) {
     const options = {
         propsData: props,
         localVue: localVue,
         mixins: mixins,
-        mocks: mocks
+        mocks: mocks,
+        store: new vuex.Store(store)
     };
     if (route) {
         options.mocks.$route = route;
     }
-    const wrapper = testUtils.mount(components[component], options);
+    const wrapper = testUtils.mount(components[component] || {}, options);
     return wrapper;
 };
 

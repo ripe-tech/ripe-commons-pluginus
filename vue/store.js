@@ -1,13 +1,13 @@
 export const store = {
     state: {
-        ripe_url: "",
+        ripeUrl: "",
         country: "",
         currency: "",
         locale: "",
         brand: "",
         model: "",
         dku: "",
-        product_id: "",
+        productId: "",
         variant: "",
         version: "",
         description: "",
@@ -27,6 +27,12 @@ export const store = {
             initialsExtra: {}
         },
         size: {},
+        /**
+         * If the size operations are active or if instead
+         * they are inactive and no interactive actions
+         * are available (eg: only one size available).
+         */
+        sizeActive: null,
         currentFrame: null,
         error: null,
         hasCustomization: false,
@@ -34,18 +40,21 @@ export const store = {
         hasSize: false,
         ripeOptions: {},
         ripeState: {},
-        initialsGroups: [],
-        initialsSupportedCharacters: []
+        initialsGroups: null,
+        initialsMinimumCharacters: null,
+        initialsMaximumCharacters: null,
+        initialsSupportedCharacters: null,
+        initialsDataPromise: null
     },
     mutations: {
-        ripe_url(state, url) {
-            state.ripe_url = url;
+        ripeUrl(state, url) {
+            state.ripeUrl = url;
         },
         model(state, model) {
             state.brand = model.brand;
             state.model = model.model;
             state.dku = model.dku;
-            state.product_id = model.product_id;
+            state.productId = model.product_id;
             state.variant = model.variant;
             state.version = model.version;
             state.description = model.description;
@@ -110,6 +119,9 @@ export const store = {
         size(state, value) {
             state.size = value;
         },
+        sizeActive(state, value) {
+            state.sizeActive = value;
+        },
         currency(state, currency) {
             state.currency = currency;
         },
@@ -119,10 +131,10 @@ export const store = {
         country(state, country) {
             state.country = country;
         },
-        order_number(state, orderNumber) {
+        orderNumber(state, orderNumber) {
             state.orderNumber = orderNumber;
         },
-        current_frame(state, currentFrame) {
+        currentFrame(state, currentFrame) {
             state.currentFrame = currentFrame;
         },
         error(state, error) {
@@ -146,15 +158,94 @@ export const store = {
         initialsGroups(state, initialsGroups) {
             state.initialsGroups = initialsGroups;
         },
+        initialsMinimumCharacters(state, initialsMinimumCharacters) {
+            state.initialsMinimumCharacters = initialsMinimumCharacters;
+        },
+        initialsMaximumCharacters(state, initialsMaximumCharacters) {
+            state.initialsMaximumCharacters = initialsMaximumCharacters;
+        },
         initialsSupportedCharacters(state, initialsSupportedCharacters) {
             state.initialsSupportedCharacters = initialsSupportedCharacters;
+        },
+        clearInitialsData(state) {
+            state.initialsGroups = null;
+            state.initialsSupportedCharacters = null;
+        },
+        initialsDataPromise(state, initialsDataPromise) {
+            state.initialsDataPromise = initialsDataPromise;
+        }
+    },
+    actions: {
+        async refreshInitialsData({ state, commit }, force = false) {
+            // in case a request is already ongoing just reuse it, this avoids
+            // parallel duplicated requests (race and performance issues)
+            if (state.initialsDataPromise) return state.initialsDataPromise;
+
+            // if the data was already fetched there is nothing to do, we
+            // assume that further requests would be redundant
+            if (
+                state.initialsGroups &&
+                state.initialsSupportedCharacters &&
+                state.initialsMinimumCharacters &&
+                state.initialsMaximumCharacters &&
+                !force
+            ) {
+                return;
+            }
+
+            // runs the remote business logic to obtain the multiple
+            // target groups available for initials as well as the
+            // available characters for personalization
+            const promise = Promise.all([
+                this._vm.$ripe.runLogicP({ method: "groups" }),
+                (async () => {
+                    const supportedCharacters = await this._vm.$ripe.runLogicP({
+                        method: "supported_characters"
+                    });
+                    return [...supportedCharacters];
+                })(),
+                this._vm.$ripe.runLogicP({ method: "minimum_initials" }),
+                this._vm.$ripe.runLogicP({ method: "maximum_initials" })
+            ]);
+
+            // stores the ongoing request so we avoid future redundant requests
+            // this is critical due to performance reasons
+            commit("initialsDataPromise", promise);
+
+            try {
+                // obtains the remote data and updates the local store information
+                // to reflect the remote information
+                const [
+                    groups,
+                    supportedCharacters,
+                    minimumCharacters,
+                    maximumCharacters
+                ] = await promise;
+                commit("initialsGroups", groups);
+                commit("initialsSupportedCharacters", supportedCharacters);
+                commit("initialsMinimumCharacters", minimumCharacters);
+                commit("initialsMaximumCharacters", maximumCharacters);
+            } catch (err) {
+                // gives a default group if builds does not support remote
+                // business logic (for the `groups` and `supported_characters`
+                // "methods"), this is a naive implementation for the scenarios
+                // where no server side logic exists for initials (supported_characters)
+                commit("initialsGroups", "main");
+                commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
+                commit("initialsMinimumCharacters", 0);
+                commit("initialsMaximumCharacters", Infinity);
+            } finally {
+                // releases the "lock" controlled by the initials data promise, so that
+                // future remote requests can go on
+                commit("initialsDataPromise", null);
+            }
         }
     },
     getters: {
         getParts: state => () => state.parts,
         getModelState: state => () => ({
             dku: state.dku,
-            product_id: state.product_id,
+            product_id: state.productId,
             brand: state.brand,
             model: state.model,
             variant: state.variant,
@@ -162,7 +253,7 @@ export const store = {
             flag: state.flag,
             format: state.format,
             resolution: state.resolution,
-            backgroundColor: state.backgroundColor,
+            background_color: state.backgroundColor,
             gender: state.gender,
             scale: state.scale,
             personalization: state.personalization,
@@ -172,7 +263,7 @@ export const store = {
         getOrderInfo: state => () => {
             const orderInfo = {
                 dku: state.dku,
-                product_id: state.product_id,
+                product_id: state.productId,
                 brand: state.brand,
                 model: state.model,
                 gender: state.gender,

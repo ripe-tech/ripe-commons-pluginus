@@ -8,7 +8,7 @@
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
-                <p class="subtitle">
+                <p class="subtitle" v-if="showGroupLabel(group)">
                     {{ locale("ripe_commons.personalization.group") }}
                     {{ locale(`ripe_commons.group.${group}`, readable(capitalize(group))) }}
                 </p>
@@ -120,11 +120,20 @@ export const Reference = {
     data: function() {
         return {
             /**
-             * Dictionary that maps each initials group to tuples that define the
-             * value for each of the initials properties.
+             * Dictionary that maps each initials group to objects that map each
+             * of the property types with the selected value. This is a dictionary
+             * based representation of the engraving.
              */
             propertiesData: {},
+
+            /**
+             * An object that maps for each group the value of the initials.
+             */
             initialsText: {},
+
+            /**
+             * The name of the groups that are currently available for personalization.
+             */
             groups: []
         };
     },
@@ -146,12 +155,11 @@ export const Reference = {
             };
         },
         valid() {
-            // enable the apply button whenever we don't have
-            // groups that have engraving but no initials
-            return !this.groups.find(
-                group =>
-                    Object.keys(this.propertiesData[group] || {}).length > 0 &&
-                    !(this.initialsText[group] || "")
+            return this.allPropertiesOrEmpty(
+                this.groups,
+                this.initialsText,
+                this.propertiesData,
+                this.properties()
             );
         }
     },
@@ -297,6 +305,9 @@ export const Reference = {
             Object.entries(valuesM).forEach(([property, value]) => {
                 this.onValueUpdate(value, group, property);
             });
+        },
+        showGroupLabel(group) {
+            return this.groups.length > 1 && group !== "main";
         },
         onValueUpdate(value, group, type) {
             const newProperties = { ...this.propertiesData };

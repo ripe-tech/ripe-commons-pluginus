@@ -35,6 +35,12 @@ export const logicMixin = {
         initialsGroups() {
             return this.$store.state.initialsGroups;
         },
+        initialsMinimumCharacters() {
+            return this.$store.state.initialsMinimumCharacters;
+        },
+        initialsMaximumCharacters() {
+            return this.$store.state.initialsMaximumCharacters;
+        },
         initialsSupportedCharacters() {
             return this.$store.state.initialsSupportedCharacters;
         },
@@ -46,7 +52,7 @@ export const logicMixin = {
                 .join(" ");
         },
         ripeUrl() {
-            return this.$store.state.ripe_url;
+            return this.$store.state.ripeUrl;
         },
         error() {
             return this.$store.state.error;
@@ -68,6 +74,84 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        /**
+         * Checks if the initials are valid according to a naive implementation
+         * where validation is done against the maximum, minimum and supported
+         * characters that don't take into account the initials group or the
+         * current ctx.
+         *
+         * This method should be used carefully to avoid erroneous validation
+         * of the initials not compliant with generic logic implementation.
+         *
+         * @param {String} initials The initials string value to validate.
+         * @return {Boolean} Whether the initials are valid according to the naive
+         * value of maximum and minimum initials.
+         */
+        initialsWithinRange(initials) {
+            if (initials === null || initials === undefined) return true;
+            if (
+                !this.$store.state.initialsSupportedCharacters ||
+                !this.$store.state.initialsMinimumCharacters ||
+                !this.$store.state.initialsMaximumCharacters
+            ) {
+                return true;
+            }
+
+            if (initials.length > this.$store.state.initialsMaximumCharacters) return false;
+            if (initials.length < this.$store.state.initialsMinimumCharacters) return false;
+
+            return [...initials].every(initial =>
+                this.$store.state.initialsSupportedCharacters.includes(initial)
+            );
+        },
+        /**
+         * Checks if for every group either has everything set (initials and
+         * all properties) or nothing, representing a simple validation process.
+         *
+         * This verification can be used to determine if the provided groups
+         * of initials and properties are valid according to general build
+         * based properties definition.
+         *
+         * @param {Array} groups The sequence with the names of the groups that
+         * are going to be validated.
+         * @param {Object} groupInitials Am object that maps a certain group
+         * to the initials associated with that group.
+         * @param {Object} groupProperties An object that maps a group name
+         * into an object that associates a property name to a value.
+         * @param {Number} properties The object that contains the definition of
+         * the properties that are going to be validated, to be used in the
+         * evaluation of the expected properties count. This map associates the
+         * property name with a sequence of all of its possible values.
+         * @return {Boolean} Whether every group either has everything set
+         * (initials and all properties) or nothing.
+         */
+        allPropertiesOrEmpty(
+            groups = [],
+            groupInitials = {},
+            groupProperties = {},
+            properties = {}
+        ) {
+            // computes the expected number of properties as the length
+            // of the properties dictionary
+            const expectedPropertiesCount = Object.keys(properties).length;
+
+            // consider groups valid whenever, for all groups, we either
+            // have no initials (and no properties for engraving are set)
+            // or we have initials and all expected properties are set
+            return groups.every(group => {
+                const initials = groupInitials[group];
+                const hasInitials = Boolean(initials);
+                const propertiesCount = Object.values(groupProperties[group] || {}).filter(
+                    v => v !== null && v !== undefined
+                ).length;
+                return (
+                    (!hasInitials && propertiesCount === 0) ||
+                    (hasInitials &&
+                        this.initialsWithinRange(initials) &&
+                        propertiesCount === expectedPropertiesCount)
+                );
+            });
+        },
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce

@@ -9,4 +9,3 @@ node_js:
 install:
   - npm install
 script: npm run lint && npm run build && npm test
-before_deploy: npm run build
