@@ -471,6 +471,10 @@ export const Pickers = {
             type: Boolean,
             default: false
         },
+        enableCenteredScroll: {
+            type: Boolean,
+            default: false
+        },
         beforeButtonsParts: {
             type: Array,
             default: () => []
@@ -670,11 +674,8 @@ export const Pickers = {
             const scrollLeft = container.scrollLeft;
             const containerCenter = scrollLeft + containerWidth / 2;
 
-            console.log(
-                "Scroll left", scrollLeft, 
-                "container center", containerCenter
-            );
-            
+            console.log("Scroll left", scrollLeft, "container center", containerCenter);
+
             let combinedWidth = 0;
             let scrollMove = scrollLeft;
             for (const _element of elements) {
@@ -682,11 +683,19 @@ export const Pickers = {
                 const marginLeft = parseFloat(style.marginLeft);
                 const marginRight = parseFloat(style.marginRight);
                 const elementWidth = _element.offsetWidth + marginLeft + marginRight;
-                
-                console.log("cycle", containerCenter, combinedWidth + elementWidth / 2, combinedWidth + elementWidth);
-                
-                if (((combinedWidth + elementWidth / 2) > containerCenter || scrollLeft === 0) && ((combinedWidth + elementWidth) > containerCenter)) {
-                    scrollMove += combinedWidth + 3 * elementWidth / 4 - containerCenter;
+
+                console.log(
+                    "cycle",
+                    containerCenter,
+                    combinedWidth + elementWidth / 2,
+                    combinedWidth + elementWidth
+                );
+
+                if (
+                    (combinedWidth + elementWidth / 2 > containerCenter || scrollLeft === 0) &&
+                    combinedWidth + elementWidth > containerCenter
+                ) {
+                    scrollMove += combinedWidth + (3 * elementWidth) / 4 - containerCenter;
                     break;
                 }
                 combinedWidth += elementWidth;
@@ -717,37 +726,6 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
-        slideLeftCentered(container, elements) {
-            const containerWidth = container.offsetWidth;
-            const scrollLeft = container.scrollLeft;
-            const containerCenter = scrollLeft + containerWidth / 2;
-
-            console.log(
-                "Scroll left", scrollLeft, 
-                "containerWidth", containerWidth,
-                "container center", containerCenter
-            );
-            
-            let combinedWidth = 0;
-            let middleElementWidth = 0;
-            let scrollMove = 0;
-            for (const _element of elements) {
-                const style = getComputedStyle(_element);
-                const marginLeft = parseFloat(style.marginLeft);
-                const marginRight = parseFloat(style.marginRight);
-                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
-                
-                console.log("cycle", combinedWidth, containerCenter, elementWidth, scrollMove, combinedWidth - elementWidth/2 - containerCenter);
-                if (combinedWidth > containerCenter) {
-                    scrollMove = containerCenter - combinedWidth;
-                    break;
-                }
-                combinedWidth += elementWidth;
-                middleElementWidth = elementWidth;
-            }
-            console.log("end", scrollMove);
-            container.scrollLeft -= scrollMove;
-        },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
@@ -766,12 +744,16 @@ export const Pickers = {
         slideRightParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            this.slideRightCentered(partsPicker, parts);
+            if (this.enableCenteredScroll) return this.slideRightCentered(partsPicker, parts);
+            return this.slideRight(partsPicker, parts);
         },
         slideRightMaterials() {
             const materialsPicker = this.$refs.materialsPicker;
             const materials = materialsPicker.querySelectorAll(".button-material");
-            this.slideRight(materialsPicker, materials);
+            if (this.enableCenteredScroll) {
+                return this.slideRightCentered(materialsPicker, materials);
+            }
+            return this.slideRight(materialsPicker, materials);
         },
         slideRightColors() {
             const colorsPicker = this.$refs.colorsPicker;
