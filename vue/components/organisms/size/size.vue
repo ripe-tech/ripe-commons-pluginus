@@ -119,7 +119,12 @@ export const Size = {
             this.showModal();
         });
         this.$bus.bind("close_size", id => {
+            // if this was the component instance that
+            // originated the closing request, ignore it
             if (id === this._uid) return;
+
+            // the closing callback should only run when
+            // the modal is visible
             if (!this.visible) this.closeCallback = null;
             this.hideModal();
         });
