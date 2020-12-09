@@ -114,11 +114,28 @@ export const Size = {
         this.$bus.bind("enable_size", this.enableSize);
         this.$bus.bind("disable_size", this.disableSize);
 
-        this.$bus.bind("open_size", callback => {
+        this.$bus.bind("open_size", (callback, id = null) => {
+            // if this was the component instance that originated the
+            // opening request, ignore it (only perform this operation
+            // in case the id has been explicitly requested)
+            if (id && id === this._uid) return;
+
             this.closeCallback = callback;
             this.showModal();
         });
-        this.$bus.bind("close_size", () => {
+        this.$bus.bind("close_size", (id = null) => {
+            // if this was the component instance that originated the
+            // closing request, ignore it (only perform this operation
+            // in case the id has been explicitly requested)
+            if (id && id === this._uid) return;
+
+            // the closing callback should only run when the modal is visible
+            // not doing so would trigger the close callback multiple times for
+            // the multiple available size models (if that's the case)
+            if (!this.visible) this.closeCallback = null;
+
+            // triggers the hide modal operation (part of the mixin definition)
+            // that should call the associated pre-defined hooks
             this.hideModal();
         });
 
@@ -216,7 +233,7 @@ export const Size = {
 
             // triggers the close size event and the hides the form of the
             // managed by the "external" plugin
-            this.$bus.trigger("close_size");
+            this.$bus.trigger("close_size", this._uid);
             this.$refs.form.hide();
         },
         modalHidden() {
