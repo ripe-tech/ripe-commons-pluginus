@@ -665,6 +665,35 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
+        slideRightCentered(container, elements) {
+            const containerWidth = container.offsetWidth;
+            const scrollLeft = container.scrollLeft;
+            const containerCenter = scrollLeft + containerWidth / 2;
+
+            console.log(
+                "Scroll left", scrollLeft, 
+                "container center", containerCenter
+            );
+            
+            let combinedWidth = 0;
+            let scrollMove = scrollLeft;
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
+                
+                console.log("cycle", containerCenter, combinedWidth + elementWidth / 2, combinedWidth + elementWidth);
+                
+                if (((combinedWidth + elementWidth / 2) > containerCenter || scrollLeft === 0) && ((combinedWidth + elementWidth) > containerCenter)) {
+                    scrollMove += combinedWidth + 3 * elementWidth / 4 - containerCenter;
+                    break;
+                }
+                combinedWidth += elementWidth;
+            }
+            console.log("end", scrollMove);
+            container.scrollLeft = scrollMove;
+        },
         /**
          * Scrolls in the left direction to show the next element that is
          * still not fully visible.
@@ -688,6 +717,37 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
+        slideLeftCentered(container, elements) {
+            const containerWidth = container.offsetWidth;
+            const scrollLeft = container.scrollLeft;
+            const containerCenter = scrollLeft + containerWidth / 2;
+
+            console.log(
+                "Scroll left", scrollLeft, 
+                "containerWidth", containerWidth,
+                "container center", containerCenter
+            );
+            
+            let combinedWidth = 0;
+            let middleElementWidth = 0;
+            let scrollMove = 0;
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
+                
+                console.log("cycle", combinedWidth, containerCenter, elementWidth, scrollMove, combinedWidth - elementWidth/2 - containerCenter);
+                if (combinedWidth > containerCenter) {
+                    scrollMove = containerCenter - combinedWidth;
+                    break;
+                }
+                combinedWidth += elementWidth;
+                middleElementWidth = elementWidth;
+            }
+            console.log("end", scrollMove);
+            container.scrollLeft -= scrollMove;
+        },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
@@ -706,7 +766,7 @@ export const Pickers = {
         slideRightParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            this.slideRight(partsPicker, parts);
+            this.slideRightCentered(partsPicker, parts);
         },
         slideRightMaterials() {
             const materialsPicker = this.$refs.materialsPicker;
