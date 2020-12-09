@@ -118,7 +118,9 @@ export const Size = {
             this.closeCallback = callback;
             this.showModal();
         });
-        this.$bus.bind("close_size", () => {
+        this.$bus.bind("close_size", id => {
+            if (id === this._uid) return;
+            if (!this.visible) this.closeCallback = null;
             this.hideModal();
         });
 
@@ -216,7 +218,7 @@ export const Size = {
 
             // triggers the close size event and the hides the form of the
             // managed by the "external" plugin
-            this.$bus.trigger("close_size");
+            this.$bus.trigger("close_size", this._uid);
             this.$refs.form.hide();
         },
         modalHidden() {
