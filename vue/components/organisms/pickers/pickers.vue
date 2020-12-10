@@ -835,12 +835,13 @@ export const Pickers = {
                 });
                 index++;
             }
-            this.isOptional(this.activePart) &&
+            if (this.isOptional(this.activePart)) {
                 colors.push({
                     material: material,
                     color: "no_" + this.activePart,
                     index: index
                 });
+            }
             return colors;
         },
         /**
