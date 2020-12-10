@@ -813,12 +813,13 @@ export const Pickers = {
                     });
                     index++;
                 }
-                isOptional &&
+                if (isOptional) {
                     colors.push({
                         material: "no_" + part,
                         color: "no_" + part,
                         index: index
                     });
+                }
             }
             return colors;
         },
