@@ -692,7 +692,7 @@ export const Pickers = {
                 // the next element, so its center will be positioned at the middle
                 // of the container element
                 if (Math.floor(combinedWidth + elementWidth / 2) > containerCenter) {
-                    combinedWidth += elementWidth / 2
+                    combinedWidth += elementWidth / 2;
                     scroll += combinedWidth - containerCenter;
                     break;
                 }
@@ -724,15 +724,51 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
+        slideLeftCentered(container, elements) {
+            // calculates the width of the container without the padding
+            // allowing for precise calculations to center the elements
+            const containerStyle = getComputedStyle(container);
+            const paddingRight = parseFloat(containerStyle.paddingRight);
+            const paddingLeft = parseFloat(containerStyle.paddingLeft);
+            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+
+            const scrollLeft = container.scrollLeft;
+            const containerCenter = scrollLeft + containerWidth / 2;
+
+            let combinedWidth = 0;
+            let scroll = 0;
+            let previousElementWidth = 0;
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
+
+                // if the element middle is after the middle of the container, the
+                // previous element is the center of the container, so it is necessary
+                // to substract half of the previous element width to center it in the
+                // container
+                if (Math.floor(combinedWidth + elementWidth / 2) >= containerCenter) {
+                    scroll += containerCenter - (combinedWidth - previousElementWidth / 2);
+                    break;
+                }
+
+                combinedWidth += elementWidth;
+                previousElementWidth = elementWidth;
+            }
+            container.scrollLeft -= scroll;
+        },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            this.slideLeft(partsPicker, parts);
+            if (this.enableCenterScroll) return this.slideLeftCentered(partsPicker, parts);
+            return this.slideLeft(partsPicker, parts);
         },
         slideLeftMaterials() {
             const materialsPicker = this.$refs.materialsPicker;
             const materials = materialsPicker.querySelectorAll(".button-material");
-            this.slideLeft(materialsPicker, materials);
+            if (this.enableCenterScroll) return this.slideLeftCentered(materialsPicker, materials);
+            return this.slideLeft(materialsPicker, materials);
         },
         slideLeftColors() {
             const colorsPicker = this.$refs.colorsPicker;
