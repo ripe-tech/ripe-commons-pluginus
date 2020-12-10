@@ -471,7 +471,7 @@ export const Pickers = {
             type: Boolean,
             default: false
         },
-        enableCenteredScroll: {
+        enableCenterScroll: {
             type: Boolean,
             default: false
         },
@@ -670,38 +670,36 @@ export const Pickers = {
             container.scrollLeft = combinedWidth;
         },
         slideRightCentered(container, elements) {
-            const containerWidth = container.offsetWidth;
+            // calculates the width of the container without the padding
+            // allowing for precise calculations to center the elements
+            const containerStyle = getComputedStyle(container);
+            const paddingRight = parseFloat(containerStyle.paddingRight);
+            const paddingLeft = parseFloat(containerStyle.paddingLeft);
+            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+
             const scrollLeft = container.scrollLeft;
             const containerCenter = scrollLeft + containerWidth / 2;
 
-            console.log("Scroll left", scrollLeft, "container center", containerCenter);
-
             let combinedWidth = 0;
-            let scrollMove = scrollLeft;
+            let scroll = 0;
             for (const _element of elements) {
                 const style = getComputedStyle(_element);
                 const marginLeft = parseFloat(style.marginLeft);
                 const marginRight = parseFloat(style.marginRight);
                 const elementWidth = _element.offsetWidth + marginLeft + marginRight;
 
-                console.log(
-                    "cycle",
-                    containerCenter,
-                    combinedWidth + elementWidth / 2,
-                    combinedWidth + elementWidth
-                );
-
-                if (
-                    (combinedWidth + elementWidth / 2 > containerCenter || scrollLeft === 0) &&
-                    combinedWidth + elementWidth > containerCenter
-                ) {
-                    scrollMove += combinedWidth + (3 * elementWidth) / 4 - containerCenter;
+                // if the element middle is after the middle of the container, it is
+                // the next element, so its center will be positioned at the middle
+                // of the container element
+                if (Math.floor(combinedWidth + elementWidth / 2) > containerCenter) {
+                    combinedWidth += elementWidth / 2
+                    scroll += combinedWidth - containerCenter;
                     break;
                 }
+
                 combinedWidth += elementWidth;
             }
-            console.log("end", scrollMove);
-            container.scrollLeft = scrollMove;
+            container.scrollLeft += scroll;
         },
         /**
          * Scrolls in the left direction to show the next element that is
@@ -744,13 +742,13 @@ export const Pickers = {
         slideRightParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            if (this.enableCenteredScroll) return this.slideRightCentered(partsPicker, parts);
+            if (this.enableCenterScroll) return this.slideRightCentered(partsPicker, parts);
             return this.slideRight(partsPicker, parts);
         },
         slideRightMaterials() {
             const materialsPicker = this.$refs.materialsPicker;
             const materials = materialsPicker.querySelectorAll(".button-material");
-            if (this.enableCenteredScroll) {
+            if (this.enableCenterScroll) {
                 return this.slideRightCentered(materialsPicker, materials);
             }
             return this.slideRight(materialsPicker, materials);
