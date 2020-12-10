@@ -301,7 +301,7 @@
     position: absolute;
     right: 0px;
     top: 0px;
-    transform: scale(1, 1);
+    transform: scale(1, 1) translateZ(0);
     transition: transform 0.125s ease-in-out, border-width 0.125s ease-in-out;
     width: 58px;
     z-index: 1;
