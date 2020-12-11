@@ -418,35 +418,6 @@ import { localeMixin } from "../../../mixins";
 export const Pickers = {
     name: "pickers",
     mixins: [localeMixin],
-    data: function() {
-        return {
-            activePart: null,
-            activeMaterial: null,
-            activeColor: null,
-            multipleMaterials: false,
-            loading: false,
-            swatches: {},
-            choices: {},
-            /**
-             * Whether the parts picker has a scroll.
-             */
-            scrollParts: false,
-            /**
-             * Whether the materials picker has a scroll.
-             */
-            scrollMaterial: false,
-            /**
-             * Whether the colors picker has a scroll.
-             */
-            scrollColor: false,
-            /**
-             * The currently centered part, material and
-             * color, necessary to maintain the scroll
-             * after a resize.
-             */
-            alignedElements: {}
-        };
-    },
     props: {
         /**
          * Responsible for establishing if the app shows all colors or just
@@ -492,6 +463,35 @@ export const Pickers = {
             type: Array,
             default: () => []
         }
+    },
+    data: function() {
+        return {
+            activePart: null,
+            activeMaterial: null,
+            activeColor: null,
+            multipleMaterials: false,
+            loading: false,
+            swatches: {},
+            choices: {},
+            /**
+             * Whether the parts picker has a scroll.
+             */
+            scrollParts: false,
+            /**
+             * Whether the materials picker has a scroll.
+             */
+            scrollMaterial: false,
+            /**
+             * Whether the colors picker has a scroll.
+             */
+            scrollColor: false,
+            /**
+             * The currently centered part, material and
+             * color, necessary to maintain the scroll
+             * after a resize.
+             */
+            alignedElements: {}
+        };
     },
     computed: {
         parts() {
