@@ -380,10 +380,10 @@ export const Personalization = {
             // updates the current state object with both initials, engraving
             // and the initials extra structure, either from the direct provided
             // state or from the conversion from the "simple" initials
-            state.initials = initials;
-            state.engraving = engraving;
-            state.initialsExtra =
-                state.initialsExtra || this.initialsToInitialsExtra(initials, engraving);
+            [state.initials, state.engraving] = this.sanitizeInitials(initials, engraving);
+            state.initialsExtra = state.initialsExtra
+                ? this.sanitizeInitialsExtra(state.initialsExtra)
+                : this.initialsToInitialsExtra(initials, engraving);
 
             // updates both the current internal state taking into account if an event
             // should be triggered or not (using internal state values)
@@ -471,7 +471,7 @@ export const Personalization = {
             // if no group has valid initials then returns empty values
             return {
                 initials: "",
-                engraving: ""
+                engraving: null
             };
         }
     }
