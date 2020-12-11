@@ -413,11 +413,11 @@ body.mobile .button-scroll-colors {
 </style>
 
 <script>
-import { localeMixin } from "../../../mixins";
+import { localeMixin, utilsMixin } from "../../../mixins";
 
 export const Pickers = {
     name: "pickers",
-    mixins: [localeMixin],
+    mixins: [localeMixin, utilsMixin],
     props: {
         /**
          * Responsible for establishing if the app shows all colors or just
@@ -486,11 +486,20 @@ export const Pickers = {
              */
             scrollColor: false,
             /**
-             * The currently centered part, material and
-             * color, necessary to maintain the scroll
-             * after a resize.
+             * The currently aligned part, necessary to
+             * maintain the scroll after a resize.
              */
-            alignedElements: {}
+            alignedPart: null,
+            /**
+             * The currently aligned material, necessary to
+             * maintain the scroll after a resize.
+             */
+            alignedMaterial: null,
+            /**
+             * The currently aligned color, necessary to
+             * maintain the scroll after a resize.
+             */
+            alignedColor: null
         };
     },
     computed: {
@@ -560,9 +569,7 @@ export const Pickers = {
             this.multipleMaterials = false;
         },
         activePart(part, oldPart) {
-            if (!part) {
-                return;
-            }
+            if (!part) return;
             const current = this.parts[this.activePart];
             const materials = Object.keys(this.materialOptions);
             const materialSelected = current && current.material;
@@ -663,25 +670,22 @@ export const Pickers = {
                 this.$refs.colorsPicker.scrollWidth > this.$refs.colorsPicker.clientWidth;
         },
         maintainPartsCentered() {
-            const centeredPart = this.alignedElements.part;
-            if (!centeredPart) return;
+            if (!this.alignedPart) return;
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            this.centerElement(partsPicker, parts, "part", centeredPart);
+            this.centerElement(partsPicker, parts, "part", this.alignedPart);
         },
         maintainMaterialsCentered() {
-            const centeredMaterial = this.alignedElements.material;
-            if (!centeredMaterial) return;
+            if (!this.alignedMaterial) return;
             const materialsPicker = this.$refs.materialsPicker;
             const materials = materialsPicker.querySelectorAll(".button-part");
-            this.centerElement(materialsPicker, materials, "material", centeredMaterial);
+            this.centerElement(materialsPicker, materials, "material", this.alignedMaterial);
         },
         maintainColorsCentered() {
-            const centeredColor = this.alignedElements.color;
-            if (!centeredColor) return;
+            if (!this.alignedColor) return;
             const colorsPicker = this.$refs.colorsPicker;
             const colors = colorsPicker.querySelectorAll(".button-color-option");
-            this.centerElement(colorsPicker, colors, "color", centeredColor);
+            this.centerElement(colorsPicker, colors, "color", this.alignedColor);
         },
         /**
          * Scrolls in the right direction to show the next element that is still not fully visible.
@@ -705,6 +709,13 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
+        /**
+         * Scrolls in the right direction by centering the element in the middle.
+         *
+         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {NodeList} elements An array representing the elements.
+         * @param {String} valueLabel A string representing the components being slided (e.g. parts, materials and colors).
+         */
         slideRightCentered(container, elements, valueLabel) {
             // calculates the width of the container without the padding
             // allowing for precise calculations to center the elements
@@ -730,7 +741,7 @@ export const Pickers = {
                 if (Math.floor(combinedWidth + elementWidth / 2) > containerCenter) {
                     combinedWidth += elementWidth / 2;
                     scroll += combinedWidth - containerCenter;
-                    this.alignedElements[valueLabel] = _element.dataset[valueLabel];
+                    this[`aligned${this.capitalize(valueLabel)}`] = _element.dataset[valueLabel];
                     break;
                 }
 
@@ -742,7 +753,7 @@ export const Pickers = {
          * Scrolls in the left direction to show the next element that is
          * still not fully visible.
          *
-         * @param {Element} container the HTML element representing the container
+         * @param {Element} container The HTML element representing the container
          * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          */
@@ -761,6 +772,13 @@ export const Pickers = {
             }
             container.scrollLeft = combinedWidth;
         },
+        /**
+         * Scrolls in the left direction by centering the element in the middle.
+         *
+         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {NodeList} elements An array representing the elements.
+         * @param {String} valueLabel A string representing the components being slided (e.g. parts, materials and colors).
+         */
         slideLeftCentered(container, elements, valueLabel) {
             // calculates the width of the container without the padding
             // allowing for precise calculations to center the elements
@@ -787,7 +805,7 @@ export const Pickers = {
                 // container
                 if (Math.floor(combinedWidth + elementWidth / 2) >= containerCenter) {
                     scroll += containerCenter - (combinedWidth - previousElementWidth / 2);
-                    this.alignedElements[valueLabel] = elements[index - 1].dataset[valueLabel];
+                    this[`aligned${this.capitalize(valueLabel)}`] = elements[index - 1].dataset[valueLabel];
                     break;
                 }
 
@@ -1031,14 +1049,14 @@ export const Pickers = {
             if (!this.enableCenterParts) return;
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
-            this.alignedElements.part = this.activePart;
+            this.alignedPart = this.activePart;
             this.centerElement(partsPicker, parts, "part", this.activePart);
         },
         centerMaterials() {
             if (!this.enableCenterMaterials) return;
             const materialsPicker = this.$refs.materialsPicker;
             const materials = materialsPicker.querySelectorAll(".button-material");
-            this.alignedElements.material = this.activeMaterial;
+            this.alignedMaterial = this.activeMaterial;
             this.centerElement(materialsPicker, materials, "material", this.activeMaterial);
         },
         /**
@@ -1049,7 +1067,7 @@ export const Pickers = {
             const scrollableElement = colorsPicker.querySelector("span");
 
             const part = this.parts[this.activePart];
-            this.alignedElements.color = this.activeColor;
+            this.alignedColor = this.activeColor;
 
             if (!part) return;
 
