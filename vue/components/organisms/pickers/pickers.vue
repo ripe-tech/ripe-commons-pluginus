@@ -797,7 +797,7 @@ export const Pickers = {
             container.scrollLeft -= scroll;
         },
         slideLeftStrategy(container, elements, valueLabel) {
-            switch (this.enableCenterScroll) {
+            switch (this.alignScroll) {
                 case "left":
                     this.slideLeft(container, elements);
                     break;
@@ -810,7 +810,7 @@ export const Pickers = {
             }
         },
         slideRightStrategy(container, elements, valueLabel) {
-            switch (this.enableCenterScroll) {
+            switch (this.alignScroll) {
                 case "left":
                     this.slideRight(container, elements);
                     break;
