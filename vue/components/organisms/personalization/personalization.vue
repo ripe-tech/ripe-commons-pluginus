@@ -379,7 +379,9 @@ export const Personalization = {
 
             // updates the current state object with both initials, engraving
             // and the initials extra structure, either from the direct provided
-            // state or from the conversion from the "simple" initials
+            // state or from the conversion from the "simple" initials, notice
+            // that both the initials and the initials extra are sanitized to avoid
+            // corrupted data regarding initials and initials extra
             [state.initials, state.engraving] = this.sanitizeInitials(initials, engraving);
             state.initialsExtra = state.initialsExtra
                 ? this.sanitizeInitialsExtra(state.initialsExtra)
