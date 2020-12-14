@@ -1,7 +1,7 @@
 const assert = require("assert");
 
 describe("ModelLocaleResolverPlugin", function() {
-    it("localeColor", async () => {
+    before(async function() {
         const localePlugin = await global.manager.getPluginByName("LocalePlugin");
         localePlugin.setLocale("en_us");
         localePlugin.setLocaleMap({
@@ -9,8 +9,12 @@ describe("ModelLocaleResolverPlugin", function() {
                 "colors.red": "Red"
             }
         });
+    });
 
-        const plugin = await global.manager.getPluginByName("ModelLocaleResolverPlugin");
-        assert.strictEqual("Red", plugin.localeColor("red"));
+    describe("#localeColor()", function() {
+        it("should make a simple color translation", async () => {
+            const plugin = await global.manager.getPluginByName("ModelLocaleResolverPlugin");
+            assert.strictEqual("Red", plugin.localeColor("red"));
+        });
     });
 });
