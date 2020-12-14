@@ -6,11 +6,11 @@ describe("ModelLocaleResolverPlugin", function() {
         localePlugin.setLocale("en_us");
         localePlugin.setLocaleMap({
             en_us: {
-                "colors.red": "red"
+                "colors.red": "Red"
             }
         });
 
         const plugin = await global.manager.getPluginByName("ModelLocaleResolverPlugin");
-        assert.strictEqual("red", plugin.localeColor("red"));
+        assert.strictEqual("Red", plugin.localeColor("red"));
     });
 });
