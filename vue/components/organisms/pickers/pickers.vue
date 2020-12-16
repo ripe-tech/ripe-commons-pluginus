@@ -569,7 +569,9 @@ export const Pickers = {
             this.multipleMaterials = false;
         },
         activePart(part, oldPart) {
-            if (!part) return;
+            if (!part) {
+                return;
+            }
             const current = this.parts[this.activePart];
             const materials = Object.keys(this.materialOptions);
             const materialSelected = current && current.material;
@@ -586,10 +588,16 @@ export const Pickers = {
     mounted: function() {
         window.addEventListener("resize", () => {
             this.updateScrollFlags();
-            if (this.alignScroll !== "center") return;
-            this.maintainPartsCentered();
-            this.maintainMaterialsCentered();
-            this.maintainColorsCentered();
+            switch (this.alignedColor) {
+                case "left":
+                    // on window resize there is no need to realign
+                    // because the element is already correctly aligned
+                    break;
+                case "center":
+                    this.recenter();
+                default:
+                    break;
+            }
         });
 
         this.$store.watch(this.$store.getters.getParts, parts => {
@@ -669,75 +677,62 @@ export const Pickers = {
             this.scrollColor =
                 this.$refs.colorsPicker.scrollWidth > this.$refs.colorsPicker.clientWidth;
         },
-        maintainPartsCentered() {
+        recenter() {
+            this.recenterPart();
+            this.recenterMaterial();
+            this.recenterColor();
+        },
+        recenterPart() {
             if (!this.alignedPart) return;
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
             this.centerElement(partsPicker, parts, "part", this.alignedPart);
         },
-        maintainMaterialsCentered() {
+        recenterMaterial() {
             if (!this.alignedMaterial) return;
             const materialsPicker = this.$refs.materialsPicker;
-            const materials = materialsPicker.querySelectorAll(".button-part");
+            const materials = materialsPicker.querySelectorAll(".button-material");
             this.centerElement(materialsPicker, materials, "material", this.alignedMaterial);
         },
-        maintainColorsCentered() {
+        recenterColor() {
             if (!this.alignedColor) return;
             const colorsPicker = this.$refs.colorsPicker;
             const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.centerElement(colorsPicker, colors, "color", this.alignedColor);
         },
-        /**
-         * Scrolls in the right direction to show the next element that is still not fully visible.
-         *
-         * @param {Element} container the HTML element representing the container that the elements are in
-         * @param {NodeList} elements An array representing the elements.
-         */
-        slideRight(container, elements) {
-            const scrollLeft = container.scrollLeft;
-            let combinedWidth = 0;
-            for (const _element of elements) {
-                const style = getComputedStyle(_element);
-                const marginLeft = parseFloat(style.marginLeft);
-                const marginRight = parseFloat(style.marginRight);
-                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
-                if (combinedWidth + elementWidth > scrollLeft) {
-                    combinedWidth += elementWidth;
-                    break;
-                }
-                combinedWidth += elementWidth;
-            }
-            container.scrollLeft = combinedWidth;
+        slideLeftParts() {
+            const partsPicker = this.$refs.partsPicker;
+            const parts = partsPicker.querySelectorAll(".button-part");
+            this.slideLeftStrategy(partsPicker, parts, "part");
         },
-        /**
-         * Scrolls in the right direction by centering the element in the middle.
+        slideLeftMaterials() {
+            const materialsPicker = this.$refs.materialsPicker;
+            const materials = materialsPicker.querySelectorAll(".button-material");
+            this.slideLeftStrategy(materialsPicker, materials, "material");
+        },
+        slideLeftColors() {
+            const colorsPicker = this.$refs.colorsPicker;
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
+            this.slideLeftStrategy(colorsPicker, colors, "color");
+        },        /**
+         * Based on the left sliding alignment strategy chosen, it calls the respective methods.
          *
          * @param {Element} container The HTML element representing the container that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
          */
-        slideRightCentered(container, elements, valueLabel) {
-            // calculates the width of the container without the padding
-            // allowing for precise calculations to center the elements
-            const containerStyle = getComputedStyle(container);
-            const paddingRight = parseFloat(containerStyle.paddingRight);
-            const paddingLeft = parseFloat(containerStyle.paddingLeft);
-            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
-            const containerCenter = container.scrollLeft + containerWidth / 2;
-
-            let slide = 0;
-            this._calculateScroll(elements, (element, index, elementWidth, scroll) => {
-                // if the element middle is after the middle of the container, it is
-                // the next element, so its center will be positioned at the middle
-                // of the container element
-                if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
-                    slide += scroll + elementWidth / 2 - containerCenter;
-                    this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
-                    return true;
-                }
-                return false;
-            });
-            container.scrollLeft += slide;
+        slideLeftStrategy(container, elements, valueLabel) {
+            switch (this.alignScroll) {
+                case "left":
+                    this.slideLeft(container, elements);
+                    break;
+                case "center":
+                    this.slideLeftCentered(container, elements, valueLabel);
+                    break;
+                default:
+                    this.slideLeft(container, elements);
+                    break;
+            }
         },
         /**
          * Scrolls in the left direction to show the next element that is
@@ -801,25 +796,20 @@ export const Pickers = {
             });
             container.scrollLeft -= slide;
         },
-        /**
-         * Based on the left sliding alignment strategy chosen, it calls the respective methods.
-         *
-         * @param {Element} container The HTML element representing the container that the elements are in.
-         * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         */
-        slideLeftStrategy(container, elements, valueLabel) {
-            switch (this.alignScroll) {
-                case "left":
-                    this.slideLeft(container, elements);
-                    break;
-                case "center":
-                    this.slideLeftCentered(container, elements, valueLabel);
-                    break;
-                default:
-                    this.slideLeft(container, elements);
-                    break;
-            }
+        slideRightParts() {
+            const partsPicker = this.$refs.partsPicker;
+            const parts = partsPicker.querySelectorAll(".button-part");
+            this.slideRightStrategy(partsPicker, parts, "part");
+        },
+        slideRightMaterials() {
+            const materialsPicker = this.$refs.materialsPicker;
+            const materials = materialsPicker.querySelectorAll(".button-material");
+            this.slideRightStrategy(materialsPicker, materials, "material");
+        },
+        slideRightColors() {
+            const colorsPicker = this.$refs.colorsPicker;
+            const colors = colorsPicker.querySelectorAll(".button-color-option");
+            this.slideRightStrategy(colorsPicker, colors, "color");
         },
         /**
          * Based on the right sliding alignment strategy chosen, it calls the respective methods.
@@ -841,35 +831,57 @@ export const Pickers = {
                     break;
             }
         },
-        slideLeftParts() {
-            const partsPicker = this.$refs.partsPicker;
-            const parts = partsPicker.querySelectorAll(".button-part");
-            this.slideLeftStrategy(partsPicker, parts, "part");
+        /**
+         * Scrolls in the right direction to show the next element that is still not fully visible.
+         *
+         * @param {Element} container the HTML element representing the container that the elements are in
+         * @param {NodeList} elements An array representing the elements.
+         */
+        slideRight(container, elements) {
+            const scrollLeft = container.scrollLeft;
+            let combinedWidth = 0;
+            for (const _element of elements) {
+                const style = getComputedStyle(_element);
+                const marginLeft = parseFloat(style.marginLeft);
+                const marginRight = parseFloat(style.marginRight);
+                const elementWidth = _element.offsetWidth + marginLeft + marginRight;
+                if (combinedWidth + elementWidth > scrollLeft) {
+                    combinedWidth += elementWidth;
+                    break;
+                }
+                combinedWidth += elementWidth;
+            }
+            container.scrollLeft = combinedWidth;
         },
-        slideLeftMaterials() {
-            const materialsPicker = this.$refs.materialsPicker;
-            const materials = materialsPicker.querySelectorAll(".button-material");
-            this.slideLeftStrategy(materialsPicker, materials, "material");
-        },
-        slideLeftColors() {
-            const colorsPicker = this.$refs.colorsPicker;
-            const colors = colorsPicker.querySelectorAll(".button-color-option");
-            this.slideLeftStrategy(colorsPicker, colors, "color");
-        },
-        slideRightParts() {
-            const partsPicker = this.$refs.partsPicker;
-            const parts = partsPicker.querySelectorAll(".button-part");
-            this.slideRightStrategy(partsPicker, parts, "part");
-        },
-        slideRightMaterials() {
-            const materialsPicker = this.$refs.materialsPicker;
-            const materials = materialsPicker.querySelectorAll(".button-material");
-            this.slideRightStrategy(materialsPicker, materials, "material");
-        },
-        slideRightColors() {
-            const colorsPicker = this.$refs.colorsPicker;
-            const colors = colorsPicker.querySelectorAll(".button-color-option");
-            this.slideRightStrategy(colorsPicker, colors, "color");
+        /**
+         * Scrolls in the right direction by centering the element in the middle.
+         *
+         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {NodeList} elements An array representing the elements.
+         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         */
+        slideRightCentered(container, elements, valueLabel) {
+            // calculates the width of the container without the padding
+            // allowing for precise calculations to center the elements
+            const containerStyle = getComputedStyle(container);
+            const paddingRight = parseFloat(containerStyle.paddingRight);
+            const paddingLeft = parseFloat(containerStyle.paddingLeft);
+            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+            const containerCenter = container.scrollLeft + containerWidth / 2;
+
+            let slide = 0;
+            this._calculateScroll(elements, (element, index, elementWidth, scroll) => {
+                // if the element middle is after the middle of the container, it is
+                // the next element, so its center will be positioned at the middle
+                // of the container element
+                if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
+                    slide += scroll + elementWidth / 2 - containerCenter;
+                    this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                    return true;
+                }
+                return false;
+            });
+            container.scrollLeft += slide;
         },
         configName(part) {
             return part.split("_").join(" ");
@@ -1242,9 +1254,9 @@ export const Pickers = {
          * possible stopping point.
          *
          * @param {NodeList} elements An array representing the elements.
-         * @param {Function} operations A function that decides the stopping point.
+         * @param {Function} stop A function that decides the stopping point.
          */
-        _calculateScroll(elements, operation) {
+        _calculateScroll(elements, stop) {
             let scroll = 0;
 
             // iterates over the complete set of elements to compute the
@@ -1256,7 +1268,7 @@ export const Pickers = {
                 const marginRight = parseFloat(style.marginRight);
                 const elementWidth = _element.offsetWidth + marginLeft + marginRight;
 
-                if (operation(_element, index, elementWidth, scroll)) return scroll;
+                if (stop(_element, index, elementWidth, scroll)) return scroll;
 
                 // increments the scroll value with the width of the component,
                 // which is composed by both the offset width and the margins
