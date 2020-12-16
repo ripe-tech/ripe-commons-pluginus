@@ -383,9 +383,12 @@ export const Personalization = {
             // that both the initials and the initials extra are sanitized to avoid
             // corrupted data regarding initials and initials extra
             [state.initials, state.engraving] = this.sanitizeInitials(initials, engraving);
-            state.initialsExtra = state.initialsExtra
-                ? this.sanitizeInitialsExtra(state.initialsExtra)
-                : this.initialsToInitialsExtra(initials, engraving);
+            state.initialsExtra =
+                state.initialsExtra || this.initialsToInitialsExtra(initials, engraving);
+            const sanitizedInitialsExtra = this.sanitizeInitialsExtra(state.initialsExtra);
+            if (this.diffInitialsExtra(sanitizedInitialsExtra, state.initialsExtra)) {
+                state.initialsExtra = sanitizedInitialsExtra;
+            }
 
             // updates both the current internal state taking into account if an event
             // should be triggered or not (using internal state values)
