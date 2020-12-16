@@ -1,6 +1,6 @@
 {
     "name": "ripe-commons-pluginus",
-    "version": "0.7.22",
+    "version": "0.7.23",
     "description": "RIPE Commons Pluginus",
     "keywords": [
         "commons",
@@ -57,7 +57,7 @@
     "dependencies": {
         "loaders.css": "^0.1.2",
         "pluginus": "^0.3.10",
-        "ripe-sdk": "^1.20.1",
+        "ripe-sdk": "^1.20.3",
         "vue": "^2.6.12",
         "vue-global-events": "^1.2.1",
         "vuex": "^3.6.0"

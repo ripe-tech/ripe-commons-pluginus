@@ -966,12 +966,13 @@ export const Pickers = {
                     });
                     index++;
                 }
-                isOptional &&
+                if (isOptional) {
                     colors.push({
                         material: "no_" + part,
                         color: "no_" + part,
                         index: index
                     });
+                }
             }
             return colors;
         },
@@ -987,12 +988,13 @@ export const Pickers = {
                 });
                 index++;
             }
-            this.isOptional(this.activePart) &&
+            if (this.isOptional(this.activePart)) {
                 colors.push({
                     material: material,
                     color: "no_" + this.activePart,
                     index: index
                 });
+            }
             return colors;
         },
         /**

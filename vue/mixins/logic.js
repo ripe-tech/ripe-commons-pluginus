@@ -185,9 +185,10 @@ export const logicMixin = {
         sanitizeInitials(initials, engraving) {
             return [initials || "", initials ? engraving || null : null];
         },
-        sanitizeInitialsExtra(initialsExtra) {
+        sanitizeInitialsExtra(initialsExtra, minimize = true) {
             const initialsExtraS = {};
             Object.entries(initialsExtra).forEach(([group, { initials, engraving }]) => {
+                if (!initials && minimize) return;
                 initialsExtraS[group] = {
                     initials: initials || "",
                     engraving: initials ? engraving || null : null
