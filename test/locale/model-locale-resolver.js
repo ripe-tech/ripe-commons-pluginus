@@ -6,15 +6,23 @@ describe("ModelLocaleResolverPlugin", function() {
         localePlugin.setLocale("en_us");
         localePlugin.setLocaleMap({
             en_us: {
-                "colors.red": "Red",
-                "colors.rubber.red": "Rubber Red",
-                "colors.sole.rubber.red": "Sole Rubber Red"
+                "builds.swear.colors.red": "Red",
+                "builds.swear.colors.rubber.red": "Rubber Red",
+                "builds.swear.colors.sole.rubber.red": "Sole Rubber Red"
             }
         });
 
         const plugin = await global.manager.getPluginByName("ModelLocaleResolverPlugin");
+        plugin.brand = "swear";
+        plugin.model = "vyner";
         assert.strictEqual("Red", plugin.localeColor("red"));
-        assert.strictEqual("Rubber Red", plugin.localeColor("red", { part: "front", material: "rubber" }));
-        assert.strictEqual("Sole Rubber Red", plugin.localeColor("red", { part: "sole", material: "rubber" }));
+        assert.strictEqual(
+            "Rubber Red",
+            plugin.localeColor("red", { part: "front", material: "rubber" })
+        );
+        assert.strictEqual(
+            "Sole Rubber Red",
+            plugin.localeColor("red", { part: "sole", material: "rubber" })
+        );
     });
 });
