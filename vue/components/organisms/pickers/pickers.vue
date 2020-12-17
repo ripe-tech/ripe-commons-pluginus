@@ -588,13 +588,14 @@ export const Pickers = {
     mounted: function() {
         window.addEventListener("resize", () => {
             this.updateScrollFlags();
-            switch (this.alignedColor) {
+            switch (this.alignScroll) {
                 case "left":
                     // on window resize there is no need to realign
                     // because the element is already correctly aligned
                     break;
                 case "center":
                     this.recenter();
+                    break;
                 default:
                     break;
             }
@@ -700,6 +701,51 @@ export const Pickers = {
             const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.centerElement(colorsPicker, colors, "color", this.alignedColor);
         },
+        /**
+         * Scrolls in the direction provided and centers the next element in
+         * the middle of the container.
+         *
+         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {NodeList} elements An array representing the elements.
+         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {Boolean} right A boolean representing if the sliding is in the right or left direction.
+         */
+        slideCentered(container, elements, valueLabel, right = true) {
+            // calculates the width of the container without the padding
+            // allowing for precise calculations to center the elements
+            const containerStyle = getComputedStyle(container);
+            const paddingRight = parseFloat(containerStyle.paddingRight);
+            const paddingLeft = parseFloat(containerStyle.paddingLeft);
+            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+
+            // the container center calculation takes into account the
+            // slide direction, where the left one will be made from
+            // right to left by reversing the elements
+            const containerCenter = right
+                ? container.scrollLeft + containerWidth / 2
+                : container.scrollWidth - paddingLeft - container.scrollLeft - containerWidth / 2;
+
+            let slide = 0;
+            this._calculateScroll(
+                elements,
+                (element, index, elementWidth, scroll) => {
+                    // if the element middle is after the middle of the container, it is
+                    // the next element, so its center will be positioned at the middle
+                    // of the container element
+                    if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
+                        slide = scroll + elementWidth / 2 - containerCenter;
+                        this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                        return true;
+                    }
+                    return false;
+                },
+                !right
+            );
+
+            container.scrollLeft = right
+                ? container.scrollLeft + slide
+                : container.scrollLeft - slide;
+        },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
             const parts = partsPicker.querySelectorAll(".button-part");
@@ -714,7 +760,8 @@ export const Pickers = {
             const colorsPicker = this.$refs.colorsPicker;
             const colors = colorsPicker.querySelectorAll(".button-color-option");
             this.slideLeftStrategy(colorsPicker, colors, "color");
-        },        /**
+        },
+        /**
          * Based on the left sliding alignment strategy chosen, it calls the respective methods.
          *
          * @param {Element} container The HTML element representing the container that the elements are in.
@@ -765,36 +812,7 @@ export const Pickers = {
          * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
          */
         slideLeftCentered(container, elements, valueLabel) {
-            // calculates the width of the container without the padding
-            // allowing for precise calculations to center the elements
-            const containerStyle = getComputedStyle(container);
-            const paddingRight = parseFloat(containerStyle.paddingRight);
-            const paddingLeft = parseFloat(containerStyle.paddingLeft);
-            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
-            const containerCenter = container.scrollLeft + containerWidth / 2;
-
-            let slide = 0;
-            this._calculateScroll(elements, (element, index, elementWidth, scroll) => {
-                // if the element middle is after the middle of the container, the
-                // previous element is the center of the container, so it is necessary
-                // to substract half of the previous element width to center it in the
-                // container
-                if (Math.floor(scroll + elementWidth / 2) >= containerCenter) {
-                    const previousElement = elements[index - 1];
-                    const style = getComputedStyle(previousElement);
-                    const marginLeft = parseFloat(style.marginLeft);
-                    const marginRight = parseFloat(style.marginRight);
-                    const previousElementWidth =
-                        previousElement.offsetWidth + marginLeft + marginRight;
-
-                    slide += containerCenter - (scroll - previousElementWidth / 2);
-                    this[`aligned${this.capitalize(valueLabel)}`] =
-                        previousElement.dataset[valueLabel];
-                    return true;
-                }
-                return false;
-            });
-            container.scrollLeft -= slide;
+            this.slideCentered(container, elements, valueLabel, false);
         },
         slideRightParts() {
             const partsPicker = this.$refs.partsPicker;
@@ -861,27 +879,7 @@ export const Pickers = {
          * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
          */
         slideRightCentered(container, elements, valueLabel) {
-            // calculates the width of the container without the padding
-            // allowing for precise calculations to center the elements
-            const containerStyle = getComputedStyle(container);
-            const paddingRight = parseFloat(containerStyle.paddingRight);
-            const paddingLeft = parseFloat(containerStyle.paddingLeft);
-            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
-            const containerCenter = container.scrollLeft + containerWidth / 2;
-
-            let slide = 0;
-            this._calculateScroll(elements, (element, index, elementWidth, scroll) => {
-                // if the element middle is after the middle of the container, it is
-                // the next element, so its center will be positioned at the middle
-                // of the container element
-                if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
-                    slide += scroll + elementWidth / 2 - containerCenter;
-                    this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
-                    return true;
-                }
-                return false;
-            });
-            container.scrollLeft += slide;
+            this.slideCentered(container, elements, valueLabel, true);
         },
         configName(part) {
             return part.split("_").join(" ");
@@ -1256,8 +1254,12 @@ export const Pickers = {
          * @param {NodeList} elements An array representing the elements.
          * @param {Function} stop A function that decides the stopping point.
          */
-        _calculateScroll(elements, stop) {
+        _calculateScroll(elements, stop, reverse = false) {
             let scroll = 0;
+
+            elements = Array.from(elements);
+
+            if (reverse) elements = elements.reverse();
 
             // iterates over the complete set of elements to compute the
             // amount of scroll required to be applied in the parent
