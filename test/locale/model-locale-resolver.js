@@ -1,8 +1,16 @@
+require("../setup");
+
 const assert = require("assert");
+const pluginus = require("pluginus");
+
+const ripeCommons = require("../..");
 
 describe("ModelLocaleResolverPlugin", function() {
-    it("localeColor", async () => {
-        const localePlugin = await global.manager.getPluginByName("LocalePlugin");
+    before(async function() {
+        const manager = new pluginus.PluginManager();
+        ripeCommons.registerPlugins(manager);
+
+        const localePlugin = await manager.getPluginByName("LocalePlugin");
         localePlugin.setLocale("en_us");
         localePlugin.setLocaleMap({
             en_us: {
@@ -12,17 +20,23 @@ describe("ModelLocaleResolverPlugin", function() {
             }
         });
 
-        const plugin = await global.manager.getPluginByName("ModelLocaleResolverPlugin");
-        plugin.brand = "swear";
-        plugin.model = "vyner";
-        assert.strictEqual("Red", plugin.localeColor("red"));
-        assert.strictEqual(
-            "Rubber Red",
-            plugin.localeColor("red", { part: "front", material: "rubber" })
-        );
-        assert.strictEqual(
-            "Sole Rubber Red",
-            plugin.localeColor("red", { part: "sole", material: "rubber" })
-        );
+        this.manager = manager;
+    });
+
+    describe("#localeColor()", function() {
+        it("should make a simple color translation", async () => {
+            const plugin = await this.ctx.manager.getPluginByName("ModelLocaleResolverPlugin");
+            plugin.brand = "swear";
+            plugin.model = "vyner";
+            assert.strictEqual("Red", plugin.localeColor("red"));
+            assert.strictEqual(
+                "Rubber Red",
+                plugin.localeColor("red", { part: "front", material: "rubber" })
+            );
+            assert.strictEqual(
+                "Sole Rubber Red",
+                plugin.localeColor("red", { part: "sole", material: "rubber" })
+            );
+        });
     });
 });
