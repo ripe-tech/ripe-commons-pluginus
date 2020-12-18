@@ -864,7 +864,6 @@ export const Pickers = {
         slideRightCentered(container, elements, valueLabel) {
             this.slideCentered(container, elements, valueLabel, true);
         },
-        
         /**
          * Scrolls in the direction provided and centers the next element in
          * the middle of the container.
