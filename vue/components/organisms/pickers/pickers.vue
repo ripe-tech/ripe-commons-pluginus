@@ -702,49 +702,32 @@ export const Pickers = {
             this.centerElement(colorsPicker, colors, "color", this.alignedColor);
         },
         /**
-         * Scrolls in the direction provided and centers the next element in
-         * the middle of the container.
+         * Centers a given element in a container using scrolling.
          *
          * @param {Element} container The HTML element representing the container that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         * @param {Boolean} right A boolean representing if the sliding is in the right or left direction.
+         * @param {String} expectedValue A string representing the element that must in the center of the container.
          */
-        slideCentered(container, elements, valueLabel, right = true) {
-            // calculates the width of the container without the padding
-            // allowing for precise calculations to center the elements
-            const containerStyle = getComputedStyle(container);
-            const paddingRight = parseFloat(containerStyle.paddingRight);
-            const paddingLeft = parseFloat(containerStyle.paddingLeft);
-            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
-
-            // the container center calculation takes into account the
-            // slide direction, where the left one will be made from
-            // right to left by reversing the elements
-            const containerCenter = right
-                ? container.scrollLeft + containerWidth / 2
-                : container.scrollWidth - paddingLeft - container.scrollLeft - containerWidth / 2;
-
-            let slide = 0;
-            this._calculateScroll(
+        centerElement(container, elements, valueLabel, expectedValue) {
+            let centerElementWidth = 0;
+            const scroll = this._calculateScroll(
                 elements,
                 (element, index, elementWidth, scroll) => {
-                    // if the element middle is after the middle of the container, it is
-                    // the next element, so its center will be positioned at the middle
-                    // of the container element
-                    if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
-                        slide = scroll + elementWidth / 2 - containerCenter;
-                        this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                    // centers the selected element in the middle of the container
+                    if (element.dataset[valueLabel] === expectedValue) {
+                        centerElementWidth = elementWidth;
                         return true;
                     }
                     return false;
-                },
-                !right
+                }
             );
 
-            container.scrollLeft = right
-                ? container.scrollLeft + slide
-                : container.scrollLeft - slide;
+            const padding = parseFloat(getComputedStyle(container).paddingLeft);
+            const scrollableElementWidth = container.clientWidth - padding;
+
+            container.scrollLeft =
+                scroll + centerElementWidth / 2 - scrollableElementWidth / 2 + padding / 2;
         },
         slideLeftParts() {
             const partsPicker = this.$refs.partsPicker;
@@ -880,6 +863,52 @@ export const Pickers = {
          */
         slideRightCentered(container, elements, valueLabel) {
             this.slideCentered(container, elements, valueLabel, true);
+        },
+        
+        /**
+         * Scrolls in the direction provided and centers the next element in
+         * the middle of the container.
+         *
+         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {NodeList} elements An array representing the elements.
+         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {Boolean} right A boolean representing if the sliding is in the right or left direction.
+         */
+        slideCentered(container, elements, valueLabel, right = true) {
+            // calculates the width of the container without the padding
+            // allowing for precise calculations to center the elements
+            const containerStyle = getComputedStyle(container);
+            const paddingRight = parseFloat(containerStyle.paddingRight);
+            const paddingLeft = parseFloat(containerStyle.paddingLeft);
+            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+
+            // the container center calculation takes into account the
+            // slide direction, where the left one will be made from
+            // right to left by reversing the elements
+            const containerCenter = right
+                ? container.scrollLeft + containerWidth / 2
+                : container.scrollWidth - paddingLeft - container.scrollLeft - containerWidth / 2;
+
+            let slide = 0;
+            this._calculateScroll(
+                elements,
+                (element, index, elementWidth, scroll) => {
+                    // if the element middle is after the middle of the container, it is
+                    // the next element, so its center will be positioned at the middle
+                    // of the container element
+                    if (Math.floor(scroll + elementWidth / 2) > containerCenter) {
+                        slide = scroll + elementWidth / 2 - containerCenter;
+                        this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                        return true;
+                    }
+                    return false;
+                },
+                !right
+            );
+
+            container.scrollLeft = right
+                ? container.scrollLeft + slide
+                : container.scrollLeft - slide;
         },
         configName(part) {
             return part.split("_").join(" ");
@@ -1030,34 +1059,6 @@ export const Pickers = {
                   materialsPicker.clientWidth / 2
                 : 0;
             materialsPicker.style.scrollBehavior = smooth ? "auto" : null;
-        },
-        /**
-         * Centers a given element in a container using scrolling.
-         *
-         * @param {Element} container The HTML element representing the container that the elements are in.
-         * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         * @param {String} expectedValue A string representing the element that must in the center of the container.
-         */
-        centerElement(container, elements, valueLabel, expectedValue) {
-            let centerElementWidth = 0;
-            const scroll = this._calculateScroll(
-                elements,
-                (element, index, elementWidth, scroll) => {
-                    // centers the selected element in the middle of the container
-                    if (element.dataset[valueLabel] === expectedValue) {
-                        centerElementWidth = elementWidth;
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            const padding = parseFloat(getComputedStyle(container).paddingLeft);
-            const scrollableElementWidth = container.clientWidth - padding;
-
-            container.scrollLeft =
-                scroll + centerElementWidth / 2 - scrollableElementWidth / 2 + padding / 2;
         },
         centerParts() {
             if (!this.enableCenterParts) return;
