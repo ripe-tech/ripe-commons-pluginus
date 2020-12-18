@@ -201,7 +201,15 @@ export const store = {
             // "methods"), this is a naive implementation for the scenarios
             // where no server side logic exists for initials (supported_characters)
             const promise = Promise.all([
-                this._vm.$ripe.runLogicP({ method: "groups" }).catch(e => ["main"]),
+                (async () => {
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "groups"
+                        });
+                    } catch {
+                        return ["main"];
+                    }
+                })(),
                 (async () => {
                     try {
                         const supportedCharacters = await this._vm.$ripe.runLogicP({
@@ -212,8 +220,24 @@ export const store = {
                         return ["abcdefghijklmnopqrstvwxyz"];
                     }
                 })(),
-                this._vm.$ripe.runLogicP({ method: "minimum_initials" }).catch(e => 0),
-                this._vm.$ripe.runLogicP({ method: "maximum_initials" }).catch(e => Infinity)
+                (async () => {
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "minimum_initials"
+                        });
+                    } catch {
+                        return 0;
+                    }
+                })(),
+                (async () => {
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "maximum_initials"
+                        });
+                    } catch {
+                        return Infinity;
+                    }
+                })()
             ]);
 
             // stores the ongoing request so we avoid future redundant requests
