@@ -118,6 +118,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         }
 
         locale = locale || this.localePlugin.getLocale();
+        const localeB = locale;
         const language = locale.split("_", 1)[0];
         if (hack) {
             value = values[-1].rsplit(".", 1)[-1];
@@ -126,6 +127,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
 
         const locales = this.localePlugin.getSupportedLocales();
         if (locales.includes(locale)) {
+            locale = localeB;
         } else if (locales.includes(language)) {
             locale = language;
         } else if (locales.some(l => l.startsWith(`${language}_`))) {
