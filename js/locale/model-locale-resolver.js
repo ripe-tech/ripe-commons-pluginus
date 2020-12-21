@@ -126,7 +126,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         }
 
         const locales = this.localePlugin.getSupportedLocales();
-        if (locales.includes(locale)) {
+        if (locales.includes(localeB)) {
             locale = localeB;
         } else if (locales.includes(language)) {
             locale = language;
