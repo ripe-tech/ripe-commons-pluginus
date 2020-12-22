@@ -716,14 +716,16 @@ export const Pickers = {
             const containerStyle = getComputedStyle(container);
             const paddingRight = parseFloat(containerStyle.paddingRight);
             const paddingLeft = parseFloat(containerStyle.paddingLeft);
-            const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
+            const containerWidth = container.clientWidth - paddingRight - paddingLeft;
 
             // the container center calculation takes into account the
             // slide direction, where the left one will be made from
             // right to left by reversing the elements
-            const containerCenter = right
-                ? container.scrollLeft + containerWidth / 2
-                : container.scrollWidth - paddingLeft - container.scrollLeft - containerWidth / 2;
+            let containerCenter = container.scrollLeft + containerWidth / 2;
+            if (!right) {
+                const totalWidth = this._calculateScroll(elements, () => {});
+                containerCenter = totalWidth - (container.scrollLeft + containerWidth / 2);
+            }
 
             let slide = 0;
             this._calculateScroll(
