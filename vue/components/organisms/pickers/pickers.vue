@@ -884,8 +884,9 @@ export const Pickers = {
             // the container center calculation takes into account the
             // slide direction, where the left one will be made from
             // right to left by reversing the elements
-            let containerCenter = container.scrollLeft + containerWidth / 2;
-            if (!right) {
+            let containerCenter = null;
+            if (right) containerCenter = container.scrollLeft + containerWidth / 2;
+            else {
                 const totalWidth = this._calculateScroll(elements, () => {});
                 containerCenter = totalWidth - (container.scrollLeft + containerWidth / 2);
             }
