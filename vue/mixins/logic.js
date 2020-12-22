@@ -185,8 +185,8 @@ export const logicMixin = {
         sanitizeInitials(initials, engraving) {
             return [initials || "", initials ? engraving || null : null];
         },
-        sanitizeInitialsExtra(initialsExtra, minimize = true) {
-            const initialsExtraS = {};
+        sanitizeInitialsExtra(initialsExtra, minimize = true, override = false) {
+            let initialsExtraS = {};
             Object.entries(initialsExtra).forEach(([group, { initials, engraving }]) => {
                 if (!initials && minimize) return;
                 initialsExtraS[group] = {
@@ -194,6 +194,10 @@ export const logicMixin = {
                     engraving: initials ? engraving || null : null
                 };
             });
+            if (override) {
+                for (const key of Object.keys(initialsExtra)) delete initialsExtra[key];
+                initialsExtraS = Object.assign(initialsExtra, initialsExtraS);
+            }
             return initialsExtraS;
         },
         /**
