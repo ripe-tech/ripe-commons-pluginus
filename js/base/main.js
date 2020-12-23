@@ -219,6 +219,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             config = this.ripe._queryToSpec(query);
         } else if (dku) {
             config = await this.ripe.configDkuP(dku);
+            config.initialsExtra = config.initials_extra;
         } else if (productId) {
             config = await this.ripe.configResolveP(productId);
         }
