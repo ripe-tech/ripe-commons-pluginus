@@ -75,31 +75,6 @@ export const logicMixin = {
     },
     methods: {
         /**
-         * Checks if two 'parts' are equal, by using a deep
-         * comparison analysis.
-         *
-         * @param {Object} first The first of the 'parts' being compared.
-         * @param {Object} second The second of the 'parts' being compared.
-         * @return {Boolean} Returns the result of the deep comparison.
-         */
-        equalParts(first, second) {
-            if (!first && !second) return true;
-
-            if (Boolean(first) !== Boolean(second)) {
-                return false;
-            }
-
-            if (!this._subsetCompareParts(first, second)) {
-                return false;
-            }
-
-            if (!this._subsetCompareParts(second, first)) {
-                return false;
-            }
-
-            return true;
-        },
-        /**
          * Checks if the initials are valid according to a naive implementation
          * where validation is done against the maximum, minimum and supported
          * characters that don't take into account the initials group or the
@@ -176,6 +151,32 @@ export const logicMixin = {
                         propertiesCount === expectedPropertiesCount)
                 );
             });
+        },
+        /**
+         * Checks if two 'parts' are equal, by using a deep comparison
+         * analysis. Equality is defined as, they produce the same
+         * result in a subset compare..
+         *
+         * @param {Object} first The first of the 'parts' being compared.
+         * @param {Object} second The second of the 'parts' being compared.
+         * @return {Boolean} Returns the result of the deep comparison.
+         */
+        equalParts(first, second) {
+            if (!first && !second) return true;
+
+            if (Boolean(first) !== Boolean(second)) {
+                return false;
+            }
+
+            if (!this._subsetCompareParts(first, second)) {
+                return false;
+            }
+
+            if (!this._subsetCompareParts(second, first)) {
+                return false;
+            }
+
+            return true;
         },
         /**
          * Checks if two 'initialsExtra' are equal, by using a deep
