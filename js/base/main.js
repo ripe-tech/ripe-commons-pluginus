@@ -219,6 +219,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             config = this.ripe._queryToSpec(query);
         } else if (dku) {
             config = await this.ripe.configDkuP(dku);
+            config.initialsExtra = config.initials_extra;
         } else if (productId) {
             config = await this.ripe.configResolveP(productId);
         }
@@ -260,9 +261,14 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      */
     async setRipeOptions(options, force = false) {
         const ripeState = this._getRipeState();
-        const changed = Object.entries(ripeState).filter(
-            ([key, value]) => options[key] && options[key] !== value
-        );
+        const changed = Object.entries(ripeState).filter(([key, value]) => {
+            switch (key) {
+                case "parts":
+                    return options[key] && !this.app.equalParts(options[key], value);
+                default:
+                    return options[key] && options[key] !== value;
+            }
+        });
         if (changed.length === 0 && !force) return;
         await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
     }
