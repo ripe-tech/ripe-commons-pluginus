@@ -83,7 +83,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             brand: null,
             model: null,
             variant: null,
-            version: null
+            version: null,
+            noBundles: false
         });
 
         // loads the vue components and mixins to be used on
