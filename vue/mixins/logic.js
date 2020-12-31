@@ -90,9 +90,12 @@ export const logicMixin = {
         initialsWithinRange(initials) {
             if (initials === null || initials === undefined) return true;
             if (
-                !this.$store.state.initialsSupportedCharacters ||
-                !this.$store.state.initialsMinimumCharacters ||
-                !this.$store.state.initialsMaximumCharacters
+                this.$store.state.initialsSupportedCharacters === undefined ||
+                this.$store.state.initialsSupportedCharacters === null ||
+                this.$store.state.initialsMinimumCharacters === undefined ||
+                this.$store.state.initialsMinimumCharacters === null ||
+                this.$store.state.initialsMaximumCharacters === undefined ||
+                this.$store.state.initialsMaximumCharacters === null
             ) {
                 return true;
             }
