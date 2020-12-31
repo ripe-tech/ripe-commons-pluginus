@@ -5,6 +5,8 @@
             v-bind:model="model"
             v-bind:groups="groups"
             v-bind:initials-builder="__initialsBuilder"
+            v-bind:image-height="imageHeight"
+            v-bind:image-border-radius="imageBorderRadius"
         />
         <div class="form">
             <div class="form-group" v-for="group in groups" v-bind:key="group">
@@ -60,9 +62,7 @@ body.mobile .reference-personalization > .initials-images {
 }
 
 .reference-personalization > .initials-images ::v-deep .initials-image {
-    border-radius: 50%;
     margin-right: 30px;
-    max-height: 300px;
 }
 
 body.tablet .reference-personalization > .initials-images ::v-deep .initials-image,
@@ -127,14 +127,26 @@ export const Reference = {
             propertiesData: {},
 
             /**
-             * An object that maps for each group the value of the initials.
+             * An object that maps for each group the value (text) of the initials.
              */
             initialsText: {},
 
             /**
              * The name of the groups that are currently available for personalization.
              */
-            groups: []
+            groups: [],
+
+            /**
+             * The height (in pixels) of the image that is going to be used to
+             * display the personalization initials.
+             */
+            imageHeight: 300,
+
+            /**
+             * The radius of the border for the image that is going to be used in
+             * the display of the initials.
+             */
+            imageBorderRadius: "50%"
         };
     },
     computed: {
@@ -146,6 +158,9 @@ export const Reference = {
         },
         configInitials() {
             return this.$store.state.config.initials;
+        },
+        configMeta() {
+            return this.$store.state.config.meta || {};
         },
         state() {
             return {
@@ -253,6 +268,13 @@ export const Reference = {
                 .join(" ");
         },
         async refresh() {
+            // updates the preferred initials image display settings using the meta
+            // information present in the model's configuration (if existent)
+            const initialsImage = this.configMeta.initials_image || {};
+            this.imageHeight = initialsImage.height === undefined ? 300 : initialsImage.height;
+            this.imageBorderRadius =
+                initialsImage.border_radius === undefined ? "50%" : initialsImage.border_radius;
+
             try {
                 // runs the remote business logic to obtain the multiple
                 // target groups available for initials

@@ -3,6 +3,7 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
+            v-bind:style="groupStyle(group)"
             v-bind:class="groupClasses(group)"
             v-for="group in groups"
             v-show="groupVisible(group)"
@@ -61,6 +62,14 @@ export const InitialsImages = {
         initialsBuilder: {
             type: Function,
             default: null
+        },
+        imageHeight: {
+            type: Number,
+            default: null
+        },
+        imageBorderRadius: {
+            type: String,
+            default: null
         }
     },
     data: function() {
@@ -109,6 +118,12 @@ export const InitialsImages = {
         groupVisible(group) {
             if (!this.hideInactive) return true;
             return group === this.activeGroup;
+        },
+        groupStyle(group) {
+            const base = {};
+            if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
+            if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
+            return base;
         },
         groupClasses(group) {
             const base = {
