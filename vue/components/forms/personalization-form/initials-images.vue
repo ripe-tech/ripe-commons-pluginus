@@ -20,8 +20,8 @@
 }
 
 .initials-images .initials-image {
-    cursor: pointer;
     height: 600px;
+    user-select: none;
     width: auto;
 }
 
@@ -30,6 +30,10 @@ body.tablet .initials-images .initials-image {
     height: auto;
     max-width: 600px;
     width: 100%;
+}
+
+.initials-images .initials-image.selectable {
+    cursor: pointer;
 }
 </style>
 
@@ -109,6 +113,7 @@ export const InitialsImages = {
         groupClasses(group) {
             const base = {
                 active: group === this.activeGroup,
+                selectable: this.groups.length > 1,
                 loaded: this.loaded[group]
             };
             return base;
