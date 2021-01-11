@@ -6,6 +6,10 @@ import { install as RipeCommonsPluginusVue, plugins } from "../vue";
 
 import "./styles.css";
 
+export const parameters = {
+    layout: "fullscreen"
+};
+
 // makes use of Vuex to make use of things like
 // data store (for some of the components)
 Vue.use(Vuex);
