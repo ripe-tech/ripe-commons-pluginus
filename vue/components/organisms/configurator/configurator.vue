@@ -336,12 +336,16 @@ export const Configurator = {
 
         this.$bus.bind("highlight_part", part => {
             if (this.ignoreBus) return;
-            if (this.configurator.ready) this.configurator.highlight(part);
+            if (this.configurator && this.configurator.ready) {
+                this.configurator.highlight(part);
+            }
         });
 
         this.$bus.bind("lowlight_part", part => {
             if (this.ignoreBus) return;
-            if (this.configurator.ready) this.configurator.lowlight(part);
+            if (this.configurator && this.configurator.ready) {
+                this.configurator.lowlight(part);
+            }
         });
 
         this.resize(this.size);
