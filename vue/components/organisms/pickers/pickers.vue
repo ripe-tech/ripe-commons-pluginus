@@ -637,10 +637,13 @@ export const Pickers = {
     methods: {
         updateScrollFlags() {
             this.scrollParts =
+                this.$refs.partsPicker &&
                 this.$refs.partsPicker.scrollWidth > this.$refs.partsPicker.clientWidth;
             this.scrollMaterial =
+                this.$refs.materialsPicker &&
                 this.$refs.materialsPicker.scrollWidth > this.$refs.materialsPicker.clientWidth;
             this.scrollColor =
+                this.$refs.colorsPicker &&
                 this.$refs.colorsPicker.scrollWidth > this.$refs.colorsPicker.clientWidth;
         },
         /**
