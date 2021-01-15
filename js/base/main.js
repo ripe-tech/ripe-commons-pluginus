@@ -165,7 +165,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         options = Object.assign({ safe: safe }, options);
 
         try {
-            // validates that all of the pre-condition required for model
+            // validates that all of the pre-conditions required for model
             // setting are fulfilled, otherwise raises errors
             if (!options.brand) throw Error("No brand defined in context");
             if (!options.model) throw Error("No model defined in context");
