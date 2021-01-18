@@ -17,12 +17,12 @@ export const localePlugin = {
             computed: {
                 locale() {
                     return (value, defaultValue, locale = null, fallback = true) => {
+                        const fallbackValue = this.localeMap && this.localeMap[locale]
+                            ? this.localeMap[locale][value]
+                            : null;
                         return toLocale(
                             value,
-                            defaultValue ||
-                                (this.localeMap && this.localeMap[locale]
-                                    ? this.localeMap[locale][value]
-                                    : null),
+                            defaultValue || fallbackValue,
                             locale || this.currentLocale,
                             fallback
                         );
@@ -36,7 +36,7 @@ export const localePlugin = {
                     () => (this.localeMap = localePlugin.localeMap)
                 );
                 this.currentLocale = localePlugin.locale;
-                this.currentLocale = localePlugin.localeMap;
+                this.localeMap = localePlugin.localeMap;
             }
         });
 
