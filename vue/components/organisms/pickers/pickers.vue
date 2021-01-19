@@ -808,7 +808,7 @@ export const Pickers = {
          * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          * @param {String} valueLabel A string representing the components being
-         * slided (parts, materials and colors).
+         * "slided" (parts, materials and colors).
          */
         slideLeftCentered(container, elements, valueLabel) {
             this.slideCentered(container, elements, valueLabel, false);
@@ -836,7 +836,7 @@ export const Pickers = {
          * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          * @param {String} valueLabel A string representing the components being
-         * slided (parts, materials and colors).
+         * "slided" (parts, materials and colors).
          */
         slideRightStrategy(container, elements, valueLabel) {
             switch (this.alignScroll) {
@@ -876,9 +876,11 @@ export const Pickers = {
         /**
          * Scrolls in the right direction by centering the element in the middle.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {String} valueLabel A string representing the components being
+         * "slided" (parts, materials and colors).
          */
         slideRightCentered(container, elements, valueLabel) {
             this.slideCentered(container, elements, valueLabel, true);
@@ -1253,7 +1255,7 @@ export const Pickers = {
          * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
          * @param {String} valueLabel A string representing the components being
-         * slided (parts, materials and colors).
+         * "slided" (parts, materials and colors).
          * @param {String} scroll A string representing the scrolling directions
          * (left and right).
          */
