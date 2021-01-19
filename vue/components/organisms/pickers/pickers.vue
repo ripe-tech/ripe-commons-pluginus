@@ -124,7 +124,11 @@
             />
             <transition name="fade">
                 <ul class="colors-container" v-show="activeMaterial !== null" ref="colorsPicker">
-                    <transition-group name="list" ref="colorsList">
+                    <transition-group
+                        name="list"
+                        ref="colorsList"
+                        v-on:after-enter="onColorsAnimationAfterEnter"
+                    >
                         <li
                             class="color button button-color-option"
                             v-bind:data-index="colorOption.index"
@@ -396,6 +400,7 @@ body.mobile .button-scroll-materials {
     left: 0px;
 }
 
+body.tablet .button-scroll-colors,
 body.mobile .button-scroll-colors {
     height: 100px;
     width: 50px;
@@ -1217,8 +1222,14 @@ export const Pickers = {
             requestAnimationFrame(() => {
                 this.scrollMaterials(this.activeMaterial, false);
                 this.scrollColors(this.activeMaterial, null, false);
-                this.updateScrollFlags();
             });
+        },
+        onColorsAnimationAfterEnter(el) {
+            // update scroll flags after the last element in the list
+            // enters the animation, so that the sizes of the components
+            // are finalized and the dataset it set
+            if (el.dataset.index < this.colorOptions.length - 1) return;
+            this.updateScrollFlags();
         },
         /**
          * Finds the element closer to the center of the container depending
