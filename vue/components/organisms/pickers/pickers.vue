@@ -712,10 +712,13 @@ export const Pickers = {
         /**
          * Centers a given element in a container using scrolling.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container that
+         * the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         * @param {String} expectedValue A string representing the element that must in the center of the container.
+         * @param {String} valueLabel A string representing the components being "slided"
+         * (parts, materials and colors).
+         * @param {String} expectedValue A string representing the element that must in the
+         * center of the container.
          */
         centerElement(container, elements, valueLabel, expectedValue) {
             let centerElementWidth = 0;
@@ -753,11 +756,14 @@ export const Pickers = {
             this.slideLeftStrategy(colorsPicker, colors, "color");
         },
         /**
-         * Based on the left sliding alignment strategy chosen, it calls the respective methods.
+         * Based on the left sliding alignment strategy chosen, it calls the
+         respective methods.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container that
+         * the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {String} valueLabel A string representing the components being "slided"
+         * (parts, materials and colors).
          */
         slideLeftStrategy(container, elements, valueLabel) {
             switch (this.alignScroll) {
@@ -798,9 +804,11 @@ export const Pickers = {
         /**
          * Scrolls in the left direction by centering the element in the middle.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {String} valueLabel A string representing the components being
+         * slided (parts, materials and colors).
          */
         slideLeftCentered(container, elements, valueLabel) {
             this.slideCentered(container, elements, valueLabel, false);
@@ -821,11 +829,14 @@ export const Pickers = {
             this.slideRightStrategy(colorsPicker, colors, "color");
         },
         /**
-         * Based on the right sliding alignment strategy chosen, it calls the respective methods.
+         * Based on the right sliding alignment strategy chosen, it calls the
+         * respective methods.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
+         * @param {String} valueLabel A string representing the components being
+         * slided (parts, materials and colors).
          */
         slideRightStrategy(container, elements, valueLabel) {
             switch (this.alignScroll) {
@@ -876,10 +887,13 @@ export const Pickers = {
          * Scrolls in the direction provided and centers the next element in
          * the middle of the container.
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         * @param {Boolean} right A boolean representing if the sliding is in the right or left direction.
+         * @param {String} valueLabel A string representing the components being
+         * slided (parts, materials and colors).
+         * @param {Boolean} right A boolean representing if the sliding is
+         * in the right or left direction.
          */
         slideCentered(container, elements, valueLabel, right = true) {
             // calculates the width of the container without the padding
@@ -1224,21 +1238,24 @@ export const Pickers = {
                 this.scrollColors(this.activeMaterial, null, false);
             });
         },
-        onColorsAnimationAfterEnter(el) {
+        onColorsAnimationAfterEnter(element) {
             // update scroll flags after the last element in the list
             // enters the animation, so that the sizes of the components
             // are finalized and the dataset it set
-            if (el.dataset.index < this.colorOptions.length - 1) return;
+            if (element.dataset.index < this.colorOptions.length - 1) return;
             this.updateScrollFlags();
         },
         /**
          * Finds the element closer to the center of the container depending
          * on the scrolling direction (left and right).
          *
-         * @param {Element} container The HTML element representing the container that the elements are in.
+         * @param {Element} container The HTML element representing the container
+         * that the elements are in.
          * @param {NodeList} elements An array representing the elements.
-         * @param {String} valueLabel A string representing the components being slided (parts, materials and colors).
-         * @param {String} scroll A string representing the scrolling directins (left and right).
+         * @param {String} valueLabel A string representing the components being
+         * slided (parts, materials and colors).
+         * @param {String} scroll A string representing the scrolling directions
+         * (left and right).
          */
         _findScrollCenterElement(container, elements, valueLabel, scroll) {
             // calculates the width of the container without the padding
