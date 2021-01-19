@@ -90,9 +90,12 @@ export const logicMixin = {
         initialsWithinRange(initials) {
             if (initials === null || initials === undefined) return true;
             if (
-                !this.$store.state.initialsSupportedCharacters ||
-                !this.$store.state.initialsMinimumCharacters ||
-                !this.$store.state.initialsMaximumCharacters
+                this.$store.state.initialsSupportedCharacters === undefined ||
+                this.$store.state.initialsSupportedCharacters === null ||
+                this.$store.state.initialsMinimumCharacters === undefined ||
+                this.$store.state.initialsMinimumCharacters === null ||
+                this.$store.state.initialsMaximumCharacters === undefined ||
+                this.$store.state.initialsMaximumCharacters === null
             ) {
                 return true;
             }
@@ -153,6 +156,32 @@ export const logicMixin = {
             });
         },
         /**
+         * Checks if two 'parts' are equal, by using a deep comparison
+         * analysis. Equality is defined as, they produce the same
+         * result in a subset compare..
+         *
+         * @param {Object} first The first of the 'parts' being compared.
+         * @param {Object} second The second of the 'parts' being compared.
+         * @return {Boolean} Returns the result of the deep comparison.
+         */
+        equalParts(first, second) {
+            if (!first && !second) return true;
+
+            if (Boolean(first) !== Boolean(second)) {
+                return false;
+            }
+
+            if (!this._subsetCompareParts(first, second)) {
+                return false;
+            }
+
+            if (!this._subsetCompareParts(second, first)) {
+                return false;
+            }
+
+            return true;
+        },
+        /**
          * Checks if two 'initialsExtra' are equal, by using a deep
          * comparison analysis. Equality is defined as, they produce
          * the same result after sanitization.
@@ -169,11 +198,11 @@ export const logicMixin = {
             const firstS = this.sanitizeInitialsExtra(first);
             const secondS = this.sanitizeInitialsExtra(second);
 
-            if (!this._subsetCompare(firstS, secondS)) {
+            if (!this._subsetCompareInitials(firstS, secondS)) {
                 return false;
             }
 
-            if (!this._subsetCompare(secondS, firstS)) {
+            if (!this._subsetCompareInitials(secondS, firstS)) {
                 return false;
             }
 
@@ -185,14 +214,19 @@ export const logicMixin = {
         sanitizeInitials(initials, engraving) {
             return [initials || "", initials ? engraving || null : null];
         },
-        sanitizeInitialsExtra(initialsExtra) {
-            const initialsExtraS = {};
+        sanitizeInitialsExtra(initialsExtra, minimize = true, override = false) {
+            let initialsExtraS = {};
             Object.entries(initialsExtra).forEach(([group, { initials, engraving }]) => {
+                if (!initials && minimize) return;
                 initialsExtraS[group] = {
                     initials: initials || "",
                     engraving: initials ? engraving || null : null
                 };
             });
+            if (override) {
+                for (const key of Object.keys(initialsExtra)) delete initialsExtra[key];
+                initialsExtraS = Object.assign(initialsExtra, initialsExtraS);
+            }
             return initialsExtraS;
         },
         /**
@@ -210,7 +244,31 @@ export const logicMixin = {
                     Object.values(initialsExtra).find(group => group.engraving && !group.initials)
             );
         },
-        _subsetCompare(base, reference) {
+        _subsetCompareParts(base, reference) {
+            for (const name of Object.keys(base)) {
+                // retrieves the part information for the current
+                // name in iteration for both the base and the
+                // reference set values (to be compared)
+                const partB = base[name];
+                const partR = reference[name];
+
+                // if for a certain base part the corresponding
+                // part does not exist in the reference then the
+                // reference is considered to be invalid
+                if (!partR) {
+                    return false;
+                }
+
+                // in case either the initials or the engraving is
+                // not matching then the subset is invalid
+                if (partB.material !== partR.material || partB.color !== partR.color) {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+        _subsetCompareInitials(base, reference) {
             for (const name of Object.keys(base)) {
                 // retrieves the group information for the current
                 // name in iteration for both the base and the

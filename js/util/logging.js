@@ -13,7 +13,14 @@ export const logDebug = (value, label = null) => {
 };
 
 const _format = (value, label = null, level = null) => {
-    if (typeof value === "function") value = value();
+    switch (typeof value) {
+        case "object":
+            value = JSON.stringify(value);
+            break;
+        case "function":
+            value = value();
+            break;
+    }
     label = label || "RIPE";
     return `${SHOW_LEVEL && level ? "[" + level + "] " : ""}[${label}] ${value}`;
 };
