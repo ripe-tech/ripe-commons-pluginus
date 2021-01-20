@@ -82,6 +82,10 @@ export const InitialsImages = {
         async groups(value) {
             await this.unbindImages();
             await this.bindImages();
+        },
+        async initialsBuilder(value) {
+            await this.unbindImages();
+            await this.bindImages();
         }
     },
     mounted: async function() {
