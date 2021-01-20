@@ -240,6 +240,10 @@
     position: relative;
 }
 
+.pickers .materials-wrapper .materials-container {
+    width: 100%;
+}
+
 .pickers .materials-wrapper .materials-container.hidden {
     display: none;
 }
