@@ -33,10 +33,10 @@ export const localePlugin = {
                 localePlugin.owner.bind("post_set_locale", locale => (this.currentLocale = locale));
                 localePlugin.owner.bind(
                     "locale_map_changed",
-                    () => (this.localeMap = localePlugin.localeMap)
+                    () => (this.localeMap = Object.assign({}, localePlugin.localeMap))
                 );
                 this.currentLocale = localePlugin.locale;
-                this.localeMap = localePlugin.localeMap;
+                this.localeMap = Object.assign({}, localePlugin.localeMap);
             }
         });
 
