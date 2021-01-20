@@ -19,7 +19,7 @@ export const localePlugin = {
                     return (value, defaultValue, locale = null, fallback = true) => {
                         const fallbackValue = this.localeMap && this.localeMap[locale]
                             ? this.localeMap[locale][value]
-                            : null;
+                            : undefined;
                         return toLocale(
                             value,
                             defaultValue || fallbackValue,
