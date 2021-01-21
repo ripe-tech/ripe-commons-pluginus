@@ -240,6 +240,10 @@
     position: relative;
 }
 
+.pickers .materials-wrapper .materials-container {
+    width: 100%;
+}
+
 .pickers .materials-wrapper .materials-container.hidden {
     display: none;
 }
@@ -898,9 +902,14 @@ export const Pickers = {
          * in the right or left direction.
          */
         slideCentered(container, elements, valueLabel, right = true) {
+            // support for aligned slide in the colors container, which
+            // has another container inside it
+            const scrollableContainer =
+                valueLabel === "color" ? container.querySelector("span") : container;
+
             // calculates the width of the container without the padding
             // allowing for precise calculations to center the elements
-            const containerStyle = getComputedStyle(container);
+            const containerStyle = getComputedStyle(scrollableContainer);
             const paddingRight = parseFloat(containerStyle.paddingRight);
             const paddingLeft = parseFloat(containerStyle.paddingLeft);
             const containerWidth = container.offsetWidth - paddingRight - paddingLeft;
