@@ -902,7 +902,7 @@ export const Pickers = {
          * in the right or left direction.
          */
         slideCentered(container, elements, valueLabel, right = true) {
-            // support for aligned sslide in the colors container, which
+            // support for aligned slide in the colors container, which
             // has another container inside it
             const scrollableContainer =
                 valueLabel === "color" ? container.querySelector("span") : container;
