@@ -1212,12 +1212,12 @@ export const Pickers = {
             this.activeMaterial = material;
             if (scroll || center) {
                 requestAnimationFrame(() => {
-            if (center) this.centerMaterials();
+                    if (center) this.centerMaterials();
                     if (!scroll) return;
 
                     this.scrollMaterials(material);
                     if (!this.colorToggle || materialChanged) return;
-                        this.scrollColors(material);
+                    this.scrollColors(material);
                 });
             }
         },
