@@ -1210,15 +1210,14 @@ export const Pickers = {
             scroll = scroll === null ? this.multipleMaterials : scroll;
             const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
-            if (center) this.centerMaterials();
-            if (scroll) {
+            if (scroll || center) {
                 requestAnimationFrame(() => {
+            if (center) this.centerMaterials();
+                    if (!scroll) return;
+
                     this.scrollMaterials(material);
-                    if (this.colorToggle && materialChanged) {
+                    if (!this.colorToggle || materialChanged) return;
                         this.scrollColors(material);
-                    } else {
-                        this.scrollColors(material);
-                    }
                 });
             }
         },
