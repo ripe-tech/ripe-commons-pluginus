@@ -1254,6 +1254,11 @@ export const Pickers = {
             // are finalized and the dataset it set
             if (element.dataset.index < this.colorOptions.length - 1) return;
             this.updateScrollFlags();
+
+            // centers the existing active color after the last element
+            // in the list enter the animation, so that the number of
+            // elements is correct
+            if (this.activeColor) this.scrollColors(this.activeMaterial, null, false);
         },
         /**
          * Finds the element closer to the center of the container depending
