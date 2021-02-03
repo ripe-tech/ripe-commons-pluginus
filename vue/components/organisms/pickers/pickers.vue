@@ -1243,10 +1243,10 @@ export const Pickers = {
             this.updateScrollFlags();
         },
         onColorsChanged() {
-            this.updateScrollFlags();
             requestAnimationFrame(() => {
                 this.scrollMaterials(this.activeMaterial, false);
                 this.scrollColors(this.activeMaterial, null, false);
+                this.updateScrollFlags();
             });
         },
         onColorsAnimationAfterEnter(element) {
