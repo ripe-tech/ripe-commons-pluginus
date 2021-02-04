@@ -563,6 +563,13 @@ export const Pickers = {
     watch: {
         parts() {
             this.updateSwatches();
+
+            // scrolls to the selected color after
+            // updating the parts, allowing centering
+            // of the selected color after choosing
+            // a color of a different material than the
+            // previous one
+            this.scrollColors(this.activeMaterial);
         },
         options() {
             this.updateSwatches();
@@ -1122,7 +1129,7 @@ export const Pickers = {
 
             if (!part) return;
 
-            if (part && part.material !== this.activeMaterial) {
+            if (part.material !== this.activeMaterial) {
                 colorsPicker.scrollLeft = 0;
                 return;
             }
@@ -1237,9 +1244,11 @@ export const Pickers = {
             this.$emit(buttonEvent, event);
         },
         onMaterialsChanged() {
-            this.scrollMaterials(this.activeMaterial, false);
-            this.scrollColors(this.activeMaterial, null, false);
-            this.updateScrollFlags();
+            requestAnimationFrame(() => {
+                this.scrollMaterials(this.activeMaterial, false);
+                this.scrollColors(this.activeMaterial, null, false);
+                this.updateScrollFlags();
+            });
         },
         onColorsChanged() {
             requestAnimationFrame(() => {
