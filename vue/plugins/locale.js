@@ -10,15 +10,19 @@ export const localePlugin = {
         Vue.mixin({
             data: function() {
                 return {
-                    currentLocale: null
+                    currentLocale: null,
+                    localeMap: null
                 };
             },
             computed: {
                 locale() {
                     return (value, defaultValue, locale = null, fallback = true) => {
+                        const fallbackValue = this.localeMap && this.localeMap[locale]
+                            ? this.localeMap[locale][value]
+                            : undefined;
                         return toLocale(
                             value,
-                            defaultValue,
+                            defaultValue || fallbackValue,
                             locale || this.currentLocale,
                             fallback
                         );
@@ -27,7 +31,12 @@ export const localePlugin = {
             },
             mounted: function() {
                 localePlugin.owner.bind("post_set_locale", locale => (this.currentLocale = locale));
+                localePlugin.owner.bind(
+                    "locale_map_changed",
+                    () => (this.localeMap = Object.assign({}, localePlugin.localeMap))
+                );
                 this.currentLocale = localePlugin.locale;
+                this.localeMap = Object.assign({}, localePlugin.localeMap);
             }
         });
 

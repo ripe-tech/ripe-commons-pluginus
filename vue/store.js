@@ -195,17 +195,49 @@ export const store = {
 
             // runs the remote business logic to obtain the multiple
             // target groups available for initials as well as the
-            // available characters for personalization
+            // available characters for personalization, falling back
+            // to default values if builds do not support remote
+            // business logic (for the `groups` and `supported_characters`
+            // "methods"), this is a naive implementation for the scenarios
+            // where no server side logic exists for initials (supported_characters)
             const promise = Promise.all([
-                this._vm.$ripe.runLogicP({ method: "groups" }),
                 (async () => {
-                    const supportedCharacters = await this._vm.$ripe.runLogicP({
-                        method: "supported_characters"
-                    });
-                    return [...supportedCharacters];
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "groups"
+                        });
+                    } catch {
+                        return ["main"];
+                    }
                 })(),
-                this._vm.$ripe.runLogicP({ method: "minimum_initials" }),
-                this._vm.$ripe.runLogicP({ method: "maximum_initials" })
+                (async () => {
+                    try {
+                        const supportedCharacters = await this._vm.$ripe.runLogicP({
+                            method: "supported_characters"
+                        });
+                        return [...supportedCharacters];
+                    } catch {
+                        return ["abcdefghijklmnopqrstvwxyz"];
+                    }
+                })(),
+                (async () => {
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "minimum_initials"
+                        });
+                    } catch {
+                        return 0;
+                    }
+                })(),
+                (async () => {
+                    try {
+                        return await this._vm.$ripe.runLogicP({
+                            method: "maximum_initials"
+                        });
+                    } catch {
+                        return Infinity;
+                    }
+                })()
             ]);
 
             // stores the ongoing request so we avoid future redundant requests
@@ -223,17 +255,8 @@ export const store = {
                 ] = await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
-                commit("initialsMinimumCharacters", minimumCharacters);
-                commit("initialsMaximumCharacters", maximumCharacters);
-            } catch (err) {
-                // gives a default group if builds does not support remote
-                // business logic (for the `groups` and `supported_characters`
-                // "methods"), this is a naive implementation for the scenarios
-                // where no server side logic exists for initials (supported_characters)
-                commit("initialsGroups", "main");
-                commit("initialsSupportedCharacters", ["abcdefghijklmnopqrstvwxyz"]);
-                commit("initialsMinimumCharacters", 0);
-                commit("initialsMaximumCharacters", Infinity);
+                commit("initialsMinimumCharacters", Number(minimumCharacters));
+                commit("initialsMaximumCharacters", Number(maximumCharacters));
             } finally {
                 // releases the "lock" controlled by the initials data promise, so that
                 // future remote requests can go on
