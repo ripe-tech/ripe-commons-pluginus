@@ -190,10 +190,8 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     _permutations(value) {
         const valueP = value.split(".");
         const permutations = [];
-        for (let index = valueP.length; index > 1; index--) {
-            const parts = valueP.slice(1, index - 1);
-            const partsS = parts.length ? parts.join(".") + "." : "";
-            permutations.push(`${valueP[0]}.${partsS}${valueP[valueP.length - 1]}`);
+        for (let index = 0; index < valueP.length; index++) {
+            permutations.push(valueP.slice(index).join("."));
         }
         return permutations;
     }
