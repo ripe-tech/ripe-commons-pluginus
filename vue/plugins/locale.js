@@ -17,10 +17,9 @@ export const localePlugin = {
             computed: {
                 locale() {
                     return (value, defaultValue, locale = null, fallback = true) => {
-                        const fallbackValue =
-                            this.localeMap && this.localeMap[locale]
-                                ? this.localeMap[locale][value]
-                                : undefined;
+                        const fallbackValue = this.localeMap && this.localeMap[locale]
+                            ? this.localeMap[locale][value]
+                            : undefined;
                         return toLocale(
                             value,
                             defaultValue || fallbackValue,
