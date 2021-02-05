@@ -9,6 +9,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
     }
 
     getCapabilities() {
@@ -113,65 +114,27 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         } = {}
     ) {
         const values = Array.isArray(value) ? value : [value];
-        if (values.length === 0) {
-            throw new Error("No values present to be localized");
-        }
+        const result = this.ripeProvider.ripe.localeModel(value, this.localePlugin, {
+            brand: brand,
+            model: model,
+            locale: locale,
+            defaultValue: defaultValue,
+            prefix: prefix,
+            fallback: fallback,
+            compatibility: compatibility,
+            hack: hack
+        });
 
-        locale = locale || this.localePlugin.getLocale();
-        const localeB = locale;
-        const language = locale.split("_", 1)[0];
-        if (hack) {
-            value = values[-1].rsplit(".", 1)[-1];
-            return this.localePlugin.toLocale(value, defaultValue, locale, fallback);
-        }
+        // if the localization was successful
+        // return its result
+        if (result !== defaultValue) return result;
 
-        const locales = this.localePlugin.getSupportedLocales();
-        if (locales.includes(localeB)) {
-            locale = localeB;
-        } else if (locales.includes(language)) {
-            locale = language;
-        } else if (locales.some(l => l.startsWith(`${language}_`))) {
-            locale = locales.filter(l => l.startsWith(`${language}_`))[0];
-        } else if (fallback) {
-            locale = locales[0];
-        }
+        // if the localization was not sucessful
+        // but a default was defined, return it
+        if (defaultValue !== null) return result;
 
-        const prefixes = [`${brand}.${model}`, brand];
-        for (const value of values) {
-            const permutations = this._permutations(value);
-            for (const _prefix of prefixes) {
-                for (const _value of permutations) {
-                    const valueFqn = `${prefix}.${_prefix}.${_value}`;
-                    const hasLocale = this.localePlugin.hasLocale(valueFqn, locale);
-                    if (!hasLocale) {
-                        continue;
-                    }
-                    const result = this.localePlugin.toLocale(valueFqn, null, locale, fallback);
-                    if (result) {
-                        return result;
-                    }
-                }
-            }
-        }
-
-        if (compatibility) {
-            for (const value of values) {
-                const permutations = this._permutations(value);
-                for (const _value of permutations) {
-                    const hasLocale = this.localePlugin.hasLocale(_value, locale);
-                    if (!hasLocale) {
-                        continue;
-                    }
-                    const result = this.localePlugin.toLocale(_value, null, locale, fallback);
-                    if (result) {
-                        return result;
-                    }
-                }
-            }
-        }
-
-        if (defaultValue !== null) return defaultValue;
-
+        // otherwise run the localization process
+        // again using a fallback locale
         const localeFallback = this.localePlugin.getLocaleFallback();
         if (localeFallback !== locale) {
             return this._toLocale(values, brand, model, {
@@ -185,15 +148,6 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         }
 
         return values[0];
-    }
-
-    _permutations(value) {
-        const valueP = value.split(".");
-        const permutations = [];
-        for (let index = 0; index < valueP.length; index++) {
-            permutations.push(valueP.slice(index).join("."));
-        }
-        return permutations;
     }
 }
 
