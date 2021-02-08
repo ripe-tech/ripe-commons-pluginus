@@ -562,13 +562,13 @@ export const Pickers = {
     },
     watch: {
         parts() {
+            // triggers the update of the swatch values according
+            // to the newly set parts
             this.updateSwatches();
 
-            // scrolls to the selected color after
-            // updating the parts, allowing centering
-            // of the selected color after choosing
-            // a color of a different material than the
-            // previous one
+            // scrolls to the selected color after updating the parts,
+            // allowing centering of the selected color after choosing
+            // a color of a different material than the previous one
             this.scrollColors(this.activeMaterial);
         },
         options() {
