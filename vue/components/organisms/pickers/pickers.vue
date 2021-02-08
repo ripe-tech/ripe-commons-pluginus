@@ -562,7 +562,14 @@ export const Pickers = {
     },
     watch: {
         parts() {
+            // triggers the update of the swatch values according
+            // to the newly set parts
             this.updateSwatches();
+
+            // scrolls to the selected color after updating the parts,
+            // allowing centering of the selected color after choosing
+            // a color of a different material than the previous one
+            this.scrollColors(this.activeMaterial);
         },
         options() {
             this.updateSwatches();
@@ -1122,7 +1129,7 @@ export const Pickers = {
 
             if (!part) return;
 
-            if (part && part.material !== this.activeMaterial) {
+            if (part.material !== this.activeMaterial) {
                 colorsPicker.scrollLeft = 0;
                 return;
             }
@@ -1210,15 +1217,14 @@ export const Pickers = {
             scroll = scroll === null ? this.multipleMaterials : scroll;
             const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
-            if (center) this.centerMaterials();
-            if (scroll) {
+            if (scroll || center) {
                 requestAnimationFrame(() => {
+                    if (center) this.centerMaterials();
+                    if (!scroll) return;
+
                     this.scrollMaterials(material);
-                    if (this.colorToggle && materialChanged) {
-                        this.scrollColors(material);
-                    } else {
-                        this.scrollColors(material);
-                    }
+                    if (!this.colorToggle || materialChanged) return;
+                    this.scrollColors(material);
                 });
             }
         },
@@ -1238,15 +1244,17 @@ export const Pickers = {
             this.$emit(buttonEvent, event);
         },
         onMaterialsChanged() {
-            this.scrollMaterials(this.activeMaterial, false);
-            this.scrollColors(this.activeMaterial, null, false);
-            this.updateScrollFlags();
-        },
-        onColorsChanged() {
-            this.updateScrollFlags();
             requestAnimationFrame(() => {
                 this.scrollMaterials(this.activeMaterial, false);
                 this.scrollColors(this.activeMaterial, null, false);
+                this.updateScrollFlags();
+            });
+        },
+        onColorsChanged() {
+            requestAnimationFrame(() => {
+                this.scrollMaterials(this.activeMaterial, false);
+                this.scrollColors(this.activeMaterial, null, false);
+                this.updateScrollFlags();
             });
         },
         onColorsAnimationAfterEnter(element) {
@@ -1255,6 +1263,11 @@ export const Pickers = {
             // are finalized and the dataset it set
             if (element.dataset.index < this.colorOptions.length - 1) return;
             this.updateScrollFlags();
+
+            // centers the existing active color after the last element
+            // in the list enter the animation, so that the number of
+            // elements is correct
+            if (this.activeColor) this.scrollColors(this.activeMaterial, null, false);
         },
         /**
          * Finds the element closer to the center of the container depending
