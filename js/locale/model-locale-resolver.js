@@ -113,8 +113,9 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             hack = false
         } = {}
     ) {
+        const ripe = this.ripeProvider.ripe;
         const values = Array.isArray(value) ? value : [value];
-        const result = this.ripeProvider.ripe.localeModel(value, this.localePlugin, {
+        const result = ripe.localeModel(value, this.localePlugin, {
             brand: brand,
             model: model,
             locale: locale,
@@ -125,16 +126,15 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             hack: hack
         });
 
-        // if the localization was successful
-        // return its result
+        // if the localization was successful returns its result
         if (result !== defaultValue) return result;
 
-        // if the localization was not sucessful
-        // but a default was defined, return it
+        // if the localization was not successful but a default
+        // was defined, then returns it
         if (defaultValue !== null) return result;
 
-        // otherwise run the localization process
-        // again using a fallback locale
+        // otherwise run the localization process again using
+        // a fallback locale as the base for localization
         const localeFallback = this.localePlugin.getLocaleFallback();
         if (localeFallback !== locale) {
             return this._toLocale(values, brand, model, {
