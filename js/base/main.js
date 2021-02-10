@@ -415,6 +415,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("selected_part", (...args) => this.owner.trigger("selected_part", ...args));
         this.ripe.bind("choices", (...args) => this.owner.trigger("choices", ...args));
         this.ripe.bind("bundles", (...args) => this.owner.trigger("bundles", ...args));
+        this.ripe.bind("auth", (...args) => this.owner.trigger("auth", ...args));
 
         this.ripe.bind("initials", (...args) => this.owner.trigger("initials", ...args));
         this.ripe.bind("initials_extra", (...args) =>
@@ -513,6 +514,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$bus.trigger("selected_part", ...args)
                 );
                 manager.bind("choices", (...args) => this.$bus.trigger("choices", ...args));
+                manager.bind("auth", (...args) => this.$bus.trigger("auth", ...args));
                 manager.bind("initials", (...args) => this.$bus.trigger("initials", ...args));
                 manager.bind("initials_extra", (...args) =>
                     this.$bus.trigger("initials_extra", ...args)
