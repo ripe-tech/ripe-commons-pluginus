@@ -22,7 +22,7 @@
                         v-bind:class="buttonPartsClasses(button)"
                         v-for="button in beforeButtonsParts"
                         v-bind:key="button.id"
-                        v-on:click="onButtonPartClick(button.event, $event)"
+                        v-on:click="event => onButtonPartClick(button.event, event)"
                     >
                         <slot v-bind:name="`button-before-buttons-parts-${button.id}`">
                             <p class="label">
@@ -59,7 +59,7 @@
                         v-bind:class="buttonPartsClasses(button)"
                         v-for="button in afterButtonsParts"
                         v-bind:key="button.id"
-                        v-on:click="onButtonPartClick(button.event, $event)"
+                        v-on:click="event => onButtonPartClick(button.event, event)"
                     >
                         <slot v-bind:name="`button-after-buttons-parts-${button.id}`">
                             <p class="label">

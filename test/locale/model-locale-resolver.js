@@ -2,13 +2,31 @@ require("../setup");
 
 const assert = require("assert");
 const pluginus = require("pluginus");
+const ripe = require("ripe-sdk").ripe;
 
 const ripeCommons = require("../..");
+
+class RipeProviderPlugin extends ripeCommons.RipeCommonsPlugin {
+    async load() {
+        await super.load();
+        this.ripe = new ripe.Ripe({ init: false });
+    }
+
+    async unload() {
+        await super.unload();
+        this.ripe = null;
+    }
+
+    getCapabilities() {
+        return [ripeCommons.RipeCommonsCapability.new("ripe-provider")];
+    }
+}
 
 describe("ModelLocaleResolverPlugin", function() {
     before(async function() {
         const manager = new pluginus.PluginManager();
         ripeCommons.registerPlugins(manager);
+        RipeProviderPlugin.register(manager);
 
         const localePlugin = await manager.getPluginByName("LocalePlugin");
         localePlugin.setLocale("en_us");
@@ -37,28 +55,6 @@ describe("ModelLocaleResolverPlugin", function() {
                 plugin.localeColor("red", { part: "sole", material: "rubber" }),
                 "Sole Rubber Red"
             );
-        });
-    });
-
-    describe("#_permutations()", function() {
-        it("should perform level-by-level permutation", async () => {
-            const plugin = await this.ctx.manager.getPluginByName("ModelLocaleResolverPlugin");
-            assert.deepStrictEqual(plugin._permutations("level1"), ["level1"]);
-            assert.deepStrictEqual(plugin._permutations("level1.level2"), [
-                "level1.level2",
-                "level2"
-            ]);
-            assert.deepStrictEqual(plugin._permutations("level1.level2.level3"), [
-                "level1.level2.level3",
-                "level2.level3",
-                "level3"
-            ]);
-            assert.deepStrictEqual(plugin._permutations("level1.level2.level3.level4"), [
-                "level1.level2.level3.level4",
-                "level2.level3.level4",
-                "level3.level4",
-                "level4"
-            ]);
         });
     });
 });
