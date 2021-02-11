@@ -593,6 +593,12 @@ export const Pickers = {
             const materialSelected = current && current.material;
             const material = materialSelected ? current.material : materials[0];
             this.selectMaterial(material, false);
+
+            // if the material stays the same, it updates the color
+            // in case there is previously defined color
+            if (current && current.material === this.activeMaterial) {
+                this.activeColor = current.color;
+            }
         },
         activeMaterial(material) {
             const current = this.parts[this.activePart];
