@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import Vuex from "vuex";
 import { withKnobs } from "@storybook/addon-knobs";
 
-storiesOf("Molecules", module)
+storiesOf("Components/Molecules/Thumbnails Groups", module)
     .addDecorator(withKnobs)
     .add("Thumbnails Groups", () => ({
         props: {
