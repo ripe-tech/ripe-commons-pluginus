@@ -1221,16 +1221,11 @@ export const Pickers = {
         },
         selectMaterial(material, scroll = null, center = true) {
             scroll = scroll === null ? this.multipleMaterials : scroll;
-            const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
             if (scroll || center) {
                 requestAnimationFrame(() => {
                     if (center) this.centerMaterials();
-                    if (!scroll) return;
-
-                    this.scrollMaterials(material);
-                    if (!this.colorToggle || materialChanged) return;
-                    this.scrollColors(material);
+                    if (scroll) this.scrollMaterials(material);
                 });
             }
         },
