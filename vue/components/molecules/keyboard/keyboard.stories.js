@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean, object } from "@storybook/addon-knobs";
 
-storiesOf("Molecules", module)
+storiesOf("Components/Molecules/Keyboard", module)
     .addDecorator(withKnobs)
     .add("Keyboard", () => ({
         props: {
