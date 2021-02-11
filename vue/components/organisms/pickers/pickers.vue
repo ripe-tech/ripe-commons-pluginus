@@ -942,15 +942,16 @@ export const Pickers = {
             this._sumElementsWidth(
                 elements,
                 (element, index, elementWidth, width) => {
-                    // if the element middle is after the middle of the container, it is
-                    // the next element, so its center will be positioned at the middle
+                    // if the element middle is after the middle of the container by more or
+                    // equal than 1 pixel (to avoid catching the element that is already centered)
+                    // it is the next element, so its center will be positioned at the middle
                     // of the container element
-                    if (Math.floor(width + elementWidth / 2) > containerCenter) {
-                        slide = width + elementWidth / 2 - containerCenter;
-                        this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
-                        return true;
-                    }
-                    return false;
+                    const diff = width + elementWidth / 2 - containerCenter;
+                    if (diff < 1) return false;
+
+                    slide = diff;
+                    this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                    return true;
                 },
                 !right
             );
