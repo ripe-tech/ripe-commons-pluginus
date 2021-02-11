@@ -593,6 +593,12 @@ export const Pickers = {
             const materialSelected = current && current.material;
             const material = materialSelected ? current.material : materials[0];
             this.selectMaterial(material, false);
+
+            // if the material stays the same, it updates the color
+            // in case there is previously defined color
+            if (current && current.material === this.activeMaterial) {
+                this.activeColor = current.color;
+            }
         },
         activeMaterial(material) {
             const current = this.parts[this.activePart];
@@ -936,15 +942,16 @@ export const Pickers = {
             this._sumElementsWidth(
                 elements,
                 (element, index, elementWidth, width) => {
-                    // if the element middle is after the middle of the container, it is
-                    // the next element, so its center will be positioned at the middle
+                    // if the element middle is after the middle of the container by more or
+                    // equal than 1 pixel (to avoid catching the element that is already centered)
+                    // it is the next element, so its center will be positioned at the middle
                     // of the container element
-                    if (Math.floor(width + elementWidth / 2) > containerCenter) {
-                        slide = width + elementWidth / 2 - containerCenter;
-                        this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
-                        return true;
-                    }
-                    return false;
+                    const diff = width + elementWidth / 2 - containerCenter;
+                    if (diff < 1) return false;
+
+                    slide = diff;
+                    this[`aligned${this.capitalize(valueLabel)}`] = element.dataset[valueLabel];
+                    return true;
                 },
                 !right
             );
@@ -1215,16 +1222,11 @@ export const Pickers = {
         },
         selectMaterial(material, scroll = null, center = true) {
             scroll = scroll === null ? this.multipleMaterials : scroll;
-            const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
             if (scroll || center) {
                 requestAnimationFrame(() => {
                     if (center) this.centerMaterials();
-                    if (!scroll) return;
-
-                    this.scrollMaterials(material);
-                    if (!this.colorToggle || materialChanged) return;
-                    this.scrollColors(material);
+                    if (scroll) this.scrollMaterials(material);
                 });
             }
         },
