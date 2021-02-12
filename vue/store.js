@@ -1,3 +1,5 @@
+import { initialsFromExtra } from "../js/util";
+
 export const store = {
     state: {
         ripeUrl: "",
@@ -104,16 +106,14 @@ export const store = {
             state.price = price;
         },
         personalization(state, value) {
-            const groups = Object.keys(value);
-            const mainGroup = groups.includes("main") ? "main" : groups[0];
-            const mainInitials = value[mainGroup] || {};
+            const { initials, engraving } = initialsFromExtra(
+                value.initialsExtra,
+                value.initials,
+                value.engraving
+            );
 
-            const initials = value.initials === undefined ? mainInitials.initials : value.initials;
-            const engraving =
-                value.engraving === undefined ? mainInitials.engraving : value.engraving;
-
-            state.personalization.initials = initials || "";
-            state.personalization.engraving = engraving || null;
+            state.personalization.initials = initials;
+            state.personalization.engraving = engraving;
             state.personalization.initialsExtra = Object.assign({}, value.initialsExtra);
         },
         size(state, value) {

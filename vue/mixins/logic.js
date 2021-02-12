@@ -1,3 +1,5 @@
+import { initialsFromExtra } from "../../js/util";
+
 export const logicMixin = {
     inject: {
         manager: {
@@ -74,6 +76,9 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
+        initialsFromExtra(initialsExtra, initials, engraving) {
+            return initialsFromExtra(initialsExtra, initials, engraving);
+        },
         /**
          * Checks if the initials are valid according to a naive implementation
          * where validation is done against the maximum, minimum and supported

@@ -310,6 +310,10 @@ export const Personalization = {
 
         this.$bus.bind("initials_extra", initialsExtra => {
             if (this.diffInitialsExtra(initialsExtra, this.state.initialsExtra)) {
+                const { initials, engraving } = this.initialsFromExtra(initialsExtra);
+
+                this.state.initials = initials;
+                this.state.engraving = engraving;
                 this.state.initialsExtra = initialsExtra;
                 if (this.$refs.form) this.$refs.form.setState(this.state);
             }
