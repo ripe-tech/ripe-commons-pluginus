@@ -76,7 +76,19 @@ export const logicMixin = {
         this.$bus.bind("refresh", this.$forceUpdate);
     },
     methods: {
-        initialsFromExtra(initialsExtra, initials, engraving) {
+        /**
+         * Resolves both the main initials and engraving taking into consideration
+         * the provided initials extra as a fallback process.
+         *
+         * @param {Object} initialsExtra The dictionary structure associating
+         * the multiple initials groups with their initials engraving values.
+         * @param {String} initials The initials to be used as override if any.
+         * @param {String} engraving The engraving to be used as override if any.
+         * @returns {Object} The normalized initials and engraving values withing
+         * an object resolved according to the provided initials extra (main group)
+         * or the initials and engraving parameters.
+         */
+        initialsFromExtra(initialsExtra, initials = undefined, engraving = undefined) {
             return initialsFromExtra(initialsExtra, initials, engraving);
         },
         /**
