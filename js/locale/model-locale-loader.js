@@ -27,7 +27,6 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         for (const locale of new Set(locales)) {
             await this._loadModelLocale(brand, model, locale);
         }
-        this.owner.trigger("locale_map_changed");
     }
 
     async loadRipeSdkLocales() {
@@ -76,6 +75,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             if (key === "_" && result[key] === null) continue;
             localePlugin.setLocaleValue(key, result[key], currentLocale, { event: false });
         }
+        this.owner.trigger("locale_map_changed");
     }
 }
 
