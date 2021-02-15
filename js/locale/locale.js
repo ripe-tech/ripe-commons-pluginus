@@ -65,16 +65,18 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale_changed", locale);
     }
 
-    setLocaleValue(key, value, locale) {
+    setLocaleValue(key, value, locale, options = { event: true }) {
         const localeKeys = this.localeMap[locale] || {};
         localeKeys[key] = value;
         this.localeMap[locale] = localeKeys;
         this.owner.trigger("locale", key, value, locale);
+        if (options.event) this.owner.trigger("locale_map_changed");
     }
 
-    unsetLocaleValue(key, locale) {
+    unsetLocaleValue(key, locale, options = { event: true }) {
         const localeKeys = this.localeMap[locale] || {};
         delete localeKeys[key];
+        if (options.event) this.owner.trigger("locale_map_changed");
     }
 
     setLocaleMap(localeMap, prefix = "") {
@@ -82,7 +84,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
         for (const locale in localeMap) {
             const bundle = localeMap[locale];
             for (const key in bundle) {
-                this.setLocaleValue(`${prefix}${key}`, bundle[key], locale);
+                this.setLocaleValue(`${prefix}${key}`, bundle[key], locale, { event: false });
             }
         }
         this.owner.trigger("locale_map_changed");
@@ -93,7 +95,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
         for (const locale in localeMap) {
             const bundle = localeMap[locale];
             for (const key in bundle) {
-                this.unsetLocaleValue(`${prefix}.${key}`, locale);
+                this.unsetLocaleValue(`${prefix}.${key}`, locale, { event: false });
             }
         }
         this.owner.trigger("locale_map_changed");
