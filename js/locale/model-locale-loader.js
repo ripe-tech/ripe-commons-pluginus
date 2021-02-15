@@ -39,7 +39,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             const bundle = ripeProvider.ripe.getBundle(locale);
             for (const [key, value] of Object.entries(bundle)) {
                 if (key === "_" && value === null) continue;
-                localePlugin.setLocaleValue(key, value, locale);
+                localePlugin.setLocaleValue(key, value, locale, { event: false });
             }
         }
         this.owner.trigger("locale_map_changed");
@@ -74,7 +74,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
 
         for (const key in result) {
             if (key === "_" && result[key] === null) continue;
-            localePlugin.setLocaleValue(key, result[key], currentLocale);
+            localePlugin.setLocaleValue(key, result[key], currentLocale, { event: false });
         }
     }
 }
