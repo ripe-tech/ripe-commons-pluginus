@@ -1225,10 +1225,12 @@ export const Pickers = {
                     if (center) this.centerMaterials();
                     if (scroll) this.scrollMaterials(material);
 
-                    // scroll the colors if material has changed and
-                    // if all the colors of all materials are shown
-                    if (this.colorToggle || !materialChanged) return;
-                    this.scrollColors(material);
+                    // scrolls the colors if material have changed and if
+                    // all the colors of all materials are shown (no color
+                    // toggle is currently in display)
+                    if (materialChanged && !this.colorToggle) {
+                        this.scrollColors(material);
+                    }
                 });
             }
         },
