@@ -400,6 +400,9 @@ export const Configurator = {
         },
         loading(value) {
             this.$emit("update:loading", value);
+        },
+        options(value) {
+            this.configurator.updateOptions(value);
         }
     },
     methods: {
