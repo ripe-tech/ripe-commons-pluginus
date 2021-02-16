@@ -240,10 +240,6 @@
     position: relative;
 }
 
-.pickers .materials-wrapper .materials-container {
-    width: 100%;
-}
-
 .pickers .materials-wrapper .materials-container.hidden {
     display: none;
 }
@@ -1222,11 +1218,19 @@ export const Pickers = {
         },
         selectMaterial(material, scroll = null, center = true) {
             scroll = scroll === null ? this.multipleMaterials : scroll;
+            const materialChanged = this.activeMaterial !== material;
             this.activeMaterial = material;
             if (scroll || center) {
                 requestAnimationFrame(() => {
                     if (center) this.centerMaterials();
                     if (scroll) this.scrollMaterials(material);
+
+                    // scrolls the colors if material have changed and if
+                    // all the colors of all materials are shown (no color
+                    // toggle is currently in display)
+                    if (materialChanged && !this.colorToggle) {
+                        this.scrollColors(material);
+                    }
                 });
             }
         },
