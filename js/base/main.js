@@ -383,7 +383,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         this.ripe.bind("settings", () => {
             this.app.logDebug(() => "SDK settings changed");
             this.store.commit("format", this.ripe.format);
-            this.store.commit("resolution", this.ripe.size);
+            if (this.ripe.size !== undefined) this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
         });
 
