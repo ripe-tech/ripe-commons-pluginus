@@ -40,7 +40,7 @@ export const store = {
         hasCustomization: false,
         hasPersonalization: false,
         hasSize: false,
-        hasInitialsRadius: true,
+        hasInitialsRadius: false,
         ripeOptions: {},
         ripeState: {},
         initialsGroups: null,
