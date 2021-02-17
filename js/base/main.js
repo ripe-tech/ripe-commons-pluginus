@@ -329,7 +329,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 parts: this.ripe.parts || {}
             });
             this.store.commit("format", this.ripe.format);
-            this.store.commit("resolution", this.ripe.size);
+            if (this.ripe.size !== undefined) this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
             this.store.commit("ripeOptions", this.ripe.options);
             this.store.commit("ripeState", {
