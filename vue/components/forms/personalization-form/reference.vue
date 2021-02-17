@@ -176,6 +176,9 @@ export const Reference = {
                 this.propertiesData,
                 this.properties()
             );
+        },
+        imageBorderRadius() {
+            return this.$store.state.hasInitialsRadius ? "50%" : "0px";
         }
     },
     watch: {
