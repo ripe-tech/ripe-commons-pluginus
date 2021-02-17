@@ -162,6 +162,9 @@ export const Reference = {
         configMeta() {
             return this.$store.state.config.meta || {};
         },
+        imageBorderRadius() {
+            return this.$store.state.hasInitialsRadius ? "50%" : "0px";
+        },
         state() {
             return {
                 initials: this.__getInitialsText(),
@@ -176,9 +179,6 @@ export const Reference = {
                 this.propertiesData,
                 this.properties()
             );
-        },
-        imageBorderRadius() {
-            return this.$store.state.hasInitialsRadius ? "50%" : "0px";
         }
     },
     watch: {
