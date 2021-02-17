@@ -40,6 +40,7 @@ export const store = {
         hasCustomization: false,
         hasPersonalization: false,
         hasSize: false,
+        hasInitialsRadius: true,
         ripeOptions: {},
         ripeState: {},
         initialsGroups: null,
@@ -148,6 +149,9 @@ export const store = {
         },
         hasSize(state, hasSize) {
             state.hasSize = hasSize;
+        },
+        hasInitialsRadius(state, hasInitialsRadius) {
+            state.hasInitialsRadius = hasInitialsRadius;
         },
         ripeOptions(state, ripeOptions) {
             state.ripeOptions = ripeOptions;

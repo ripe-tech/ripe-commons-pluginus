@@ -367,6 +367,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
             this.store.commit("hasPersonalization", this.ripe.hasPersonalization());
             this.store.commit("hasSize", this.ripe.hasSize());
+            this.store.commit("hasInitialsRadius", this.ripe.hasInitialsRadius());
 
             // clear the initials data, as it is possibly outdated
             this.store.commit("clearInitialsData");
