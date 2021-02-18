@@ -162,7 +162,8 @@ export const Reference = {
          */
         imageBorderRadius() {
             if (!this.$store.state.hasInitialsRadius) return "0px";
-            return this.configMeta?.initials_image?.border_radius || "50%";
+            const initialsImage = this.configMeta.initials_image || {};
+            return initialsImage.border_radius === undefined ? "50%" : initialsImage.border_radius;
         },
         state() {
             return {
