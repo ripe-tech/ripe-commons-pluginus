@@ -140,13 +140,7 @@ export const Reference = {
              * The height (in pixels) of the image that is going to be used to
              * display the personalization initials.
              */
-            imageHeight: 300,
-
-            /**
-             * The radius of the border for the image that is going to be used in
-             * the display of the initials.
-             */
-            imageBorderRadius: "50%"
+            imageHeight: 300
         };
     },
     computed: {
@@ -162,8 +156,14 @@ export const Reference = {
         configMeta() {
             return this.$store.state.config.meta || {};
         },
+        /**
+         * The radius of the border for the image that is going to be used in
+         * the display of the initials.
+         */
         imageBorderRadius() {
-            return this.$store.state.hasInitialsRadius ? "50%" : "0px";
+            if (!this.$store.state.hasInitialsRadius) return "0px";
+            const initialsImage = this.configMeta.initials_image || {};
+            return initialsImage.border_radius === undefined ? "50%" : initialsImage.border_radius;
         },
         state() {
             return {
@@ -275,8 +275,6 @@ export const Reference = {
             // information present in the model's configuration (if existent)
             const initialsImage = this.configMeta.initials_image || {};
             this.imageHeight = initialsImage.height === undefined ? 300 : initialsImage.height;
-            this.imageBorderRadius =
-                initialsImage.border_radius === undefined ? "50%" : initialsImage.border_radius;
 
             try {
                 // runs the remote business logic to obtain the multiple
