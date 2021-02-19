@@ -29,12 +29,14 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     ) {
         const ripe = this.ripeProvider.ripe;
         return ripe.localeColor(color, this.localePlugin, {
-            part,
-            material,
-            locale,
-            defaultValue,
-            prefixes,
-            suffixes
+            brand: this.brand,
+            model: this.model,
+            part: part,
+            material: material,
+            locale: locale,
+            defaultValue: defaultValue,
+            prefixes: prefixes,
+            suffixes: suffixes
         });
     }
 
@@ -44,7 +46,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     ) {
         const ripe = this.ripeProvider.ripe;
         return ripe.localeMaterial(material, this.localePlugin, {
-            bran: this.brand,
+            brand: this.brand,
             model: this.model,
             part: part,
             locale: locale,
