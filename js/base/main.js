@@ -266,7 +266,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 case "parts":
                     return options[key] && !this.app.equalParts(options[key], value);
                 default:
-                    return options[key] && options[key] !== value;
+                    return options[key] !== undefined && options[key] !== value;
             }
         });
         if (changed.length === 0 && !force) return;
