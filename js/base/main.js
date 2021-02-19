@@ -301,7 +301,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             noPrice: this.ripe.noPrice,
             usePrice: this.ripe.usePrice,
             noDiag: this.ripe.noDiag,
-            useDiag: this.ripe.useDiag
+            useDiag: this.ripe.useDiag,
+            size: this.ripe.size
         };
     }
 
