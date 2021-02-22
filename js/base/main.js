@@ -285,6 +285,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             currency: this.ripe.currency,
             locale: this.ripe.locale,
             flag: this.ripe.flag,
+            size: this.ripe.size,
             backgroundColor: this.ripe.backgroundColor,
             guess: this.ripe.guess,
             guessUrl: this.ripe.guessUrl,
@@ -301,8 +302,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             noPrice: this.ripe.noPrice,
             usePrice: this.ripe.usePrice,
             noDiag: this.ripe.noDiag,
-            useDiag: this.ripe.useDiag,
-            size: this.ripe.size
+            useDiag: this.ripe.useDiag
         };
     }
 
@@ -346,6 +346,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 flag: this.ripe.flag,
                 format: this.ripe.format,
                 formatBase: this.ripe.formatBase,
+                size: this.ripe.size,
                 backgroundColor: this.ripe.backgroundColor,
                 guess: this.ripe.guess,
                 guessUrl: this.ripe.guessUrl,
@@ -362,8 +363,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 noPrice: this.ripe.noPrice,
                 usePrice: this.ripe.usePrice,
                 noDiag: this.ripe.noDiag,
-                useDiag: this.ripe.useDiag,
-                size: this.ripe.size
+                useDiag: this.ripe.useDiag
             });
 
             this.store.commit("hasCustomization", this.ripe.hasCustomization());
