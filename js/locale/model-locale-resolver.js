@@ -92,7 +92,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             },
             options
         );
-        return this._toLocale(value, this.brand, this.model, this.localePlugin, options);
+        return this._toLocale(value, this.brand, this.model, options);
     }
 
     _bind() {
@@ -117,14 +117,40 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
-        ripe._toLocale(value, brand, model, this.localePlugin, {
-            locale,
-            defaultValue,
-            prefix,
-            fallback,
-            compatibility,
-            hack
+        const values = Array.isArray(value) ? value : [value];
+        const result = ripe.localeModel(value, this.localePlugin, {
+            brand: brand,
+            model: model,
+            locale: locale,
+            defaultValue: defaultValue,
+            prefix: prefix,
+            fallback: fallback,
+            compatibility: compatibility,
+            hack: hack
         });
+
+        // if the localization was successful returns its result
+        if (result !== defaultValue) return result;
+
+        // if the localization was not successful but a default
+        // was defined, then returns it
+        if (defaultValue !== null) return result;
+
+        // otherwise run the localization process again using
+        // a fallback locale as the base for localization
+        const localeFallback = this.localePlugin.getLocaleFallback();
+        if (localeFallback !== locale) {
+            return this._toLocale(values, brand, model, {
+                locale: localeFallback,
+                defaultValue: defaultValue,
+                prefix: prefix,
+                fallback: fallback,
+                compatibility: compatibility,
+                hack: hack
+            });
+        }
+
+        return values[0];
     }
 }
 
