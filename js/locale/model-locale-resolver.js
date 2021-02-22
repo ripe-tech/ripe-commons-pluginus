@@ -84,12 +84,73 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         });
     }
 
+    localeModel(value, { locale = null, defaultValue = null, ...options } = {}) {
+        options = Object.assign(
+            {
+                locale: locale,
+                defaultValue: defaultValue
+            },
+            options
+        );
+        return this._toLocale(value, this.brand, this.model, options);
+    }
+
     _bind() {
         this.owner.bind("config", config => {
             const { brand, name } = config || {};
             this.brand = brand;
             this.model = name;
         });
+    }
+
+    _toLocale(
+        value,
+        brand,
+        model,
+        {
+            locale = null,
+            defaultValue = null,
+            prefix = "builds",
+            fallback = false,
+            compatibility = true,
+            hack = false
+        } = {}
+    ) {
+        const ripe = this.ripeProvider.ripe;
+        const values = Array.isArray(value) ? value : [value];
+        const result = ripe.localeModel(value, this.localePlugin, {
+            brand: brand,
+            model: model,
+            locale: locale,
+            defaultValue: defaultValue,
+            prefix: prefix,
+            fallback: fallback,
+            compatibility: compatibility,
+            hack: hack
+        });
+
+        // if the localization was successful returns its result
+        if (result !== defaultValue) return result;
+
+        // if the localization was not successful but a default
+        // was defined, then returns it
+        if (defaultValue !== null) return result;
+
+        // otherwise run the localization process again using
+        // a fallback locale as the base for localization
+        const localeFallback = this.localePlugin.getLocaleFallback();
+        if (localeFallback !== locale) {
+            return this._toLocale(values, brand, model, {
+                locale: localeFallback,
+                defaultValue: defaultValue,
+                prefix: prefix,
+                fallback: fallback,
+                compatibility: compatibility,
+                hack: hack
+            });
+        }
+
+        return values[0];
     }
 }
 
