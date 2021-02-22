@@ -4,6 +4,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
 import { Ripe } from "ripe-sdk";
+import { _castR } from "yonius";
 
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
@@ -22,9 +23,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * not possible to find a valid field for the provided name.
      * @param {Boolean} sequence If the returned value should be a sequence or
      * if instead the first element should be returned.
+     * @param {String} type The type of the returned value. Will cast value to
+     * desired type. Values: int, float, bool, list, tuple.
      * @returns {String} The value for the requested field name.
      */
-    static _field(name, query = null, fallback = null, sequence = null) {
+    static _field(name, query = null, fallback = null, sequence = null, type = null) {
         query = query || new URLSearchParams(window.location.search);
 
         const params = query.getAll(name);
@@ -33,8 +36,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             return fallback;
         }
 
+        const castToType = _castR(type) || (v => v);
+
         if (sequence === null) sequence = params.length > 1;
-        return sequence ? params : params[0];
+        return sequence ? params.map(p => castToType(p)) : castToType(params[0]);
     }
 
     async load() {
