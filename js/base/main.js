@@ -28,13 +28,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     static _field(name, query = null, fallback = null, sequence = null, type = undefined) {
         query = query || new URLSearchParams(window.location.search);
 
-        const castToType = _castR(type) || (v => v);
-
         const params = query.getAll(name);
 
         if (params.length === 0) {
-            return castToType(fallback);
+            return fallback;
         }
+
+        const castToType = _castR(type) || (v => v);
 
         if (sequence === null) sequence = params.length > 1;
         return sequence ? params.map(p => castToType(p)) : castToType(params[0]);
