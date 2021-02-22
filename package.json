@@ -60,7 +60,8 @@
         "ripe-sdk": "^1.25.1",
         "vue": "^2.6.12",
         "vue-global-events": "^1.2.1",
-        "vuex": "^3.6.2"
+        "vuex": "^3.6.2",
+        "yonius": "^0.7.2"
     },
     "devDependencies": {
         "@storybook/addon-knobs": "^6.1.18",

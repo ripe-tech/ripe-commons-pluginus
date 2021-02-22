@@ -4,6 +4,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
 import { Ripe } from "ripe-sdk";
+import { _castR } from "yonius";
 
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
@@ -24,17 +25,19 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * if instead the first element should be returned.
      * @returns {String} The value for the requested field name.
      */
-    static _field(name, query = null, fallback = null, sequence = null) {
+    static _field(name, query = null, fallback = null, sequence = null, type = undefined) {
         query = query || new URLSearchParams(window.location.search);
+
+        const castToType = _castR(type) || (v => v);
 
         const params = query.getAll(name);
 
         if (params.length === 0) {
-            return fallback;
+            return castToType(fallback);
         }
 
         if (sequence === null) sequence = params.length > 1;
-        return sequence ? params : params[0];
+        return sequence ? params.map(p => castToType(p)) : castToType(params[0]);
     }
 
     async load() {
