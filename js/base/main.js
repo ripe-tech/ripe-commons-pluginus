@@ -25,7 +25,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * if instead the first element should be returned.
      * @returns {String} The value for the requested field name.
      */
-    static _field(name, query = null, fallback = null, sequence = null, type = undefined) {
+    static _field(name, query = null, fallback = null, sequence = null, type = null) {
         query = query || new URLSearchParams(window.location.search);
 
         const params = query.getAll(name);
