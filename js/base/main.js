@@ -23,8 +23,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * not possible to find a valid field for the provided name.
      * @param {Boolean} sequence If the returned value should be a sequence or
      * if instead the first element should be returned.
-     * @param {String} type The type of the returned value. Will cast value to
-     * desired type. Values: int, float, bool, list, tuple.
+     * @param {String} type The type of the returned value as a string value
+     * (eg: int, float, bool, list, tuple), should comply with the Yonius
+     * standard set of types.
      * @returns {String} The value for the requested field name.
      */
     static _field(name, query = null, fallback = null, sequence = null, type = null) {
