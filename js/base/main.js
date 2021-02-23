@@ -98,49 +98,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this._loadVue();
         this.app = await this._initVueApp(this.appElement);
 
-        // allocates space for the object that will hold the target model
-        // configuration to be applied to the ripe instance
-        const config = {};
-
-        // in case there's a brand and model defined we should follow the
-        // "typical" setting of options according to brand and model
-        if (this.options.brand && this.options.model) {
-            Object.assign(config, {
-                brand: this.options.brand,
-                model: this.options.model,
-                version: this.options.version || null,
-                parts: this.options.parts || {}
-            });
-        }
-        // otherwise in case the DKU value is set in the options
-        // it should be used for the configuration
-        else if (this.options.dku) {
-            Object.assign(config, { dku: this.options.dku });
-        }
-        // otherwise if there's a valid product ID defined then we should resolve
-        // it and update the current options with its resolved values
-        else if (this.options.product_id) {
-            const isQuery = this.options.product_id.startsWith("query:");
-            const isDku = this.options.product_id.startsWith("dku:");
-            const isProductId = !isQuery && !isDku;
-            if (isQuery) {
-                Object.assign(config, { query: this.options.product_id.slice(6) });
-            } else if (isDku) {
-                Object.assign(config, { dku: this.options.product_id.slice(4) });
-            } else if (isProductId) {
-                Object.assign(config, { productId: this.options.product_id });
-            } else {
-                throw new Error("No valid product ID structure");
-            }
-
-            // avoid including the product ID if it's not a "real"
-            // RIPE product ID but just a ripe-commons-pluginus facade
-            // for a config (prefixed with xxx: and a string)
-            if (!isProductId) delete this.options.product_id;
-        }
-
+        // builds the config object to nbe used to set the initial model and then
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
+        const config = await this._buildConfig();
         this.setModelConfig(config).catch(async err => await this._handleCritical(err));
     }
 
@@ -491,6 +452,53 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     async _loadOptions(validate = true) {
         throw new Error("_loadOptions is not implemented.");
+    }
+
+    async _buildConfig() {
+        // allocates space for the object that will hold the target model
+        // configuration to be applied to the ripe instance
+        const config = {};
+
+        // in case there's a brand and model defined we should follow the
+        // "typical" setting of options according to brand and model
+        if (this.options.brand && this.options.model) {
+            Object.assign(config, {
+                brand: this.options.brand,
+                model: this.options.model,
+                version: this.options.version || null,
+                parts: this.options.parts || {}
+            });
+        }
+        // otherwise in case the DKU value is set in the options
+        // it should be used for the configuration
+        else if (this.options.dku) {
+            Object.assign(config, { dku: this.options.dku });
+        }
+        // otherwise if there's a valid product ID defined then we should resolve
+        // it and update the current options with its resolved values
+        else if (this.options.product_id) {
+            const isQuery = this.options.product_id.startsWith("query:");
+            const isDku = this.options.product_id.startsWith("dku:");
+            const isProductId = !isQuery && !isDku;
+            if (isQuery) {
+                Object.assign(config, { query: this.options.product_id.slice(6) });
+            } else if (isDku) {
+                Object.assign(config, { dku: this.options.product_id.slice(4) });
+            } else if (isProductId) {
+                Object.assign(config, { productId: this.options.product_id });
+            } else {
+                throw new Error("No valid product ID structure");
+            }
+
+            // avoid including the product ID if it's not a "real"
+            // RIPE product ID but just a ripe-commons-pluginus facade
+            // for a config (prefixed with xxx: and a string)
+            if (!isProductId) delete this.options.product_id;
+        }
+
+        // returns the config object that has just been build to
+        // the caller method, this can be used for proper model config
+        return config;
     }
 
     async _initStore() {
