@@ -71,32 +71,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
-        // instantiates the RIPE object and its required plugins
-        this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
-        this.syncPlugin = new Ripe.plugins.SyncPlugin();
-        this.ripe = new Ripe({ init: false });
-
-        // binds to the necessary events sent through the owner
-        this._bind();
-
-        // waits for the complete of the RIPE SDK loading process
-        // so that all the necessary components are loaded, notice
-        // that both the brand, model, variant and version so that
-        // these values are going to be set latter one
-        await this.ripe.init({
-            plugins: [this.restrictionsPlugin, this.syncPlugin],
-            ...this.options,
-            brand: null,
-            model: null,
-            variant: null,
-            version: null
-        });
-
-        // loads the vue components and mixins to be used on
-        // the vue app and starts it
-        await this._loadVue();
-        this.app = await this._initVueApp(this.appElement);
-
         // allocates space for the object that will hold the target model
         // configuration to be applied to the ripe instance
         const config = {};
@@ -131,7 +105,40 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             } else {
                 throw new Error("No valid product ID structure");
             }
+
+            // avoid including the product ID if it's not
+            // a "real" RIPE product ID but just a
+            // ripe-commons-pluginus facade for a config
+            if (!isProductId) delete this.options.product_id;
         }
+
+        console.log(this.options);
+
+        // instantiates the RIPE object and its required plugins
+        this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
+        this.syncPlugin = new Ripe.plugins.SyncPlugin();
+        this.ripe = new Ripe({ init: false });
+
+        // binds to the necessary events sent through the owner
+        this._bind();
+
+        // waits for the complete of the RIPE SDK loading process
+        // so that all the necessary components are loaded, notice
+        // that both the brand, model, variant and version so that
+        // these values are going to be set latter one
+        await this.ripe.init({
+            plugins: [this.restrictionsPlugin, this.syncPlugin],
+            ...this.options,
+            brand: null,
+            model: null,
+            variant: null,
+            version: null
+        });
+
+        // loads the vue components and mixins to be used on
+        // the vue app and starts it
+        await this._loadVue();
+        this.app = await this._initVueApp(this.appElement);
 
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
