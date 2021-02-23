@@ -71,6 +71,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
+        // builds the config object to nbe used to set the initial model
+        // this operation may mutate the currently set options object
+        const config = await this._buildConfig();
+
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
@@ -98,10 +102,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this._loadVue();
         this.app = await this._initVueApp(this.appElement);
 
-        // builds the config object to nbe used to set the initial model and then
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
-        const config = await this._buildConfig();
         this.setModelConfig(config).catch(async err => await this._handleCritical(err));
     }
 
