@@ -133,9 +133,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 throw new Error("No valid product ID structure");
             }
 
-            // avoid including the product ID if it's not
-            // a "real" RIPE product ID but just a
-            // ripe-commons-pluginus facade for a config
+            // avoid including the product ID if it's not a "real"
+            // RIPE product ID but just a ripe-commons-pluginus facade
+            // for a config (prefixed with xxx: and a string)
             if (!isProductId) delete this.options.product_id;
         }
 
