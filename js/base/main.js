@@ -112,8 +112,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             if (!isProductId) delete this.options.product_id;
         }
 
-        console.log(this.options);
-
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
