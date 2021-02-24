@@ -27,16 +27,17 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             suffixes = []
         } = {}
     ) {
-        let value = [];
-        value = value.concat(prefixes);
-        part && material && color && value.push(`colors.${part}.${material}.${color}`);
-        part && color && value.push(`colors.${part}.${color}`);
-        material && color && value.push(`colors.${material}.${color}`);
-        color && value.push(`colors.${color}`);
-        value = value.concat(suffixes);
-        return this.localeModel(value, {
+        const ripe = this.ripeProvider.ripe;
+        return this.localeModel(color, {
+            brand: this.brand,
+            model: this.model,
+            part: part,
+            material: material,
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue,
+            prefixes: prefixes,
+            suffixes: suffixes,
+            localeFunc: (...args) => ripe.localeColor(...args)
         });
     }
 
@@ -44,25 +45,29 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         material,
         { part = null, locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}
     ) {
-        let value = [];
-        value = value.concat(prefixes);
-        part && material && value.push(`materials.${part}.${material}`);
-        material && value.push(`materials.${material}`);
-        value = value.concat(suffixes);
-        return this.localeModel(value, {
+        const ripe = this.ripeProvider.ripe;
+        return this.localeModel(material, {
+            brand: this.brand,
+            model: this.model,
+            part: part,
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue,
+            prefixes: prefixes,
+            suffixes: suffixes,
+            localeFunc: (...args) => ripe.localeMaterial(...args)
         });
     }
 
     localePart(part, { locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}) {
-        let value = [];
-        value = value.concat(prefixes);
-        part && value.push(`parts.${part}`);
-        value = value.concat(suffixes);
-        return this.localeModel(value, {
+        const ripe = this.ripeProvider.ripe;
+        return this.localeModel(part, {
+            brand: this.brand,
+            model: this.model,
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue,
+            prefixes: prefixes,
+            suffixes: suffixes,
+            localeFunc: (...args) => ripe.localePart(...args)
         });
     }
 
@@ -70,22 +75,25 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         name,
         { type = null, locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}
     ) {
-        let value = [];
-        value = value.concat(prefixes);
-        name && value.push(`properties.${name}`);
-        type && name && value.push(`properties.${type}.${name}`);
-        value = value.concat(suffixes);
-        return this.localeModel(value, {
+        const ripe = this.ripeProvider.ripe;
+        return this.localeModel(name, {
+            brand: this.brand,
+            model: this.model,
+            type: type,
             locale: locale,
-            defaultValue: defaultValue
+            defaultValue: defaultValue,
+            prefixes: prefixes,
+            suffixes: suffixes,
+            localeFunc: (...args) => ripe.localeProperty(...args)
         });
     }
 
-    localeModel(value, { locale = null, defaultValue = null, ...options } = {}) {
+    localeModel(value, { locale = null, defaultValue = null, localeFunc = null, ...options } = {}) {
         options = Object.assign(
             {
                 locale: locale,
-                defaultValue: defaultValue
+                defaultValue: defaultValue,
+                localeFunc: localeFunc
             },
             options
         );
@@ -110,12 +118,15 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             prefix = "builds",
             fallback = false,
             compatibility = true,
-            hack = false
+            hack = false,
+            localeFunc = null,
+            ...options
         } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
+        localeFunc = localeFunc || ripe.localeModel;
         const values = Array.isArray(value) ? value : [value];
-        const result = ripe.localeModel(value, this.localePlugin, {
+        const result = localeFunc(value, this.localePlugin, {
             brand: brand,
             model: model,
             locale: locale,
@@ -123,7 +134,8 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             prefix: prefix,
             fallback: fallback,
             compatibility: compatibility,
-            hack: hack
+            hack: hack,
+            ...options
         });
 
         // if the localization was successful returns its result
@@ -143,7 +155,9 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
                 prefix: prefix,
                 fallback: fallback,
                 compatibility: compatibility,
-                hack: hack
+                hack: hack,
+                localeFunc: localeFunc,
+                ...options
             });
         }
 
