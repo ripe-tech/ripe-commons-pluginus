@@ -4,6 +4,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import GlobalEvents from "vue-global-events";
 import { Ripe } from "ripe-sdk";
+import { _castR } from "yonius";
 
 import { components, plugins, mixins, store } from "../../vue";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
@@ -22,9 +23,12 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * not possible to find a valid field for the provided name.
      * @param {Boolean} sequence If the returned value should be a sequence or
      * if instead the first element should be returned.
+     * @param {String} type The type of the returned value as a string value
+     * (eg: int, float, bool, list, tuple), should comply with the Yonius
+     * standard set of types.
      * @returns {String} The value for the requested field name.
      */
-    static _field(name, query = null, fallback = null, sequence = null) {
+    static _field(name, query = null, fallback = null, sequence = null, type = null) {
         query = query || new URLSearchParams(window.location.search);
 
         const params = query.getAll(name);
@@ -33,8 +37,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             return fallback;
         }
 
+        const castToType = _castR(type) || (v => v);
+
         if (sequence === null) sequence = params.length > 1;
-        return sequence ? params : params[0];
+        return sequence ? params.map(p => castToType(p)) : castToType(params[0]);
     }
 
     async load() {
@@ -65,18 +71,23 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // initializes the app state accordingly
         await this._loadOptions();
 
+        // builds the config object to nbe used to set the initial model
+        // this operation may mutate the currently set options object
+        const config = await this._buildConfig();
+
         // instantiates the RIPE object and its required plugins
         this.restrictionsPlugin = new Ripe.plugins.RestrictionsPlugin();
         this.syncPlugin = new Ripe.plugins.SyncPlugin();
         this.ripe = new Ripe({ init: false });
 
-        // binds to the necessary events sent through the owner
+        // binds to the necessary events sent through the owner,
+        // includes the piping of event from RIPE to Vue.js
         this._bind();
 
         // waits for the complete of the RIPE SDK loading process
         // so that all the necessary components are loaded, notice
-        // that both the brand, model, variant and version so that
-        // these values are going to be set latter one
+        // that both the brand, model, variant and version and unset
+        // so that these values can be set latter
         await this.ripe.init({
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options,
@@ -87,45 +98,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         });
 
         // loads the vue components and mixins to be used on
-        // the vue app and starts it
+        // the vue app and initializes it with the target app element
         await this._loadVue();
         this.app = await this._initVueApp(this.appElement);
-
-        // allocates space for the object that will hold the target model
-        // configuration to be applied to the ripe instance
-        const config = {};
-
-        // in case there's a brand and model defined we should follow the
-        // "typical" setting of options according to brand and model
-        if (this.options.brand && this.options.model) {
-            Object.assign(config, {
-                brand: this.options.brand,
-                model: this.options.model,
-                version: this.options.version || null,
-                parts: this.options.parts || {}
-            });
-        }
-        // otherwise in case the DKU value is set in the options
-        // it should be used for the configuration
-        else if (this.options.dku) {
-            Object.assign(config, { dku: this.options.dku });
-        }
-        // otherwise if there's a valid product ID defined then we should resolve
-        // it and update the current options with its resolved values
-        else if (this.options.product_id) {
-            const isQuery = this.options.product_id.startsWith("query:");
-            const isDku = this.options.product_id.startsWith("dku:");
-            const isProductId = !isQuery && !isDku;
-            if (isQuery) {
-                Object.assign(config, { query: this.options.product_id.slice(6) });
-            } else if (isDku) {
-                Object.assign(config, { dku: this.options.product_id.slice(4) });
-            } else if (isProductId) {
-                Object.assign(config, { productId: this.options.product_id });
-            } else {
-                throw new Error("No valid product ID structure");
-            }
-        }
 
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
@@ -266,7 +241,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 case "parts":
                     return options[key] && !this.app.equalParts(options[key], value);
                 default:
-                    return options[key] && options[key] !== value;
+                    return options[key] !== undefined && options[key] !== value;
             }
         });
         if (changed.length === 0 && !force) return;
@@ -285,6 +260,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             currency: this.ripe.currency,
             locale: this.ripe.locale,
             flag: this.ripe.flag,
+            size: this.ripe.size,
             backgroundColor: this.ripe.backgroundColor,
             guess: this.ripe.guess,
             guessUrl: this.ripe.guessUrl,
@@ -345,6 +321,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 flag: this.ripe.flag,
                 format: this.ripe.format,
                 formatBase: this.ripe.formatBase,
+                size: this.ripe.size,
                 backgroundColor: this.ripe.backgroundColor,
                 guess: this.ripe.guess,
                 guessUrl: this.ripe.guessUrl,
@@ -477,6 +454,53 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     async _loadOptions(validate = true) {
         throw new Error("_loadOptions is not implemented.");
+    }
+
+    async _buildConfig() {
+        // allocates space for the object that will hold the target model
+        // configuration to be applied to the ripe instance
+        const config = {};
+
+        // in case there's a brand and model defined we should follow the
+        // "typical" setting of options according to brand and model
+        if (this.options.brand && this.options.model) {
+            Object.assign(config, {
+                brand: this.options.brand,
+                model: this.options.model,
+                version: this.options.version || null,
+                parts: this.options.parts || {}
+            });
+        }
+        // otherwise in case the DKU value is set in the options
+        // it should be used for the configuration
+        else if (this.options.dku) {
+            Object.assign(config, { dku: this.options.dku });
+        }
+        // otherwise if there's a valid product ID defined then we should resolve
+        // it and update the current options with its resolved values
+        else if (this.options.product_id) {
+            const isQuery = this.options.product_id.startsWith("query:");
+            const isDku = this.options.product_id.startsWith("dku:");
+            const isProductId = !isQuery && !isDku;
+            if (isQuery) {
+                Object.assign(config, { query: this.options.product_id.slice(6) });
+            } else if (isDku) {
+                Object.assign(config, { dku: this.options.product_id.slice(4) });
+            } else if (isProductId) {
+                Object.assign(config, { productId: this.options.product_id });
+            } else {
+                throw new Error("No valid product ID structure");
+            }
+
+            // avoid including the product ID if it's not a "real"
+            // RIPE product ID but just a ripe-commons-pluginus facade
+            // for a config (prefixed with xxx: and a string)
+            if (!isProductId) delete this.options.product_id;
+        }
+
+        // returns the config object that has just been build to
+        // the caller method, this can be used for proper model config
+        return config;
     }
 
     async _initStore() {
