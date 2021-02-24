@@ -37,7 +37,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             defaultValue: defaultValue,
             prefixes: prefixes,
             suffixes: suffixes,
-            localeFunc: ripe.localeColor
+            localeFunc: (...args) => ripe.localeColor(...args)
         });
     }
 
@@ -54,7 +54,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             defaultValue: defaultValue,
             prefixes: prefixes,
             suffixes: suffixes,
-            localeFunc: ripe.localeMaterial
+            localeFunc: (...args) => ripe.localeMaterial(...args)
         });
     }
 
@@ -67,7 +67,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             defaultValue: defaultValue,
             prefixes: prefixes,
             suffixes: suffixes,
-            localeFunc: ripe.localePart
+            localeFunc: (...args) => ripe.localePart(...args)
         });
     }
 
@@ -84,7 +84,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             defaultValue: defaultValue,
             prefixes: prefixes,
             suffixes: suffixes,
-            localeFunc: ripe.localeProperty
+            localeFunc: (...args) => ripe.localeProperty(...args)
         });
     }
 
@@ -126,7 +126,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         const ripe = this.ripeProvider.ripe;
         localeFunc = localeFunc || ripe.localeModel;
         const values = Array.isArray(value) ? value : [value];
-        const result = localeFunc.call(ripe, value, this.localePlugin, {
+        const result = localeFunc(value, this.localePlugin, {
             brand: brand,
             model: model,
             locale: locale,
