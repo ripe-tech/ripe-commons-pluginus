@@ -28,7 +28,7 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
-        return ripe.localeColor(color, this.localePlugin, {
+        return this.localeModel(color, {
             brand: this.brand,
             model: this.model,
             part: part,
@@ -36,7 +36,8 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             locale: locale,
             defaultValue: defaultValue,
             prefixes: prefixes,
-            suffixes: suffixes
+            suffixes: suffixes,
+            localeFunc: ripe.localeColor
         });
     }
 
@@ -45,26 +46,28 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         { part = null, locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
-        return ripe.localeMaterial(material, this.localePlugin, {
+        return this.localeModel(material, {
             brand: this.brand,
             model: this.model,
             part: part,
             locale: locale,
             defaultValue: defaultValue,
             prefixes: prefixes,
-            suffixes: suffixes
+            suffixes: suffixes,
+            localeFunc: ripe.localeMaterial
         });
     }
 
     localePart(part, { locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}) {
         const ripe = this.ripeProvider.ripe;
-        return ripe.localePart(part, this.localePlugin, {
+        return this.localeModel(part, {
             brand: this.brand,
             model: this.model,
             locale: locale,
             defaultValue: defaultValue,
             prefixes: prefixes,
-            suffixes: suffixes
+            suffixes: suffixes,
+            localeFunc: ripe.localePart
         });
     }
 
@@ -73,22 +76,24 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         { type = null, locale = null, defaultValue = null, prefixes = [], suffixes = [] } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
-        return ripe.localeProperty(name, this.localePlugin, {
+        return this.localeModel(name, {
             brand: this.brand,
             model: this.model,
             type: type,
             locale: locale,
             defaultValue: defaultValue,
             prefixes: prefixes,
-            suffixes: suffixes
+            suffixes: suffixes,
+            localeFunc: ripe.localeProperty
         });
     }
 
-    localeModel(value, { locale = null, defaultValue = null, ...options } = {}) {
+    localeModel(value, { locale = null, defaultValue = null, localeFunc = null, ...options } = {}) {
         options = Object.assign(
             {
                 locale: locale,
-                defaultValue: defaultValue
+                defaultValue: defaultValue,
+                localeFunc: localeFunc
             },
             options
         );
@@ -113,12 +118,15 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             prefix = "builds",
             fallback = false,
             compatibility = true,
-            hack = false
+            hack = false,
+            localeFunc = null,
+            ...options
         } = {}
     ) {
         const ripe = this.ripeProvider.ripe;
+        localeFunc = localeFunc || ripe.localeModel;
         const values = Array.isArray(value) ? value : [value];
-        const result = ripe.localeModel(value, this.localePlugin, {
+        const result = localeFunc.call(ripe, value, this.localePlugin, {
             brand: brand,
             model: model,
             locale: locale,
@@ -126,7 +134,8 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
             prefix: prefix,
             fallback: fallback,
             compatibility: compatibility,
-            hack: hack
+            hack: hack,
+            ...options
         });
 
         // if the localization was successful returns its result
@@ -146,7 +155,9 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
                 prefix: prefix,
                 fallback: fallback,
                 compatibility: compatibility,
-                hack: hack
+                hack: hack,
+                localeFunc: localeFunc,
+                ...options
             });
         }
 
