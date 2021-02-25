@@ -26,7 +26,7 @@
     border: none;
     border-radius: 4px 4px 4px 4px;
     color: #000000;
-    font-family: Lato, "Open Sans", arial, sans-serif;
+    font-family: "Roboto", "Lato", "Open Sans", arial, sans-serif;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.25px;
