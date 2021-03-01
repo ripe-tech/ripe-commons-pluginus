@@ -197,6 +197,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             config.initialsExtra = config.initials_extra;
         } else if (productId) {
             config = await this.ripe.configResolveP(productId);
+
+            // in case the variant is not defined, be
+            // explicit about it in the configuration
+            config.variant = config.variant || null;
         }
 
         // updates the currently set options with the model configuration
