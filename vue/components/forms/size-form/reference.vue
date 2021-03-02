@@ -442,9 +442,9 @@ export const Reference = {
             const isReady = this.gender && this.scale && this.size;
             if (!isReady) return;
 
-            // in case there's so size available for the scale in the new gender
+            // in case there's no size available for the scale in the new gender
             // then we must "reset" the size, avoiding possible errors
-            const hasSize = Boolean(this.sizeOptions[this.gender][this.scale][String(this.size)]);
+            const hasSize = Boolean(this.sizeOptions[this.gender][this.scale]?.[String(this.size)]);
             if (!hasSize) this.size = null;
         }
     }
