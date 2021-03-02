@@ -1,4 +1,4 @@
-import { normalize } from "../../js";
+import { buildSlug, normalize } from "../../js";
 
 export const utilsMixin = {
     methods: {
@@ -31,6 +31,9 @@ export const utilsMixin = {
         },
         normalize(value) {
             return normalize(value);
+        },
+        buildSlug(value) {
+            return buildSlug(value);
         },
         dateString(timestamp, separator = "/") {
             const date = new Date(timestamp * 1000);
