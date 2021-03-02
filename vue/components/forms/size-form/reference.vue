@@ -447,10 +447,11 @@ export const Reference = {
             // then we must "reset" the size, avoiding possible errors
             const hasScale = this.sizeOptions[this.gender][this.scale] !== undefined;
             if (!hasScale) {
+                this.scale = Object.keys(this.sizeOptions[this.gender])[0];
                 this.size = null;
                 return;
             }
-            const hasSize = Boolean(this.sizeOptions[this.gender][this.scale]?.[String(this.size)]);
+            const hasSize = Boolean(this.sizeOptions[this.gender][this.scale][String(this.size)]);
             if (!hasSize) this.size = null;
         }
     }
