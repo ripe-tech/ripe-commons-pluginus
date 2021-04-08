@@ -21,7 +21,6 @@
 }
 
 .initials-images .initials-image {
-    height: 600px;
     user-select: none;
     width: auto;
 }
@@ -70,6 +69,10 @@ export const InitialsImages = {
         imageBorderRadius: {
             type: String,
             default: null
+        },
+        height: {
+            type: Number,
+            default: 600
         }
     },
     data: function() {
@@ -125,6 +128,7 @@ export const InitialsImages = {
         },
         groupStyle(group) {
             const base = {};
+            if (this.height) base.height = `${this.height}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             return base;
