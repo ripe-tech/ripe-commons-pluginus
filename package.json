@@ -43,7 +43,7 @@
         "prettier": "prettier \"./**/*.{js,vue,json}\" --write",
         "pretty": "npm run prettier && npm run lint-fix && npm run svgo",
         "storybook": "start-storybook -p 9001 -c .storybook",
-        "svgo": "svgo -r . --disable='removeDimensions,removeViewBox,minifyStyles'",
+        "svgo": "svgo -r .",
         "test": "npm run test:mocha && npm run test:vue",
         "test-debug": "cross-env NODE_ENV=development node --inspect node_modules/.bin/mochapack --webpack-config vue/test/webpack.config.js --require vue/test/setup.js vue/**/*.test.js",
         "test-watch:vue": "npm run test:vue -- --watch",
