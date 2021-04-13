@@ -959,8 +959,12 @@ export const Pickers = {
         configName(part) {
             return part.split("_").join(" ");
         },
-        getColorSwatchURL(material, color) {
-            return this.$ripe._getSwatchURL({ material, color });
+        getColorSwatchURL(material, color, retina = true) {
+            return this.$ripe._getSwatchURL({
+                material: material,
+                color: color,
+                retina: retina
+            });
         },
         getPartSwatchURL(part) {
             const currentPart = this.parts[part] || {};
