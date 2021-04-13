@@ -21,6 +21,7 @@
 }
 
 .initials-images .initials-image {
+    height: 600px;
     user-select: none;
     width: auto;
 }
@@ -72,7 +73,7 @@ export const InitialsImages = {
         },
         height: {
             type: Number,
-            default: 600
+            default: null
         }
     },
     data: function() {
