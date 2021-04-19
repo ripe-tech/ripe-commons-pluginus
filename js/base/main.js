@@ -46,6 +46,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
 
+        // binds the error handler on the manager so that it's
+        // possible to print some information on the error
+        this.owner.bind("error", async (err) => await this._handleCritical(err));
+
         // gathers both all of the helper plugins and all of the
         // locale plugins, to be used by this "manager"
         this.helperPlugins = await this.owner.getPluginsByCapability("helper");
@@ -108,8 +112,18 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     async unload() {
+        // unsets the multiple instance values that were used for the
+        // operations so that they can no longer be used
+        this.restrictionsPlugin = null;
+        this.syncPlugin = null;
+        this.ripe = null;
         this.helperPlugins = null;
         this.localePlugin = null;
+
+        // unbinds the error handler used by to "catch" the plugin
+        // manager errors
+        this.owner.unbind("error");
+
         await super.unload();
     }
 
