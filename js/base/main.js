@@ -482,8 +482,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 brand: this.options.brand,
                 model: this.options.model,
                 version: this.options.version || null,
-                parts: this.options.parts || {},
-                variant: this.options.variant || null
+                variant: this.options.variant || null,
+                parts: this.options.parts || {}
             });
         }
         // otherwise in case the DKU value is set in the options
