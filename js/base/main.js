@@ -482,6 +482,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 brand: this.options.brand,
                 model: this.options.model,
                 version: this.options.version || null,
+                variant: this.options.variant || null,
                 parts: this.options.parts || {}
             });
         }
