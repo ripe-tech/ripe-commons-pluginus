@@ -208,7 +208,8 @@ export const store = {
                 (async () => {
                     try {
                         return await this._vm.$ripe.runLogicP({
-                            method: "groups"
+                            method: "groups",
+                            dataJ: { ctx: {} }
                         });
                     } catch {
                         return ["main"];
@@ -217,7 +218,8 @@ export const store = {
                 (async () => {
                     try {
                         const supportedCharacters = await this._vm.$ripe.runLogicP({
-                            method: "supported_characters"
+                            method: "supported_characters",
+                            dataJ: { ctx: {} }
                         });
                         return [...supportedCharacters];
                     } catch {
@@ -227,7 +229,8 @@ export const store = {
                 (async () => {
                     try {
                         return await this._vm.$ripe.runLogicP({
-                            method: "minimum_initials"
+                            method: "minimum_initials",
+                            dataJ: { ctx: {} }
                         });
                     } catch {
                         return 0;
@@ -236,7 +239,8 @@ export const store = {
                 (async () => {
                     try {
                         return await this._vm.$ripe.runLogicP({
-                            method: "maximum_initials"
+                            method: "maximum_initials",
+                            dataJ: { ctx: {} }
                         });
                     } catch {
                         return Infinity;
