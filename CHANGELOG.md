@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Avoid calling 3DB logic methods with undefined `ctx`
 
 ## [0.10.6] - 2021-05-04
 

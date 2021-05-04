@@ -282,7 +282,8 @@ export const Reference = {
                 this.groups = await this.$ripe.runLogicP({
                     brand: this.brand,
                     model: this.model,
-                    method: "groups"
+                    method: "groups",
+                    dataJ: { ctx: {} }
                 });
             } catch (err) {
                 // gives a default group if builds does not support remote
