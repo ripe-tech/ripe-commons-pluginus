@@ -63,6 +63,18 @@ export const InitialsImages = {
             type: Function,
             default: null
         },
+        context: {
+            type: Array,
+            default: () => ["step::personalization"]
+        },
+        viewport: {
+            type: String,
+            default: null
+        },
+        getContext: {
+            type: Function,
+            default: () => {}
+        },
         imageHeight: {
             type: Number,
             default: null
@@ -90,6 +102,9 @@ export const InitialsImages = {
         async initialsBuilder(value) {
             await this.unbindImages();
             await this.bindImages();
+        },
+        async context(value) {
+            this.initialsImages.forEach(image => image.updateOptions({ initialsContext: value }));
         }
     },
     mounted: async function() {
@@ -107,7 +122,10 @@ export const InitialsImages = {
                 const image = this.$ripe.bindImage(initialsImage, {
                     showInitials: true,
                     initialsGroup: initialsImage.dataset.group,
-                    initialsBuilder: this.initialsBuilder
+                    initialsBuilder: this.initialsBuilder,
+                    initialsContext: this.context,
+                    initialsViewport: this.viewport,
+                    getInitialsContext: this.getContext
                 });
                 this.initialsImages.push(image);
             }
