@@ -4,7 +4,7 @@
             v-bind:brand="brand"
             v-bind:model="model"
             v-bind:groups="groups"
-            v-bind:initials-builder="__initialsBuilder"
+            v-bind:get-context="__getContext"
             v-bind:image-height="imageHeight"
             v-bind:image-border-radius="imageBorderRadius"
         />
@@ -338,51 +338,14 @@ export const Reference = {
             newProperties[group][type] = value;
             this.propertiesData = newProperties;
         },
-        /**
-         * "Generic" initials builder function that uses the current properties
-         * context to build a series of extra profiles.
-         *
-         * This function is compliant with the expected initials builder interface.
-         *
-         * @param {String} initials The value of the initials to compute the computed
-         * initials object.
-         * @param {String} engraving The value of the engraving to compute the computed
-         * initials object.
-         * @param {Element} element The DOM element to be used in the "calculus" of the
-         * final initials object.
-         * @returns {Object} The computed initials object containing both the final
-         * initials string value and profile(s) sequence.
-         */
-        __initialsBuilder(initials, engraving, element) {
-            // uses the provided element to obtain the selected group and obtains the
-            // "base" personalization profiles for such group
-            const group = element.getAttribute("data-group");
-            const profiles = this.__getPersonalizationProfiles(group);
-
-            // iterates over each of the properties for the groups and builds the base
-            // profiles with the property value with the group suffix and the basic
-            // profile with "just" the property value
-            Object.entries(this.propertiesData[group]).forEach(([type, value]) => {
-                if (this.groups.length > 1) profiles.push(value + ":" + group);
-                profiles.push(value);
-            });
-
-            profiles.push(group);
-
-            return {
-                initials: initials,
-                profile: profiles
-            };
-        },
-        __getPersonalizationProfiles(group) {
+        __getContext(group) {
             const alias = this.configInitials.$alias;
             if (!alias) return [];
 
             const position = this.propertiesData[group] && this.propertiesData[group].position;
-
             return []
                 .concat(
-                    position && group ? alias[`step::personalization:${position}:${group}`] : [],
+                    position ? [position] : [],
                     position ? alias[`step::personalization:${position}`] : [],
                     group ? alias[`step::personalization:${group}`] : [],
                     alias["step::personalization"]
