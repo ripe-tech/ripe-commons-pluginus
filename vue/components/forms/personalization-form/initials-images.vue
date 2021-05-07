@@ -73,7 +73,7 @@ export const InitialsImages = {
         },
         getContext: {
             type: Function,
-            default: () => {}
+            default: null
         },
         imageHeight: {
             type: Number,
