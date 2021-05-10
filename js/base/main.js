@@ -362,6 +362,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
             // clear the initials data, as it is possibly outdated
             this.store.commit("clearInitialsData");
+
+            this._setDefaultSize(config.sizes);
         });
 
         // changes some internal structure whenever there's an update
@@ -667,6 +669,39 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     async _handleCritical(err) {
         alert(err.message ? err.message : String(err));
+    }
+
+    /**
+     * Sets the default the default size, based on a set of
+     * possibilities.
+     *
+     * @param {Object} sizes The possible sizes to pick from.
+     */
+    _setDefaultSize(sizes) {
+        // check if the model just supports a single
+        // size and scale option and, if that's the
+        // case, use that as the actual size value
+        const scaleGenders = Object.keys(sizes);
+
+        // there exist several gender options,
+        // so it's not possible to pick a default
+        // size
+        if (scaleGenders.length !== 1) return;
+
+        const scaleGender = scaleGenders[0];
+        const scaleSizes = sizes[scaleGender];
+
+        // there exist several scale options,
+        // so it's not possible to pick a default
+        // size
+        if (scaleSizes.length !== 1) return;
+
+        const scale = scaleGender.split(":", 1)[0];
+        const size = scaleSizes[0];
+        this.app.$bus.trigger("size", {
+            scale: scale,
+            size: size
+        });
     }
 }
 

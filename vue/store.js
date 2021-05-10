@@ -118,7 +118,10 @@ export const store = {
             state.personalization.initialsExtra = Object.assign({}, value.initialsExtra);
         },
         size(state, value) {
-            state.size = value;
+            state.size = {
+                size: value.size,
+                scale: value.scale
+            };
         },
         sizeActive(state, value) {
             state.sizeActive = value;

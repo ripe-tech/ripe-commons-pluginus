@@ -206,8 +206,8 @@ export const Size = {
                 return;
             }
             this.state = state;
-            this.$refs.form.setState(this.state);
             this.updateSizeText();
+            if (this.$refs.form) this.$refs.form.setState(this.state);
         });
     },
     methods: {
