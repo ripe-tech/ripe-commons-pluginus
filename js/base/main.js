@@ -48,7 +48,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // binds the error handler on the manager so that it's
         // possible to print some information on the error
-        this.owner.bind("error", async (err) => await this._handleCritical(err));
+        this.owner.bind("error", async err => await this._handleCritical(err));
 
         // gathers both all of the helper plugins and all of the
         // locale plugins, to be used by this "manager"
@@ -595,6 +595,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("undo", () => self.ripe.undo());
                 this.$bus.bind("redo", () => self.ripe.redo());
                 this.$bus.bind("start_over", () => self.ripe.undoAll());
+                this.$bus.bind("personalization", personalization =>
+                    this.$store.commit("personalization", personalization)
+                );
+                this.$bus.bind("size", size => this.$store.commit("size", size));
 
                 // listens for any model change and triggers the
                 // 'model_changed' event on the owner, so that it's

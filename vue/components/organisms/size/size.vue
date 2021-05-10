@@ -212,7 +212,6 @@ export const Size = {
     },
     methods: {
         apply() {
-            this.$store.commit("size", this.state);
             this.$bus.trigger("size", this.state);
             this.hideModal();
         },
