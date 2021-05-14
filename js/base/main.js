@@ -363,6 +363,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             // clear the initials data, as it is possibly outdated
             this.store.commit("clearInitialsData");
 
+            // tries to set a possible default size, for situations
+            // where only one size scale with only on size exists
             this._setDefaultSize(config.sizes);
         });
 
@@ -672,10 +674,15 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     /**
-     * Sets the default the default size, based on a set of
-     * possibilities.
+     * Tries to set the default the default size, based on a
+     * set of possibilities.
      *
-     * @param {Object} sizes The possible sizes to pick from.
+     * This operation is only performed in case the number of
+     * size scales available is one and that size scale only
+     * contains one single size.
+     *
+     * @param {Object} sizes The possible sizes to pick from, and
+     * that is going to be used to make assumptions.
      */
     _setDefaultSize(sizes) {
         // check if the model just supports a single
@@ -683,19 +690,21 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // case, use that as the actual size value
         const scaleGenders = Object.keys(sizes);
 
-        // there exist several gender options,
-        // so it's not possible to pick a default
-        // size
+        // there exist several gender options, so it's
+        // not possible to pick a default size
         if (scaleGenders.length !== 1) return;
 
+        // obtains the complete set of size scales for
+        // the single gender available
         const scaleGender = scaleGenders[0];
         const scaleSizes = sizes[scaleGender];
 
-        // there exist several scale options,
-        // so it's not possible to pick a default
-        // size
+        // there exist several scale options, so it's not
+        // possible to pick a default size
         if (scaleSizes.length !== 1) return;
 
+        // gathers the single size value and trigger the
+        // size change operation as an event
         const scale = scaleGender.split(":", 1)[0];
         const size = scaleSizes[0];
         this.app.$bus.trigger("size", {
