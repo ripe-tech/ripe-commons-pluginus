@@ -48,7 +48,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         // binds the error handler on the manager so that it's
         // possible to print some information on the error
-        this.owner.bind("error", async (err) => await this._handleCritical(err));
+        this.owner.bind("error", async err => await this._handleCritical(err));
 
         // gathers both all of the helper plugins and all of the
         // locale plugins, to be used by this "manager"
@@ -362,6 +362,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
             // clear the initials data, as it is possibly outdated
             this.store.commit("clearInitialsData");
+
+            // tries to set a possible default size, for situations
+            // where only one size scale with only on size exists
+            this._setDefaultSize(config.sizes);
         });
 
         // changes some internal structure whenever there's an update
@@ -595,6 +599,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                 this.$bus.bind("undo", () => self.ripe.undo());
                 this.$bus.bind("redo", () => self.ripe.redo());
                 this.$bus.bind("start_over", () => self.ripe.undoAll());
+                this.$bus.bind("personalization", personalization =>
+                    this.$store.commit("personalization", personalization)
+                );
+                this.$bus.bind("size", size => this.$store.commit("size", size));
 
                 // listens for any model change and triggers the
                 // 'model_changed' event on the owner, so that it's
@@ -663,6 +671,46 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
     async _handleCritical(err) {
         alert(err.message ? err.message : String(err));
+    }
+
+    /**
+     * Tries to set the default the default size, based on a
+     * set of possibilities.
+     *
+     * This operation is only performed in case the number of
+     * size scales available is one and that size scale only
+     * contains one single size.
+     *
+     * @param {Object} sizes The possible sizes to pick from, and
+     * that is going to be used to make assumptions.
+     */
+    _setDefaultSize(sizes) {
+        // check if the model just supports a single
+        // size and scale option and, if that's the
+        // case, use that as the actual size value
+        const scaleGenders = Object.keys(sizes);
+
+        // there exist several gender options, so it's
+        // not possible to pick a default size
+        if (scaleGenders.length !== 1) return;
+
+        // obtains the complete set of size scales for
+        // the single gender available
+        const scaleGender = scaleGenders[0];
+        const scaleSizes = sizes[scaleGender];
+
+        // there exist several scale options, so it's not
+        // possible to pick a default size
+        if (scaleSizes.length !== 1) return;
+
+        // gathers the single size value and trigger the
+        // size change operation as an event
+        const scale = scaleGender.split(":", 1)[0];
+        const size = scaleSizes[0];
+        this.app.$bus.trigger("size", {
+            scale: scale,
+            size: size
+        });
     }
 }
 

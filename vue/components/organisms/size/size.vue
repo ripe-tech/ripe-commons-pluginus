@@ -206,13 +206,12 @@ export const Size = {
                 return;
             }
             this.state = state;
-            this.$refs.form.setState(this.state);
             this.updateSizeText();
+            if (this.$refs.form) this.$refs.form.setState(this.state);
         });
     },
     methods: {
         apply() {
-            this.$store.commit("size", this.state);
             this.$bus.trigger("size", this.state);
             this.hideModal();
         },
