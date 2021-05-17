@@ -120,7 +120,8 @@ export const store = {
         size(state, value) {
             state.size = {
                 size: value.size,
-                scale: value.scale
+                scale: value.scale,
+                gender: value.gender
             };
         },
         sizeActive(state, value) {
