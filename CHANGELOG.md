@@ -17,7 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* Size selection failing for most plugins
+*
+
+## [0.11.1] - 2021-05-18
+
+### Fixed
+
+* Size selection failing when gender is required
 
 ## [0.11.0] - 2021-05-14
 
