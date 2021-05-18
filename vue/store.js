@@ -118,11 +118,21 @@ export const store = {
             state.personalization.initialsExtra = Object.assign({}, value.initialsExtra);
         },
         size(state, value) {
-            state.size = {
-                size: value.size,
-                scale: value.scale,
-                gender: value.gender
-            };
+            // if no value is defined then reset the
+            // size back to its default
+            if (!value) {
+                state.size = {};
+                return;
+            }
+
+            // sets the mandatory native size value
+            state.size = { size: value.size };
+
+            // goes through the possible size state
+            // values and sets them if they're defined
+            if (value.scale) state.size.scale = value.scale;
+            if (value.gender) state.size.gender = value.gender;
+            if (value.sizeText) state.size.sizeText = value.sizeText;
         },
         sizeActive(state, value) {
             state.sizeActive = value;
