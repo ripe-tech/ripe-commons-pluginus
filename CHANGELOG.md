@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+*
+
+## [0.11.2] - 2021-05-18
+
+### Fixed
+
 * Missing `sizeText` in store
 
 ## [0.11.1] - 2021-05-18
