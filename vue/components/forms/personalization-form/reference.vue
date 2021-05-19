@@ -339,16 +339,14 @@ export const Reference = {
             this.propertiesData = newProperties;
         },
         __getContext(group) {
-            const alias = this.configInitials.$alias;
-            if (!alias) return [];
-
             const position = this.propertiesData[group] && this.propertiesData[group].position;
             return []
                 .concat(
                     position ? [position] : [],
-                    position ? alias[`step::personalization:${position}`] : [],
-                    group ? alias[`step::personalization:${group}`] : [],
-                    alias["step::personalization"]
+                    group ? [group] : [],
+                    position ? [`step::personalization:${position}`] : [],
+                    group ? [`step::personalization:${group}`] : [],
+                    ["step::personalization"]
                 )
                 .filter(v => v !== undefined);
         },
