@@ -5,7 +5,6 @@
         v-bind:model="model"
         v-bind:active-group="activeGroup"
         v-bind:groups="groups"
-        v-bind:context="context"
         ref="thumbnailsContainer"
         v-on:image-selected="onImageSelected"
     />
@@ -56,9 +55,6 @@ export const ThumbnailsGroups = {
         },
         configInitials() {
             return this.$store.state.config.initials;
-        },
-        context() {
-            return ["step::personalization"];
         }
     },
     watch: {
