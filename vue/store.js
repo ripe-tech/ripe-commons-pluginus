@@ -243,7 +243,7 @@ export const store = {
                         });
                         return [...supportedCharacters];
                     } catch {
-                        return ["abcdefghijklmnopqrstvwxyz"];
+                        return ["abcdefghijklmnopqrstuvwxyz"];
                     }
                 })(),
                 (async () => {
