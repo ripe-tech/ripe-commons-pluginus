@@ -3,7 +3,7 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
-            v-bind:style="groupStyle(group)"
+            v-bind:style="style()"
             v-bind:class="groupClasses(group)"
             v-for="group in groups"
             v-show="groupVisible(group)"
@@ -29,7 +29,6 @@
 body.mobile .initials-images .initials-image,
 body.tablet .initials-images .initials-image {
     height: auto;
-    max-width: 600px;
     width: 100%;
 }
 
@@ -39,7 +38,10 @@ body.tablet .initials-images .initials-image {
 </style>
 
 <script>
+import { partMixin } from "../../../mixins";
+
 export const InitialsImages = {
+    mixins: [partMixin],
     name: "initials-images",
     props: {
         groups: {
@@ -86,6 +88,14 @@ export const InitialsImages = {
         height: {
             type: Number,
             default: null
+        },
+        maxWidth: {
+            type: Number,
+            default: 600
+        },
+        maxWidthMobile: {
+            type: Number,
+            default: 600
         }
     },
     data: function() {
@@ -112,6 +122,17 @@ export const InitialsImages = {
     },
     destroyed: async function() {
         await this.unbindImages();
+    },
+    computed: {
+        style() {
+            const base = {};
+            if (this.height) base.height = `${this.height}px`;
+            if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
+            if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
+            if (this.maxWidth && this.isDesktopWidth()) base["max-width"] = this.maxWidth;
+            if (this.maxWidthMobile && !this.isDesktopWidth()) base["max-width"] = this.maxWidthMobile;
+            return base;
+        }
     },
     methods: {
         async bindImages(update = true) {
@@ -144,13 +165,6 @@ export const InitialsImages = {
         groupVisible(group) {
             if (!this.hideInactive) return true;
             return group === this.activeGroup;
-        },
-        groupStyle(group) {
-            const base = {};
-            if (this.height) base.height = `${this.height}px`;
-            if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
-            if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
-            return base;
         },
         groupClasses(group) {
             const base = {
