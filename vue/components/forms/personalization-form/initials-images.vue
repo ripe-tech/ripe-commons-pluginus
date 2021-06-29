@@ -3,7 +3,7 @@
         <img
             v-bind:data-group="group"
             class="image initials-image"
-            v-bind:style="style()"
+            v-bind:style="style"
             v-bind:class="groupClasses(group)"
             v-for="group in groups"
             v-show="groupVisible(group)"
