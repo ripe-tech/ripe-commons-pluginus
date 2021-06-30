@@ -29,6 +29,7 @@
 body.mobile .initials-images .initials-image,
 body.tablet .initials-images .initials-image {
     height: auto;
+    max-width: 600px;
     width: 100%;
 }
 
@@ -93,9 +94,9 @@ export const InitialsImages = {
             type: Number,
             default: 600
         },
-        maxWidthMobile: {
-            type: Number,
-            default: 600
+        imageObjectFit: {
+            type: String,
+            default: null
         }
     },
     data: function() {
@@ -129,8 +130,7 @@ export const InitialsImages = {
             if (this.height) base.height = `${this.height}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
-            if (this.maxWidth && this.isDesktopWidth()) base["max-width"] = this.maxWidth;
-            if (this.maxWidthMobile && !this.isDesktopWidth()) base["max-width"] = this.maxWidthMobile;
+            if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
             return base;
         }
     },
