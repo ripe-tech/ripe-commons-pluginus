@@ -17,6 +17,7 @@ export const store = {
         format: "",
         resolution: "",
         backgroundColor: "",
+        useMasks: null,
         theme: null,
         parts: {},
         config: {},
@@ -47,8 +48,7 @@ export const store = {
         initialsMinimumCharacters: null,
         initialsMaximumCharacters: null,
         initialsSupportedCharacters: null,
-        initialsDataPromise: null,
-        useMasks: null
+        initialsDataPromise: null
     },
     mutations: {
         ripeUrl(state, url) {
@@ -75,6 +75,9 @@ export const store = {
         },
         backgroundColor(state, backgroundColor) {
             state.backgroundColor = backgroundColor;
+        },
+        useMasks(state, useMasks) {
+            state.useMasks = useMasks;
         },
         theme(state, theme) {
             state.theme = theme;
@@ -198,9 +201,6 @@ export const store = {
         },
         initialsDataPromise(state, initialsDataPromise) {
             state.initialsDataPromise = initialsDataPromise;
-        },
-        useMasks(state, useMasks) {
-            state.useMasks = useMasks;
         }
     },
     actions: {
