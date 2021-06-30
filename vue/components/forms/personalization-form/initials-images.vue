@@ -90,10 +90,6 @@ export const InitialsImages = {
             type: Number,
             default: null
         },
-        maxWidth: {
-            type: Number,
-            default: 600
-        },
         imageObjectFit: {
             type: String,
             default: null
