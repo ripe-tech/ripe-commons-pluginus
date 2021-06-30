@@ -39,10 +39,7 @@ body.tablet .initials-images .initials-image {
 </style>
 
 <script>
-import { partMixin } from "../../../mixins";
-
 export const InitialsImages = {
-    mixins: [partMixin],
     name: "initials-images",
     props: {
         groups: {
