@@ -47,7 +47,8 @@ export const store = {
         initialsMinimumCharacters: null,
         initialsMaximumCharacters: null,
         initialsSupportedCharacters: null,
-        initialsDataPromise: null
+        initialsDataPromise: null,
+        useMasks: null
     },
     mutations: {
         ripeUrl(state, url) {
@@ -197,6 +198,9 @@ export const store = {
         },
         initialsDataPromise(state, initialsDataPromise) {
             state.initialsDataPromise = initialsDataPromise;
+        },
+        useMasks(state, useMasks) {
+            state.useMasks = useMasks;
         }
     },
     actions: {
