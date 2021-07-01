@@ -1,69 +1,44 @@
 <template>
     <div class="initials-images">
-        <div
-            class="initials-image-container"
+        <img
+            v-bind:data-group="group"
+            class="image initials-image"
+            v-bind:style="groupStyle(group)"
+            v-bind:class="groupClasses(group)"
             v-for="(group, index) in groups"
+            v-show="groupVisible(group)"
             v-bind:key="groupKey(group)"
-        >
-            <img
-                v-bind:data-group="group"
-                class="image initials-image"
-                v-bind:style="groupStyle(group)"
-                v-bind:class="groupClasses(group)"
-                v-show="groupVisible(group)"
-                ref="initialsImages"
-                v-on:click="() => onClick(group)"
-                v-on:load="event => onLoaded(group, index)"
-            />
-            <button-icon
-                class="button-icon-open"
-                v-bind:icon="'exit'"
-                v-bind:class="groupClasses(group)"
-                v-show="openVisible(group)"
-                v-if="openIcon"
-                v-bind:key="`${groupKey(group)}-open`"
-                v-on:click="() => onOpenClick(group)"
-            />
-        </div>
+            ref="initialsImages"
+            v-on:click="() => onClick(group)"
+            v-on:load="() => onLoaded(group, index)"
+        />
     </div>
 </template>
 
 <style scoped>
-.initials-images {
+.initials-image {
     font-size: 0px;
 }
 
-.initials-images .initials-image-container {
-    display: inline-block;
-    position: relative;
-}
-
-.initials-images .initials-image-container .initials-image {
+.initials-images .initials-image {
     height: 600px;
     user-select: none;
     width: auto;
 }
 
-body.mobile .initials-images .initials-image-container .initials-image,
-body.tablet .initials-images .initials-image-container .initials-image {
+.initials-images .initials-image.clickable {
+    cursor: pointer;
+}
+
+body.mobile .initials-images .initials-image,
+body.tablet .initials-images .initials-image {
     height: auto;
     max-width: 600px;
     width: 100%;
 }
 
-.initials-images .initials-image-container .initials-image.selectable {
+.initials-images .initials-image.selectable {
     cursor: pointer;
-}
-
-.initials-images .initials-image-container .button-icon-open {
-    display: none;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.initials-images .initials-image-container:hover .button-icon-open {
-    display: inline-block;
 }
 </style>
 
@@ -116,7 +91,7 @@ export const InitialsImages = {
             type: Number,
             default: null
         },
-        openIcon: {
+        openExternally: {
             type: Boolean,
             default: false
         }
@@ -189,14 +164,16 @@ export const InitialsImages = {
             const base = {
                 active: group === this.activeGroup,
                 selectable: this.groups.length > 1,
-                loaded: Boolean(this.srcs[group])
+                loaded: Boolean(this.srcs[group]),
+                clickable: this.openExternally
             };
             return base;
         },
-        openVisible(group) {
-            return this.groupVisible(group) && Boolean(this.srcs[group]);
-        },
         onClick(group) {
+            if (this.openExternally) {
+                const src = this.srcs[group];
+                window.open(src, "_blank");
+            }
             this.$emit("image-selected", group);
         },
         onLoaded(group, index) {
@@ -205,11 +182,6 @@ export const InitialsImages = {
                 : [this.$refs.initialsImages];
             const src = initialsImages[index].src;
             this.$set(this.srcs, group, src);
-        },
-        onOpenClick(group) {
-            const src = this.srcs[group];
-            if (!src) return;
-            window.open(src, "_blank");
         }
     }
 };
