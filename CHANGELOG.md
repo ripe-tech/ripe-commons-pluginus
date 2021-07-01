@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Optional icon for initials images that opens the image in a new tab
+* Optional click for initials images that opens the image in a new tab
 
 ### Changed
 
