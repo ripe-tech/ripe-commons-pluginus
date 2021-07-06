@@ -321,6 +321,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
+            this.store.commit("useMasks", this.ripe.options.useMasks);
             this.store.commit("ripeOptions", this.ripe.options);
             this.store.commit("ripeState", {
                 variant: this.ripe.variant,
@@ -381,6 +382,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             this.store.commit("format", this.ripe.format);
             this.store.commit("resolution", this.ripe.size);
             this.store.commit("backgroundColor", this.ripe.backgroundColor);
+            this.store.commit("useMasks", this.ripe.options.useMasks);
         });
 
         // listens for parts and prices changes and updates the store

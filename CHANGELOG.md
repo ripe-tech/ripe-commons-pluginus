@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *
 
+## [0.12.1] - 2021-07-01
+
+### Added
+
+* Optional click for initials images that opens the image in a new tab
+
 ## [0.12.0] - 2021-06-22
 
 ### Added

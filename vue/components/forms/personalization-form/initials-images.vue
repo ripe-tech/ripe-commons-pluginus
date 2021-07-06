@@ -5,12 +5,12 @@
             class="image initials-image"
             v-bind:style="style"
             v-bind:class="groupClasses(group)"
-            v-for="group in groups"
+            v-for="(group, index) in groups"
             v-show="groupVisible(group)"
             v-bind:key="groupKey(group)"
             ref="initialsImages"
             v-on:click="() => onClick(group)"
-            v-on:load="() => onLoaded(group)"
+            v-on:load="() => onLoaded(group, index)"
         />
     </div>
 </template>
@@ -24,6 +24,10 @@
     height: 600px;
     user-select: none;
     width: auto;
+}
+
+.initials-images .initials-image.clickable {
+    cursor: pointer;
 }
 
 body.mobile .initials-images .initials-image,
@@ -90,11 +94,15 @@ export const InitialsImages = {
         imageObjectFit: {
             type: String,
             default: null
+        },
+        openExternally: {
+            type: Boolean,
+            default: false
         }
     },
     data: function() {
         return {
-            loaded: {},
+            srcs: {},
             initialsImages: []
         };
     },
@@ -163,15 +171,24 @@ export const InitialsImages = {
             const base = {
                 active: group === this.activeGroup,
                 selectable: this.groups.length > 1,
-                loaded: this.loaded[group]
+                loaded: Boolean(this.srcs[group]),
+                clickable: this.openExternally
             };
             return base;
         },
         onClick(group) {
+            if (this.openExternally) {
+                const src = this.srcs[group];
+                window.open(src, "_blank");
+            }
             this.$emit("image-selected", group);
         },
-        onLoaded(group) {
-            this.$set(this.loaded, group, true);
+        onLoaded(group, index) {
+            const initialsImages = Array.isArray(this.$refs.initialsImages)
+                ? this.$refs.initialsImages
+                : [this.$refs.initialsImages];
+            const src = initialsImages[index].src;
+            this.$set(this.srcs, group, src);
         }
     }
 };

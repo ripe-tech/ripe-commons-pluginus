@@ -17,6 +17,7 @@ export const store = {
         format: "",
         resolution: "",
         backgroundColor: "",
+        useMasks: null,
         theme: null,
         parts: {},
         config: {},
@@ -74,6 +75,9 @@ export const store = {
         },
         backgroundColor(state, backgroundColor) {
             state.backgroundColor = backgroundColor;
+        },
+        useMasks(state, useMasks) {
+            state.useMasks = useMasks;
         },
         theme(state, theme) {
             state.theme = theme;
