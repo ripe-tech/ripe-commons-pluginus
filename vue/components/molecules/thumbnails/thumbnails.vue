@@ -5,7 +5,7 @@
             v-bind:name="thumbnail.name"
             v-bind:size="size"
             v-bind:crop="crop"
-            v-for="thumbnail in thumbnails"
+            v-for="thumbnail in _thumbnails"
             v-bind:key="thumbnailKey(thumbnail)"
         />
     </div>
@@ -15,6 +15,10 @@
 export const Thumbnails = {
     name: "thumbnails",
     props: {
+        thumbnails: {
+            type: Array,
+            default: null
+        },
         size: {
             type: Number,
             default: null
@@ -25,7 +29,9 @@ export const Thumbnails = {
         }
     },
     computed: {
-        thumbnails() {
+        _thumbnails() {
+            if (this.thumbnails) return this.thumbnails;
+
             // filters the invalid thumbnails from the thumbnails list
             // a thumbnail is considered invalid if the associated frame
             // is not part of the base frames definition of the model
