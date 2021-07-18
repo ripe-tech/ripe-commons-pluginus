@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Issue related with resize configurator operations during loading, which would not disable the initial loader
 
 ## [0.12.1] - 2021-07-01
 

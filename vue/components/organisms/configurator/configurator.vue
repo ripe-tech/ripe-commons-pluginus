@@ -276,13 +276,18 @@ export const Configurator = {
             const frame = `${this.configurator.view}-${this.configurator.position}`;
             this.frameData = frame;
 
+            // determines if the current view is a single frame view, meaning that
+            // no rotation operation is present for the view (static view)
+            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
+
             // updates the local loading variable to the false value, indicating
             // that the loading operation has just finished
             this.loading = false;
 
-            // determines if the current view is a single frame view, meaning that
-            // no rotation operation is present for the view (static view)
-            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
+            // triggers the resize operation, as some pending resize operation
+            // may have been pilling up during the loading operation, during which
+            // is not possible to trigger resize operations
+            this.resize(this.size);
 
             // updates the current frame in the store, this information can be used
             // by listener to update their internal state
@@ -402,6 +407,8 @@ export const Configurator = {
             this.$emit("update:frame", value);
         },
         size(size) {
+            // reacts to the new size by triggering the resize operation
+            // in the configurator, to change the viewport accordingly
             this.resize(size);
         },
         useMasks() {
@@ -422,7 +429,16 @@ export const Configurator = {
          * available container size (defined by parent).
          */
         resize(size) {
+            // in case the size is invalid or no valid configurator
+            // is available then returns the control flow as nothing
+            // can be done under such conditions
             if (!size || !this.configurator) return;
+
+            // in case the configurator is currently under loading
+            // then ignores the resize request as this would trigger
+            // a race condition and block the loading process
+            if (this.loading) return;
+
             this.configurator.resize(size);
         }
     },
