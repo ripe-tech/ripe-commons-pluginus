@@ -204,7 +204,7 @@ export const Configurator = {
         return {
             /**
              * Ripe instance used by the configurator. Defaults to the
-             * global ripe instance when the prop ripe isn't set.
+             * global Ripe instance when the prop ripe isn't set.
              */
             ripeInstance: this.ripe ? this.ripe : this.$ripe,
             /**
@@ -271,10 +271,21 @@ export const Configurator = {
         });
 
         this.configurator.bind("loaded", () => {
+            // updates the current frame in view with the one currently set
+            // in the configurator (to be used for data visibility purposes)
             const frame = `${this.configurator.view}-${this.configurator.position}`;
             this.frameData = frame;
+
+            // updates the local loading variable to the false value, indicating
+            // that the loading operation has just finished
             this.loading = false;
+
+            // determines if the current view is a single frame view, meaning that
+            // no rotation operation is present for the view (static view)
             this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
+
+            // updates the current frame in the store, this information can be used
+            // by listener to update their internal state
             this.$store.commit("currentFrame", frame);
         });
 
