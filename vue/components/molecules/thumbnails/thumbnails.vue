@@ -1,10 +1,11 @@
 <template>
     <div class="thumbnails" ref="thumbnailsContainer">
         <thumbnail
-            v-bind:frame="`${thumbnail.face}-${thumbnail.frame}`"
+            v-bind:frame="thumbnailFrame(thumbnail)"
             v-bind:name="thumbnail.name"
-            v-bind:size="size"
-            v-bind:crop="crop"
+            v-bind:size="thumbnail.size || size"
+            v-bind:crop="thumbnail.crop || crop"
+            v-bind:bind-image-options="thumbnail.bindImageOptions"
             v-for="thumbnail in _thumbnails"
             v-bind:key="thumbnailKey(thumbnail)"
         />
@@ -46,6 +47,9 @@ export const Thumbnails = {
         }
     },
     methods: {
+        thumbnailFrame(thumbnail) {
+            return thumbnail.face && thumbnail.frame ? `${thumbnail.face}-${thumbnail.frame}` : thumbnail.frame;
+        },
         thumbnailKey(thumbnail) {
             return `${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
         }

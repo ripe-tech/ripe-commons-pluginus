@@ -65,7 +65,7 @@ export const Thumbnail = {
     props: {
         frame: {
             type: String,
-            required: true
+            default: null
         },
         name: {
             type: String,
@@ -78,6 +78,10 @@ export const Thumbnail = {
         crop: {
             type: Boolean,
             default: null
+        },
+        bindImageOptions: {
+            type: Object,
+            default: () => ({})
         }
     },
     data: function() {
@@ -100,11 +104,11 @@ export const Thumbnail = {
         }
     },
     mounted: function() {
-        this.image = this.$ripe.bindImage(this.$refs.image, {
-            frame: this.frame,
-            size: this.size || undefined,
-            crop: this.crop || undefined
-        });
+        const options = { ...this.bindImageOptions };
+        if (this.frame) options.frame = this.frame;
+        if (this.size) options.size = this.size;
+        if (this.crop) options.frame = this.crop;
+        this.image = this.$ripe.bindImage(this.$refs.image, options);
     },
     destroyed: async function() {
         if (this.image) await this.$ripe.unbindImage(this.image);
