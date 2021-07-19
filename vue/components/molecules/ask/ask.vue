@@ -38,6 +38,7 @@
     font-size: 15px;
     line-height: 22px;
     margin: 28px 0px 28px 0px;
+    word-break: break-all;
 }
 
 .ask .modal ::v-deep .modal-container {
