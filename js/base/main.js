@@ -131,7 +131,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
     }
 
-    async buildComponent(componentClass, options) {
+    async buildComponent(componentClass, options = {}) {
+        options.parent = options.parent || (this.app && this.app.$root) || undefined;
         return new DynamicComponent(componentClass, options);
     }
 
