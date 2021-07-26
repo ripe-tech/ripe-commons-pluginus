@@ -197,7 +197,7 @@ export const Configurator = {
             return this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
-            return { ...this.options, useMasks: this.useMasks };
+            return { ...this.options, useMasks: this.useMasks, size: this.size };
         }
     },
     data: function() {
