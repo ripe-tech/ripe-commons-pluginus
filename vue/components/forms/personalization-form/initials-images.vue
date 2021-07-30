@@ -34,6 +34,7 @@ body.mobile .initials-images .initials-image,
 body.tablet .initials-images .initials-image {
     height: auto;
     max-width: 600px;
+    object-fit: contain;
     width: 100%;
 }
 
