@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* Wrong image ration for certain window size situations.
+* Wrong image aspect ratio for certain window sizes.
 
 ## [0.12.3] - 2021-07-26
 
