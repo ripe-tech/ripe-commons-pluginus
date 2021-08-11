@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Support for `viewport::partial` in generic personalization
+*
 
 ### Changed
 
@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 *
+
+## [0.13.1] - 2021-08-11
+
+### Added
+
+* Support for `viewport::partial` in generic personalization
 
 ## [0.13.0] - 2021-08-09
 
