@@ -46,10 +46,18 @@ body.tablet .initials-images .initials-image {
 export const InitialsImages = {
     name: "initials-images",
     props: {
+        /**
+         * The groups that are going to be displayed as part
+         * of this initials images context.
+         */
         groups: {
             type: Array,
             default: () => []
         },
+        /**
+         * The name of the group that is considered to be the active
+         * one for the current context.
+         */
         activeGroup: {
             type: String,
             default: null
