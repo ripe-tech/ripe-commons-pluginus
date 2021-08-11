@@ -347,7 +347,7 @@ export const Reference = {
                     group ? [group] : [],
                     position ? [`step::personalization:${position}`] : [],
                     group ? [`step::personalization:${group}`] : [],
-                    ["step::personalization"]
+                    ["step::personalization", "viewport::partial"]
                 )
                 .filter(v => v !== undefined);
         },
