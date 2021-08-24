@@ -11,6 +11,8 @@
             <div v-show="enabled">
                 <component
                     v-bind:active.sync="active"
+                    v-bind:reference-scale="referenceScale || undefined"
+                    v-bind:available-scales="availableScales || undefined"
                     v-bind:is="form"
                     ref="form"
                     v-bind:key="formKey"
@@ -94,6 +96,12 @@ export const Size = {
         },
         hasSize() {
             return this.$store.state.hasSize;
+        },
+        referenceScale() {
+            return this.$store.state.referenceScale;
+        },
+        availableScales() {
+            return this.$store.state.availableScales;
         }
     },
     watch: {

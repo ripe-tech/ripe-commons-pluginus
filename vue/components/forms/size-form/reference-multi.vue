@@ -4,10 +4,11 @@ import Reference from "./reference.vue";
 export const ReferenceMulti = {
     name: "reference-multi",
     extends: Reference,
-    data: function() {
-        return {
-            availableScales: ["it", "uk", "us", "jp", "ch"]
-        };
+    props: {
+        availableScales: {
+            type: Array,
+            default: () => ["it", "uk", "us", "jp", "ch"]
+        }
     },
     methods: {
         __getSizes(options) {

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Ability to override the available and reference scale of the reference size plugin
 
 ### Changed
 
