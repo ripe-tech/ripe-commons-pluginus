@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Ability to override the available and reference scale of the reference size plugin
+*
 
 ### Changed
 
@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 *
+
+## [0.13.2] - 2021-08-26
+
+### Added
+
+* Ability to override the available and reference scale of the reference size plugin
+
+### Changed
+
+* Bumped packages
 
 ## [0.13.1] - 2021-08-11
 
