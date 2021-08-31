@@ -3,7 +3,7 @@
         <div
             class="button button-color button-size"
             v-bind:class="buttonClasses"
-            v-on:click="showModal"
+            v-on:click="onButtonSizeClick"
         >
             <span>{{ buttonText }}</span>
         </div>
@@ -30,7 +30,7 @@
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply"
                     >
-                        <span>{{ locale("ripe_commons.modal.select") }}</span>
+                        <span>{{ selectLabelData || locale("ripe_commons.modal.select") }}</span>
                     </button-ripe>
                 </div>
             </div>
@@ -56,6 +56,12 @@ import { partMixin, modalMixin } from "../../../mixins";
 export const Size = {
     name: "size",
     mixins: [partMixin, modalMixin],
+    props: {
+        selectLabel: {
+            type: String,
+            default: null
+        }
+    },
     data: function() {
         return {
             enabled: false,
@@ -65,7 +71,8 @@ export const Size = {
             state: {},
             counter: 0,
             closeCallback: null,
-            active: true
+            active: true,
+            selectLabelData: this.selectLabel
         };
     },
     computed: {
@@ -134,12 +141,13 @@ export const Size = {
         this.$bus.bind("enable_size", this.enableSize);
         this.$bus.bind("disable_size", this.disableSize);
 
-        this.$bus.bind("open_size", (callback, uid = null) => {
+        this.$bus.bind("open_size", (callback, uid = null, { selectLabel = null } = {}) => {
             // if this was the component instance that originated the
             // opening request, ignore it (only perform this validation
             // in case the UID has been explicitly requested)
             if (uid && uid === this._uid) return;
 
+            this.selectLabelData = selectLabel || this.selectLabel;
             this.closeCallback = callback;
             this.showModal();
         });
@@ -239,7 +247,9 @@ export const Size = {
             if (this.form) this.$refs.form.reset();
         },
         modalBeforeEnter() {
-            this.$bus.trigger("open_size", this.closeCallback);
+            this.$bus.trigger("open_size", this.closeCallback, null, {
+                selectLabel: this.selectLabelData
+            });
             this.$refs.form.show();
         },
         modalBeforeLeave() {
@@ -278,6 +288,15 @@ export const Size = {
         },
         updateSizeText() {
             this.sizeTextState = this.sizeText;
+        },
+        onButtonSizeClick() {
+            // resets the modal's select button label, which might've
+            // been set for a different "open size" context (via event)
+            this.selectLabelData = this.selectLabel;
+
+            // triggers the show model process effectively showing
+            // the modal on the screen
+            this.showModal();
         }
     }
 };

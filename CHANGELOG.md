@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * As default, extracts the reference size and available scales from the 3DB's `spec.json`
+* It's now possible to configure the size modal's select button label both through props and `open_size` event options
 
 ### Changed
 
