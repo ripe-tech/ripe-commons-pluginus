@@ -105,7 +105,8 @@ export const Size = {
             return this.$store.state.hasSize;
         },
         referenceScale() {
-            // if a specific reference scale is set then use it
+            // if a specific reference scale is set then uses it
+            // this can be done via URL or internal configuration
             if (this.$store.state.referenceScale) return this.$store.state.referenceScale;
 
             // looks at the configured 3DB sizes and uses the first
