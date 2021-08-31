@@ -98,10 +98,22 @@ export const Size = {
             return this.$store.state.hasSize;
         },
         referenceScale() {
-            return this.$store.state.referenceScale;
+            // if a specific reference scale is set then use it
+            if (this.$store.state.referenceScale) return this.$store.state.referenceScale;
+
+            // looks at the configured 3DB sizes and uses the first
+            // one to extract the reference scale
+            const sizes = Object.keys(this.$store.state.config.sizes || {});
+            if (sizes.length === 0) return null;
+
+            // gets the scale and ignores the gender (e.g. "us:clothing:male"
+            // results in "us:clothing")
+            return sizes[0].split(":").slice(0, -1).join(":");
         },
         availableScales() {
-            return this.$store.state.availableScales;
+            // uses the configured available scale if it exists,
+            // otherwise defaults to the 3DB's configuration
+            return this.$store.state.availableScales || this.$store.state.config.available_scales;
         }
     },
     watch: {

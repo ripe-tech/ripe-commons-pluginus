@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* As default, extracts the reference size and available scales from the 3DB's `spec.json`
 
 ### Changed
 
