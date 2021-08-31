@@ -278,11 +278,12 @@ export const Size = {
             this.sizeTextState = this.sizeText;
         },
         onButtonSizeClick() {
-            // resets the modal's select button label,
-            // which might've been set for a different
-            // "open size" context
+            // resets the modal's select button label, which might've
+            // been set for a different "open size" context (via event)
             this.selectLabelData = this.selectLabel;
 
+            // triggers the show model process effectively showing
+            // the modal on the screen
             this.showModal();
         }
     }
