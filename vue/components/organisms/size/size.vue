@@ -11,6 +11,8 @@
             <div v-show="enabled">
                 <component
                     v-bind:active.sync="active"
+                    v-bind:title="modalTitleComputed || undefined"
+                    v-bind:sub-title="modalSubTitleComputed || undefined"
                     v-bind:reference-scale="referenceScale || undefined"
                     v-bind:available-scales="availableScales || undefined"
                     v-bind:is="form"
@@ -23,14 +25,14 @@
                         class="button button-color button-color-secondary button-cancel"
                         v-on:click="hideModal"
                     >
-                        {{ locale("ripe_commons.modal.cancel") }}
+                        {{ cancelLabelComputed }}
                     </button-ripe>
                     <button-ripe
                         class="button button-color button-color-secondary button-apply"
                         v-bind:class="{ invalid: !allowApply }"
                         v-on:click="apply"
                     >
-                        <span>{{ selectLabelData || locale("ripe_commons.modal.select") }}</span>
+                        <span>{{ selectLabelComputed }}</span>
                     </button-ripe>
                 </div>
             </div>
@@ -57,7 +59,27 @@ export const Size = {
     name: "size",
     mixins: [partMixin, modalMixin],
     props: {
+        buttonLabel: {
+            type: String,
+            default: null
+        },
+        buttonSelectedLabel: {
+            type: String,
+            default: null
+        },
+        modalTitle: {
+            type: String,
+            default: null
+        },
+        modalSubTitle: {
+            type: String,
+            default: null
+        },
         selectLabel: {
+            type: String,
+            default: null
+        },
+        cancelLabel: {
             type: String,
             default: null
         }
@@ -77,11 +99,19 @@ export const Size = {
     },
     computed: {
         buttonText() {
+            const buttonLabel =
+                this.buttonLabel ||
+                this.$store.state.sizeButtonLabel ||
+                this.locale("ripe_commons.size.select_size");
+            const buttonSelectedLabel =
+                this.buttonSelectedLabel ||
+                this.$store.state.sizeButtonSelectedLabel ||
+                this.locale("ripe_commons.size.size");
             return this.sizeTextState
                 ? (this.isMobileWidth() || this.isTabletWidth()
                       ? ""
-                      : this.locale("ripe_commons.size.size") + " - ") + this.sizeTextState
-                : this.locale("ripe_commons.size.select_size");
+                      : buttonSelectedLabel + " - ") + this.sizeTextState
+                : buttonLabel;
         },
         buttonEnabled() {
             return this.enabled && this.active;
@@ -116,12 +146,35 @@ export const Size = {
 
             // gets the scale and ignores the gender (e.g. "us:clothing:male"
             // results in "us:clothing")
-            return sizes[0].split(":").slice(0, -1).join(":");
+            return sizes[0]
+                .split(":")
+                .slice(0, -1)
+                .join(":");
         },
         availableScales() {
             // uses the configured available scale if it exists,
             // otherwise defaults to the 3DB's configuration
             return this.$store.state.availableScales || this.$store.state.config.available_scales;
+        },
+        modalTitleComputed() {
+            return this.modalTitle || this.$store.state.sizeModalTitle;
+        },
+        modalSubTitleComputed() {
+            return this.modalSubTitle || this.$store.state.sizeModalSubTitle;
+        },
+        selectLabelComputed() {
+            return (
+                this.selectLabelData ||
+                this.$store.state.sizeSelectLabel ||
+                this.locale("ripe_commons.modal.select")
+            );
+        },
+        cancelLabelComputed() {
+            return (
+                this.cancelLabel ||
+                this.$store.state.sizeCancelLabel ||
+                this.locale("ripe_commons.modal.cancel")
+            );
         }
     },
     watch: {
