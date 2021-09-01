@@ -17,8 +17,11 @@
         <modal ref="modal">
             <div v-show="enabled">
                 <h3 class="title">
-                    {{ locale("ripe_commons.personalization.personalization") }}
+                    {{ modalTitleComputed }}
                 </h3>
+                <h4 class="subtitle" v-if="modalSubTitleComputed">
+                    {{ modalSubTitleComputed }}
+                </h4>
                 <component
                     v-bind:valid.sync="valid"
                     v-if="form"
@@ -34,14 +37,14 @@
                             class="button button-color button-color-secondary button-cancel"
                             v-on:click="hideModal"
                         >
-                            {{ locale("ripe_commons.modal.cancel") }}
+                            {{ cancelLabelComputed }}
                         </div>
                         <div
                             class="button button-color button-apply"
                             v-bind:class="buttonApplyClasses"
                             v-on:click="apply"
                         >
-                            {{ locale("ripe_commons.modal.apply") }}
+                            {{ applyLabelComputed }}
                         </div>
                     </slot>
                 </div>
@@ -155,6 +158,26 @@ export const Personalization = {
     name: "personalization",
     mixins: [modalMixin],
     props: {
+        buttonLabel: {
+            type: String,
+            default: null
+        },
+        modalTitle: {
+            type: String,
+            default: null
+        },
+        modalSubTitle: {
+            type: String,
+            default: null
+        },
+        applyLabel: {
+            type: String,
+            default: null
+        },
+        cancelLabel: {
+            type: String,
+            default: null
+        },
         pedantic: {
             type: Boolean,
             default: false
@@ -214,6 +237,37 @@ export const Personalization = {
             return {
                 disabled: !this.valid
             };
+        },
+        buttonLabelComputed() {
+            return (
+                this.buttonLabel ||
+                this.$store.state.personalizationButtonLabel ||
+                "ripe_commons.personalization.add_initials"
+            );
+        },
+        modalTitleComputed() {
+            return (
+                this.modalTitle ||
+                this.$store.state.personalizationModalTitle ||
+                this.locale("ripe_commons.personalization.personalization")
+            );
+        },
+        modalSubTitleComputed() {
+            return this.modalSubTitle || this.$store.state.personalizationModalSubTitle;
+        },
+        applyLabelComputed() {
+            return (
+                this.applyLabel ||
+                this.$store.state.personalizationApplyLabel ||
+                this.locale("ripe_commons.modal.apply")
+            );
+        },
+        cancelLabelComputed() {
+            return (
+                this.cancelLabel ||
+                this.$store.state.personalizationCancelLabel ||
+                this.locale("ripe_commons.modal.cancel")
+            );
         }
     },
     watch: {
@@ -403,7 +457,7 @@ export const Personalization = {
             if (!this.visible) this.updateButtonText();
         },
         updateButtonText() {
-            this.buttonText = this.tabMessage || "ripe_commons.personalization.add_initials";
+            this.buttonText = this.tabMessage || this.buttonLabelComputed;
         },
         initialsToInitialsExtra(initials, engraving) {
             return {

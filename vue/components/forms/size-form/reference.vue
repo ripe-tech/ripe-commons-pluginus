@@ -1,6 +1,7 @@
 <template>
     <div class="reference-size">
-        <h3 class="title">{{ locale("ripe_commons.size.size") }}</h3>
+        <h3 class="title">{{ title || locale("ripe_commons.size.size") }}</h3>
+        <h4 class="subtitle" v-if="subTitle">{{ subTitle }}</h4>
         <div class="size-selector">
             <div class="genders" v-show="modelGenders && modelGenders.length > 1">
                 <div
@@ -191,6 +192,14 @@ export const Reference = {
     name: "reference",
     mixins: [formInterface],
     props: {
+        title: {
+            type: String,
+            default: null
+        },
+        subTitle: {
+            type: String,
+            default: null
+        },
         referenceScale: {
             type: String,
             default: "it"
