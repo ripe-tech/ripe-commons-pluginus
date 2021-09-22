@@ -173,7 +173,7 @@ export const Configurator = {
          */
         useMasks: {
             type: Boolean,
-            default: true
+            default: undefined
         },
         /**
          * Callback function to be called when a configurator related
@@ -197,7 +197,11 @@ export const Configurator = {
             return this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
-            return { ...this.options, useMasks: this.useMasks, size: this.size };
+            return {
+                ...this.options,
+                useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks,
+                size: this.size
+            };
         }
     },
     data: function() {
@@ -419,7 +423,7 @@ export const Configurator = {
         loading(value) {
             this.$emit("update:loading", value);
         },
-        options(value) {
+        mergedOptions(value) {
             this.configurator.updateOptions(value);
         }
     },
