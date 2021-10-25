@@ -29,6 +29,18 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         }
     }
 
+    async loadBundleLocale(locale = null) {
+        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+        const currentLocale = locale || localePlugin.getLocale();
+        this.readyRipeInterval = setInterval(async () => {
+            if (ripeProvider.ripe) {
+                clearInterval(this.readyRipeInterval);
+                await ripeProvider.ripe._initBundles(currentLocale);
+            }
+        }, 250);
+    }
+
     async loadRipeSdkLocales() {
         const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
@@ -50,6 +62,8 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             const { brand, name } = config;
             await this.loadModelLocales(brand, name);
         });
+
+        this.owner.bind("pre_set_locale", async locale => await this.loadBundleLocale(locale));
 
         this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
 
