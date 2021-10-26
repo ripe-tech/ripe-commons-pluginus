@@ -33,9 +33,9 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
         const currentLocale = locale || localePlugin.getLocale();
-        this.readyRipeInterval = setInterval(async () => {
+        const readyRipeInterval = setInterval(async () => {
             if (ripeProvider.ripe) {
-                clearInterval(this.readyRipeInterval);
+                clearInterval(readyRipeInterval);
                 await ripeProvider.ripe._initBundles(currentLocale);
             }
         }, 250);
