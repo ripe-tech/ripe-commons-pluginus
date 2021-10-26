@@ -64,7 +64,10 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const ripeReadyInterval = setInterval(() => {
             if (ripeProvider.ripe) {
                 clearInterval(ripeReadyInterval);
-                if (ripeProvider.store.state.locale !== locale) {
+                if (
+                    ripeProvider?.store?.state?.locale &&
+                    ripeProvider.store.state.locale !== locale
+                ) {
                     ripeProvider.store.commit("locale", locale);
                 }
             }
