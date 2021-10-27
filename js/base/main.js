@@ -28,7 +28,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
      * standard set of types.
      * @returns {String} The value for the requested field name.
      */
-    static _field(name, query = null, fallback = null, sequence = null, type = null) {
+    static _field(name, query = null, fallback = null, sequence = false, type = null) {
         query = query || new URLSearchParams(window.location.search);
 
         const params = query.getAll(name);
@@ -39,7 +39,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
 
         const castToType = _castR(type) || (v => v);
 
-        if (sequence === null) sequence = params.length > 1;
+        if (sequence) sequence = params.length > 1;
         return sequence ? params.map(p => castToType(p)) : castToType(params[0]);
     }
 
