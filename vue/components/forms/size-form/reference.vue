@@ -252,7 +252,6 @@ export const Reference = {
     watch: {
         state: {
             handler: function() {
-                this.loaded = true;
                 this.$emit("changed", this);
             },
             deep: true
