@@ -222,7 +222,8 @@ export const Reference = {
             scale: "",
             size: null,
             sizesLoaded: false,
-            active: true
+            active: true,
+            loaded: true
         };
     },
     computed: {
@@ -251,6 +252,7 @@ export const Reference = {
     watch: {
         state: {
             handler: function() {
+                this.loaded = true;
                 this.$emit("changed", this);
             },
             deep: true

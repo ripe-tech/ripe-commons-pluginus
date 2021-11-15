@@ -93,6 +93,7 @@ export const Size = {
             state: {},
             counter: 0,
             closeCallback: null,
+            sizeLoaded: false,
             active: true,
             selectLabelData: this.selectLabel
         };
@@ -183,6 +184,14 @@ export const Size = {
         },
         modelError: function(error) {
             this.enabled = !error;
+        },
+        sizeLoaded: function() {
+            const sizeState = this.$store.getters.getSizeState();
+            if (sizeState.gender && sizeState.scale && sizeState.size) {
+                this.$nextTick(() => {
+                    this.$bus.trigger("size", sizeState);
+                });
+            }
         },
         active: {
             handler: function(value) {
@@ -334,6 +343,7 @@ export const Size = {
             this.enabled = false;
         },
         sizeChanged(form) {
+            this.sizeLoaded = true;
             this.state = form.getState();
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
