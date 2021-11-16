@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* Resolution not being properly by SDK options or URL params - [#272](https://github.com/ripe-tech/ripe-commons-pluginus/pull/272)
+
 ## [0.16.1] - 2021-11-21
 
 ### Changed
