@@ -222,8 +222,7 @@ export const Reference = {
             scale: "",
             size: null,
             sizesLoaded: false,
-            active: true,
-            loaded: true
+            active: true
         };
     },
     computed: {
