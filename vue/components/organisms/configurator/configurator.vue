@@ -199,8 +199,7 @@ export const Configurator = {
         mergedOptions() {
             return {
                 ...this.options,
-                useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks,
-                size: this.size
+                useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks
             };
         }
     },
