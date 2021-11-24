@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+*
+
+## [0.16.2] - 2021-11-24
+
+### Fixed
+
 * Resolution not being properly set by SDK options or URL params
 
 ## [0.16.1] - 2021-11-21
