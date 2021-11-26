@@ -347,7 +347,10 @@ export const Size = {
             this.enabled = false;
         },
         sizeChanged(form) {
+            // marks the (initial) size loaded flag, effectively indicating
+            // that the initial loading operation can be performed
             this.sizeLoaded = true;
+
             this.state = form.getState();
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;
