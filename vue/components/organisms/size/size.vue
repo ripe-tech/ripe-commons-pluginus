@@ -187,11 +187,15 @@ export const Size = {
         },
         sizeLoaded: function() {
             const sizeState = this.$store.getters.getSizeState();
-            if (sizeState.gender && sizeState.scale && sizeState.size) {
-                this.$nextTick(() => {
-                    this.$bus.trigger("size", sizeState);
-                });
-            }
+            const sizeValid = sizeState.gender && sizeState.scale && sizeState.size;
+            if (!sizeValid) return;
+
+            // schedules the size change operation to be performed in
+            // the next tick operation effectively changing the size according
+            // to the initially set state in the global environment
+            this.$nextTick(() => {
+                this.$bus.trigger("size", sizeState);
+            });
         },
         active: {
             handler: function(value) {
