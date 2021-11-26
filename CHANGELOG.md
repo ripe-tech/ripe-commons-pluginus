@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Support for gender, scale and size coming from URL params - [#927](https://github.com/ripe-tech/ripe-commons-pluginus/pull/271)
 
 ### Changed
 
