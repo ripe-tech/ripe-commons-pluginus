@@ -442,6 +442,8 @@ export const Configurator = {
             // a race condition and block the loading process
             if (this.loading) return;
 
+            // runs the underlying resize operation using the RIPE
+            // SDK configurator element method
             this.configurator.resize(size);
         }
     },
