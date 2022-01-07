@@ -457,7 +457,7 @@ export const Configurator = {
          * Re-sizes the configurator according to the current
          * available container size (defined by parent).
          */
-        resize(size, width, height) {
+        resize(size = null, width = null, height = null) {
             // in case the size is invalid or no valid configurator
             // is available then returns the control flow as nothing
             // can be done under such conditions
