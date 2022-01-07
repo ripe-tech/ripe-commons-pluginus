@@ -13,11 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Support rectangular thumbnails - [ripe-white/#943](https://github.com/ripe-tech/ripe-white/issues/943)
+*
 
 ### Fixed
 
 *
+
+## [0.18.0] - 2021-11-26
+
+### Changed
+
+* Support rectangular thumbnails - [ripe-white/#943](https://github.com/ripe-tech/ripe-white/issues/943)
+* Bumped package versions (including `ripe-sdk`)
 
 ## [0.17.0] - 2021-11-26
 
