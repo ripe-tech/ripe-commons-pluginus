@@ -172,17 +172,25 @@ export const InitialsImages = {
             await this.bindImages();
         },
         async context(value) {
-            await Promise.all([this.initialsImages.map(image => image.updateOptions({ initialsContext: value }))]);
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ initialsContext: value }))
+            ]);
         },
         async frame(value) {
             this.srcs = {};
-            await Promise.all([this.initialsImages.map(image => image.updateOptions({ frame: value }))]);
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ frame: value }))
+            ]);
         },
         async width(value) {
-            await Promise.all([this.initialsImages.map(image => image.updateOptions({ width: parseInt(value) }))]);
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ width: parseInt(value) }))
+            ]);
         },
         async height(value) {
-            await Promise.all([this.initialsImages.map(image => image.updateOptions({ height: parseInt(value) }))]);
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ height: parseInt(value) }))
+            ]);
         }
     },
     mounted: async function() {
