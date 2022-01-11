@@ -255,6 +255,11 @@ export const InitialsImages = {
                 : [this.$refs.initialsImages];
             const src = initialsImages[index].src;
             this.$set(this.srcs, group, src);
+
+            // verifies if all images were loaded and if
+            // so sends an event
+            if (!this.groups.every(group => Object.keys(this.srcs).includes(group))) return;
+            this.$emit("load:images");
         }
     }
 };
