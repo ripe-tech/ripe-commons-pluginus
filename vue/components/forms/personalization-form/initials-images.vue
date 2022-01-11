@@ -40,6 +40,10 @@ body.tablet .initials-images .initials-image {
 .initials-images .initials-image.selectable {
     cursor: pointer;
 }
+
+.initials-images .initials-image:not([src]) {
+    visibility: hidden;
+}
 </style>
 
 <script>
