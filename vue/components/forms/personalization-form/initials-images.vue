@@ -271,6 +271,16 @@ export const InitialsImages = {
             // verifies if all images were loaded and if
             // so sends an event
             if (!this.groups.every(group => Object.keys(this.srcs).includes(group))) return;
+
+            // incase the frame that was loaded is not longer the
+            // latest one ignores the load operation, retuning the
+            // control flow immediately
+            const queryParams = this.$ripe._unpackQuery(src);
+            if (this.frame && queryParams.frame !== this.frame) return;
+
+            // triggers the load images operation indicating that
+            // all of the images for the current configuration
+            // have been loaded
             this.$emit("load:images");
         }
     }
