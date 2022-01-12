@@ -271,6 +271,11 @@ export const InitialsImages = {
             // verifies if all images were loaded and if
             // so sends an event
             if (!this.groups.every(group => Object.keys(this.srcs).includes(group))) return;
+
+            // does not send load images if the frame of the image
+            // loaded is outdated
+            const queryParams = this.$ripe._unpackQuery(src);
+            if (this.frame && queryParams.frame !== this.frame) return;
             this.$emit("load:images");
         }
     }
