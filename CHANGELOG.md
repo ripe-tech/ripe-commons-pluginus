@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-*
+* Only emit `load:images` event  in `initials-images` if the image loaded is up to date with the frame - [ripe-white/#948](https://github.com/ripe-tech/ripe-white/issues/948)
 
 ### Fixed
 
