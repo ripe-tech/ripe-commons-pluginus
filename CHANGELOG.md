@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Send load event when all images of `initials-images` finish loading - [ripe-white/#948](https://github.com/ripe-tech/ripe-white/issues/948)
+* Bumped RIPE SDK
 
 ### Fixed
 
