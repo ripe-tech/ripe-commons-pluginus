@@ -9,15 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+*
+
+### Changed
+
+*
+
+### Fixed
+
+*
+
+## [0.19.0] - 2022-01-12
+
+### Added
+
 * Support for width, height and frame in `initials-images` - [ripe-white/#948](https://github.com/ripe-tech/ripe-white/issues/948)
 
 ### Changed
 
 * Bumped RIPE SDK
-
-### Fixed
-
-*
 
 ## [0.18.0] - 2021-11-26
 
