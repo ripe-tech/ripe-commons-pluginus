@@ -142,6 +142,13 @@ export const InitialsImages = {
             default: null
         },
         /**
+         * If enabled uses pixel ratio in image.
+         */
+        usePixelRatio: {
+            type: Boolean,
+            default: false
+        },
+        /**
          * The object fit CSS option of each image.
          */
         imageObjectFit: {
@@ -225,7 +232,8 @@ export const InitialsImages = {
                     getInitialsContext: this.getContext,
                     frame: this.frame,
                     width: parseInt(this.width),
-                    height: parseInt(this.height)
+                    height: parseInt(this.height),
+                    usePixelRatio: this.usePixelRatio
                 });
                 this.initialsImages.push(image);
             }
