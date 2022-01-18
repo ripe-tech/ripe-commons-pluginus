@@ -215,6 +215,9 @@ export const Configurator = {
         mergedOptions() {
             return {
                 ...this.options,
+                size: this.size,
+                width: this.width,
+                height: this.height,
                 useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks
             };
         }
