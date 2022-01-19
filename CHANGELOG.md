@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+*
+
+## [0.20.2] - 2022-01-19
+
+### Fixed
+
 * Set initial `size`, `width` and `height` on configurator bind so that the correct initial dimensions can be applied - [ripe-white/#954](https://github.com/ripe-tech/ripe-white/issues/954)
 
 ## [0.20.1] - 2022-01-18
