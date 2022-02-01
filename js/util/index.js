@@ -1,3 +1,4 @@
+export * from "./bundle-changer";
 export * from "./data";
 export * from "./device";
 export * from "./logging";

@@ -1,4 +1,4 @@
-import { DevicePlugin, UrlChangerPlugin } from "./util";
+import { DevicePlugin, UrlChangerPlugin, BundleChangerPlugin } from "./util";
 
 import {
     DomLocaleLoaderPlugin,
@@ -26,4 +26,5 @@ export const registerPlugins = owner => {
     BaseSizePlugin.register(owner);
     DevicePlugin.register(owner);
     UrlChangerPlugin.register(owner);
+    BundleChangerPlugin.register(owner);
 };
