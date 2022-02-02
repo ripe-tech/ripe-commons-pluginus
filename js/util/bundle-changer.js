@@ -26,17 +26,25 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
 
             // build tuples of locales and respective bundle promises
             const localeBundleTuples = [];
-            for (const locale of locales) {
+            for (const locale of new Set(locales)) {
                 localeBundleTuples.push(
-                    ripe.localeBundleP(locale, "scales"),
-                    ripe.localeBundleP(locale, "sizes")
+                    [locale, ripe.localeBundleP(locale, "scales")],
+                    [locale, ripe.localeBundleP(locale, "sizes")]
                 );
             }
-
-            const bundles = await Promise.all(localeBundleTuples);
+            // deconstruct the tuple to respective locales and bundle promises
+            // then fetch all bundles in parallel
+            const [bundlesLocales, bundlesPromises] = localeBundleTuples.reduce(
+                (array, [locale, bundlePromise]) => [
+                    [...array[0], locale],
+                    [...array[1], bundlePromise]
+                ],
+                [[], []]
+            );
+            const bundles = await Promise.all(bundlesPromises);
             // add the fetched bundles
             bundles.forEach((bundle, index) => {
-                const locale = locales[index];
+                const locale = bundlesLocales[index];
                 ripe.addBundle(bundle, locale);
             });
             this.owner.trigger("bundles");
