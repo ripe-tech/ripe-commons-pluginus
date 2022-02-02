@@ -63,6 +63,7 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
             const locale = bundlesLocales[index];
             ripe.addBundle(bundle, locale);
         });
+        // notify listeners for bundles updates
         this.owner.trigger("bundles");
     }
 
