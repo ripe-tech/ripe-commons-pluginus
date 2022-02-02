@@ -70,16 +70,18 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
     }
 
     _trySetStoreLocale(locale) {
-        if (this.ripeProvider?.store?.state?.locale) {
-            this._setStoreLocale(locale);
-        } else {
+        // if ripeProvider isn't ready, try again later
+        if (!this.ripeProvider?.store?.state?.locale) {
             const ripeReadyInterval = setInterval(() => {
                 if (this.ripeProvider?.store?.state?.locale) {
                     clearInterval(ripeReadyInterval);
                     this._setStoreLocale(locale);
                 }
             }, 250);
+            return;
         }
+
+        this._setStoreLocale(locale);
     }
 
     _setStoreLocale(locale) {
