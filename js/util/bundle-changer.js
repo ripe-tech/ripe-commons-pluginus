@@ -22,9 +22,6 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
             if (this.ripeProvider.ripe) clearInterval(ripeReadyInterval);
 
             const ripe = this.ripeProvider.ripe;
-            const prevBundles = ripe.getBundles();
-            console.log("bundles length was:", JSON.stringify(prevBundles));
-
             const locales = [defaultLocale, locale];
 
             // build tuples of locales and respective bundle promises
@@ -50,9 +47,6 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
                 const locale = bundlesLocales[index];
                 ripe.addBundle(bundle, locale);
             });
-
-            const currentBundles = ripe.getBundles();
-            console.log("bundles is now:", JSON.stringify(currentBundles));
         }, 250);
     }
 
