@@ -1,4 +1,3 @@
-// import { Ripe } from "ripe-sdk";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 export class BundleChangerPlugin extends RipeCommonsPlugin {
