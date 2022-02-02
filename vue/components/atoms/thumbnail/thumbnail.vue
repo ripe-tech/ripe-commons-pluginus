@@ -47,7 +47,7 @@ body.desktop .thumbnail:first-child {
 body.tablet .thumbnail,
 body.mobile .thumbnail {
     display: inline-block;
-    height: 50px;
+    height: auto;
     margin: 0px auto 0px 7px;
     width: 50px;
 }
