@@ -47,6 +47,7 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
                 const locale = bundlesLocales[index];
                 ripe.addBundle(bundle, locale);
             });
+            this.owner.trigger("bundles");
         }, 250);
     }
 
