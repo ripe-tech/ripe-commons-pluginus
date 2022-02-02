@@ -13,6 +13,16 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         this._bind();
     }
 
+    async load() {
+        await super.load();
+        this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+    }
+
+    async unload() {
+        this.ripeProvider = null;
+        await super.unload();
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-loader")];
     }
@@ -53,25 +63,32 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
 
         this.owner.bind("post_set_locale", async locale => {
             await this.loadModelLocales();
-            await this._setStoreLocale(locale);
+            this._trySetStoreLocale(locale);
         });
 
         this.owner.bind("bundles", async () => await this.loadRipeSdkLocales());
     }
 
-    async _setStoreLocale(locale) {
-        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
-        const ripeReadyInterval = setInterval(() => {
-            if (ripeProvider.ripe) {
-                clearInterval(ripeReadyInterval);
-                if (
-                    ripeProvider?.store?.state?.locale &&
-                    ripeProvider.store.state.locale !== locale
-                ) {
-                    ripeProvider.store.commit("locale", locale);
+    _trySetStoreLocale(locale) {
+        if (this.ripeProvider) {
+            this._setStoreLocale(locale);
+        } else {
+            const ripeReadyInterval = setInterval(() => {
+                if (this.ripeProvider) {
+                    clearInterval(ripeReadyInterval);
+                    this._setStoreLocale(locale);
                 }
-            }
-        }, 250);
+            }, 250);
+        }
+    }
+
+    _setStoreLocale(locale) {
+        if (
+            this.ripeProvider?.store?.state?.locale &&
+            this.ripeProvider.store.state.locale !== locale
+        ) {
+            this.ripeProvider.store.commit("locale", locale);
+        }
     }
 
     async _loadModelLocale(brand = null, model = null, locale = null) {
