@@ -74,7 +74,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             this._setStoreLocale(locale);
         } else {
             const ripeReadyInterval = setInterval(() => {
-                if (this.ripeProvider) {
+                if (this.ripeProvider?.store?.state?.locale) {
                     clearInterval(ripeReadyInterval);
                     this._setStoreLocale(locale);
                 }
