@@ -406,7 +406,7 @@ body.mobile .button-scroll-colors {
     width: 50px;
 }
 
-.restrictions_alert .message-restrictions_alert-container .message-restrictions_alert.visible {
+.restrictions-alert .message-restrictions-alert-container .message-restrictions-alert.visible {
     left: 0px;
     max-width: 55%;
     position: absolute;

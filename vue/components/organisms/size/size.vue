@@ -147,10 +147,7 @@ export const Size = {
 
             // gets the scale and ignores the gender (e.g. "us:clothing:male"
             // results in "us:clothing")
-            return sizes[0]
-                .split(":")
-                .slice(0, -1)
-                .join(":");
+            return sizes[0].split(":").slice(0, -1).join(":");
         },
         availableScales() {
             // uses the configured available scale if it exists,
