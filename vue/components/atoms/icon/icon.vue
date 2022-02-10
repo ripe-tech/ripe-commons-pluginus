@@ -82,12 +82,17 @@ export const Icon = {
         svgFile() {
             try {
                 let resource = this.icon;
-                if (typeof this.icon === "string") {
+                const isSvgString = this.icon.startsWith("<svg");
+
+                if (typeof this.icon === "string" && !isSvgString) {
                     try {
                         resource = require(`./../../../assets/icons/${this.icon}.svg?raw`);
                     } catch (err) {
                         resource = require(`./../../../assets/icons/extra/${this.icon}.svg?raw`);
                     }
+                }
+                if (typeof this.icon === "object") {
+                    resource = resource.default
                 }
                 return resource;
             } catch (error) {
