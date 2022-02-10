@@ -92,7 +92,7 @@ export const Icon = {
                     }
                 }
                 if (typeof this.icon === "object") {
-                    resource = resource.default
+                    resource = resource.default;
                 }
                 return resource;
             } catch (error) {
