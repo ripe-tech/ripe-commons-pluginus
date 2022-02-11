@@ -160,7 +160,7 @@ export const InitialsImages = {
          */
         openExternally: {
             type: Boolean,
-            default: false
+            default: null
         }
     },
     data: function() {
@@ -215,6 +215,14 @@ export const InitialsImages = {
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
             return base;
+        },
+        _openExternally() {
+            if (this.openExternally !== null) return this.openExternally;
+
+            const features = this.$store.state.features;
+            if (features["open-externally"] !== undefined) return features["open-externally"];
+
+            return false;
         }
     },
     methods: {
@@ -258,12 +266,12 @@ export const InitialsImages = {
                 active: group === this.activeGroup,
                 selectable: this.groups.length > 1,
                 loaded: Boolean(this.srcs[group]),
-                clickable: this.openExternally
+                clickable: this._openExternally
             };
             return base;
         },
         onClick(group) {
-            if (this.openExternally) {
+            if (this._openExternally) {
                 const src = this.srcs[group];
                 window.open(src, "_blank");
             }
