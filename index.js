@@ -1,7 +1,7 @@
-import { name, version } from "./package.json";
+import packageInfo from "./package.json";
 
 export * from "./js";
 export * from "./vue";
 
-export const NAME = name;
-export const VERSION = version;
+export const NAME = packageInfo.name;
+export const VERSION = packageInfo.version;
