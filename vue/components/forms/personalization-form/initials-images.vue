@@ -217,11 +217,9 @@ export const InitialsImages = {
             return base;
         },
         openExternallyFeature() {
+            const features = this.$store.state.features || {};
             if (this.openExternally !== null) return this.openExternally;
-
-            const features = this.$store.state.features;
             if (features["open-externally"] !== undefined) return features["open-externally"];
-
             return false;
         }
     },
