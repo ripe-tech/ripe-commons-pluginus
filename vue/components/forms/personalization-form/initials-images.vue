@@ -216,7 +216,7 @@ export const InitialsImages = {
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
             return base;
         },
-        _openExternally() {
+        openExternallyFeature() {
             if (this.openExternally !== null) return this.openExternally;
 
             const features = this.$store.state.features;
@@ -266,12 +266,12 @@ export const InitialsImages = {
                 active: group === this.activeGroup,
                 selectable: this.groups.length > 1,
                 loaded: Boolean(this.srcs[group]),
-                clickable: this._openExternally
+                clickable: this.openExternallyFeature
             };
             return base;
         },
         onClick(group) {
-            if (this._openExternally) {
+            if (this.openExternallyFeature) {
                 const src = this.srcs[group];
                 window.open(src, "_blank");
             }
