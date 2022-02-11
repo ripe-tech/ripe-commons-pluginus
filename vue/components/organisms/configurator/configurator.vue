@@ -192,6 +192,14 @@ export const Configurator = {
             default: undefined
         },
         /**
+         * If enabled shows a drag indicator under the configurator images
+         * during a time interval or until the user interacts with it.
+         */
+        showDragIndicator: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * Callback function to be called when a configurator related
          * error is thrown, for some operations (eg: while changing frame).
          */
@@ -210,7 +218,12 @@ export const Configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return this.singleFrameView || this.frameChanged || this.holderTimedOut;
+            return (
+                !this.showDragIndicator ||
+                this.singleFrameView ||
+                this.frameChanged ||
+                this.holderTimedOut
+            );
         },
         mergedOptions() {
             return {
