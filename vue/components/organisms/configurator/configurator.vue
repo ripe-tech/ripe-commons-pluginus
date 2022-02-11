@@ -273,9 +273,10 @@ export const Configurator = {
         );
 
         this.configurator.bind("changed_frame", frame => {
-            // sets the frame changed flag and then updates
-            // the frame key to the new one (internal copy)
-            this.frameChanged = true;
+            // sets the frame changed flag only if there was a
+            // previous frame set and then updates the frame
+            // key to the new one (internal copy)
+            this.frameChanged = Boolean(this.frameData);
             this.frameData = frame;
 
             // updates the value of the single frame view
