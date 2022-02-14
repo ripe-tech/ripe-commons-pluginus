@@ -176,6 +176,14 @@ export const Configurator = {
             default: null
         },
         /**
+         * If enabled shows the holder (drag indicator) under the configurator
+         * images during a time interval or until the user interacts with it.
+         */
+        holder: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * The time accepted for the holder to appear on the display
          * without any interaction of the user.
          */
@@ -190,14 +198,6 @@ export const Configurator = {
         useMasks: {
             type: Boolean,
             default: undefined
-        },
-        /**
-         * If enabled shows a drag indicator under the configurator images
-         * during a time interval or until the user interacts with it.
-         */
-        showDragIndicator: {
-            type: Boolean,
-            default: true
         },
         /**
          * Callback function to be called when a configurator related
@@ -219,7 +219,7 @@ export const Configurator = {
         },
         hideHolder() {
             return (
-                !this.showDragIndicator ||
+                !this.holder ||
                 this.singleFrameView ||
                 this.frameChanged ||
                 this.holderTimedOut
