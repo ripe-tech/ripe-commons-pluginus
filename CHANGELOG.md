@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+*
+
+### Fixed
+
+*
+
+## [0.21.0] - 2022-02-15
+
+### Changed
+
 * Bumped dependencies and upgrade webpack configuration
 * Added prop that enables/disabled drag indicator for configurator - [ripe-white/#962](https://github.com/ripe-tech/ripe-white/issues/962)
 
