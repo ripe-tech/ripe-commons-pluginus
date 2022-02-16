@@ -23,9 +23,7 @@ class RipeProviderPlugin extends ripeCommons.RipeCommonsPlugin {
 
 describe("ModelLocaleResolverPlugin", function() {
     before(async function() {
-        console.log("step call");
         await setup();
-        console.log(global.fetch);
         const manager = new pluginus.PluginManager();
         ripeCommons.registerPlugins(manager);
         RipeProviderPlugin.register(manager);
