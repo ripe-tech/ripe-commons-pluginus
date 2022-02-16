@@ -23,7 +23,7 @@
                     {{ modalSubTitleComputed }}
                 </h4>
                 <component
-                    v-bind="$props"
+                    v-bind:open-externally="openExternally"
                     v-bind:valid.sync="valid"
                     v-if="form"
                     v-bind:is="form"
