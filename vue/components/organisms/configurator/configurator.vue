@@ -210,7 +210,7 @@ export const Configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return !this.holder || this.singleFrameView || this.frameChanged || this.holderTimedOut;
+            return this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
             return {
