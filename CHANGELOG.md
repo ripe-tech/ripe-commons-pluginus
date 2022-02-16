@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Receive `openExternally` prop on the `personalization` component - [#963](https://github.com/ripe-tech/ripe-white/issues/963)
+* Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
 
 ### Changed
 
