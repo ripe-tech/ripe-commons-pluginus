@@ -23,6 +23,7 @@
                     {{ modalSubTitleComputed }}
                 </h4>
                 <component
+                    v-bind="$props"
                     v-bind:valid.sync="valid"
                     v-if="form"
                     v-bind:is="form"
@@ -177,6 +178,10 @@ export const Personalization = {
         cancelLabel: {
             type: String,
             default: null
+        },
+        openExternally: {
+            type: Boolean,
+            default: false
         },
         pedantic: {
             type: Boolean,
