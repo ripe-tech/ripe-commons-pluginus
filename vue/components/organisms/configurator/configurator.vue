@@ -218,19 +218,11 @@ export const Configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return (
-                !this.holder ||
-                this.singleFrameView ||
-                this.frameChanged ||
-                this.holderTimedOut
-            );
+            return !this.holder || this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
             return {
                 ...this.options,
-                size: this.size,
-                width: this.width,
-                height: this.height,
                 useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks
             };
         }
@@ -280,10 +272,12 @@ export const Configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.ripeInstance.bindConfigurator(
-            this.$refs.configurator,
-            this.mergedOptions
-        );
+        this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
+            ...this.mergedOptions,
+            size: this.size,
+            width: this.width,
+            height: this.height
+        });
 
         this.configurator.bind("changed_frame", frame => {
             // sets the frame changed flag only if there was a

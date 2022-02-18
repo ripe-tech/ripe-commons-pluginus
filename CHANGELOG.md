@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Revert `node-fetch` bump back to @2
+* Remove double update in configurator that caused flickering on resize
 
 ## [0.21.0] - 2022-02-15
 
