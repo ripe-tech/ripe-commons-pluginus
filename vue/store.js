@@ -279,12 +279,8 @@ export const store = {
             try {
                 // obtains the remote data and updates the local store information
                 // to reflect the remote information
-                const [
-                    groups,
-                    supportedCharacters,
-                    minimumCharacters,
-                    maximumCharacters
-                ] = await promise;
+                const [groups, supportedCharacters, minimumCharacters, maximumCharacters] =
+                    await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
                 commit("initialsMinimumCharacters", Number(minimumCharacters));
@@ -350,6 +346,11 @@ export const store = {
         getTheme: state => () => state.theme,
         getRipeOptions: state => () => state.ripeOptions,
         getRipeState: state => () => state.ripeState,
+        getSizeState: state => () => ({
+            gender: state.gender,
+            scale: state.scale,
+            size: parseInt(state.nativeSize)
+        }),
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>
