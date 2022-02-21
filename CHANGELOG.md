@@ -9,12 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
-* Added getter `getSizeState` to the store, required by the `size` component
+*
 
 ### Changed
 
 *
+
+### Fixed
+
+*
+
+## [0.22.0] - 2022-02-21
+
+### Added
+
+* Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
+* Added getter `getSizeState` to the store, required by the `size` component
 
 ### Fixed
 
