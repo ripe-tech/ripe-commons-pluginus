@@ -36,6 +36,9 @@ export const store = {
          * are available (eg: only one size available).
          */
         sizeActive: null,
+        gender: null,
+        scale: null,
+        nativeSize: null,
         currentFrame: null,
         error: null,
         hasCustomization: false,
@@ -146,6 +149,15 @@ export const store = {
         },
         sizeActive(state, value) {
             state.sizeActive = value;
+        },
+        gender(state, gender) {
+            state.gender = gender;
+        },
+        scale(state, scale) {
+            state.scale = scale;
+        },
+        nativeSize(state, nativeSize) {
+            state.nativeSize = nativeSize;
         },
         currency(state, currency) {
             state.currency = currency;
@@ -279,12 +291,8 @@ export const store = {
             try {
                 // obtains the remote data and updates the local store information
                 // to reflect the remote information
-                const [
-                    groups,
-                    supportedCharacters,
-                    minimumCharacters,
-                    maximumCharacters
-                ] = await promise;
+                const [groups, supportedCharacters, minimumCharacters, maximumCharacters] =
+                    await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
                 commit("initialsMinimumCharacters", Number(minimumCharacters));
@@ -353,7 +361,7 @@ export const store = {
         getSizeState: state => () => ({
             gender: state.gender,
             scale: state.scale,
-            size: parseInt(state.nativeSize)
+            size: state.nativeSize
         }),
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
