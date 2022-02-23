@@ -82,14 +82,19 @@ export const Icon = {
         svgFile() {
             try {
                 let resource = this.icon;
-                if (typeof this.icon === "string") {
+                const isSvgString = typeof this.icon === "string" && this.icon.startsWith("<svg");
+
+                if (typeof this.icon === "string" && !isSvgString) {
                     try {
-                        resource = require(`!!raw-loader!./../../../assets/icons/${this.icon}.svg`);
+                        resource = require(`./../../../assets/icons/${this.icon}.svg?raw`);
                     } catch (err) {
-                        resource = require(`!!raw-loader!./../../../assets/icons/extra/${this.icon}.svg`);
+                        resource = require(`./../../../assets/icons/extra/${this.icon}.svg?raw`);
                     }
                 }
-                return resource.default;
+                if (typeof this.icon === "object") {
+                    resource = resource.default;
+                }
+                return resource;
             } catch (error) {
                 this.logError(`Error loading icon '${this.icon}'.`, error);
             }

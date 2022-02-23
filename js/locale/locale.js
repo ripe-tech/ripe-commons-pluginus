@@ -9,6 +9,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.loaderPlugins = await this.owner.getPluginsByCapability("locale-loader"); // TODO better loader priority
+        this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
         this.resolverPlugins = await this.owner.getPluginsByCapability("locale-resolver");
         this.localeMap = await this._loadLocales();
         this.locale = null;
@@ -17,6 +18,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
 
     async unload() {
         this.loaderPlugins = null;
+        this.ripeProvider = null;
         this.resolverPlugins = null;
         await super.unload();
     }
@@ -101,6 +103,30 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale_map_changed");
     }
 
+    _trySetStoreLocale(locale) {
+        // if ripeProvider isn't ready, try again later
+        if (!this.ripeProvider?.store?.state?.locale) {
+            const ripeReadyInterval = setInterval(() => {
+                if (this.ripeProvider?.store?.state?.locale) {
+                    clearInterval(ripeReadyInterval);
+                    this._setStoreLocale(locale);
+                }
+            }, 250);
+            return;
+        }
+
+        this._setStoreLocale(locale);
+    }
+
+    _setStoreLocale(locale) {
+        if (
+            this.ripeProvider?.store?.state?.locale &&
+            this.ripeProvider.store.state.locale !== locale
+        ) {
+            this.ripeProvider.store.commit("locale", locale);
+        }
+    }
+
     async _loadLocales() {
         const locales = {};
         for (const plugin of this.loaderPlugins) {
@@ -116,6 +142,9 @@ export class LocalePlugin extends RipeCommonsPlugin {
     _bind() {
         this.owner.bind("locale_change", async (locale, coerce) => {
             await this.setLocale(locale, coerce);
+        });
+        this.owner.bind("post_set_locale", async locale => {
+            this._trySetStoreLocale(locale);
         });
     }
 
