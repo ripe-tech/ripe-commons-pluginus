@@ -13,16 +13,6 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         this._bind();
     }
 
-    async load() {
-        await super.load();
-        this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
-    }
-
-    async unload() {
-        this.ripeProvider = null;
-        await super.unload();
-    }
-
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-loader")];
     }
@@ -61,36 +51,9 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             await this.loadModelLocales(brand, name);
         });
 
-        this.owner.bind("post_set_locale", async locale => {
-            await this.loadModelLocales();
-            this._trySetStoreLocale(locale);
-        });
+        this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
 
         this.owner.bind("bundles", async () => await this.loadRipeSdkLocales());
-    }
-
-    _trySetStoreLocale(locale) {
-        // if ripeProvider isn't ready, try again later
-        if (!this.ripeProvider?.store?.state?.locale) {
-            const ripeReadyInterval = setInterval(() => {
-                if (this.ripeProvider?.store?.state?.locale) {
-                    clearInterval(ripeReadyInterval);
-                    this._setStoreLocale(locale);
-                }
-            }, 250);
-            return;
-        }
-
-        this._setStoreLocale(locale);
-    }
-
-    _setStoreLocale(locale) {
-        if (
-            this.ripeProvider?.store?.state?.locale &&
-            this.ripeProvider.store.state.locale !== locale
-        ) {
-            this.ripeProvider.store.commit("locale", locale);
-        }
     }
 
     async _loadModelLocale(brand = null, model = null, locale = null) {
