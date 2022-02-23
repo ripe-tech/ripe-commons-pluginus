@@ -19,6 +19,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Proper sync locale values between store locale and `this.locale` after coercing locale
 
+## [0.22.0] - 2022-02-21
+
+### Added
+
+* Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
+* Added getter `getSizeState` to the store, required by the `size` component
+
+### Fixed
+
+* Revert `node-fetch` bump back to @2
+* Remove double update in configurator that caused flickering on resize
+
+## [0.21.0] - 2022-02-15
+
+### Changed
+
+* Bumped dependencies and upgrade webpack configuration
+* Added prop that enables/disabled drag indicator for configurator - [ripe-white/#962](https://github.com/ripe-tech/ripe-white/issues/962)
+
+### Fixed
+
+* Fix logic to show drag indicator for configurator - [ripe-white/#962](https://github.com/ripe-tech/ripe-white/issues/962)
+
 ## [0.20.3] - 2022-01-25
 
 ### Changed

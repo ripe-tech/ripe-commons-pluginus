@@ -176,6 +176,14 @@ export const Configurator = {
             default: null
         },
         /**
+         * If enabled shows the holder (drag indicator) under the configurator
+         * images during a time interval or until the user interacts with it.
+         */
+        holder: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * The time accepted for the holder to appear on the display
          * without any interaction of the user.
          */
@@ -210,14 +218,11 @@ export const Configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return this.singleFrameView || this.frameChanged || this.holderTimedOut;
+            return !this.holder || this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
             return {
                 ...this.options,
-                size: this.size,
-                width: this.width,
-                height: this.height,
                 useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks
             };
         }
@@ -267,15 +272,18 @@ export const Configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.ripeInstance.bindConfigurator(
-            this.$refs.configurator,
-            this.mergedOptions
-        );
+        this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
+            ...this.mergedOptions,
+            size: this.size,
+            width: this.width,
+            height: this.height
+        });
 
         this.configurator.bind("changed_frame", frame => {
-            // sets the frame changed flag and then updates
-            // the frame key to the new one (internal copy)
-            this.frameChanged = true;
+            // sets the frame changed flag only if there was a
+            // previous frame set and then updates the frame
+            // key to the new one (internal copy)
+            this.frameChanged = Boolean(this.frameData);
             this.frameData = frame;
 
             // updates the value of the single frame view

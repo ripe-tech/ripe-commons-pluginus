@@ -2,9 +2,8 @@ require("../setup");
 
 const assert = require("assert");
 const pluginus = require("pluginus");
-const ripe = require("ripe-sdk").ripe;
-
 const ripeCommons = require("../..");
+const ripe = require("ripe-sdk").ripe;
 
 class RipeProviderPlugin extends ripeCommons.RipeCommonsPlugin {
     async load() {
