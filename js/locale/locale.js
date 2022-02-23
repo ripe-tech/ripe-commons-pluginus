@@ -114,8 +114,8 @@ export class LocalePlugin extends RipeCommonsPlugin {
     }
 
     _bind() {
-        this.owner.bind("locale_change", async locale => {
-            await this.setLocale(locale);
+        this.owner.bind("locale_change", async (locale, coerce) => {
+            await this.setLocale(locale, coerce);
         });
     }
 
