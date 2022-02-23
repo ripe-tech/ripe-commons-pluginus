@@ -4,6 +4,7 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        this.loadedBundles = [];
 
         this.onLocaleChangedWatch = this.owner.bind(
             "locale_changed",
@@ -36,34 +37,19 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
         await this.loadLocaleBundle(locale);
     }
 
-    async loadLocaleBundle(locale, defaultLocale = "en_us") {
-        const ripe = this.ripeProvider.ripe;
-        const locales = [defaultLocale, locale];
+    async loadLocaleBundle(locale) {
+        // skip if bundle is already loaded
+        if (this.loadedBundles.includes(locale)) return;
 
-        // build tuples of locales and respective bundle promises
-        const localeBundleTuples = [];
-        for (const locale of new Set(locales)) {
-            localeBundleTuples.push(
-                [locale, ripe.localeBundleP(locale, "scales")],
-                [locale, ripe.localeBundleP(locale, "sizes")]
-            );
-        }
-        // deconstruct the tuple to respective locales and bundle promises
-        // then fetch all bundles in parallel
-        const [bundlesLocales, bundlesPromises] = localeBundleTuples.reduce(
-            (array, [locale, bundlePromise]) => [
-                [...array[0], locale],
-                [...array[1], bundlePromise]
-            ],
-            [[], []]
-        );
-        const bundles = await Promise.all(bundlesPromises);
-        // add the fetched bundles
-        bundles.forEach((bundle, index) => {
-            const locale = bundlesLocales[index];
-            ripe.addBundle(bundle, locale);
-        });
-        // notify listeners for bundles updates
+        const ripe = this.ripeProvider.ripe;
+
+        const bundles = await Promise.all([
+            ripe.localeBundleP(locale, "scales"),
+            ripe.localeBundleP(locale, "sizes")
+        ]);
+        bundles.map(bundle => ripe.addBundle(bundle, locale));
+
+        this.loadedBundles.push(locale);
         this.owner.trigger("bundles");
     }
 
