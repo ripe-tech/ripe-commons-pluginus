@@ -1,6 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
-export class BundleChangerPlugin extends RipeCommonsPlugin {
+export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
@@ -58,4 +58,4 @@ export class BundleChangerPlugin extends RipeCommonsPlugin {
     }
 }
 
-BundleChangerPlugin.register();
+LocaleBundleLoaderPlugin.register();
