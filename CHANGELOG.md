@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Reacting to `open-externally` feature for base plugins - [ripe-white/#971](https://github.com/ripe-tech/ripe-white/issues/971)
 
 ## [0.22.0] - 2022-02-21
 
