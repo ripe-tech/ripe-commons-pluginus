@@ -116,6 +116,10 @@ export const Reference = {
         tabProperties: {
             type: Array,
             default: () => ["font", "font_size", "style", "position", "color"]
+        },
+        openExternally: {
+            type: Boolean,
+            default: false
         }
     },
     data: function() {
@@ -156,9 +160,6 @@ export const Reference = {
         },
         configMeta() {
             return this.$store.state.config.meta || {};
-        },
-        openExternally() {
-            return this.$store.state.features["open-externally"];
         },
         /**
          * The radius of the border for the image that is going to be used in
