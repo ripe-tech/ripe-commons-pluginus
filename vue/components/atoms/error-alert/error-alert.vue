@@ -40,7 +40,11 @@
                 </div>
                 <transition name="fade">
                     <div class="error-stack" v-show="!isCollapsed">
-                        <p class="stack-line" v-for="(stackLine, index) of stackLine" v-bind:key="index">
+                        <p
+                            class="stack-line"
+                            v-for="(stackLine, index) of stackLines"
+                            v-bind:key="index"
+                        >
                             {{ stackLine }}
                         </p>
                     </div>
@@ -52,12 +56,12 @@
 
 <style lang="scss" scoped>
 .error-alert {
+    color: #ffffff;
     display: block;
     font-family: "consolas", monospace;
-    transition: opacity 1s ease-in-out;
     font-size: 12px;
-    color: #ffffff;
     opacity: 1;
+    transition: opacity 1s ease-in-out;
 }
 
 body.round .error-alert {
@@ -69,15 +73,15 @@ body.round .error-alert {
     flex-direction: column;
 }
 
-.exception.direction-top > .error-container {
+.error-alert.direction-top > .error-container {
     display: flex;
     flex-direction: column-reverse;
 }
 
 .error-alert > .error-container > .error-header {
-    display: flex;
     background-color: #e96760;
     cursor: pointer;
+    display: flex;
     font-weight: bold;
     padding: 8px 8px 8px 8px;
 }
@@ -85,85 +89,85 @@ body.round .error-alert {
 .error-alert > .error-container > .error-header > .left {
     display: inline-flex;
     justify-content: space-around;
-    width: 100%;
     min-width: 150px;
+    width: 100%;
 }
 
 .error-alert > .error-container > .error-header > .left .header-icon {
+    align-items: center;
     display: inline-flex;
     max-height: 15px;
     padding-right: 4px;
-    align-items: center;
 }
 
 .error-alert > .error-container > .error-header > .left .header-text {
+    -webkit-box-orient: vertical;
     display: inline-block;
-    width: 100%;
+    display: -webkit-box;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
+    width: 100%;
 }
 
-.exception.collapsed > .error-container > .error-header > .left .header-text {
+.error-alert.collapsed > .error-container > .error-header > .left .header-text {
     -webkit-line-clamp: 2;
 }
 
-.error-alert > .error-container > .error-header .right {
-    display: inline-flex;
-    width: 55px;
-    min-width: 40px;
-    max-height: 15px;
-    justify-content: space-around;
+.error-alert > .error-container > .error-header > .right {
     align-items: center;
+    display: inline-flex;
+    justify-content: space-around;
+    max-height: 15px;
+    min-width: 40px;
+    width: 55px;
 }
 
-.error-alert > .error-container > .error-header .arrow {
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+.error-alert > .error-container > .error-header > .right > .arrow {
     opacity: 0.6;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
-.exception.collapsed .error-container .error-header .arrow {
+.error-alert.collapsed > .error-container > .error-header > .right > .arrow {
     transform: rotate(180deg);
 }
 
-.error-alert > .error-container > .error-header .arrow:hover,
+.error-alert > .error-container > .error-header > .right > .arrow:hover,
 .error-alert > .error-container > .error-header .left:hover ~ .right .arrow {
     opacity: 1;
 }
 
-.error-alert > .error-container > .error-header .right .close {
-    transition: opacity 0.2s ease-in-out;
+.error-alert > .error-container > .error-header > .right > .close {
     opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
 }
 
-.error-alert > .error-container > .error-header .right .close:hover {
+.error-alert > .error-container > .error-header > .right > .close:hover {
     opacity: 1;
 }
 
 .error-alert > .error-container > .error-stack {
     background-color: #e96760;
     max-height: 300px;
-    overflow-y: auto;
     overflow-x: auto;
+    overflow-y: auto;
 }
 
 .error-alert > .error-container > .error-stack > .stack-line {
-    padding: 5px 8px 5px 26px;
     margin: 0px;
+    padding: 5px 8px 5px 26px;
 }
 
 .error-alert > .error-container > .error-stack > .stack-line:nth-child(odd) {
     background-color: #ec7a74;
 }
 
-.exception.fade-enter-active,
-.exception.fade-leave-active {
+.error-alert.fade-enter-active,
+.error-alert.fade-leave-active {
     transition: opacity 0.2s ease-in-out;
 }
 
-.exception.fade-enter,
-.exception.fade-leave-to {
+.error-alert.fade-enter,
+.error-alert.fade-leave-to {
     opacity: 0;
 }
 
@@ -175,26 +179,25 @@ body.round .error-alert {
 .error-alert > .error-container > .error-stack.fade-enter,
 .error-alert > .error-container > .error-stack.fade-leave-to {
     max-height: 0px;
-    opacity: 0;
+    opacity: 0.5;
 }
 
-body.mobile .error-alert > .error-container > .error-header .arrow {
+body.mobile .error-alert > .error-container > .error-header > .right > .arrow,
+body.tablet .error-alert > .error-container > .error-header > .right > .arrow {
     opacity: 1;
 }
 
-body.mobile .error-alert > .error-container > .error-header .right .close {
+body.mobile .error-alert > .error-container > .error-header > .right > .close,
+body.tablet .error-alert > .error-container > .error-header > .right > .close {
     opacity: 1;
 }
 </style>
 
 <script>
-import { partMixin } from "../../../mixins";
-
 export const ErrorAlert = {
     name: "error-alert",
-    mixins: [partMixin],
     props: {
-        error: {
+        errorObject: {
             type: Error,
             required: true
         },
@@ -218,9 +221,6 @@ export const ErrorAlert = {
             if (this.direction) {
                 base[`direction-${this.direction}`] = true;
             }
-            if (this.isMobileWidth()) {
-                base["direction-top"] = true;
-            }
             return base;
         },
         arrowIcon() {
@@ -243,23 +243,24 @@ export const ErrorAlert = {
             return this.errorData.fileName;
         },
         sourceLocation() {
-            if (this.errorData.lineNumber === undefined || this.errorData.columnNumber === undefined) return;
+            if (this.errorData.lineNumber === undefined) return;
+            if (this.errorData.columnNumber === undefined) return;
             return `${this.errorData.lineNumber}:${this.errorData.columnNumber}`;
         },
-        stackLine() {
+        stackLines() {
             return this.errorData.stack.split("\n");
         }
     },
     data: function() {
         return {
-            errorData: Error(this.error),
+            errorData: this.errorObject,
             visibleData: this.visible,
             collapsedData: this.collapsed
         };
     },
     watch: {
-        error(value) {
-            this.errorData = Error(value);
+        errorObject(value) {
+            this.errorData = value;
         },
         errorData(value) {
             this.$emit("update:error", value);
@@ -291,6 +292,7 @@ export const ErrorAlert = {
             this.collapsedData = true;
         },
         onCloseClick() {
+            this.$emit("close");
             this.hide();
         },
         onHeaderClick() {
