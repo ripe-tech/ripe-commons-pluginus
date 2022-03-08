@@ -132,7 +132,7 @@ body.round .error-alert {
 }
 
 .error-alert > .error-container > .error-header > .right > .arrow:hover,
-.error-alert > .error-container > .error-header .left:hover ~ .right .arrow {
+.error-alert > .error-container > .error-header .left:hover ~ .right > .arrow {
     opacity: 1;
 }
 
