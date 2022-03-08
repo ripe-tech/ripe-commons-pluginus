@@ -1,8 +1,8 @@
 <template>
     <transition name="fade">
-        <div class="exception" v-bind:class="classes" v-show="isVisible">
-            <div class="exception-container">
-                <div class="exception-header" v-on:click="onHeaderClick">
+        <div class="error-alert" v-bind:class="classes" v-show="isVisible">
+            <div class="error-container">
+                <div class="error-header" v-on:click="onHeaderClick">
                     <div class="left">
                         <div class="header-icon">
                             <icon
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <transition name="fade">
-                    <div class="exception-stack" v-show="!isCollapsed">
+                    <div class="error-stack" v-show="!isCollapsed">
                         <p class="stack-line" v-for="(stackLine, index) of stackLine" v-bind:key="index">
                             {{ stackLine }}
                         </p>
@@ -51,52 +51,52 @@
 </template>
 
 <style lang="scss" scoped>
-.exception {
+.error-alert {
     display: block;
     font-family: "consolas", monospace;
     transition: opacity 1s ease-in-out;
-    background-color: #e96760;
     font-size: 12px;
     color: #ffffff;
     opacity: 1;
 }
 
-body.round .exception {
+body.round .error-alert {
     border-radius: 4px 4px 4px 4px;
 }
 
-.exception > .exception-container {
+.error-alert > .error-container {
     display: flex;
     flex-direction: column;
 }
 
-.exception.direction-top > .exception-container {
+.exception.direction-top > .error-container {
     display: flex;
     flex-direction: column-reverse;
 }
 
-.exception > .exception-container > .exception-header {
+.error-alert > .error-container > .error-header {
     display: flex;
+    background-color: #e96760;
     cursor: pointer;
     font-weight: bold;
     padding: 8px 8px 8px 8px;
 }
 
-.exception > .exception-container > .exception-header > .left {
+.error-alert > .error-container > .error-header > .left {
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
     min-width: 150px;
 }
 
-.exception > .exception-container > .exception-header > .left .header-icon {
+.error-alert > .error-container > .error-header > .left .header-icon {
     display: inline-flex;
     max-height: 15px;
     padding-right: 4px;
     align-items: center;
 }
 
-.exception > .exception-container > .exception-header > .left .header-text {
+.error-alert > .error-container > .error-header > .left .header-text {
     display: inline-block;
     width: 100%;
     overflow: hidden;
@@ -105,11 +105,11 @@ body.round .exception {
     -webkit-box-orient: vertical;
 }
 
-.exception.collapsed > .exception-container > .exception-header > .left .header-text {
+.exception.collapsed > .error-container > .error-header > .left .header-text {
     -webkit-line-clamp: 2;
 }
 
-.exception > .exception-container > .exception-header .right {
+.error-alert > .error-container > .error-header .right {
     display: inline-flex;
     width: 55px;
     min-width: 40px;
@@ -118,41 +118,42 @@ body.round .exception {
     align-items: center;
 }
 
-.exception > .exception-container > .exception-header .arrow {
+.error-alert > .error-container > .error-header .arrow {
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
     opacity: 0.6;
 }
 
-.exception.collapsed .exception-container .exception-header .arrow {
+.exception.collapsed .error-container .error-header .arrow {
     transform: rotate(180deg);
 }
 
-.exception > .exception-container > .exception-header .arrow:hover,
-.exception > .exception-container > .exception-header .left:hover ~ .right .arrow {
+.error-alert > .error-container > .error-header .arrow:hover,
+.error-alert > .error-container > .error-header .left:hover ~ .right .arrow {
     opacity: 1;
 }
 
-.exception > .exception-container > .exception-header .right .close {
+.error-alert > .error-container > .error-header .right .close {
     transition: opacity 0.2s ease-in-out;
     opacity: 0.6;
 }
 
-.exception > .exception-container > .exception-header .right .close:hover {
+.error-alert > .error-container > .error-header .right .close:hover {
     opacity: 1;
 }
 
-.exception > .exception-container > .exception-stack {
+.error-alert > .error-container > .error-stack {
+    background-color: #e96760;
     max-height: 300px;
     overflow-y: auto;
     overflow-x: auto;
 }
 
-.exception > .exception-container > .exception-stack > .stack-line {
+.error-alert > .error-container > .error-stack > .stack-line {
     padding: 5px 8px 5px 26px;
     margin: 0px;
 }
 
-.exception > .exception-container > .exception-stack > .stack-line:nth-child(odd) {
+.error-alert > .error-container > .error-stack > .stack-line:nth-child(odd) {
     background-color: #ec7a74;
 }
 
@@ -166,32 +167,22 @@ body.round .exception {
     opacity: 0;
 }
 
-.exception > .exception-header > .right .arrow.fade-enter-active,
-.exception > .exception-header > .right .arrow.fade-leave-active {
-    transition: opacity 0.2s ease-in-out;
-}
-
-.exception > .exception-header > .right .arrow.fade-enter,
-.exception > .exception-header > .right .arrow.fade-leave-to {
-    opacity: 0.5;
-}
-
-.exception > .exception-container > .exception-stack.fade-enter-active,
-.exception > .exception-container > .exception-stack.fade-leave-active {
+.error-alert > .error-container > .error-stack.fade-enter-active,
+.error-alert > .error-container > .error-stack.fade-leave-active {
     transition: max-height 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
-.exception > .exception-container > .exception-stack.fade-enter,
-.exception > .exception-container > .exception-stack.fade-leave-to {
+.error-alert > .error-container > .error-stack.fade-enter,
+.error-alert > .error-container > .error-stack.fade-leave-to {
     max-height: 0px;
     opacity: 0;
 }
 
-body.mobile .exception > .exception-container > .exception-header .arrow {
+body.mobile .error-alert > .error-container > .error-header .arrow {
     opacity: 1;
 }
 
-body.mobile .exception > .exception-container > .exception-header .right .close {
+body.mobile .error-alert > .error-container > .error-header .right .close {
     opacity: 1;
 }
 </style>
@@ -199,8 +190,8 @@ body.mobile .exception > .exception-container > .exception-header .right .close 
 <script>
 import { partMixin } from "../../../mixins";
 
-export const Exception = {
-    name: "exception",
+export const ErrorAlert = {
+    name: "error-alert",
     mixins: [partMixin],
     props: {
         error: {
@@ -213,7 +204,7 @@ export const Exception = {
         },
         collapsed: {
             type: Boolean,
-            default: false
+            default: true
         },
         direction: {
             type: String,
@@ -308,5 +299,5 @@ export const Exception = {
     }
 };
 
-export default Exception;
+export default ErrorAlert;
 </script>

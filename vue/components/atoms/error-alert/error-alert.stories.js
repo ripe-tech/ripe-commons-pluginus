@@ -3,12 +3,15 @@ import { withKnobs, boolean } from "@storybook/addon-knobs";
 
 const mockError = new TypeError("Mock error!", "mock.js");
 
-storiesOf("Components/Atoms/Exception", module)
+storiesOf("Components/Atoms/Error Alert", module)
     .addDecorator(withKnobs)
-    .add("Exception", () => ({
+    .add("Error Alert", () => ({
         props: {
             visible: {
-                default: boolean("Logo", true)
+                default: boolean("Visible", true)
+            },
+            collapsed: {
+                default: boolean("Collapsed", false)
             }
         },
         data: function() {
@@ -17,6 +20,10 @@ storiesOf("Components/Atoms/Exception", module)
             };
         },
         template: `
-            <exception v-bind:error="mockError" v-bind:visible="visible" />
+            <error-alert
+                v-bind:error="mockError"
+                v-bind:visible="visible"
+                v-bind:collapsed="collapsed"
+            />
         `
     }));
