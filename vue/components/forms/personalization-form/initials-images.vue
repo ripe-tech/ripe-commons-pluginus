@@ -141,20 +141,6 @@ export const InitialsImages = {
             default: null
         },
         /**
-         * The width of each image in the DOM.
-         */
-        containerWidth: {
-            type: Number,
-            default: null
-        },
-        /**
-         * The height of each image in the DOM.
-         */
-        containerHeight: {
-            type: Number,
-            default: null
-        },
-        /**
          * If enabled uses pixel ratio in image.
          */
         usePixelRatio: {
@@ -229,8 +215,8 @@ export const InitialsImages = {
     computed: {
         style() {
             const base = {};
-            if (this.containerHeight || this.height) base.height = `${this.containerHeight || this.height}px`;
-            if (this.containerWidth || this.width) base.width = `${this.containerWidth || this.width}px`;
+            if (this.height) base.height = `${this.height}px`;
+            if (this.width) base.width = `${this.width}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
