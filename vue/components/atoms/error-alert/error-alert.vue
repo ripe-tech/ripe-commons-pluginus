@@ -93,14 +93,14 @@ body.round .error-alert {
     width: 100%;
 }
 
-.error-alert > .error-container > .error-header > .left .header-icon {
+.error-alert > .error-container > .error-header > .left > .header-icon {
     align-items: center;
     display: inline-flex;
     max-height: 15px;
     padding-right: 4px;
 }
 
-.error-alert > .error-container > .error-header > .left .header-text {
+.error-alert > .error-container > .error-header > .left > .header-text {
     -webkit-box-orient: vertical;
     display: inline-block;
     display: -webkit-box;
@@ -109,7 +109,7 @@ body.round .error-alert {
     width: 100%;
 }
 
-.error-alert.collapsed > .error-container > .error-header > .left .header-text {
+.error-alert.collapsed > .error-container > .error-header > .left > .header-text {
     -webkit-line-clamp: 2;
 }
 
