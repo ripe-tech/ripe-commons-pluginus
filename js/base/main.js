@@ -472,7 +472,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         Vue.config.errorHandler = (error, vm, info) => {
             // default Vue.js config errorHandler
             if (process.env.NODE_ENV !== "production") {
-              Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
+                Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
             }
             console.error(error);
             // pipe vue error to application bus
