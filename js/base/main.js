@@ -50,10 +50,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // possible to print some information on the error
         this.owner.bind("error", async err => await this._handleCritical(err));
 
-        // binds the error handler on the manager so that it's
-        // possible to print some information on the error
-        this.owner.bind("on_error", (...args) => this._handleOnError(...args));
-
         // gathers both all of the helper plugins and all of the
         // locale plugins, to be used by this "manager"
         this.helperPlugins = await this.owner.getPluginsByCapability("helper");
