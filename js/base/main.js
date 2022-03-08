@@ -468,6 +468,17 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // as this is going to be used by multiple parts
         Vue.component("global-events", GlobalEvents);
 
+        // configures a custom error handler for vue
+        Vue.config.errorHandler = (error, vm, info) => {
+            // default Vue.js config errorHandler
+            if (process.env.NODE_ENV !== "production") {
+              Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
+            }
+            console.error(error);
+            // pipe vue error to application bus
+            this.owner.trigger("on_error_vue", error);
+        };
+
         // returns the global vue instance so that methods that
         // inherit from this may use the same reference
         return Vue;
