@@ -21,7 +21,6 @@
 }
 
 .initials-images .initials-image {
-    /* height: 600px; */
     user-select: none;
     width: auto;
 }
@@ -175,6 +174,13 @@ export const InitialsImages = {
         openExternally: {
             type: Boolean,
             default: false
+        },
+        /**
+         * If enabled sets a minimum height for each image.
+         */
+        minimumHeight: {
+            type: Number,
+            default: 600
         }
     },
     data: function() {
@@ -228,6 +234,7 @@ export const InitialsImages = {
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
+            if (!base.height && this.minimumHeight) base.height = `${this.minimumHeight}px`;
             return base;
         }
     },
