@@ -237,34 +237,27 @@ export const ErrorAlert = {
             return this.collapsedData;
         },
         message() {
-            return this.errorData.message;
+            return this.errorObject.message;
         },
         file() {
-            return this.errorData.fileName;
+            return this.errorObject.fileName;
         },
         sourceLocation() {
-            if (this.errorData.lineNumber === undefined) return;
-            if (this.errorData.columnNumber === undefined) return;
-            return `${this.errorData.lineNumber}:${this.errorData.columnNumber}`;
+            if (this.errorObject.lineNumber === undefined) return;
+            if (this.errorObject.columnNumber === undefined) return;
+            return `${this.errorObject.lineNumber}:${this.errorObject.columnNumber}`;
         },
         stackLines() {
-            return this.errorData.stack.split("\n");
+            return this.errorObject.stack.split("\n").filter(l => l);
         }
     },
     data: function() {
         return {
-            errorData: this.errorObject,
             visibleData: this.visible,
             collapsedData: this.collapsed
         };
     },
     watch: {
-        errorObject(value) {
-            this.errorData = value;
-        },
-        errorData(value) {
-            this.$emit("update:error", value);
-        },
         visible(value) {
             this.visibleData = value;
         },
