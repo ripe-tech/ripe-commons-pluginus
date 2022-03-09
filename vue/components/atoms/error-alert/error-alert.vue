@@ -212,6 +212,12 @@ export const ErrorAlert = {
             default: "bottom"
         }
     },
+    data: function() {
+        return {
+            visibleData: this.visible,
+            collapsedData: this.collapsed
+        };
+    },
     computed: {
         classes() {
             const base = {};
@@ -248,12 +254,6 @@ export const ErrorAlert = {
         stackLines() {
             return this.errorObject.stack.split("\n").filter(l => l);
         }
-    },
-    data: function() {
-        return {
-            visibleData: this.visible,
-            collapsedData: this.collapsed
-        };
     },
     watch: {
         visible(value) {
