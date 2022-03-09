@@ -113,6 +113,13 @@ export const InitialsImages = {
             default: null
         },
         /**
+         * The max width of each image.
+         */
+        imageWidth: {
+            type: Number,
+            default: null
+        },
+        /**
          * The max height of each image.
          */
         imageHeight: {
@@ -215,12 +222,13 @@ export const InitialsImages = {
     computed: {
         style() {
             const base = {};
-            if (this.height) base.height = `${this.height}px`;
             if (this.width) base.width = `${this.width}px`;
+            if (this.height) base.height = `${this.height}px`;
+            if (this.imageWidth) base["max-width"] = `${this.imageWidth}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
-            if (!base.height && this.minHeight) base.height = `${this.minHeight}px`;
+            if (this.minHeight) base.height = base.height ? base.height : `${this.minHeight}px`;
             return base;
         }
     },
