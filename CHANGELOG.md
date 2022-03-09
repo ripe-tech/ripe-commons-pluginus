@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Piping vue errors to application bus - [ripe-white/#975](https://github.com/ripe-tech/ripe-white/issues/975)
 
 ### Changed
 
@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
 * Added getter `getSizeState` to the store, required by the `size` component
-* Add error-alert component and pipe vue errors to application - [ripe-white/#975](https://github.com/ripe-tech/ripe-white/issues/975)
 
 ### Fixed
 
