@@ -21,7 +21,6 @@
 }
 
 .initials-images .initials-image {
-    height: 600px;
     user-select: none;
     width: auto;
 }
@@ -114,6 +113,13 @@ export const InitialsImages = {
             default: null
         },
         /**
+         * The max width of each image.
+         */
+        imageWidth: {
+            type: Number,
+            default: null
+        },
+        /**
          * The max height of each image.
          */
         imageHeight: {
@@ -140,6 +146,20 @@ export const InitialsImages = {
         height: {
             type: Number,
             default: null
+        },
+        /**
+         * If enabled sets a minimum width for each image.
+         */
+        minWidth: {
+            type: Number,
+            default: 600
+        },
+        /**
+         * If enabled sets a minimum height for each image.
+         */
+        minHeight: {
+            type: Number,
+            default: 600
         },
         /**
          * If enabled uses pixel ratio in image.
@@ -209,11 +229,14 @@ export const InitialsImages = {
     computed: {
         style() {
             const base = {};
-            if (this.height) base.height = `${this.height}px`;
             if (this.width) base.width = `${this.width}px`;
+            if (this.height) base.height = `${this.height}px`;
+            if (this.imageWidth) base["max-width"] = `${this.imageWidth}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
+            if (this.minWidth) base.width = base.width ? base.width : `${this.minWidth}px`;
+            if (this.minHeight) base.height = base.height ? base.height : `${this.minHeight}px`;
             return base;
         }
     },
@@ -231,8 +254,8 @@ export const InitialsImages = {
                     initialsViewport: this.viewport,
                     getInitialsContext: this.getContext,
                     frame: this.frame,
-                    width: parseInt(this.width),
-                    height: parseInt(this.height),
+                    width: this.width ? parseInt(this.width) : undefined,
+                    height: this.height ? parseInt(this.height) : undefined,
                     usePixelRatio: this.usePixelRatio
                 });
                 this.initialsImages.push(image);
