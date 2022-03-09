@@ -474,8 +474,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             if (process.env.NODE_ENV !== "production") {
                 Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
             }
-
             console.error(error);
+
             // pipe vue error to application bus
             this.owner.trigger("on_error_vue", error);
         };
