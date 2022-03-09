@@ -164,7 +164,7 @@ export const InitialsImages = {
         /**
          * If enabled sets a minimum height for each image.
          */
-        minimumHeight: {
+        minHeight: {
             type: Number,
             default: 600
         }
@@ -220,7 +220,7 @@ export const InitialsImages = {
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
-            if (!base.height && this.minimumHeight) base.height = `${this.minimumHeight}px`;
+            if (!base.height && this.minHeight) base.height = `${this.minHeight}px`;
             return base;
         }
     },
