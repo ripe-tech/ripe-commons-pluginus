@@ -252,7 +252,8 @@ export const ErrorAlert = {
             return `${this.errorObject.lineNumber}:${this.errorObject.columnNumber}`;
         },
         stackLines() {
-            return this.errorObject.stack.split("\n").filter(l => l);
+            // split by lines and remove empty lines
+            return this.errorObject.stack.split("\n").filter(l => l !== "");
         }
     },
     watch: {
