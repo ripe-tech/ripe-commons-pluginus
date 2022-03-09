@@ -102,7 +102,6 @@ body.round .error-alert {
 
 .error-alert > .error-container > .error-header > .left > .header-text {
     -webkit-box-orient: vertical;
-    display: inline-block;
     display: -webkit-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -148,8 +147,7 @@ body.round .error-alert {
 .error-alert > .error-container > .error-stack {
     background-color: #e96760;
     max-height: 300px;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 .error-alert > .error-container > .error-stack > .stack-line {
