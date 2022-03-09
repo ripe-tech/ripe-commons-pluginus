@@ -141,6 +141,13 @@ export const InitialsImages = {
             default: null
         },
         /**
+         * If enabled sets a minimum height for each image.
+         */
+        minHeight: {
+            type: Number,
+            default: 600
+        },
+        /**
          * If enabled uses pixel ratio in image.
          */
         usePixelRatio: {
@@ -160,13 +167,6 @@ export const InitialsImages = {
         openExternally: {
             type: Boolean,
             default: false
-        },
-        /**
-         * If enabled sets a minimum height for each image.
-         */
-        minHeight: {
-            type: Number,
-            default: 600
         }
     },
     data: function() {
