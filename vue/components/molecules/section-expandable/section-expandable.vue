@@ -1,7 +1,7 @@
 <template>
     <div class="section-expandable" v-bind:class="classes">
         <div class="header" v-on:click="onHeaderClick">
-            <slot name="title">
+            <slot name="header">
                 <div class="title" v-if="title">
                     {{ title }}
                 </div>
@@ -25,14 +25,17 @@
 </template>
 
 <style lang="scss" scoped>
-.section-expandable {
-    padding: 20px 0px 20px 0px;
-}
-
 .section-expandable > .header {
     cursor: pointer;
     display: flex;
+    padding: 20px 0px 20px 0px;
+    transition: background-color 0.25 ease-in-out;
     user-select: none;
+}
+
+.section-expandable:hover > .header,
+.section-expandable.expanded > .header {
+    background-color: #f3f3f3;
 }
 
 .section-expandable > .header > .title {
@@ -42,9 +45,13 @@
 }
 
 .section-expandable > .header > .icon {
-    display: inline-flex;
-    margin-left: 10px;
     align-items: center;
+    display: none;
+    margin-left: 15px;
+}
+
+.section-expandable > .header:hover > .icon {
+    display: inline-flex;
 }
 
 .section-expandable > .content {
@@ -60,7 +67,6 @@
 .section-expandable > .content.fade-leave-active {
     opacity: 0;
 }
-
 </style>
 
 <script>
@@ -85,7 +91,7 @@ export const SectionExpandable = {
     computed: {
         classes() {
             const base = {};
-            if (this.expanded) base.expanded = true;
+            if (this.expandedData) base.expanded = true;
             return base;
         },
         arrowIcon() {
