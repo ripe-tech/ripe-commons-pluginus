@@ -29,7 +29,7 @@
     cursor: pointer;
     display: flex;
     padding: 20px 0px 20px 0px;
-    transition: background-color 0.25 ease-in-out;
+    transition: background-color 0.1s ease-in-out;
     user-select: none;
 }
 
@@ -50,7 +50,8 @@
     margin-left: 15px;
 }
 
-.section-expandable > .header:hover > .icon {
+.section-expandable > .header:hover > .icon,
+.section-expandable.expanded  > .header > .icon {
     display: inline-flex;
 }
 
