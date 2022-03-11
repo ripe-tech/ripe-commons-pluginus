@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `minHeight` to `initials-images` so that it can be controlled instead of the default `600` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
 * Support for undefined width and height for initials image's SDK `bindImage` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+* Add section-expandable component - [ripe-white/#972](https://github.com/ripe-tech/ripe-white/issues/972)
 
 ### Changed
 
