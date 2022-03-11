@@ -51,7 +51,7 @@
 }
 
 .section-expandable > .header:hover > .icon,
-.section-expandable.expanded  > .header > .icon {
+.section-expandable.expanded > .header > .icon {
     display: inline-flex;
 }
 
