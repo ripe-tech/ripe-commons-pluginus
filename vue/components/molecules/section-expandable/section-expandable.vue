@@ -1,7 +1,7 @@
 <template>
     <div class="section-expandable" v-bind:class="classes">
         <div class="header" v-on:click="onHeaderClick">
-            <slot name="header">
+            <slot name="title">
                 <div class="title" v-if="title">
                     {{ title }}
                 </div>
