@@ -104,15 +104,16 @@ export class LocalePlugin extends RipeCommonsPlugin {
     }
 
     _trySetStoreLocale(locale) {
-        // if ripeProvider isn't ready, try again later
         if (!this.ripeProvider?.store?.state?.locale) {
-            const ripeReadyInterval = setInterval(() => {
-                if (this.ripeProvider?.store?.state?.locale) {
-                    clearInterval(ripeReadyInterval);
+            console.log("wasn't ready", locale);
+            // promise to await ripe provider loaded and ready event
+            return new Promise(resolve => {
+                const ripeProviderReadyBind = this.owner.bind("ripe_provider", () => {
+                    this.owner.unbind("locale_changed", ripeProviderReadyBind);
+                    console.log("is now ready, going to commit", locale);
                     this._setStoreLocale(locale);
-                }
-            }, 250);
-            return;
+                });
+            });
         }
 
         this._setStoreLocale(locale);
