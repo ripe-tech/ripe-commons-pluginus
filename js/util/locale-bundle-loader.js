@@ -43,14 +43,9 @@ export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
 
         const ripe = this.ripeProvider.ripe;
 
-        const bundles = await Promise.all([
-            ripe.localeBundleP(locale, "scales"),
-            ripe.localeBundleP(locale, "sizes")
-        ]);
-        bundles.map(bundle => ripe.addBundle(bundle, locale));
+        ripe._initBundles(locale, null);
 
         this.loadedBundles.push(locale);
-        this.owner.trigger("bundles");
     }
 
     getCapabilities() {
