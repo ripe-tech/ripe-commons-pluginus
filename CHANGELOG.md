@@ -19,6 +19,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Proper sync locale values between store locale and `this.locale` after coercing locale
 
+## [0.23.0] - 2022-03-10
+
+### Added
+
+* Added `minHeight` to `initials-images` so that it can be controlled instead of the default `600` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+* Support for undefined width and height for initials image's SDK `bindImage` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+
+### Changed
+
+* Bumped dependencies
+
+### Fixed
+
+* Reacting to `open-externally` feature for base plugins - [ripe-white/#971](https://github.com/ripe-tech/ripe-white/issues/971)
+
 ## [0.22.0] - 2022-02-21
 
 ### Added
