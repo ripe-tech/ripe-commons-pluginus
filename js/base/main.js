@@ -109,6 +109,7 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
         this.setModelConfig(config).catch(async err => await this._handleCritical(err));
+        this.owner.trigger("ripe_provider");
     }
 
     async unload() {
