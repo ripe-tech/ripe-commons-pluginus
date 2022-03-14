@@ -23,15 +23,14 @@ export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
     }
 
     async _tryLoadLocaleBundle(locale) {
-        // if ripeProvider isn't ready, try again later
         if (!this.ripeProvider.ripe) {
-            const ripeReadyInterval = setInterval(async () => {
-                if (!this.ripeProvider.ripe) return;
-
-                clearInterval(ripeReadyInterval);
-                await this.loadLocaleBundle(locale);
-            }, 250);
-            return;
+            // promise to await ripe provider loaded and ready event
+            return new Promise(resolve => {
+                const ripeProviderReadyBind = this.owner.bind("ripe_provider", () => {
+                    this.owner.unbind("locale_changed", ripeProviderReadyBind);
+                    this.loadLocaleBundle(locale);
+                });
+            });
         }
 
         await this.loadLocaleBundle(locale);
