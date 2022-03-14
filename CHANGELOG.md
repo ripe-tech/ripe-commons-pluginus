@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *
 
+## [0.24.0] - 2022-03-14
+
+* Bump ripe-sdk version to 2.24.0
+
 ## [0.23.0] - 2022-03-10
 
 ### Added
