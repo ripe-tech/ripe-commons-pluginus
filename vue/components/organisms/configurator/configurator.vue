@@ -402,6 +402,8 @@ export const Configurator = {
             this.frameData = value;
         },
         async frameData(value, previous) {
+            if (value.startsWith("video-")) return;
+
             // in case the configurator is not currently ready
             // then avoids the operation (returns control flow)
             if (!this.configurator || !this.configurator.ready) return;

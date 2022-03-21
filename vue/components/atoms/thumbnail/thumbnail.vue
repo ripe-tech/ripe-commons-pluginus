@@ -100,6 +100,15 @@ export const Thumbnail = {
         }
     },
     mounted: function() {
+        // if the frame is for a video, retrieves the video thumbnail
+        // url and sets it as the image's 'src'
+        if (this.frame.startsWith("video")) {
+            const videoThumbnailURL = this.$ripe._getVideoThumbnailURL({
+                name: this.frame.split("video-")[1]
+            });
+            this.$refs.image.src = videoThumbnailURL;
+            return;
+        }
         this.image = this.$ripe.bindImage(this.$refs.image, {
             frame: this.frame,
             size: this.size || undefined,

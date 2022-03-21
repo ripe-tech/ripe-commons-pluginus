@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Support for thumbnails that represent a video - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
+* Support for changing frames through thumbnails that point to a video instead of configurator frame - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
 
 ### Changed
 
