@@ -152,7 +152,7 @@ export const InitialsImages = {
          */
         minWidth: {
             type: Number,
-            default: 600
+            default: undefined
         },
         /**
          * If enabled sets a minimum height for each image.

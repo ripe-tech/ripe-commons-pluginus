@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Remove default value of `minWidth` in `initials-images` so that the previous behaviour is maintained
 
 ## [0.24.0] - 2022-03-14
 
