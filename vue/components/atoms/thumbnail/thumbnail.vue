@@ -1,12 +1,13 @@
 <template>
     <img
         class="thumbnail"
-        v-bind:class="{ active: active, loaded: loaded }"
+        v-bind:class="{ active: active, loaded: loaded, hide: hide }"
         v-bind:alt="name"
         src=""
         ref="image"
         v-on:click="showFrame"
         v-on:load="onLoaded"
+        v-on:error="onError"
     />
 </template>
 
@@ -28,6 +29,10 @@
 
 .thumbnail.loaded {
     opacity: 0.7;
+}
+
+.thumbnail.hide {
+    display: none;
 }
 
 body.desktop .thumbnail:first-child {
@@ -83,7 +88,8 @@ export const Thumbnail = {
     data: function() {
         return {
             image: null,
-            loaded: false
+            loaded: false,
+            hide: false
         };
     },
     computed: {
@@ -95,18 +101,29 @@ export const Thumbnail = {
         showFrame() {
             this.$bus.trigger("show_frame", this.frame);
         },
-        onLoaded() {
-            this.loaded = true;
-        }
-    },
-    mounted: function() {
-        // if the frame is for a video, retrieves the video thumbnail
-        // url and sets it as the image's 'src'
-        if (this.frame.startsWith("video")) {
+        setVideo() {
+            if (!this.frame.startsWith("video")) return;
+
             const videoThumbnailURL = this.$ripe._getVideoThumbnailURL({
                 name: this.frame.split("video-")[1]
             });
             this.$refs.image.src = videoThumbnailURL;
+        },
+        onLoaded() {
+            this.loaded = true;
+            this.hide = false;
+        },
+        onError() {
+            this.hide = true;
+        }
+    },
+    mounted: function() {
+        this.$bus.bind("parts", () => this.setVideo());
+
+        // if the frame is for a video, retrieves the video thumbnail
+        // url and sets it as the image's 'src'
+        if (this.frame.startsWith("video")) {
+            this.setVideo();
             return;
         }
         this.image = this.$ripe.bindImage(this.$refs.image, {
