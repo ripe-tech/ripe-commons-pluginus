@@ -110,12 +110,9 @@ export const Thumbnail = {
             this.$bus.trigger("show_frame", this.frame);
         },
         setVideo() {
-            if (!this.frame.startsWith("video")) return;
-
-            const videoThumbnailURL = this.$ripe._getVideoThumbnailURL({
+            this.$refs.image.src = this.$ripe._getVideoThumbnailURL({
                 name: this.frame.split("video-")[1]
             });
-            this.$refs.image.src = videoThumbnailURL;
         },
         onLoaded() {
             this.loaded = true;
@@ -126,7 +123,12 @@ export const Thumbnail = {
         }
     },
     mounted: function() {
-        this.$bus.bind("parts", () => this.setVideo());
+        // binds to the parts event so that if there's a configuration
+        // change then the video image is properly updated
+        this.$bus.bind("parts", () => {
+            if (!this.frame.startsWith("video-")) return;
+            this.setVideo();
+        });
 
         // if the frame is for a video, retrieves the video thumbnail
         // url and sets it as the image's 'src'
@@ -134,6 +136,7 @@ export const Thumbnail = {
             this.setVideo();
             return;
         }
+
         this.image = this.$ripe.bindImage(this.$refs.image, {
             frame: this.frame,
             size: this.size || undefined,
