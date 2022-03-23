@@ -31,7 +31,7 @@
     opacity: 0.7;
 }
 
-.thumbnail.hide {
+.thumbnail.hidden {
     display: none;
 }
 
@@ -89,7 +89,7 @@ export const Thumbnail = {
         return {
             image: null,
             loaded: false,
-            hide: false
+            hidden: false
         };
     },
     computed: {
@@ -100,7 +100,7 @@ export const Thumbnail = {
             const base = {
                 active: this.active,
                 loaded: this.loaded,
-                hide: this.hide
+                hidden: this.hidden
             };
             return base;
         }
@@ -119,10 +119,10 @@ export const Thumbnail = {
         },
         onLoaded() {
             this.loaded = true;
-            this.hide = false;
+            this.hidden = false;
         },
         onError() {
-            this.hide = true;
+            this.hidden = true;
         }
     },
     mounted: function() {
