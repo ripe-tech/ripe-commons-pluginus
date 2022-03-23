@@ -1,7 +1,7 @@
 <template>
     <img
         class="thumbnail"
-        v-bind:class="{ active: active, loaded: loaded, hide: hide }"
+        v-bind:class="classes"
         v-bind:alt="name"
         src=""
         ref="image"
@@ -95,6 +95,14 @@ export const Thumbnail = {
     computed: {
         active() {
             return this.frame === this.$store.state.currentFrame;
+        },
+        classes() {
+            const base = {
+                active: this.active,
+                loaded: this.loaded,
+                hide: this.hide
+            };
+            return base;
         }
     },
     methods: {
@@ -122,7 +130,7 @@ export const Thumbnail = {
 
         // if the frame is for a video, retrieves the video thumbnail
         // url and sets it as the image's 'src'
-        if (this.frame.startsWith("video")) {
+        if (this.frame.startsWith("video-")) {
             this.setVideo();
             return;
         }
