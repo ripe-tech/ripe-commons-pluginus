@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+*
+
+### Changed
+
+*
+
+### Fixed
+
+*
+
+## [0.25.0] - 2022-03-24
+
+### Added
+
 * Support for thumbnails that represent a video - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
 * Support for changing frames through thumbnails that point to a video instead of configurator frame - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
 
@@ -21,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove default value of `minWidth` in `initials-images` so that the previous behaviour is maintained - [ripe-white/#1005](https://github.com/ripe-tech/ripe-white/issues/1005)
 
 ## [0.24.0] - 2022-03-14
+
+### Changed
 
 * Bump ripe-sdk version to 2.24.0
 
