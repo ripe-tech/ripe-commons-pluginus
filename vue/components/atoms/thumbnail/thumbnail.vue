@@ -107,20 +107,12 @@ export const Thumbnail = {
         // build the required provider for the frame, if the thumbnail corresponds to a video
         // the URL provider, frame validator and frame differs, as well as the 'doubleBuffering'
         // usage, since the video for certain customizations might not exist
-        const imageUrlProvider = this.frame.startsWith("video-")
-            ? (...args) => this.$ripe._getVideoThumbnailURL(...args)
-            : undefined;
-        const frameValidator = this.frame.startsWith("video-")
-            ? (...args) => this.$ripe.hasVideo(...args)
-            : undefined;
-        const doubleBuffering = !this.frame.startsWith("video-");
-        const frame = this.frame.startsWith("video-") ? this.frame.split("video-")[1] : this.frame;
+        const bindMethod = this.frame.startsWith("video-")
+            ? (...args) => this.$ripe.bindVideoThumbnail(...args)
+            : (...args) => this.$ripe.bindImage(...args);
 
-        this.image = this.$ripe.bindImage(this.$refs.image, {
-            frame: frame,
-            imageUrlProvider: imageUrlProvider,
-            frameValidator: frameValidator,
-            doubleBuffering: doubleBuffering,
+        this.image = bindMethod(this.$refs.image, {
+            frame: this.frame.startsWith("video-") ? this.frame.split("video-")[1] : this.frame,
             size: this.size || undefined,
             crop: this.crop || undefined
         });
@@ -134,11 +126,6 @@ export const Thumbnail = {
     methods: {
         showFrame() {
             this.$bus.trigger("show_frame", this.frame);
-        },
-        setVideo() {
-            this.$refs.image.src = this.$ripe._getVideoThumbnailURL({
-                name: this.frame.split("video-")[1]
-            });
         },
         onLoaded() {
             this.loaded = true;
