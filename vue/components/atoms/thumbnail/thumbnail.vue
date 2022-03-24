@@ -1,12 +1,11 @@
 <template>
     <img
         class="thumbnail"
-        v-bind:class="{ active: active, loaded: loaded }"
+        v-bind:class="classes"
         v-bind:alt="name"
         src=""
         ref="image"
         v-on:click="showFrame"
-        v-on:load="onLoaded"
     />
 </template>
 
@@ -28,6 +27,10 @@
 
 .thumbnail.loaded {
     opacity: 0.7;
+}
+
+.thumbnail.hidden {
+    display: none;
 }
 
 body.desktop .thumbnail:first-child {
@@ -83,13 +86,42 @@ export const Thumbnail = {
     data: function() {
         return {
             image: null,
-            loaded: false
+            loaded: false,
+            hidden: false
         };
     },
     computed: {
         active() {
             return this.frame === this.$store.state.currentFrame;
+        },
+        classes() {
+            const base = {
+                active: this.active,
+                loaded: this.loaded,
+                hidden: this.hidden
+            };
+            return base;
         }
+    },
+    mounted: function() {
+        // build the required provider for the frame, if the thumbnail corresponds to a video
+        // the URL provider, frame validator and frame differs, as well as the 'doubleBuffering'
+        // usage, since the video for certain customizations might not exist
+        const bindMethod = this.frame.startsWith("video-")
+            ? (...args) => this.$ripe.bindVideoThumbnail(...args)
+            : (...args) => this.$ripe.bindImage(...args);
+
+        this.image = bindMethod(this.$refs.image, {
+            frame: this.frame.startsWith("video-") ? this.frame.split("video-")[1] : this.frame,
+            size: this.size || undefined,
+            crop: this.crop || undefined
+        });
+        this.image.bind("loaded", () => this.onLoaded());
+        this.image.bind("error", () => this.onError());
+    },
+    destroyed: async function() {
+        if (this.image) await this.$ripe.unbindImage(this.image);
+        this.image = null;
     },
     methods: {
         showFrame() {
@@ -97,18 +129,11 @@ export const Thumbnail = {
         },
         onLoaded() {
             this.loaded = true;
+            this.hidden = false;
+        },
+        onError() {
+            this.hidden = true;
         }
-    },
-    mounted: function() {
-        this.image = this.$ripe.bindImage(this.$refs.image, {
-            frame: this.frame,
-            size: this.size || undefined,
-            crop: this.crop || undefined
-        });
-    },
-    destroyed: async function() {
-        if (this.image) await this.$ripe.unbindImage(this.image);
-        this.image = null;
     }
 };
 
