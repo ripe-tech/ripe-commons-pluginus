@@ -181,6 +181,13 @@ export const InitialsImages = {
         openExternally: {
             type: Boolean,
             default: false
+        },
+        /**
+         * If enabled, shows initials in the image.
+         */
+        showInitials: {
+            type: Boolean,
+            default: true
         }
     },
     data: function() {
@@ -247,7 +254,7 @@ export const InitialsImages = {
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
                 const image = this.$ripe.bindImage(initialsImage, {
-                    showInitials: true,
+                    showInitials: this.showInitials,
                     initialsGroup: initialsImage.dataset.group,
                     initialsBuilder: this.initialsBuilder,
                     initialsContext: this.context,

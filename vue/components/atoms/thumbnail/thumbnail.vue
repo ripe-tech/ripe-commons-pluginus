@@ -112,7 +112,7 @@ export const Thumbnail = {
             : (...args) => this.$ripe.bindImage(...args);
 
         this.image = bindMethod(this.$refs.image, {
-            frame: this.frame.startsWith("video-") ? this.frame.split("video-")[1] : this.frame,
+            frame: this.getFrame(this.frame),
             size: this.size || undefined,
             crop: this.crop || undefined
         });
@@ -126,6 +126,11 @@ export const Thumbnail = {
     methods: {
         showFrame() {
             this.$bus.trigger("show_frame", this.frame);
+        },
+        getFrame(frame) {
+            if (frame.startsWith("video-")) return frame.split("video-")[1];
+            if (frame.startsWith("personalization-")) return frame.split("personalization-")[1];
+            return frame;
         },
         onLoaded() {
             this.loaded = true;

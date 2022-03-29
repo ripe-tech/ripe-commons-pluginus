@@ -46,10 +46,12 @@ export const Thumbnails = {
     methods: {
         thumbnailFrame(thumbnail) {
             if (thumbnail.type === "video") return `video-${thumbnail.name}`;
+            if (thumbnail.personalization) return `personalization-${thumbnail.face}-${thumbnail.frame}`;
             return `${thumbnail.face}-${thumbnail.frame}`;
         },
         thumbnailKey(thumbnail) {
             if (thumbnail.type === "video") return `video:${thumbnail.name}`;
+            if (thumbnail.personalization) return `personalization-${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
             return `${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
         }
     }
