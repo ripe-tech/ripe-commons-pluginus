@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Support thumbnails for frames that are for personalization only - [#ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
 
 ### Changed
 
-*
+* Support for `showInitials` in `initials-images` as prop - [#ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
 
 ### Fixed
 
