@@ -63,8 +63,11 @@ body.mobile .thumbnail:first-child {
 </style>
 
 <script>
+import { frameMixin } from "../../../mixins";
+
 export const Thumbnail = {
     name: "thumbnail",
+    mixins: [frameMixin],
     props: {
         frame: {
             type: String,
@@ -113,6 +116,9 @@ export const Thumbnail = {
 
         this.image = bindMethod(this.$refs.image, {
             frame: this.getFrame(this.frame),
+            initialsGroup: this.initialsGroup(this.frame),
+            initialsContext: this.initialsContext(this.frame),
+            showInitials: this.isPersonalizationFrame(this.frame),
             size: this.size || undefined,
             crop: this.crop || undefined
         });
@@ -129,8 +135,14 @@ export const Thumbnail = {
         },
         getFrame(frame) {
             if (frame.startsWith("video-")) return frame.split("video-")[1];
-            if (frame.startsWith("personalization-")) return frame.split("personalization-")[1];
-            return frame;
+            return this.getFramePersonalization(frame);
+        },
+        initialsGroup(frame) {
+            return this.getGroupPersonalization(frame);
+        },
+        initialsContext(frame) {
+            if (!this.isPersonalizationFrame(frame)) return;
+            return ["step::personalization"];
         },
         onLoaded() {
             this.loaded = true;
