@@ -137,7 +137,8 @@ export const Thumbnail = {
             return this.getOnlyFrame(frame);
         },
         initialsGroup(frame) {
-            return this.getGroupPersonalization(frame);
+            if (!this.isPersonalizationFrame(frame)) return;
+            return this.getGroupPersonalization(frame) || "main";
         },
         initialsContext(frame) {
             if (!this.isPersonalizationFrame(frame)) return;

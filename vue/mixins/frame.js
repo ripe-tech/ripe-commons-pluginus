@@ -19,7 +19,7 @@ export const frameMixin = {
         },
         getFramePersonalization(value) {
             const result = value.match(FRAME_REGEX);
-            return result && result.length > 0 ? result[0] : value;
+            return result && result.length > 0 ? result[0] : null;
         },
         getGroupPersonalization(value) {
             const result = value.match(GROUP_REGEX);
