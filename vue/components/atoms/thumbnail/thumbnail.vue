@@ -110,7 +110,7 @@ export const Thumbnail = {
         // build the required provider for the frame, if the thumbnail corresponds to a video
         // the URL provider, frame validator and frame differs, as well as the 'doubleBuffering'
         // usage, since the video for certain customizations might not exist
-        const bindMethod = this.frame.startsWith("video-")
+        const bindMethod = this.isVideoFrame(this.frame)
             ? (...args) => this.$ripe.bindVideoThumbnail(...args)
             : (...args) => this.$ripe.bindImage(...args);
 
@@ -134,8 +134,7 @@ export const Thumbnail = {
             this.$bus.trigger("show_frame", this.frame);
         },
         getFrame(frame) {
-            if (frame.startsWith("video-")) return frame.split("video-")[1];
-            return this.getFramePersonalization(frame);
+            return this.getOnlyFrame(frame);
         },
         initialsGroup(frame) {
             return this.getGroupPersonalization(frame);

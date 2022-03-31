@@ -6,6 +6,17 @@ export const frameMixin = {
         isPersonalizationFrame(value) {
             return value.startsWith("personalization-");
         },
+        isVideoFrame(value) {
+            return value.startsWith("video-");
+        },
+        getOnlyFrame(value) {
+            if (this.isVideoFrame(value)) return this.getVideoFrame(value);
+            if (this.isPersonalizationFrame(value)) return this.getFramePersonalization(value);
+            return value;
+        },
+        getVideoFrame(value) {
+            return value.split("video-")[1];
+        },
         getFramePersonalization(value) {
             const result = value.match(FRAME_REGEX);
             return result && result.length > 0 ? result[0] : value;
