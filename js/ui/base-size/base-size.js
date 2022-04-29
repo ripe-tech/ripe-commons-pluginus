@@ -2,6 +2,11 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../../abstract";
 import { BaseSize } from "./base-size.vue";
 
 export class BaseSizePlugin extends RipeCommonsPlugin {
+    constructor(owner) {
+        super(owner);
+        this.version = "0.1.0";
+    }
+
     getCapabilities() {
         return [
             RipeCommonsCapability.new("component"),
