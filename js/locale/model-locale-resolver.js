@@ -3,7 +3,6 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
     constructor(owner) {
         super(owner);
-        this.version = "0.1.0";
         this._bind();
     }
 
@@ -11,6 +10,10 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         await super.load();
         this.localePlugin = await this.owner.getPluginByName("LocalePlugin");
         this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {

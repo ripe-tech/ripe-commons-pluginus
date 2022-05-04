@@ -1,9 +1,8 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 export class DevicePlugin extends RipeCommonsPlugin {
-    constructor(owner) {
-        super(owner);
-        this.version = "0.1.0";
+    getVersion() {
+        return "0.1.0";
     }
 
     async load() {

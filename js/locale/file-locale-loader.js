@@ -4,11 +4,6 @@ import configJaJp from "../../bundles/config.ja_jp";
 import configZhCn from "../../bundles/config.zh_cn";
 
 export class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
-    constructor(owner) {
-        super(owner);
-        this.version = "0.1.0";
-    }
-
     /**
      * Loads the complete set of locale bundles from a file based data
      * sourcing structure.
@@ -38,6 +33,10 @@ export class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
 
     async load() {
         await super.load();
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {

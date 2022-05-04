@@ -3,7 +3,6 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 export class LocalePlugin extends RipeCommonsPlugin {
     constructor(owner) {
         super(owner);
-        this.version = "0.1.0";
         this._bind();
     }
 
@@ -20,6 +19,10 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.loaderPlugins = null;
         this.resolverPlugins = null;
         await super.unload();
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {

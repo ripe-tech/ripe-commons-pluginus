@@ -10,8 +10,11 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
     constructor(owner) {
         super(owner);
-        this.version = "0.1.0";
         this._bind();
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {
