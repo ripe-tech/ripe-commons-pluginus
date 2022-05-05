@@ -1,10 +1,6 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 export class DevicePlugin extends RipeCommonsPlugin {
-    getVersion() {
-        return "0.1.0";
-    }
-
     async load() {
         await super.load();
         this.init();
@@ -12,6 +8,10 @@ export class DevicePlugin extends RipeCommonsPlugin {
 
     async unload() {
         await super.unload();
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {

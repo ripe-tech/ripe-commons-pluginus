@@ -2,10 +2,6 @@ import { Ripe } from "ripe-sdk";
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
 export class UrlChangerPlugin extends RipeCommonsPlugin {
-    getVersion() {
-        return "0.1.0";
-    }
-
     async load() {
         await super.load();
         this.model = null;
@@ -29,6 +25,10 @@ export class UrlChangerPlugin extends RipeCommonsPlugin {
         this.owner.unbind("theme_changed", this.onThemeChanged);
         this.owner.unbind("model_changed", this.onModelChanged);
         await super.unload();
+    }
+
+    getVersion() {
+        return "0.1.0";
     }
 
     getCapabilities() {
