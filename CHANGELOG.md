@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added version to all plugins starting at 0.1.0 - [ripe-white/#1026](https://github.com/ripe-tech/ripe-white/issues/1026)
+* Added html support for ´alert´ component  - [ripe-white/#1037](https://github.com/ripe-tech/ripe-white/issues/1037)
 
 ### Changed
 
