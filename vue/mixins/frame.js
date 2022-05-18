@@ -1,6 +1,3 @@
-const FRAME_REGEX = /(?<=personalization-\[\w*\]-).*/;
-const GROUP_REGEX = /(?<=personalization-\[)\w*(?=\])/;
-
 export const frameMixin = {
     methods: {
         isPersonalizationFrame(value) {
@@ -9,21 +6,39 @@ export const frameMixin = {
         isVideoFrame(value) {
             return value.startsWith("video-");
         },
-        getOnlyFrame(value) {
+        getFrame(value) {
             if (this.isVideoFrame(value)) return this.getVideoFrame(value);
             if (this.isPersonalizationFrame(value)) return this.getFramePersonalization(value);
             return value;
         },
         getVideoFrame(value) {
-            return value.split("video-")[1];
+            return value.split(/^video-/)[1];
         },
         getFramePersonalization(value) {
-            const result = value.match(FRAME_REGEX);
-            return result && result.length > 0 ? result[0] : null;
+            const name = value.split(/^personalization-/)[1];
+            const thumbnail = this.$store.state.config.thumbnails.find(
+                thumbnail => thumbnail.name === name && thumbnail.type === "personalization"
+            );
+            if (!thumbnail) return;
+            return thumbnail.face && thumbnail.frame
+                ? `${thumbnail.face}-${thumbnail.frame}`
+                : null;
         },
         getGroupPersonalization(value) {
-            const result = value.match(GROUP_REGEX);
-            return result && result.length > 0 ? result[0] : null;
+            const name = value.split(/^personalization-/)[1];
+            const thumbnail = this.$store.state.config.thumbnails.find(
+                thumbnail => thumbnail.name === name && thumbnail.type === "personalization"
+            );
+            if (!thumbnail) return;
+            return thumbnail.group || "main";
+        },
+        getProfilesPersonalization(value) {
+            const name = value.split(/^personalization-/)[1];
+            const thumbnail = this.$store.state.config.thumbnails.find(
+                thumbnail => thumbnail.name === name && thumbnail.type === "personalization"
+            );
+            if (!thumbnail) return;
+            return thumbnail.profiles || null;
         }
     }
 };

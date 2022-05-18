@@ -48,16 +48,14 @@ export const Thumbnails = {
         thumbnailFrame(thumbnail) {
             if (thumbnail.type === "video") return `video-${thumbnail.name}`;
             if (thumbnail.type === "personalization") {
-                return `personalization-[${thumbnail.group}]${
-                    thumbnail.face && thumbnail.frame ? `-${thumbnail.face}-${thumbnail.frame}` : ""
-                }`;
+                return `personalization-${thumbnail.name}`;
             }
             return `${thumbnail.face}-${thumbnail.frame}`;
         },
         thumbnailKey(thumbnail) {
             if (thumbnail.type === "video") return `video:${thumbnail.name}`;
             if (thumbnail.type === "personalization") {
-                return `personalization:${thumbnail.group}:${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
+                return `personalization:${thumbnail.name}`;
             }
             return `${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
         }

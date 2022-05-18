@@ -91,6 +91,13 @@ export const InitialsImages = {
             default: () => ["step::personalization"]
         },
         /**
+         * The extra profiles to be used to display the image.
+         */
+        profiles: {
+            type: Array,
+            default: () => []
+        },
+        /**
          * The viewport name to be used to showcase the initials.
          */
         viewport: {
@@ -260,6 +267,7 @@ export const InitialsImages = {
                     initialsContext: this.context,
                     initialsViewport: this.viewport,
                     getInitialsContext: this.getContext,
+                    initialsProfiles: this.profiles,
                     frame: this.frame,
                     width: this.width ? parseInt(this.width) : undefined,
                     height: this.height ? parseInt(this.height) : undefined,

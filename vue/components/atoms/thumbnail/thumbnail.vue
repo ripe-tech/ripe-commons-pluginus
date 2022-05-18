@@ -5,7 +5,7 @@
         v-bind:alt="name"
         src=""
         ref="image"
-        v-on:click="showFrame"
+        v-on:click="onClick"
     />
 </template>
 
@@ -118,6 +118,7 @@ export const Thumbnail = {
             frame: this.getFrame(this.frame),
             initialsGroup: this.initialsGroup(this.frame),
             initialsContext: this.initialsContext(this.frame),
+            initialsProfiles: this.initialsProfiles(this.frame),
             showInitials: this.isPersonalizationFrame(this.frame),
             size: this.size || undefined,
             crop: this.crop || undefined
@@ -130,19 +131,34 @@ export const Thumbnail = {
         this.image = null;
     },
     methods: {
+        showViewer() {
+            if (this.isVideoFrame(this.frame)) {
+                this.$bus.trigger("show_video", this.frame);
+            } else if (this.isPersonalizationFrame(this.frame)) {
+                this.$bus.trigger("show_personalization", this.frame);
+            } else {
+                this.$bus.trigger("show_configurator", this.frame);
+            }
+        },
         showFrame() {
             this.$bus.trigger("show_frame", this.frame);
         },
-        getFrame(frame) {
-            return this.getOnlyFrame(frame);
-        },
         initialsGroup(frame) {
-            if (!this.isPersonalizationFrame(frame)) return;
-            return this.getGroupPersonalization(frame) || "main";
+            return this.isPersonalizationFrame(frame) ? this.getGroupPersonalization(frame) : null;
         },
         initialsContext(frame) {
-            if (!this.isPersonalizationFrame(frame)) return;
-            return ["step::personalization"];
+            return this.isPersonalizationFrame(frame) ? ["step::personalization"] : null;
+        },
+        initialsProfiles(frame) {
+            return this.isPersonalizationFrame(frame)
+                ? this.getProfilesPersonalization(frame)
+                : null;
+        },
+        onClick() {
+            this.showViewer();
+
+            if (this.isVideoFrame(this.frame) || this.isPersonalizationFrame(this.frame)) return;
+            this.showFrame();
         },
         onLoaded() {
             this.loaded = true;

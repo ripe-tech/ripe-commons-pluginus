@@ -402,11 +402,6 @@ export const Configurator = {
             this.frameData = value;
         },
         async frameData(value, previous) {
-            // in case the frame for which a update was requested is
-            // associated with a video, then there's nothing to be done
-            // returns the control flow immediately
-            if (value.startsWith("video-") || value.startsWith("personalization-")) return;
-
             // in case the configurator is not currently ready
             // then avoids the operation (returns control flow)
             if (!this.configurator || !this.configurator.ready) return;
