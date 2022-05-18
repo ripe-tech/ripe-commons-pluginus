@@ -35,6 +35,10 @@ export class FileLocaleLoaderPlugin extends RipeCommonsPlugin {
         await super.load();
     }
 
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-loader")];
     }

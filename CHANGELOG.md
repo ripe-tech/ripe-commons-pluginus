@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added version to all plugins starting at 0.1.0 - [ripe-white/#1026](https://github.com/ripe-tech/ripe-white/issues/1026)
 * Support thumbnails for frames that are for personalization only (contain `group` in the thumbnails spec) - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
 
 ### Changed
@@ -18,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 *
+
+## [0.27.0] - 2022-04-12
+
+### Changed
+
+* Bump packages
 
 ## [0.26.0] - 2022-03-24
 
