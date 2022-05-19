@@ -279,12 +279,8 @@ export const store = {
             try {
                 // obtains the remote data and updates the local store information
                 // to reflect the remote information
-                const [
-                    groups,
-                    supportedCharacters,
-                    minimumCharacters,
-                    maximumCharacters
-                ] = await promise;
+                const [groups, supportedCharacters, minimumCharacters, maximumCharacters] =
+                    await promise;
                 commit("initialsGroups", groups);
                 commit("initialsSupportedCharacters", supportedCharacters);
                 commit("initialsMinimumCharacters", Number(minimumCharacters));

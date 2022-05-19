@@ -405,16 +405,6 @@ body.mobile .button-scroll-colors {
     height: 100px;
     width: 50px;
 }
-
-.restrictions_alert .message-restrictions_alert-container .message-restrictions_alert.visible {
-    left: 0px;
-    max-width: 55%;
-    position: absolute;
-    right: 0px;
-    top: 90px;
-    transform: translateY(0px);
-    z-index: 2;
-}
 </style>
 
 <script>

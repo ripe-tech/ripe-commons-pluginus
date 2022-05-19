@@ -29,16 +29,28 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         }
     }
 
+    /**
+     * Loads the set of local bundles for the provided locale of the
+     * default one (offered by locale plugin) so that the UI is able
+     * to show the basic layout with the proper locale values.
+     *
+     * @param {String} locale The name of the locale to load the base bundles.
+     */
     async loadBundleLocale(locale = null) {
-        const ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
+        const ripeProviderPlugin = await this.owner.getPluginByCapability("ripe-provider");
         const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+
+        if (!ripeProviderPlugin) return;
+        if (!localePlugin) return;
+
         const currentLocale = locale || localePlugin.getLocale();
-        const readyRipeInterval = setInterval(async () => {
-            if (ripeProvider.ripe) {
-                clearInterval(readyRipeInterval);
-                await ripeProvider.ripe._initBundles(currentLocale);
-            }
-        }, 250);
+        if (ripeProviderPlugin.ripe) {
+            await ripeProviderPlugin.ripe._initBundles(currentLocale);
+        } else {
+            ripeProviderPlugin.bind("loaded", async () => {
+                await ripeProviderPlugin.ripe._initBundles(currentLocale);
+            });
+        }
     }
 
     async loadRipeSdkLocales() {
