@@ -51,7 +51,7 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         if (ripeProviderPlugin.ripe && ripeProviderPlugin.ripe.locale) {
             await ripeProviderPlugin.ripe._initBundles(currentLocale);
         } else {
-            this.owner.bind("post_load", async () => {
+            ripeProviderPlugin.bind("loaded", async () => {
                 await ripeProviderPlugin.ripe._initBundles(currentLocale);
             });
         }
