@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-*
+* Added version to all plugins starting at 0.1.0 - [ripe-white/#1026](https://github.com/ripe-tech/ripe-white/issues/1026)
+* Added html support for ´alert´ component  - [ripe-white/#1037](https://github.com/ripe-tech/ripe-white/issues/1037)
 
 ### Changed
 
@@ -18,6 +19,143 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Load bundle locales for size and scale at every `pre_locale_set` event
+
+## [0.27.0] - 2022-04-12
+
+### Changed
+
+* Bump packages
+
+## [0.26.0] - 2022-03-24
+
+### Fixed
+
+* Restored dependencies
+
+## [0.25.0] - 2022-03-24
+
+### Added
+
+* Support for thumbnails that represent a video - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
+* Support for changing frames through thumbnails that point to a video instead of configurator frame - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
+
+### Changed
+
+* Bumped package dependencies
+
+### Fixed
+
+* Remove default value of `minWidth` in `initials-images` so that the previous behaviour is maintained - [ripe-white/#1005](https://github.com/ripe-tech/ripe-white/issues/1005)
+
+## [0.24.0] - 2022-03-14
+
+### Changed
+
+* Bump ripe-sdk version to 2.24.0
+
+## [0.23.0] - 2022-03-10
+
+### Added
+
+* Added `minHeight` to `initials-images` so that it can be controlled instead of the default `600` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+* Support for undefined width and height for initials image's SDK `bindImage` - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+
+### Changed
+
+* Bumped dependencies
+
+### Fixed
+
+* Reacting to `open-externally` feature for base plugins - [ripe-white/#971](https://github.com/ripe-tech/ripe-white/issues/971)
+
+## [0.22.0] - 2022-02-21
+
+### Added
+
+* Receive `openExternally` prop on the `personalization` component - [ripe-white/#963](https://github.com/ripe-tech/ripe-white/issues/963)
+* Added getter `getSizeState` to the store, required by the `size` component
+
+### Fixed
+
+* Revert `node-fetch` bump back to @2
+* Remove double update in configurator that caused flickering on resize
+
+## [0.21.0] - 2022-02-15
+
+### Changed
+
+* Bumped dependencies and upgrade webpack configuration
+* Added prop that enables/disabled drag indicator for configurator - [ripe-white/#962](https://github.com/ripe-tech/ripe-white/issues/962)
+
+### Fixed
+
+* Fix logic to show drag indicator for configurator - [ripe-white/#962](https://github.com/ripe-tech/ripe-white/issues/962)
+
+## [0.20.3] - 2022-01-25
+
+### Changed
+
+* Bumped dependency versions
+
+## [0.20.2] - 2022-01-19
+
+### Fixed
+
+* Set initial `size`, `width` and `height` on configurator bind so that the correct initial dimensions can be applied - [ripe-white/#954](https://github.com/ripe-tech/ripe-white/issues/954)
+
+## [0.20.1] - 2022-01-18
+
+### Changed
+
+* Bumped dependency versions
+
+## [0.20.0] - 2022-01-12
+
+### Changed
+
+* Only emit `load:images` event  in `initials-images` if the image loaded is up to date with the frame - [ripe-white/#948](https://github.com/ripe-tech/ripe-white/issues/948)
+* Bumped dependency versions
+
+## [0.19.0] - 2022-01-12
+
+### Added
+
+* Support for width, height and frame in `initials-images` - [ripe-white/#948](https://github.com/ripe-tech/ripe-white/issues/948)
+
+### Changed
+
+* Bumped RIPE SDK
+
+## [0.18.0] - 2021-11-26
+
+### Changed
+
+* Support rectangular thumbnails - [ripe-white/#943](https://github.com/ripe-tech/ripe-white/issues/943)
+* Bumped package versions (including `ripe-sdk`)
+
+## [0.17.0] - 2021-11-26
+
+### Added
+
+* Support for gender, scale and size coming from URL params - [#927](https://github.com/ripe-tech/ripe-commons-pluginus/pull/271)
+
+## [0.16.2] - 2021-11-24
+
+### Fixed
+
+* Resolution not being properly set by SDK options or URL params
+
+## [0.16.1] - 2021-11-21
+
+### Changed
+
+* Bumped dependencies
+
+## [0.16.0] - 2021-11-05
+
+### Changed
+
+* Bumped dependencies
 
 ## [0.15.1] - 2021-09-27
 

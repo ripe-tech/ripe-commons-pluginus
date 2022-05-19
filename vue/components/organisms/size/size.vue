@@ -93,6 +93,7 @@ export const Size = {
             state: {},
             counter: 0,
             closeCallback: null,
+            sizeLoaded: false,
             active: true,
             selectLabelData: this.selectLabel
         };
@@ -180,6 +181,18 @@ export const Size = {
         },
         modelError: function(error) {
             this.enabled = !error;
+        },
+        sizeLoaded: function() {
+            const sizeState = this.$store.getters.getSizeState();
+            const sizeValid = sizeState.gender && sizeState.scale && sizeState.size;
+            if (!sizeValid) return;
+
+            // schedules the size change operation to be performed in
+            // the next tick operation effectively changing the size according
+            // to the initially set state in the global environment
+            this.$nextTick(() => {
+                this.$bus.trigger("size", sizeState);
+            });
         },
         active: {
             handler: function(value) {
@@ -331,6 +344,10 @@ export const Size = {
             this.enabled = false;
         },
         sizeChanged(form) {
+            // marks the (initial) size loaded flag, effectively indicating
+            // that the initial loading operation can be performed
+            this.sizeLoaded = true;
+
             this.state = form.getState();
             this.sizeText = form.getSizeText();
             this.state.sizeText = this.sizeText;

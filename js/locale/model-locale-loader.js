@@ -13,6 +13,10 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         this._bind();
     }
 
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-loader")];
     }

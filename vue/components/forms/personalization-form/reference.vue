@@ -6,6 +6,7 @@
             v-bind:groups="groups"
             v-bind:get-context="__getContext"
             v-bind:image-height="imageHeight"
+            v-bind:open-externally="openExternally"
             v-bind:image-border-radius="imageBorderRadius"
         />
         <div class="form">
@@ -115,6 +116,10 @@ export const Reference = {
         tabProperties: {
             type: Array,
             default: () => ["font", "font_size", "style", "position", "color"]
+        },
+        openExternally: {
+            type: Boolean,
+            default: false
         }
     },
     data: function() {

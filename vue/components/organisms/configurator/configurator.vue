@@ -160,6 +160,30 @@ export const Configurator = {
             default: null
         },
         /**
+         * The width of the configurator in pixels, that allows support
+         * for non-square images.
+         */
+        width: {
+            type: Number,
+            default: null
+        },
+        /**
+         * The height of the configurator in pixels, that allows support
+         * for non-square images.
+         */
+        height: {
+            type: Number,
+            default: null
+        },
+        /**
+         * If enabled shows the holder (drag indicator) under the configurator
+         * images during a time interval or until the user interacts with it.
+         */
+        holder: {
+            type: Boolean,
+            default: true
+        },
+        /**
          * The time accepted for the holder to appear on the display
          * without any interaction of the user.
          */
@@ -194,13 +218,12 @@ export const Configurator = {
             return getComputedStyle(this.configurator.element).display !== "none";
         },
         hideHolder() {
-            return this.singleFrameView || this.frameChanged || this.holderTimedOut;
+            return !this.holder || this.singleFrameView || this.frameChanged || this.holderTimedOut;
         },
         mergedOptions() {
             return {
                 ...this.options,
-                useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks,
-                size: this.size
+                useMasks: this.useMasks === undefined ? this.options.useMasks : this.useMasks
             };
         }
     },
@@ -249,15 +272,18 @@ export const Configurator = {
             this.holderTimedOut = true;
         }, this.timeoutHolder);
 
-        this.configurator = this.ripeInstance.bindConfigurator(
-            this.$refs.configurator,
-            this.mergedOptions
-        );
+        this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
+            ...this.mergedOptions,
+            size: this.size,
+            width: this.width,
+            height: this.height
+        });
 
         this.configurator.bind("changed_frame", frame => {
-            // sets the frame changed flag and then updates
-            // the frame key to the new one (internal copy)
-            this.frameChanged = true;
+            // sets the frame changed flag only if there was a
+            // previous frame set and then updates the frame
+            // key to the new one (internal copy)
+            this.frameChanged = Boolean(this.frameData);
             this.frameData = frame;
 
             // updates the value of the single frame view
@@ -291,7 +317,7 @@ export const Configurator = {
             // triggers the resize operation, as some pending resize operation
             // may have been pilling up during the loading operation, during which
             // is not possible to trigger resize operations
-            this.resize(this.size);
+            this.resize(this.size, this.width, this.height);
 
             // updates the current frame in the store, this information can be used
             // by listener to update their internal state
@@ -368,7 +394,7 @@ export const Configurator = {
             }
         });
 
-        this.resize(this.size);
+        this.resize(this.size, this.width, this.height);
     },
     watch: {
         frame(value) {
@@ -376,6 +402,11 @@ export const Configurator = {
             this.frameData = value;
         },
         async frameData(value, previous) {
+            // in case the frame for which a update was requested is
+            // associated with a video, then there's nothing to be done
+            // returns the control flow immediately
+            if (value.startsWith("video-")) return;
+
             // in case the configurator is not currently ready
             // then avoids the operation (returns control flow)
             if (!this.configurator || !this.configurator.ready) return;
@@ -415,6 +446,16 @@ export const Configurator = {
             // in the configurator, to change the viewport accordingly
             this.resize(size);
         },
+        width(width) {
+            // reacts to the new width by triggering the resize operation
+            // in the configurator, to change the viewport accordingly
+            this.resize(null, width, this.height);
+        },
+        height(height) {
+            // reacts to the new height by triggering the resize operation
+            // in the configurator, to change the viewport accordingly
+            this.resize(null, this.width, height);
+        },
         useMasks() {
             if (!this.configurator) return;
             if (this.useMasks) this.configurator.enableMasks();
@@ -432,18 +473,20 @@ export const Configurator = {
          * Re-sizes the configurator according to the current
          * available container size (defined by parent).
          */
-        resize(size) {
+        resize(size = null, width = null, height = null) {
             // in case the size is invalid or no valid configurator
             // is available then returns the control flow as nothing
             // can be done under such conditions
-            if (!size || !this.configurator) return;
+            if (!(size || (width && height)) || !this.configurator) return;
 
             // in case the configurator is currently under loading
             // then ignores the resize request as this would trigger
             // a race condition and block the loading process
             if (this.loading) return;
 
-            this.configurator.resize(size);
+            // runs the underlying resize operation using the RIPE
+            // SDK configurator element method
+            this.configurator.resize(size, width, height);
         }
     },
     destroyed: async function() {

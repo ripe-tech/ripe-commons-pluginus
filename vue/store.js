@@ -36,6 +36,9 @@ export const store = {
          * are available (eg: only one size available).
          */
         sizeActive: null,
+        gender: null,
+        scale: null,
+        nativeSize: null,
         currentFrame: null,
         error: null,
         hasCustomization: false,
@@ -146,6 +149,15 @@ export const store = {
         },
         sizeActive(state, value) {
             state.sizeActive = value;
+        },
+        gender(state, gender) {
+            state.gender = gender;
+        },
+        scale(state, scale) {
+            state.scale = scale;
+        },
+        nativeSize(state, nativeSize) {
+            state.nativeSize = nativeSize;
         },
         currency(state, currency) {
             state.currency = currency;
@@ -346,6 +358,11 @@ export const store = {
         getTheme: state => () => state.theme,
         getRipeOptions: state => () => state.ripeOptions,
         getRipeState: state => () => state.ripeState,
+        getSizeState: state => () => ({
+            gender: state.gender,
+            scale: state.scale,
+            size: state.nativeSize
+        }),
         priceCurrency: state =>
             state.price && state.price.total ? state.price.total.currency : null,
         priceFinal: state =>

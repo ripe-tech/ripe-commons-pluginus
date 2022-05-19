@@ -21,7 +21,6 @@
 }
 
 .initials-images .initials-image {
-    height: 600px;
     user-select: none;
     width: auto;
 }
@@ -39,6 +38,10 @@ body.tablet .initials-images .initials-image {
 
 .initials-images .initials-image.selectable {
     cursor: pointer;
+}
+
+.initials-images .initials-image:not([src]) {
+    visibility: hidden;
 }
 </style>
 
@@ -71,38 +74,110 @@ export const InitialsImages = {
             type: Boolean,
             default: false
         },
+        /**
+         * A function that receives the initials and engraving as strings
+         * and the img element that will be used and returns a map with
+         * the initials and a profile list.
+         */
         initialsBuilder: {
             type: Function,
             default: null
         },
+        /**
+         * The context to be used to display the image.
+         */
         context: {
             type: Array,
             default: () => ["step::personalization"]
         },
+        /**
+         * The viewport name to be used to showcase the initials.
+         */
         viewport: {
             type: String,
             default: null
         },
+        /**
+         * The function that gets the context to be used to display
+         * the image, in case the context is dynamic.
+         */
         getContext: {
             type: Function,
             default: null
         },
+        /**
+         * The frame to be shown in the images.
+         */
+        frame: {
+            type: String,
+            default: null
+        },
+        /**
+         * The max width of each image.
+         */
+        imageWidth: {
+            type: Number,
+            default: null
+        },
+        /**
+         * The max height of each image.
+         */
         imageHeight: {
             type: Number,
             default: null
         },
+        /**
+         * The border radius of each image.
+         */
         imageBorderRadius: {
             type: String,
             default: null
         },
+        /**
+         * The width of each image.
+         */
+        width: {
+            type: Number,
+            default: null
+        },
+        /**
+         * The height of each image.
+         */
         height: {
             type: Number,
             default: null
         },
+        /**
+         * If enabled sets a minimum width for each image.
+         */
+        minWidth: {
+            type: Number,
+            default: undefined
+        },
+        /**
+         * If enabled sets a minimum height for each image.
+         */
+        minHeight: {
+            type: Number,
+            default: 600
+        },
+        /**
+         * If enabled uses pixel ratio in image.
+         */
+        usePixelRatio: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * The object fit CSS option of each image.
+         */
         imageObjectFit: {
             type: String,
             default: null
         },
+        /**
+         * If enabled, opens the image src in a new tab.
+         */
         openExternally: {
             type: Boolean,
             default: false
@@ -124,7 +199,25 @@ export const InitialsImages = {
             await this.bindImages();
         },
         async context(value) {
-            this.initialsImages.forEach(image => image.updateOptions({ initialsContext: value }));
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ initialsContext: value }))
+            ]);
+        },
+        async frame(value) {
+            this.srcs = {};
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ frame: value }))
+            ]);
+        },
+        async width(value) {
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ width: parseInt(value) }))
+            ]);
+        },
+        async height(value) {
+            await Promise.all([
+                this.initialsImages.map(image => image.updateOptions({ height: parseInt(value) }))
+            ]);
         }
     },
     mounted: async function() {
@@ -136,10 +229,14 @@ export const InitialsImages = {
     computed: {
         style() {
             const base = {};
+            if (this.width) base.width = `${this.width}px`;
             if (this.height) base.height = `${this.height}px`;
+            if (this.imageWidth) base["max-width"] = `${this.imageWidth}px`;
             if (this.imageHeight) base["max-height"] = `${this.imageHeight}px`;
             if (this.imageBorderRadius) base["border-radius"] = `${this.imageBorderRadius}`;
             if (this.imageObjectFit) base["object-fit"] = this.imageObjectFit;
+            if (this.minWidth) base.width = base.width ? base.width : `${this.minWidth}px`;
+            if (this.minHeight) base.height = base.height ? base.height : `${this.minHeight}px`;
             return base;
         }
     },
@@ -155,7 +252,11 @@ export const InitialsImages = {
                     initialsBuilder: this.initialsBuilder,
                     initialsContext: this.context,
                     initialsViewport: this.viewport,
-                    getInitialsContext: this.getContext
+                    getInitialsContext: this.getContext,
+                    frame: this.frame,
+                    width: this.width ? parseInt(this.width) : undefined,
+                    height: this.height ? parseInt(this.height) : undefined,
+                    usePixelRatio: this.usePixelRatio
                 });
                 this.initialsImages.push(image);
             }
@@ -197,6 +298,21 @@ export const InitialsImages = {
                 : [this.$refs.initialsImages];
             const src = initialsImages[index].src;
             this.$set(this.srcs, group, src);
+
+            // verifies if all images were loaded and if
+            // so sends an event
+            if (!this.groups.every(group => Object.keys(this.srcs).includes(group))) return;
+
+            // incase the frame that was loaded is not longer the
+            // latest one ignores the load operation, retuning the
+            // control flow immediately
+            const queryParams = this.$ripe._unpackQuery(src);
+            if (this.frame && queryParams.frame !== this.frame) return;
+
+            // triggers the load images operation indicating that
+            // all of the images for the current configuration
+            // have been loaded
+            this.$emit("load:images");
         }
     }
 };
