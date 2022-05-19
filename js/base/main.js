@@ -545,13 +545,13 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         const manager = this.owner;
         const app = new Vue({
             el: element,
-            provide: function () {
+            provide: function() {
                 return {
                     manager: manager
                 };
             },
             store: this.store,
-            created: function () {
+            created: function() {
                 // triggers the refresh of the UI when the
                 // global locale value changes
                 manager.bind("locale", () => {
