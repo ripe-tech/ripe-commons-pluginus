@@ -5,7 +5,7 @@
         v-bind:alt="name"
         src=""
         ref="image"
-        v-on:click="showFrame"
+        v-on:click="onClick"
     />
 </template>
 
@@ -63,8 +63,11 @@ body.mobile .thumbnail:first-child {
 </style>
 
 <script>
+import { frameMixin } from "../../../mixins";
+
 export const Thumbnail = {
     name: "thumbnail",
+    mixins: [frameMixin],
     props: {
         frame: {
             type: String,
@@ -107,12 +110,16 @@ export const Thumbnail = {
         // build the required provider for the frame, if the thumbnail corresponds to a video
         // the URL provider, frame validator and frame differs, as well as the 'doubleBuffering'
         // usage, since the video for certain customizations might not exist
-        const bindMethod = this.frame.startsWith("video-")
+        const bindMethod = this.isVideoFrame(this.frame)
             ? (...args) => this.$ripe.bindVideoThumbnail(...args)
             : (...args) => this.$ripe.bindImage(...args);
 
         this.image = bindMethod(this.$refs.image, {
-            frame: this.frame.startsWith("video-") ? this.frame.split("video-")[1] : this.frame,
+            frame: this.getFrame(this.frame),
+            initialsGroup: this.initialsGroup(this.frame),
+            initialsContext: this.initialsContext(this.frame),
+            initialsProfiles: this.initialsProfiles(this.frame),
+            showInitials: this.isPersonalizationFrame(this.frame),
             size: this.size || undefined,
             crop: this.crop || undefined
         });
@@ -124,8 +131,34 @@ export const Thumbnail = {
         this.image = null;
     },
     methods: {
+        showViewer() {
+            if (this.isVideoFrame(this.frame)) {
+                this.$bus.trigger("show_video", this.frame);
+            } else if (this.isPersonalizationFrame(this.frame)) {
+                this.$bus.trigger("show_personalization", this.frame);
+            } else {
+                this.$bus.trigger("show_configurator", this.frame);
+            }
+        },
         showFrame() {
             this.$bus.trigger("show_frame", this.frame);
+        },
+        initialsGroup(frame) {
+            return this.isPersonalizationFrame(frame) ? this.getGroupPersonalization(frame) : null;
+        },
+        initialsContext(frame) {
+            return this.isPersonalizationFrame(frame) ? ["step::personalization"] : null;
+        },
+        initialsProfiles(frame) {
+            return this.isPersonalizationFrame(frame)
+                ? this.getProfilesPersonalization(frame)
+                : null;
+        },
+        onClick() {
+            this.showViewer();
+
+            if (this.isVideoFrame(this.frame) || this.isPersonalizationFrame(this.frame)) return;
+            this.showFrame();
         },
         onLoaded() {
             this.loaded = true;

@@ -36,6 +36,7 @@ export const Thumbnails = {
                         this.$store.state.config.faces.includes(t.face) &&
                         this.$store.state.config.faces_m[t.face] &&
                         t.frame < this.$store.state.config.faces_m[t.face].frames) ||
+                    (!t.face && t.type === "personalization") ||
                     (this.$store.state.config.videos &&
                         this.$store.state.config.videos_m &&
                         this.$store.state.config.videos.includes(t.name) &&
@@ -46,10 +47,16 @@ export const Thumbnails = {
     methods: {
         thumbnailFrame(thumbnail) {
             if (thumbnail.type === "video") return `video-${thumbnail.name}`;
+            if (thumbnail.type === "personalization") {
+                return `personalization-${thumbnail.name}`;
+            }
             return `${thumbnail.face}-${thumbnail.frame}`;
         },
         thumbnailKey(thumbnail) {
             if (thumbnail.type === "video") return `video:${thumbnail.name}`;
+            if (thumbnail.type === "personalization") {
+                return `personalization:${thumbnail.name}`;
+            }
             return `${thumbnail.frame}:${thumbnail.name}:${thumbnail.face}`;
         }
     }
