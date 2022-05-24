@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+*
+
+### Changed
+
+*
+### Fixed
+
+*
+
+## [0.28.0] - 2022-05-24
+
+### Added
+
 * Added version to all plugins starting at 0.1.0 - [ripe-white/#1026](https://github.com/ripe-tech/ripe-white/issues/1026)
 * Added html support for ´alert´ component  - [ripe-white/#1037](https://github.com/ripe-tech/ripe-white/issues/1037)
 * Support thumbnails for frames that are for personalization only (contain `group` in the thumbnails spec) - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
