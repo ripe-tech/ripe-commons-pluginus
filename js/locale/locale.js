@@ -117,7 +117,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
      * @param {String} locale The locale string to be set in the store.
      */
     _trySetStoreLocale(locale) {
-        if (this.storePlugin.hasStore()) {
+        if (this.storePlugin.getStore("locale")) {
             this._setStoreLocale(locale);
         } else {
             // in case ripe provider store is not yet accessible
