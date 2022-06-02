@@ -107,6 +107,15 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale_map_changed");
     }
 
+    /**
+     * Tries to update the locale in the locale store making
+     * sure that the proper pre-conditions are met.
+     *
+     * If those pre-conditions are not met waits until the system
+     * is ready and retries the operation.
+     *
+     * @param {String} locale The locale string to be set in the store.
+     */
     _trySetStoreLocale(locale) {
         if (this.ripeProvider?.store?.state?.locale) {
             this._setStoreLocale(locale);
@@ -121,13 +130,20 @@ export class LocalePlugin extends RipeCommonsPlugin {
         }
     }
 
+    /**
+     * Set the given locale string value in the local store
+     * so that proper reactive chains may be triggered.
+     *
+     * Makes sure that the proper pre-conditions are met so that
+     * a "safe" locale set operation is possible.
+     *
+     * @param {String} locale The locale that is going to be set in
+     * the Ripe's store.
+     */
     _setStoreLocale(locale) {
-        if (
-            this.ripeProvider?.store?.state?.locale &&
-            this.ripeProvider.store.state.locale !== locale
-        ) {
-            this.ripeProvider.store.commit("locale", locale);
-        }
+        if (!this.ripeProvider?.store?.state?.locale) return;
+        if (this.ripeProvider.store.state.locale === locale) return;
+        this.ripeProvider.store.commit("locale", locale);
     }
 
     async _loadLocales() {
