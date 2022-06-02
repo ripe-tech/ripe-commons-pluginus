@@ -9,6 +9,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
         this.loaderPlugins = await this.owner.getPluginsByCapability("locale-loader"); // TODO better loader priority
+        this.storePlugin = await this.owner.getPluginByCapability("store-provider");
         this.resolverPlugins = await this.owner.getPluginsByCapability("locale-resolver");
         this.localeMap = await this._loadLocales();
         this.locale = null;
@@ -17,6 +18,7 @@ export class LocalePlugin extends RipeCommonsPlugin {
 
     async unload() {
         this.loaderPlugins = null;
+        this.storePlugin = null;
         this.resolverPlugins = null;
         await super.unload();
     }
@@ -105,6 +107,45 @@ export class LocalePlugin extends RipeCommonsPlugin {
         this.owner.trigger("locale_map_changed");
     }
 
+    /**
+     * Tries to update the locale in the locale store making
+     * sure that the proper pre-conditions are met.
+     *
+     * If those pre-conditions are not met waits until the system
+     * is ready and retries the operation.
+     *
+     * @param {String} locale The locale string to be set in the store.
+     */
+    _trySetStoreLocale(locale) {
+        if (this.storePlugin.hasStore()) {
+            this._setStoreLocale(locale);
+        } else {
+            // in case ripe provider store is not yet accessible
+            // then wait for the loading of the plugin to make sure
+            // that the store is available
+            const postLoadBind = this.storePlugin.bind("loaded", () => {
+                this.storePlugin.unbind("loaded", postLoadBind);
+                this._setStoreLocale(locale);
+            });
+        }
+    }
+
+    /**
+     * Set the given locale string value in the local store
+     * so that proper reactive chains may be triggered.
+     *
+     * Makes sure that the proper pre-conditions are met so that
+     * a "safe" locale set operation is possible.
+     *
+     * @param {String} locale The locale that is going to be set in
+     * the Ripe's store.
+     */
+    _setStoreLocale(locale) {
+        if (!this.storePlugin.hasStore()) return;
+        if (this.storePlugin.getStore("locale") === locale) return;
+        this.storePlugin.setStore("locale", locale);
+    }
+
     async _loadLocales() {
         const locales = {};
         for (const plugin of this.loaderPlugins) {
@@ -120,6 +161,9 @@ export class LocalePlugin extends RipeCommonsPlugin {
     _bind() {
         this.owner.bind("locale_change", async locale => {
             await this.setLocale(locale);
+        });
+        this.owner.bind("post_set_locale", async locale => {
+            this._trySetStoreLocale(locale);
         });
     }
 

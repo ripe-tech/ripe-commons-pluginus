@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 *
 ### Fixed
 
-*
+* Proper sync locale values between store locale and `this.locale` after coercing locale
 
 ## [0.28.0] - 2022-05-24
 

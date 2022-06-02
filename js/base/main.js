@@ -136,7 +136,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     getCapabilities() {
-        return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
+        return [
+            RipeCommonsCapability.new("start"),
+            RipeCommonsCapability.new("ripe-provider"),
+            RipeCommonsCapability.new("store-provider")
+        ];
     }
 
     async buildComponent(componentClass, options = {}) {
@@ -269,6 +273,21 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         });
         if (changed.length === 0 && !force) return;
         await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
+    }
+
+    hasStore() {
+        return Boolean(this.store);
+    }
+
+    getStore(key) {
+        if (!this.store) return undefined;
+        return this.store.state[key];
+    }
+
+    setStore(key, value) {
+        if (!this.store) return false;
+        this.store.commit(key, value);
+        return true;
     }
 
     _getRipeState() {
