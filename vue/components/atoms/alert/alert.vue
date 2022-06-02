@@ -2,7 +2,7 @@
     <transition name="fade">
         <div class="alert" v-bind:style="style" v-show="isVisible" v-on:click="onClick">
             <global-events v-on:keydown.esc="handleGlobal" />
-            <div class="alert-content">
+            <div class="alert-content" v-html="htmlData">
                 {{ textData }}
             </div>
         </div>
@@ -48,6 +48,10 @@ export const Alert = {
             type: String,
             default: "hello world"
         },
+        html: {
+            type: String,
+            default: null
+        },
         visible: {
             type: Boolean,
             default: false
@@ -81,6 +85,7 @@ export const Alert = {
             globalEventsData: this.globalEvents,
             textData: this.text,
             timeoutData: this.timeoutData,
+            htmlData: this.html,
             timer: null,
             key: true
         };
@@ -107,11 +112,12 @@ export const Alert = {
         show(options) {
             // unpacks the complete set of options for the new alert
             // that is going to be displayed
-            const { text, timeout, globalEvents, reset = true } = options;
+            const { text, html, timeout, globalEvents, reset = true } = options;
 
             // updates the current local values taking into account
             // the provided set of options
             this.textData = text;
+            this.htmlData = html;
             this.timeoutData = timeout || this.timeout;
             this.globalEventsData = globalEvents || this.globalEvents;
 

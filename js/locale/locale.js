@@ -23,6 +23,10 @@ export class LocalePlugin extends RipeCommonsPlugin {
         await super.unload();
     }
 
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("helper")];
     }

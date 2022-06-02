@@ -12,6 +12,10 @@ export class ModelLocaleResolverPlugin extends RipeCommonsPlugin {
         this.ripeProvider = await this.owner.getPluginByCapability("ripe-provider");
     }
 
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-resolver")];
     }

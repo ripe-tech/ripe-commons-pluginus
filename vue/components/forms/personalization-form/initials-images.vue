@@ -91,6 +91,13 @@ export const InitialsImages = {
             default: () => ["step::personalization"]
         },
         /**
+         * The extra profiles to be used to display the image.
+         */
+        profiles: {
+            type: Array,
+            default: () => []
+        },
+        /**
          * The viewport name to be used to showcase the initials.
          */
         viewport: {
@@ -152,7 +159,7 @@ export const InitialsImages = {
          */
         minWidth: {
             type: Number,
-            default: 600
+            default: undefined
         },
         /**
          * If enabled sets a minimum height for each image.
@@ -181,6 +188,13 @@ export const InitialsImages = {
         openExternally: {
             type: Boolean,
             default: false
+        },
+        /**
+         * If enabled, shows initials in the image.
+         */
+        showInitials: {
+            type: Boolean,
+            default: true
         }
     },
     data: function() {
@@ -247,12 +261,13 @@ export const InitialsImages = {
             const initialsImages = this.$refs.initialsImages || [];
             for (const initialsImage of initialsImages) {
                 const image = this.$ripe.bindImage(initialsImage, {
-                    showInitials: true,
+                    showInitials: this.showInitials,
                     initialsGroup: initialsImage.dataset.group,
                     initialsBuilder: this.initialsBuilder,
                     initialsContext: this.context,
                     initialsViewport: this.viewport,
                     getInitialsContext: this.getContext,
+                    initialsProfiles: this.profiles,
                     frame: this.frame,
                     width: this.width ? parseInt(this.width) : undefined,
                     height: this.height ? parseInt(this.height) : undefined,
