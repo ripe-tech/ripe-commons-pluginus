@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-*
+* Bump packages
+
 ### Fixed
 
 * Proper sync locale values between store locale and `this.locale` after coercing locale
