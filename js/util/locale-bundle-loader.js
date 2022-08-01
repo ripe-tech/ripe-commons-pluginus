@@ -23,17 +23,17 @@ export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
     }
 
     async _tryLoadLocaleBundle(locale) {
-        if (!this.ripeProvider.ripe) {
-            // promise to await ripe provider loaded and ready event
-            return new Promise(resolve => {
-                const ripeProviderReadyBind = this.owner.bind("ripe_provider", () => {
-                    this.owner.unbind("locale_changed", ripeProviderReadyBind);
-                    this.loadLocaleBundle(locale);
-                });
+        if (this.ripeProvider.ripe) {
+            await this.loadLocaleBundle(locale);
+        } else {
+            // in case ripe provider's ripe instance is not yet accessible
+            // then wait for the loading of the plugin to make sure that
+            // the store is available
+            const postLoadBind = this.owner.bind("post_load", () => {
+                this.owner.unbind("post_load", postLoadBind);
+                this.loadLocaleBundle(locale);
             });
         }
-
-        await this.loadLocaleBundle(locale);
     }
 
     async loadLocaleBundle(locale) {
@@ -41,9 +41,7 @@ export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
         if (this.loadedBundles.includes(locale)) return;
 
         const ripe = this.ripeProvider.ripe;
-
         ripe._initBundles(locale, null);
-
         this.loadedBundles.push(locale);
     }
 
