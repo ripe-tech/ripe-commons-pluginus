@@ -683,14 +683,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
                     this.$store.getters.getRipeState,
                     async ripeState => await self.setRipeOptions(ripeState)
                 );
-
-                // register for the change on locale setting from the store
-                // so that the change locale even is triggered allowing the
-                // change of the locale through the application
-                this.$store.watch(
-                    state => state.locale,
-                    locale => manager.trigger("locale_change", locale)
-                );
             }
         });
 
