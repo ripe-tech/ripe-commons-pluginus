@@ -1,5 +1,12 @@
 import { RipeCommonsPlugin, RipeCommonsCapability } from "../abstract";
 
+/**
+ * Locale bundler loader plugin responsible for the lazy loading
+ * of the locale bundles upon the `local_changed` event trigger.
+ *
+ * Handles the not ready state of the ripe provider in a graceful
+ * manner, making it resilient to race conditions.
+ */
 export class LocaleBundleLoaderPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
