@@ -13,6 +13,10 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         this._bind();
     }
 
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [RipeCommonsCapability.new("locale-loader")];
     }
@@ -26,6 +30,30 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
         const locales = [localePlugin.getLocale(), localePlugin.getLocaleFallback()];
         for (const locale of new Set(locales)) {
             await this._loadModelLocale(brand, model, locale);
+        }
+    }
+
+    /**
+     * Loads the set of local bundles for the provided locale of the
+     * default one (offered by locale plugin) so that the UI is able
+     * to show the basic layout with the proper locale values.
+     *
+     * @param {String} locale The name of the locale to load the base bundles.
+     */
+    async loadBundleLocale(locale = null) {
+        const ripeProviderPlugin = await this.owner.getPluginByCapability("ripe-provider");
+        const localePlugin = await this.owner.getPluginByName("LocalePlugin");
+
+        if (!ripeProviderPlugin) return;
+        if (!localePlugin) return;
+
+        const currentLocale = locale || localePlugin.getLocale();
+        if (ripeProviderPlugin.ripe && ripeProviderPlugin.ripe.locale) {
+            await ripeProviderPlugin.ripe._initBundles(currentLocale);
+        } else {
+            ripeProviderPlugin.bind("loaded", async () => {
+                await ripeProviderPlugin.ripe._initBundles(currentLocale);
+            });
         }
     }
 
@@ -50,6 +78,8 @@ export class ModelLocaleLoaderPlugin extends RipeCommonsPlugin {
             const { brand, name } = config;
             await this.loadModelLocales(brand, name);
         });
+
+        this.owner.bind("pre_set_locale", async locale => await this.loadBundleLocale(locale));
 
         this.owner.bind("post_set_locale", async () => await this.loadModelLocales());
 

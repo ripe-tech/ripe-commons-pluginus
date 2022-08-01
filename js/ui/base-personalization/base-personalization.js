@@ -2,6 +2,10 @@ import { RipeCommonsPlugin, RipeCommonsCapability } from "../../abstract";
 import { BasePersonalization } from "./base-personalization.vue";
 
 export class BasePersonalizationPlugin extends RipeCommonsPlugin {
+    getVersion() {
+        return "0.1.0";
+    }
+
     getCapabilities() {
         return [
             RipeCommonsCapability.new("component"),

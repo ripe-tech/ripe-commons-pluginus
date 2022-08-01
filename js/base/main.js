@@ -46,6 +46,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     async load() {
         await super.load();
 
+        // trigger the global pre load event indicating that the loading process
+        // is now starting
+        this.owner.trigger("pre_load");
+
         // binds the error handler on the manager so that it's
         // possible to print some information on the error
         this.owner.bind("error", async err => await this._handleCritical(err));
@@ -109,7 +113,10 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // runs the setting of the model & configuration according to the currently set
         // options (initial bootstrap operation), handling critical error as expected
         this.setModelConfig(config).catch(async err => await this._handleCritical(err));
-        this.owner.trigger("ripe_provider");
+
+        // trigger the global post load event indicating that the loading process
+        // of the application has just finished
+        this.owner.trigger("post_load");
     }
 
     async unload() {
@@ -129,7 +136,11 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
     }
 
     getCapabilities() {
-        return [RipeCommonsCapability.new("start"), RipeCommonsCapability.new("ripe-provider")];
+        return [
+            RipeCommonsCapability.new("start"),
+            RipeCommonsCapability.new("ripe-provider"),
+            RipeCommonsCapability.new("store-provider")
+        ];
     }
 
     async buildComponent(componentClass, options = {}) {
@@ -262,6 +273,21 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         });
         if (changed.length === 0 && !force) return;
         await this.ripe.config(this.ripe.brand, this.ripe.model, { ...options });
+    }
+
+    hasStore() {
+        return Boolean(this.store);
+    }
+
+    getStore(key) {
+        if (!this.store) return undefined;
+        return this.store.state[key];
+    }
+
+    setStore(key, value) {
+        if (!this.store) return false;
+        this.store.commit(key, value);
+        return true;
     }
 
     _getRipeState() {

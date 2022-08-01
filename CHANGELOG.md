@@ -17,7 +17,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+*
+
+## [0.29.0] - 2022-06-08
+
+### Changed
+
+* Bump packages
+
+### Fixed
+
 * Proper sync locale values between store locale and `this.locale` after coercing locale
+
+## [0.28.0] - 2022-05-24
+
+### Added
+
+* Added version to all plugins starting at 0.1.0 - [ripe-white/#1026](https://github.com/ripe-tech/ripe-white/issues/1026)
+* Added html support for ´alert´ component  - [ripe-white/#1037](https://github.com/ripe-tech/ripe-white/issues/1037)
+* Support thumbnails for frames that are for personalization only (contain `group` in the thumbnails spec) - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+
+### Changed
+
+* Support for `showInitials` in `initials-images` as prop - [ripe-white/#978](https://github.com/ripe-tech/ripe-white/issues/978)
+
+### Fixed
+
+* Load bundle locales for size and scale at every `pre_locale_set` event
+* Fix storybook dependency problem after minor bump, lock versions to minor - [ripe-welcome/PR#187](https://github.com/ripe-tech/ripe-welcome/pull/187)
+* Port `eslint-config-hive` dependencies to solve failing build
+
+## [0.27.0] - 2022-04-12
+
+### Changed
+
+* Bump packages
+
+## [0.26.0] - 2022-03-24
+
+### Fixed
+
+* Restored dependencies
+
+## [0.25.0] - 2022-03-24
+
+### Added
+
+* Support for thumbnails that represent a video - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
+* Support for changing frames through thumbnails that point to a video instead of configurator frame - [ripe-white/#996](https://github.com/ripe-tech/ripe-white/issues/996)
+
+### Changed
+
+* Bumped package dependencies
+
+### Fixed
+
+* Remove default value of `minWidth` in `initials-images` so that the previous behaviour is maintained - [ripe-white/#1005](https://github.com/ripe-tech/ripe-white/issues/1005)
+
+## [0.24.0] - 2022-03-14
+
+### Changed
+
+* Bump ripe-sdk version to 2.24.0
 
 ## [0.23.0] - 2022-03-10
 

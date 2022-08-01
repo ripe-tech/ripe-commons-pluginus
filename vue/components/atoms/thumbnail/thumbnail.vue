@@ -1,12 +1,11 @@
 <template>
     <img
         class="thumbnail"
-        v-bind:class="{ active: active, loaded: loaded }"
+        v-bind:class="classes"
         v-bind:alt="name"
         src=""
         ref="image"
-        v-on:click="showFrame"
-        v-on:load="onLoaded"
+        v-on:click="onClick"
     />
 </template>
 
@@ -28,6 +27,10 @@
 
 .thumbnail.loaded {
     opacity: 0.7;
+}
+
+.thumbnail.hidden {
+    display: none;
 }
 
 body.desktop .thumbnail:first-child {
@@ -60,8 +63,11 @@ body.mobile .thumbnail:first-child {
 </style>
 
 <script>
+import { frameMixin } from "../../../mixins";
+
 export const Thumbnail = {
     name: "thumbnail",
+    mixins: [frameMixin],
     props: {
         frame: {
             type: String,
@@ -83,32 +89,84 @@ export const Thumbnail = {
     data: function() {
         return {
             image: null,
-            loaded: false
+            loaded: false,
+            hidden: false
         };
     },
     computed: {
         active() {
             return this.frame === this.$store.state.currentFrame;
-        }
-    },
-    methods: {
-        showFrame() {
-            this.$bus.trigger("show_frame", this.frame);
         },
-        onLoaded() {
-            this.loaded = true;
+        classes() {
+            const base = {
+                active: this.active,
+                loaded: this.loaded,
+                hidden: this.hidden
+            };
+            return base;
         }
     },
     mounted: function() {
-        this.image = this.$ripe.bindImage(this.$refs.image, {
-            frame: this.frame,
+        // build the required provider for the frame, if the thumbnail corresponds to a video
+        // the URL provider, frame validator and frame differs, as well as the 'doubleBuffering'
+        // usage, since the video for certain customizations might not exist
+        const bindMethod = this.isVideoFrame(this.frame)
+            ? (...args) => this.$ripe.bindVideoThumbnail(...args)
+            : (...args) => this.$ripe.bindImage(...args);
+
+        this.image = bindMethod(this.$refs.image, {
+            frame: this.getFrame(this.frame),
+            initialsGroup: this.initialsGroup(this.frame),
+            initialsContext: this.initialsContext(this.frame),
+            initialsProfiles: this.initialsProfiles(this.frame),
+            showInitials: this.isPersonalizationFrame(this.frame),
             size: this.size || undefined,
             crop: this.crop || undefined
         });
+        this.image.bind("loaded", () => this.onLoaded());
+        this.image.bind("error", () => this.onError());
     },
     destroyed: async function() {
         if (this.image) await this.$ripe.unbindImage(this.image);
         this.image = null;
+    },
+    methods: {
+        showViewer() {
+            if (this.isVideoFrame(this.frame)) {
+                this.$bus.trigger("show_video", this.frame);
+            } else if (this.isPersonalizationFrame(this.frame)) {
+                this.$bus.trigger("show_personalization", this.frame);
+            } else {
+                this.$bus.trigger("show_configurator", this.frame);
+            }
+        },
+        showFrame() {
+            this.$bus.trigger("show_frame", this.frame);
+        },
+        initialsGroup(frame) {
+            return this.isPersonalizationFrame(frame) ? this.getGroupPersonalization(frame) : null;
+        },
+        initialsContext(frame) {
+            return this.isPersonalizationFrame(frame) ? ["step::personalization"] : null;
+        },
+        initialsProfiles(frame) {
+            return this.isPersonalizationFrame(frame)
+                ? this.getProfilesPersonalization(frame)
+                : null;
+        },
+        onClick() {
+            this.showViewer();
+
+            if (this.isVideoFrame(this.frame) || this.isPersonalizationFrame(this.frame)) return;
+            this.showFrame();
+        },
+        onLoaded() {
+            this.loaded = true;
+            this.hidden = false;
+        },
+        onError() {
+            this.hidden = true;
+        }
     }
 };
 
