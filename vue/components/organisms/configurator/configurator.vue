@@ -7,13 +7,8 @@
         </div>
         <div
             class="configurator-wrapper"
-            v-bind:class="{ loading: loading, 'loading-error': Boolean(loadingError) }"
         >
             <div class="config" ref="configurator" />
-            <div class="error" v-if="modelError && !loadingError">
-                Error loading model {{ model }} from brand {{ brand }}<br />
-                {{ errorMessage ? errorMessage : "" }}
-            </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
                 <div class="holder-label">
                     {{ locale("ripe_commons.holder.holder.label") }}
@@ -30,6 +25,10 @@
 <style scoped>
 .configurator-wrapper {
     position: relative;
+    min-width: 500px;
+    min-height: 500px;
+    height: 100%;
+    width: 100%;
     text-align: center;
     transition: opacity 0.125s ease-in;
 }
@@ -276,7 +275,10 @@ export const Configurator = {
             ...this.mergedOptions,
             size: this.size,
             width: this.width,
-            height: this.height
+            height: this.height,
+            type: "csr",
+            zoomOptions: { min: 10, max: 10000 },
+            enabledInitials: true
         });
 
         this.configurator.bind("changed_frame", frame => {
@@ -330,6 +332,14 @@ export const Configurator = {
 
         this.configurator.bind("lowlighted", () => {
             this.$bus.trigger("lowlighted", this.configurator);
+        });
+
+        this.configurator.bind("pre_load_csr", () => {
+            this.loading = true;
+        });
+
+        this.configurator.bind("pos_load_csr", () => {
+            this.loading = false;
         });
 
         this.$bus.bind("error", error => {
