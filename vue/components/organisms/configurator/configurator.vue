@@ -277,7 +277,6 @@ export const Configurator = {
             width: this.width,
             height: this.height,
             type: "csr",
-            zoomOptions: { min: 10, max: 10000 },
             enabledInitials: true
         });
 
