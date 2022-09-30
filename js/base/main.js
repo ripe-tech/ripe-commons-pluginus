@@ -99,9 +99,9 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         await this.ripe.init({
             plugins: [this.restrictionsPlugin, this.syncPlugin],
             ...this.options,
-            brand: "dummy",
-            model: "cube",
-            variant: "$base",
+            brand: null,
+            model: null,
+            variant: null,
             version: null
         });
 
@@ -230,8 +230,8 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
         // provided (base object contains current brand and model)
         this.options = Object.assign(
             {
-                brand: "dummy",
-                model: "cube",
+                brand: brand,
+                model: model,
                 variant: "$base",
                 version: version,
                 parts: {}
