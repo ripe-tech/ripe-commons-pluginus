@@ -131,7 +131,7 @@ export const Thumbnail = {
         this.image = null;
     },
     methods: {
-        showViewer() {
+        showViewerFrame() {
             if (this.isVideoFrame(this.frame)) {
                 this.$bus.trigger("show_video", this.frame);
             } else if (this.isPersonalizationFrame(this.frame)) {
@@ -139,9 +139,6 @@ export const Thumbnail = {
             } else {
                 this.$bus.trigger("show_configurator", this.frame);
             }
-        },
-        showFrame() {
-            this.$bus.trigger("show_frame", this.frame);
         },
         initialsGroup(frame) {
             return this.isPersonalizationFrame(frame) ? this.getGroupPersonalization(frame) : null;
@@ -155,10 +152,7 @@ export const Thumbnail = {
                 : null;
         },
         onClick() {
-            this.showViewer();
-
-            if (this.isVideoFrame(this.frame) || this.isPersonalizationFrame(this.frame)) return;
-            this.showFrame();
+            this.showViewerFrame();
         },
         onLoaded() {
             this.loaded = true;
