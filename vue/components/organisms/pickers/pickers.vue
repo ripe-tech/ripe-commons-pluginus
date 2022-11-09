@@ -309,11 +309,19 @@
     z-index: 1;
 }
 
-.pickers .colors-container .color.disabled > .swatch,
-.pickers .colors-container .color.unavailable > .swatch {
-    border: 2px solid grey !important;
+.pickers .colors-container .color.disabled {
+    pointer-events: none;
+    opacity: 50%;
+}
+
+.pickers .colors-container .color.disabled > .swatch {
+    border: 2px solid rgba(128, 128, 128, 0.8) !important;
     padding: 2px;
-    pointer-events:none;
+}
+
+.pickers .colors-container .color.unavailable > .swatch {
+    border: 2px solid #ff0000 !important;
+    padding: 2px;
 }
 
 .pickers.multiple-materials .colors-container .color > .swatch {
@@ -345,18 +353,18 @@
     border-radius: 50%;
 }
 
-.pickers .colors-container .color.disabled > .swatch::before {
+.pickers .colors-container .color.disabled > .swatch::after {
     content: "";
-    background: linear-gradient(45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
+    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
     width: 100%;
     height: 100%;
+    margin-left: -100%;
     position: absolute;
 }
 
-.pickers .colors-container .color.disabled > .swatch::after,
 .pickers .colors-container .color.unavailable > .swatch::after {
     content: "";
-    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
+    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), #ff0000 calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
     width: 100%;
     height: 100%;
     margin-left: -100%;
@@ -1029,7 +1037,7 @@ export const Pickers = {
             return this.showRestrictions && this.restrictionsDisabled && this.filteredOptions[part][material][color];
         },
         isUnavailable(part, material, color) {
-            return this.showRestrictions && this.filteredOptions[part][material][color];
+            return this.showRestrictions && !this.restrictionsDisabled && this.filteredOptions[part][material][color];
         },
         updateSwatches() {
             const swatches = {};
