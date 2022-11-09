@@ -333,6 +333,17 @@
     height: 100%;
     object-fit: cover;
     width: 100%;
+    border-radius: 50%;
+}
+
+.pickers .colors-container .color > .swatch.unavailable::after {
+    content: "";
+    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
+    width: 100%;
+    height: 100%;
+    margin-left: -100%;
+    position: absolute;
+}
 }
 
 .pickers .colors-container .color > .swatch > .border {
@@ -501,6 +512,9 @@ export const Pickers = {
         parts() {
             return this.$store.getters.getParts();
         },
+        showRestrictions() {
+            return this.$store.state.features?.show_restrictions;
+        },
         options() {
             return this.$store.state.options;
         },
@@ -510,14 +524,19 @@ export const Pickers = {
         filteredOptions() {
             const choices = {};
             for (const [part, partValue] of Object.entries(this.choices)) {
-                if (!partValue.available) continue;
                 const materials = {};
                 for (const [material, materialValue] of Object.entries(partValue.materials)) {
-                    if (!materialValue.available) continue;
-                    const colors = [];
+                    const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
-                        if (!colorValue.available) continue;
-                        colors.push(color);
+                        if (!this.showRestrictions) {
+                            colors[color] = {};
+                        }
+                        else {
+                            const unavailable = !(partValue.available && materialValue.available && colorValue.available);
+                            colors[color] = {
+                                unavailable: unavailable
+                            };
+                        }
                     }
                     if (Object.keys(colors).length === 0) continue;
                     materials[material] = colors;
@@ -1037,7 +1056,7 @@ export const Pickers = {
             for (const material in partColors) {
                 const materialColors = partColors[material];
                 let index = 0;
-                for (const color of materialColors) {
+                for (const color of Object.keys(materialColors)) {
                     colors.push({
                         material: material,
                         color: color,
@@ -1059,7 +1078,7 @@ export const Pickers = {
             const colors = [];
             let index = 0;
             const materialColors = this.materialOptions[material] || [];
-            for (const color of materialColors) {
+            for (const color of Object.keys(materialColors)) {
                 colors.push({
                     material: material,
                     color: color,
