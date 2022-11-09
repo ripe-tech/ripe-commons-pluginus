@@ -527,6 +527,9 @@ export const Pickers = {
         showRestrictions() {
             return this.$store.state.features?.show_restrictions;
         },
+        restrictionsDisabled() {
+            return this.$store.state?.extraParameters?.restrictions === "disabled";
+        },
         options() {
             return this.$store.state.options;
         },
