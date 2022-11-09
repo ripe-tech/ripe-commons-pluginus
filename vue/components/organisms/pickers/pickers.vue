@@ -314,13 +314,13 @@
     opacity: 50%;
 }
 
-.pickers .colors-container .color.disabled > .swatch {
-    border: 2px solid rgba(128, 128, 128, 0.8) !important;
+.pickers .colors-wrapper .colors-container .color.disabled > .swatch {
+    border: 2px solid rgba(128, 128, 128, 0.8);
     padding: 2px;
 }
 
-.pickers .colors-container .color.unavailable > .swatch {
-    border: 2px solid #ff0000 !important;
+.pickers .colors-wrapper .colors-container .color.unavailable > .swatch {
+    border: 2px solid #ff0000;
     padding: 2px;
 }
 
