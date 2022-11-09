@@ -144,7 +144,7 @@
                             v-bind:key="colorOption.material + ':' + colorOption.color"
                             v-on:click="() => onColorClick(colorOption)"
                         >
-                            <div class="swatch">
+                            <div class="swatch" v-bind:class="filteredOptions[activePart][activeMaterial][colorOption.color]">
                                 <img
                                     v-bind:src="
                                         colorSwatch(colorOption.material, colorOption.color)
@@ -307,6 +307,11 @@
     z-index: 1;
 }
 
+.pickers .colors-container .color > .swatch.unavailable {
+    border: 2px solid grey !important;
+    padding: 2px;
+}
+
 .pickers.multiple-materials .colors-container .color > .swatch {
     margin-top: 0px;
 }
@@ -344,6 +349,13 @@
     margin-left: -100%;
     position: absolute;
 }
+
+.pickers .colors-container .color > .swatch.unavailable::before {
+    content: "";
+    background: linear-gradient(45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 .pickers .colors-container .color > .swatch > .border {
