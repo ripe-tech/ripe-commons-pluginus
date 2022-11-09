@@ -140,7 +140,11 @@
                                 disabled: isDisabled(activePart, activeMaterial, colorOption.color),
                                 optional: isOptional(activePart),
                                 'no-option': colorOption.color.startsWith('no_'),
-                                unavailable: isUnavailable(activePart, activeMaterial, colorOption.color)
+                                unavailable: isUnavailable(
+                                    activePart,
+                                    activeMaterial,
+                                    colorOption.color
+                                )
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + ':' + colorOption.color"
@@ -310,15 +314,17 @@
 }
 
 .pickers .colors-container .color.disabled {
+    opacity: 0.5;
     pointer-events: none;
-    opacity: 50%;
 }
 
+.pickers .colors-wrapper .colors-container .color.disabled:hover > .swatch,
 .pickers .colors-wrapper .colors-container .color.disabled > .swatch {
     border: 2px solid rgba(128, 128, 128, 0.8);
     padding: 2px;
 }
 
+.pickers .colors-wrapper .colors-container .color.unavailable:hover > .swatch,
 .pickers .colors-wrapper .colors-container .color.unavailable > .swatch {
     border: 2px solid #ff0000;
     padding: 2px;
@@ -347,28 +353,38 @@
 }
 
 .pickers .colors-container .color > .swatch > img {
+    border-radius: 50%;
     height: 100%;
     object-fit: cover;
     width: 100%;
-    border-radius: 50%;
 }
 
 .pickers .colors-container .color.disabled > .swatch::after {
+    background: linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0) calc(50% - 2px),
+        rgba(128, 128, 128, 0.8) calc(50%),
+        rgba(0, 0, 0, 0) calc(50% + 2px)
+    );
     content: "";
-    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
-    width: 100%;
     height: 100%;
     margin-left: -100%;
     position: absolute;
+    width: 100%;
 }
 
 .pickers .colors-container .color.unavailable > .swatch::after {
+    background: linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0) calc(50% - 2px),
+        #ff0000 calc(50%),
+        rgba(0, 0, 0, 0) calc(50% + 2px)
+    );
     content: "";
-    background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), #ff0000 calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
-    width: 100%;
     height: 100%;
     margin-left: -100%;
     position: absolute;
+    width: 100%;
 }
 
 .pickers .colors-container .color > .swatch > .border {
@@ -556,7 +572,11 @@ export const Pickers = {
                 for (const [material, materialValue] of Object.entries(partValue.materials)) {
                     const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
-                        const unavailable = !(partValue.available && materialValue.available && colorValue.available);
+                        const unavailable = !(
+                            partValue.available &&
+                            materialValue.available &&
+                            colorValue.available
+                        );
                         colors[color] = !this.showRestrictions || unavailable;
                     }
                     if (Object.keys(colors).length === 0) continue;
@@ -1034,10 +1054,18 @@ export const Pickers = {
             );
         },
         isDisabled(part, material, color) {
-            return this.showRestrictions && this.restrictionsDisabled && this.filteredOptions[part][material][color];
+            return (
+                this.showRestrictions &&
+                this.restrictionsDisabled &&
+                this.filteredOptions[part][material][color]
+            );
         },
         isUnavailable(part, material, color) {
-            return this.showRestrictions && !this.restrictionsDisabled && this.filteredOptions[part][material][color];
+            return (
+                this.showRestrictions &&
+                !this.restrictionsDisabled &&
+                this.filteredOptions[part][material][color]
+            );
         },
         updateSwatches() {
             const swatches = {};
