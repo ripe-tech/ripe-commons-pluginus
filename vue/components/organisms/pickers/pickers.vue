@@ -568,8 +568,10 @@ export const Pickers = {
         filteredOptions() {
             const choices = {};
             for (const [part, partValue] of Object.entries(this.choices)) {
+                if (!partValue.available && !this.showRestrictions) continue;
                 const materials = {};
                 for (const [material, materialValue] of Object.entries(partValue.materials)) {
+                    if (!materialValue.available && !this.showRestrictions) continue;
                     const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
                         const unavailable = !(
