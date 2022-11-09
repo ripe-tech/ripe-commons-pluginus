@@ -137,14 +137,16 @@
                             v-bind:data-color="colorOption.color"
                             v-bind:class="{
                                 active: isSelected(colorOption),
+                                disabled: isDisabled(activePart, activeMaterial, colorOption.color),
                                 optional: isOptional(activePart),
-                                'no-option': colorOption.color.startsWith('no_')
+                                'no-option': colorOption.color.startsWith('no_'),
+                                unavailable: isUnavailable(activePart, activeMaterial, colorOption.color)
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + ':' + colorOption.color"
                             v-on:click="() => onColorClick(colorOption)"
                         >
-                            <div class="swatch" v-bind:class="filteredOptions[activePart][activeMaterial][colorOption.color]">
+                            <div class="swatch">
                                 <img
                                     v-bind:src="
                                         colorSwatch(colorOption.material, colorOption.color)
@@ -307,9 +309,11 @@
     z-index: 1;
 }
 
-.pickers .colors-container .color > .swatch.unavailable {
+.pickers .colors-container .color.disabled > .swatch,
+.pickers .colors-container .color.unavailable > .swatch {
     border: 2px solid grey !important;
     padding: 2px;
+    pointer-events:none;
 }
 
 .pickers.multiple-materials .colors-container .color > .swatch {
@@ -341,20 +345,21 @@
     border-radius: 50%;
 }
 
-.pickers .colors-container .color > .swatch.unavailable::after {
+.pickers .colors-container .color.disabled > .swatch::before {
+    content: "";
+    background: linear-gradient(45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.pickers .colors-container .color.disabled > .swatch::after,
+.pickers .colors-container .color.unavailable > .swatch::after {
     content: "";
     background: linear-gradient(-45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
     width: 100%;
     height: 100%;
     margin-left: -100%;
-    position: absolute;
-}
-
-.pickers .colors-container .color > .swatch.unavailable::before {
-    content: "";
-    background: linear-gradient(45deg, rgba(0,0,0,0) calc(50% - 2px), rgba(128, 128, 128, 0.8) calc(50%), rgba(0,0,0,0) calc(50% + 2px) );
-    width: 100%;
-    height: 100%;
     position: absolute;
 }
 
@@ -1026,6 +1031,12 @@ export const Pickers = {
                 (this.currentColor.material === colorOption.material &&
                     this.currentColor.color === colorOption.color)
             );
+        },
+        isDisabled(part, material, color) {
+            return this.showRestrictions && this.restrictionsDisabled && this.filteredOptions[part][material][color];
+        },
+        isUnavailable(part, material, color) {
+            return this.showRestrictions && this.filteredOptions[part][material][color];
         },
         updateSwatches() {
             const swatches = {};
