@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-*
+* Change `onClick` event of `thumbnail` component to not trigger `show_frame` and delegate it, instead, to ripe-white's model-viewer - [ripe-white/#1013](https://github.com/ripe-tech/ripe-white/issues/1013)
+* Enhace `show_frame` event bind to also receive `options` as an argument  - [ripe-white/#1013](https://github.com/ripe-tech/ripe-white/issues/1013)
 
 ### Fixed
 
