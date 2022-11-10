@@ -554,7 +554,7 @@ export const Pickers = {
             return this.$store.getters.getParts();
         },
         showRestrictions() {
-            return this.$store.state.features?.show_restrictions;
+            return this.$store.state?.features?.["show-restrictions"];
         },
         restrictionsDisabled() {
             return this.$store.state?.extraParameters?.restrictions === "disabled";
