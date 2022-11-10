@@ -16,10 +16,10 @@ storiesOf("Components/Atoms/Button Platforme", module)
             }
         },
         template: `
-            <button-platforme 
-                v-bind:normal-text="normalText" 
-                v-bind:loading-text="loadingText" 
-                v-bind:logo="logo" 
+            <button-platforme
+                v-bind:normal-text="normalText"
+                v-bind:loading-text="loadingText"
+                v-bind:logo="logo"
             />
         `
     }));
