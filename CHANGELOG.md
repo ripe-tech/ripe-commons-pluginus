@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+*
+
+### Changed
+
+*
+
+### Fixed
+
+*
+
+## [0.30.0] - 2022-11-10
+
+### Added
+
 * Add `show_restrictions` feature - [ripe-white/#1078](https://github.com/ripe-tech/ripe-white/issues/1078)
 
 ### Changed
