@@ -320,7 +320,7 @@
 
 .pickers .colors-wrapper .colors-container .color.disabled:hover > .swatch,
 .pickers .colors-wrapper .colors-container .color.disabled > .swatch {
-    border: 2px solid rgba(128, 128, 128, 0.8);
+    border: 2px solid #808080cc;
     padding: 2px;
 }
 
@@ -362,9 +362,9 @@
 .pickers .colors-container .color.disabled > .swatch::after {
     background: linear-gradient(
         -45deg,
-        rgba(0, 0, 0, 0) calc(50% - 2px),
-        rgba(128, 128, 128, 0.8) calc(50%),
-        rgba(0, 0, 0, 0) calc(50% + 2px)
+        #00000000 calc(50% - 2px),
+        #808080cc calc(50%),
+        #00000000 calc(50% + 2px)
     );
     content: "";
     height: 100%;
@@ -376,9 +376,9 @@
 .pickers .colors-container .color.unavailable > .swatch::after {
     background: linear-gradient(
         -45deg,
-        rgba(0, 0, 0, 0) calc(50% - 2px),
+        #00000000 calc(50% - 2px),
         #ff0000 calc(50%),
-        rgba(0, 0, 0, 0) calc(50% + 2px)
+        #00000000 calc(50% + 2px)
     );
     content: "";
     height: 100%;
@@ -412,14 +412,14 @@
 
 .button-scroll-right {
     background: url("~./assets/arrow-right.svg") right center no-repeat,
-        linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0));
+        linear-gradient(to left, #fafafa, #ffffff00);
     right: 0px;
     top: 0px;
 }
 
 .button-scroll-left {
     background: url("~./assets/arrow-left.svg") left center no-repeat,
-        linear-gradient(to right, #fafafa, rgba(255, 255, 255, 0));
+        linear-gradient(to right, #fafafa, #ffffff00);
 }
 
 .button-scroll-parts {
@@ -432,11 +432,11 @@
 }
 
 .button-scroll-right.button-scroll-materials {
-    background: linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0)) right center no-repeat;
+    background: linear-gradient(to left, #fafafa, #ffffff00) right center no-repeat;
 }
 
 .button-scroll-left.button-scroll-materials {
-    background: linear-gradient(to right, #fafafa, rgba(255, 255, 255, 0)) left center no-repeat;
+    background: linear-gradient(to right, #fafafa, #ffffff00) left center no-repeat;
 }
 
 body.mobile .button-scroll-materials {
