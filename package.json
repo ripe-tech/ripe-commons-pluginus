@@ -54,6 +54,12 @@
         "watch": "cross-env NODE_ENV=development webpack --config webpack.config.js --mode development --watch",
         "webpack": "webpack --config webpack.config.js"
     },
+    "resolutions": {
+        "enhanced-resolve": "5.10.0"
+    },
+    "overrides": {
+        "enhanced-resolve": "5.10.0"
+    },
     "dependencies": {
         "loaders.css": "^0.1.2",
         "pluginus": "^0.4.2",
