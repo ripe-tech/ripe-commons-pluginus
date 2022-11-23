@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Fix storybook build using non broken `enhanced-resolve` version - [#1089](https://github.com/ripe-tech/ripe-white/issues/1089)
 
 ## [0.30.1] - 2022-11-10
 

@@ -54,6 +54,12 @@
         "watch": "cross-env NODE_ENV=development webpack --config webpack.config.js --mode development --watch",
         "webpack": "webpack --config webpack.config.js"
     },
+    "resolutions": {
+        "enhanced-resolve": "5.10.0"
+    },
+    "overrides": {
+        "enhanced-resolve": "5.10.0"
+    },
     "dependencies": {
         "loaders.css": "^0.1.2",
         "pluginus": "^0.4.2",
@@ -107,10 +113,10 @@
         "sort-package-json": "^1.57.0",
         "style-loader": "^3.3.1",
         "stylelint": "^14.8.5",
-        "stylelint-config-hive": "^1.0.0",
+        "stylelint-config-hive": "^1.1.0",
         "stylelint-config-html": "^1.0.0",
-        "stylelint-config-standard": "^24.0.0",
-        "stylelint-config-standard-scss": "^3.0.0",
+        "stylelint-config-standard": "^29.0.0",
+        "stylelint-config-standard-scss": "^6.1.0",
         "stylelint-order": "^5.0.0",
         "svgo": "^2.8.0",
         "vue-loader": "^15.9.8",
