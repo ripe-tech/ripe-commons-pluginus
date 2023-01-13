@@ -324,7 +324,8 @@
     padding: 2px;
 }
 
-.pickers .colors-wrapper .colors-container .color.unavailable:hover > .swatch,
+.pickers .colors-wrapper .colors-container .color.unavailable.active > .swatch,
+.pickers .colors-wrapper .colors-container .color.unavailable > .swatch:hover,
 .pickers .colors-wrapper .colors-container .color.unavailable > .swatch {
     border: 2px solid #ff0000;
     padding: 2px;
