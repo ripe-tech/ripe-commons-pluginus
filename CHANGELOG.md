@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-*
+* Fix unavailable options being displayed - [ripe-white/#1093](https://github.com/ripe-tech/ripe-white/issues/1093)
 
 ## [0.30.2] - 2023-01-04
 
