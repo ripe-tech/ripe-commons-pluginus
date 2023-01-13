@@ -575,7 +575,8 @@ export const Pickers = {
                     if (!materialValue.available && !this.showRestrictions) continue;
                     const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
-                        const available = partValue.available && materialValue.available && colorValue.available;
+                        const available =
+                            partValue.available && materialValue.available && colorValue.available;
                         if (available || this.showRestrictions) {
                             colors[color] = available;
                         }
