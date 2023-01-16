@@ -324,7 +324,8 @@
     padding: 2px;
 }
 
-.pickers .colors-wrapper .colors-container .color.unavailable:hover > .swatch,
+.pickers .colors-wrapper .colors-container .color.unavailable.active > .swatch,
+.pickers .colors-wrapper .colors-container .color.unavailable > .swatch:hover,
 .pickers .colors-wrapper .colors-container .color.unavailable > .swatch {
     border: 2px solid #ff0000;
     padding: 2px;
@@ -574,12 +575,11 @@ export const Pickers = {
                     if (!materialValue.available && !this.showRestrictions) continue;
                     const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
-                        const unavailable = !(
-                            partValue.available &&
-                            materialValue.available &&
-                            colorValue.available
-                        );
-                        colors[color] = !this.showRestrictions || unavailable;
+                        const available =
+                            partValue.available && materialValue.available && colorValue.available;
+                        if (available || this.showRestrictions) {
+                            colors[color] = available;
+                        }
                     }
                     if (Object.keys(colors).length === 0) continue;
                     materials[material] = colors;
@@ -1059,14 +1059,14 @@ export const Pickers = {
             return (
                 this.showRestrictions &&
                 this.restrictionsDisabled &&
-                this.filteredOptions[part][material][color]
+                !this.filteredOptions[part][material][color]
             );
         },
         isUnavailable(part, material, color) {
             return (
                 this.showRestrictions &&
                 !this.restrictionsDisabled &&
-                this.filteredOptions[part][material][color]
+                !this.filteredOptions?.[part]?.[material]?.[color]
             );
         },
         updateSwatches() {
