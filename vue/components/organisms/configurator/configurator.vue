@@ -343,9 +343,11 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
-        this.configurator.bind("post_config", () => {
-            this.loading = false;
-            this.configurator.resize();
+        this.configurator.bind("ready", ({ id }) => {
+            if (id === "configurator_csr") {
+                this.loading = false;
+                this.configurator.resize();
+            }
         });
 
         this.$bus.bind("error", error => {
