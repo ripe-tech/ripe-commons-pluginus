@@ -345,12 +345,9 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
-        this.configurator.bind("pre_load_csr", () => {
-            this.loading = true;
-        });
-
-        this.configurator.bind("pos_load_csr", () => {
+        this.configurator.bind("post_config", () => {
             this.loading = false;
+            this.configurator.resize();
         });
 
         this.$bus.bind("error", error => {
