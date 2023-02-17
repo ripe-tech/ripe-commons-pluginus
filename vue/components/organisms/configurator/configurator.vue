@@ -25,8 +25,6 @@
 <style scoped>
 .configurator-wrapper {
     position: relative;
-    min-width: 500px;
-    min-height: 500px;
     height: 100%;
     width: 100%;
     text-align: center;
@@ -65,6 +63,20 @@
 
 .configurator-wrapper.loading-error .configurator {
     cursor: default;
+}
+
+.configurator-wrapper ::v-deep .renderer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.configurator-wrapper ::v-deep .renderer:hover {
+    cursor: grab;
+}
+
+.configurator-wrapper ::v-deep .renderer:active {
+    cursor: grabbing;
 }
 
 .loader-container > * {
