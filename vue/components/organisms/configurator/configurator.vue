@@ -5,9 +5,7 @@
                 <loader class="loader" v-bind:loader="'ball-scale-multiple'" />
             </slot>
         </div>
-        <div
-            class="configurator-wrapper"
-        >
+        <div class="configurator-wrapper">
             <div class="config" ref="configurator" />
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
                 <div class="holder-label">
@@ -24,11 +22,11 @@
 
 <style scoped>
 .configurator-wrapper {
-    position: relative;
     height: 100%;
-    width: 100%;
+    position: relative;
     text-align: center;
     transition: opacity 0.125s ease-in;
+    width: 100%;
 }
 
 .configurator-wrapper.loading {
