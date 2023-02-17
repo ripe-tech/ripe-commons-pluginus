@@ -232,7 +232,6 @@ export class RipeCommonsMainPlugin extends RipeCommonsPlugin {
             {
                 brand: brand,
                 model: model,
-                variant: "$base",
                 version: version,
                 parts: {}
             },
