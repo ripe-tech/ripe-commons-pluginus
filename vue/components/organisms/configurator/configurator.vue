@@ -283,6 +283,7 @@ export const Configurator = {
 
         this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
             ...this.mergedOptions,
+            id: "white-configurator",
             size: this.size,
             width: this.width,
             height: this.height,
@@ -343,8 +344,8 @@ export const Configurator = {
             this.$bus.trigger("lowlighted", this.configurator);
         });
 
-        this.configurator.bind("ready", ({ id }) => {
-            if (id === "configurator_csr") {
+        this.configurator.bind("ready", options => {
+            if (options?.id === "white-configurator") {
                 this.loading = false;
                 this.configurator.resize();
             }
