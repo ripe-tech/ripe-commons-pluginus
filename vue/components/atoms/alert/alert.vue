@@ -2,9 +2,7 @@
     <transition name="fade">
         <div class="alert" v-bind:style="style" v-show="isVisible" v-on:click="onClick">
             <global-events v-on:keydown.esc="handleGlobal" />
-            <div class="alert-content" v-html="htmlData">
-                {{ textData }}
-            </div>
+            <div class="alert-content" v-html="alertContent" />
         </div>
     </transition>
 </template>
@@ -77,6 +75,9 @@ export const Alert = {
             const base = {};
             if (this.topOffset !== null) base.top = `${this.topOffset}px`;
             return base;
+        },
+        alertContent() {
+            return this.htmlData || this.textData;
         }
     },
     data: function() {

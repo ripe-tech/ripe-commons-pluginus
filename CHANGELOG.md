@@ -17,7 +17,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* Fix unavailable options being displayed - [ripe-white/#1093](https://github.com/ripe-tech/ripe-white/issues/1093)
+
+## [0.30.2] - 2023-01-04
+
+### Changed
+
+* Bumped `ripe-sdk` package version
+
+### Fixed
+
+* Fix storybook build using non broken `enhanced-resolve` version - [#1089](https://github.com/ripe-tech/ripe-white/issues/1089)
+
+## [0.30.1] - 2022-11-10
+
+### Added
+
 *
+
+### Changed
+
+* Bump to `ripe-sdk@2.32.0` version
+
+### Fixed
+
+*
+
+## [0.30.0] - 2022-11-10
+
+### Added
+
+* Add `show_restrictions` feature - [ripe-white/#1078](https://github.com/ripe-tech/ripe-white/issues/1078)
+
+### Changed
+
+* Change `onClick` event of `thumbnail` component to not trigger `show_frame` and delegate it, instead, to ripe-white's model-viewer - [ripe-white/#1013](https://github.com/ripe-tech/ripe-white/issues/1013)
+* Enhace `show_frame` event bind to also receive `options` as an argument  - [ripe-white/#1013](https://github.com/ripe-tech/ripe-white/issues/1013)
+
+### Fixed
+
+* Fix not showing alert content data text
 
 ## [0.29.0] - 2022-06-08
 

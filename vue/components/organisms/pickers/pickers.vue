@@ -137,8 +137,14 @@
                             v-bind:data-color="colorOption.color"
                             v-bind:class="{
                                 active: isSelected(colorOption),
+                                disabled: isDisabled(activePart, activeMaterial, colorOption.color),
                                 optional: isOptional(activePart),
-                                'no-option': colorOption.color.startsWith('no_')
+                                'no-option': colorOption.color.startsWith('no_'),
+                                unavailable: isUnavailable(
+                                    activePart,
+                                    activeMaterial,
+                                    colorOption.color
+                                )
                             }"
                             v-for="colorOption in colorOptions"
                             v-bind:key="colorOption.material + ':' + colorOption.color"
@@ -307,6 +313,24 @@
     z-index: 1;
 }
 
+.pickers .colors-container .color.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.pickers .colors-wrapper .colors-container .color.disabled:hover > .swatch,
+.pickers .colors-wrapper .colors-container .color.disabled > .swatch {
+    border: 2px solid #808080cc;
+    padding: 2px;
+}
+
+.pickers .colors-wrapper .colors-container .color.unavailable.active > .swatch,
+.pickers .colors-wrapper .colors-container .color.unavailable > .swatch:hover,
+.pickers .colors-wrapper .colors-container .color.unavailable > .swatch {
+    border: 2px solid #ff0000;
+    padding: 2px;
+}
+
 .pickers.multiple-materials .colors-container .color > .swatch {
     margin-top: 0px;
 }
@@ -330,8 +354,37 @@
 }
 
 .pickers .colors-container .color > .swatch > img {
+    border-radius: 50%;
     height: 100%;
     object-fit: cover;
+    width: 100%;
+}
+
+.pickers .colors-container .color.disabled > .swatch::after {
+    background: linear-gradient(
+        -45deg,
+        #00000000 calc(50% - 2px),
+        #808080cc calc(50%),
+        #00000000 calc(50% + 2px)
+    );
+    content: "";
+    height: 100%;
+    margin-left: -100%;
+    position: absolute;
+    width: 100%;
+}
+
+.pickers .colors-container .color.unavailable > .swatch::after {
+    background: linear-gradient(
+        -45deg,
+        #00000000 calc(50% - 2px),
+        #ff0000 calc(50%),
+        #00000000 calc(50% + 2px)
+    );
+    content: "";
+    height: 100%;
+    margin-left: -100%;
+    position: absolute;
     width: 100%;
 }
 
@@ -360,14 +413,14 @@
 
 .button-scroll-right {
     background: url("~./assets/arrow-right.svg") right center no-repeat,
-        linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0));
+        linear-gradient(to left, #fafafa, #ffffff00);
     right: 0px;
     top: 0px;
 }
 
 .button-scroll-left {
     background: url("~./assets/arrow-left.svg") left center no-repeat,
-        linear-gradient(to right, #fafafa, rgba(255, 255, 255, 0));
+        linear-gradient(to right, #fafafa, #ffffff00);
 }
 
 .button-scroll-parts {
@@ -380,11 +433,11 @@
 }
 
 .button-scroll-right.button-scroll-materials {
-    background: linear-gradient(to left, #fafafa, rgba(255, 255, 255, 0)) right center no-repeat;
+    background: linear-gradient(to left, #fafafa, #ffffff00) right center no-repeat;
 }
 
 .button-scroll-left.button-scroll-materials {
-    background: linear-gradient(to right, #fafafa, rgba(255, 255, 255, 0)) left center no-repeat;
+    background: linear-gradient(to right, #fafafa, #ffffff00) left center no-repeat;
 }
 
 body.mobile .button-scroll-materials {
@@ -501,6 +554,12 @@ export const Pickers = {
         parts() {
             return this.$store.getters.getParts();
         },
+        showRestrictions() {
+            return this.$store.state?.features?.["show-restrictions"];
+        },
+        restrictionsDisabled() {
+            return this.$store.state?.extraParameters?.restrictions === "disabled";
+        },
         options() {
             return this.$store.state.options;
         },
@@ -510,14 +569,17 @@ export const Pickers = {
         filteredOptions() {
             const choices = {};
             for (const [part, partValue] of Object.entries(this.choices)) {
-                if (!partValue.available) continue;
+                if (!partValue.available && !this.showRestrictions) continue;
                 const materials = {};
                 for (const [material, materialValue] of Object.entries(partValue.materials)) {
-                    if (!materialValue.available) continue;
-                    const colors = [];
+                    if (!materialValue.available && !this.showRestrictions) continue;
+                    const colors = {};
                     for (const [color, colorValue] of Object.entries(materialValue.colors)) {
-                        if (!colorValue.available) continue;
-                        colors.push(color);
+                        const available =
+                            partValue.available && materialValue.available && colorValue.available;
+                        if (available || this.showRestrictions) {
+                            colors[color] = available;
+                        }
                     }
                     if (Object.keys(colors).length === 0) continue;
                     materials[material] = colors;
@@ -993,6 +1055,20 @@ export const Pickers = {
                     this.currentColor.color === colorOption.color)
             );
         },
+        isDisabled(part, material, color) {
+            return (
+                this.showRestrictions &&
+                this.restrictionsDisabled &&
+                !this.filteredOptions[part][material][color]
+            );
+        },
+        isUnavailable(part, material, color) {
+            return (
+                this.showRestrictions &&
+                !this.restrictionsDisabled &&
+                !this.filteredOptions?.[part]?.[material]?.[color]
+            );
+        },
         updateSwatches() {
             const swatches = {};
             for (const part in this.options) {
@@ -1037,7 +1113,7 @@ export const Pickers = {
             for (const material in partColors) {
                 const materialColors = partColors[material];
                 let index = 0;
-                for (const color of materialColors) {
+                for (const color of Object.keys(materialColors)) {
                     colors.push({
                         material: material,
                         color: color,
@@ -1059,7 +1135,7 @@ export const Pickers = {
             const colors = [];
             let index = 0;
             const materialColors = this.materialOptions[material] || [];
-            for (const color of materialColors) {
+            for (const color of Object.keys(materialColors)) {
                 colors.push({
                     material: material,
                     color: color,

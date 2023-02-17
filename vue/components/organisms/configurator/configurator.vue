@@ -384,9 +384,31 @@ export const Configurator = {
             }
         });
 
-        this.$bus.bind("show_frame", async frame => {
+        this.$bus.bind("show_frame", async (frame, options) => {
+            // in case the global bus should be ignore nothing is
+            // done as a consequence of a changed frame
             if (this.ignoreBus) return;
-            this.frameData = frame;
+
+            // avoid infinite loop, by checking if the frame
+            // is the one we're currently on
+            if (this.frameData === frame) return;
+
+            // in case the configurator is not currently ready
+            // then avoids the operation (returns control flow)
+            if (!this.configurator || !this.configurator.ready) {
+                return;
+            }
+
+            try {
+                // triggers the async change frame operation on
+                // the current configurator
+                await this.configurator.changeFrame(frame, options);
+                this.frameData = frame;
+            } catch (error) {
+                // calls the registered callback handler for the
+                // error (default implementation is a simple re-throw)
+                this.onError(error);
+            }
         });
 
         this.$bus.bind("highlight_part", part => {
