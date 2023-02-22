@@ -290,7 +290,6 @@ export const Configurator = {
 
         this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
             ...this.mergedOptions,
-            id: "white-configurator",
             size: this.size,
             width: this.width,
             height: this.height,
@@ -351,7 +350,7 @@ export const Configurator = {
         });
 
         this.configurator.bind("ready", options => {
-            if (options?.id === "white-configurator") {
+            if (options?.origin && options.origin.includes("configurator")) {
                 this.loading = false;
                 this.configurator.resize();
             }
