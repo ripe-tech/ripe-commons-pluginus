@@ -209,6 +209,13 @@ export const Configurator = {
             default: undefined
         },
         /**
+         * The rendering mode of the configurator.
+         */
+        configuratorMode: {
+            type: String,
+            default: "prc"
+        },
+        /**
          * Callback function to be called when a configurator related
          * error is thrown, for some operations (eg: while changing frame).
          */
@@ -287,8 +294,7 @@ export const Configurator = {
             size: this.size,
             width: this.width,
             height: this.height,
-            type: "csr",
-            enabledInitials: true
+            type: "csr"
         });
 
         this.configurator.bind("changed_frame", frame => {

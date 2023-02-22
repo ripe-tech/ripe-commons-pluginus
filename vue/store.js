@@ -18,6 +18,7 @@ export const store = {
         resolution: "",
         backgroundColor: "",
         useMasks: null,
+        configuratorMode: null,
         theme: null,
         parts: {},
         config: {},
@@ -81,6 +82,9 @@ export const store = {
         },
         useMasks(state, useMasks) {
             state.useMasks = useMasks;
+        },
+        configuratorMode(state, configuratorMode) {
+            state.configuratorMode = configuratorMode;
         },
         theme(state, theme) {
             state.theme = theme;
