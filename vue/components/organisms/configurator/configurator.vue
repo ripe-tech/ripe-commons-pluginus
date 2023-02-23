@@ -210,10 +210,11 @@ export const Configurator = {
         },
         /**
          * The rendering mode of the configurator.
+         * (eg. "prc" or "csr")
          */
         configuratorMode: {
             type: String,
-            default: "prc"
+            default: undefined
         },
         /**
          * Callback function to be called when a configurator related
@@ -282,165 +283,7 @@ export const Configurator = {
         };
     },
     mounted: function() {
-        this.loading = true;
-
-        setTimeout(() => {
-            this.holderTimedOut = true;
-        }, this.timeoutHolder);
-
-        this.configurator = this.ripeInstance.bindConfigurator(this.$refs.configurator, {
-            ...this.mergedOptions,
-            size: this.size,
-            width: this.width,
-            height: this.height,
-            type: "csr"
-        });
-
-        this.configurator.bind("changed_frame", frame => {
-            // sets the frame changed flag only if there was a
-            // previous frame set and then updates the frame
-            // key to the new one (internal copy)
-            this.frameChanged = Boolean(this.frameData);
-            this.frameData = frame;
-
-            // updates the value of the single frame view
-            // variable as the new view may have several frames
-            // or just one and the variable value may change
-            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
-
-            // only the visible instance of this component
-            // should be sending events it's considered to
-            // be the main/master one
-            if (this.elementDisplayed) {
-                this.$store.commit("currentFrame", frame);
-                this.$bus.trigger("changed_frame", this.configurator, frame);
-            }
-        });
-
-        this.configurator.bind("loaded", () => {
-            // updates the current frame in view with the one currently set
-            // in the configurator (to be used for data visibility purposes)
-            const frame = `${this.configurator.view}-${this.configurator.position}`;
-            this.frameData = frame;
-
-            // determines if the current view is a single frame view, meaning that
-            // no rotation operation is present for the view (static view)
-            this.singleFrameView = (this.configurator.frames[this.configurator.view] || 1) === 1;
-
-            // updates the local loading variable to the false value, indicating
-            // that the loading operation has just finished
-            this.loading = false;
-
-            // triggers the resize operation, as some pending resize operation
-            // may have been pilling up during the loading operation, during which
-            // is not possible to trigger resize operations
-            this.resize(this.size, this.width, this.height);
-
-            // updates the current frame in the store, this information can be used
-            // by listener to update their internal state
-            this.$store.commit("currentFrame", frame);
-        });
-
-        this.configurator.bind("highlighted_part", part => {
-            this.$bus.trigger("highlighted_part", this.configurator, part);
-        });
-
-        this.configurator.bind("lowlighted", () => {
-            this.$bus.trigger("lowlighted", this.configurator);
-        });
-
-        this.configurator.bind("ready", options => {
-            if (options?.origin && options.origin.includes("configurator")) {
-                this.loading = false;
-                this.configurator.resize();
-            }
-        });
-
-        this.$bus.bind("error", error => {
-            if (this.ignoreBus) return;
-            if (!this.loading) return;
-
-            this.loading = false;
-            this.loadingError = error;
-        });
-
-        this.$bus.bind("pre_config", () => {
-            if (this.ignoreBus) return;
-
-            this.loading = true;
-        });
-
-        this.$bus.bind("changed_frame", async (configurator, frame) => {
-            // in case the global bus should be ignore nothing is
-            // done as a consequence of a changed frame
-            if (this.ignoreBus) return;
-
-            // avoid infinite loop, by checking if the frame
-            // is the one we're currently on
-            if (this.frameData === frame) return;
-
-            // in case the configurator is not currently ready
-            // then avoids the operation (returns control flow)
-            if (!this.configurator || !this.configurator.ready) {
-                return;
-            }
-
-            try {
-                // triggers the async change frame operation on
-                // the current configurator
-                await this.configurator.changeFrame(frame, {
-                    type: null,
-                    duration: null
-                });
-            } catch (error) {
-                // calls the registered callback handler for the
-                // error (default implementation is a simple re-throw)
-                this.onError(error);
-            }
-        });
-
-        this.$bus.bind("show_frame", async (frame, options) => {
-            // in case the global bus should be ignore nothing is
-            // done as a consequence of a changed frame
-            if (this.ignoreBus) return;
-
-            // avoid infinite loop, by checking if the frame
-            // is the one we're currently on
-            if (this.frameData === frame) return;
-
-            // in case the configurator is not currently ready
-            // then avoids the operation (returns control flow)
-            if (!this.configurator || !this.configurator.ready) {
-                return;
-            }
-
-            try {
-                // triggers the async change frame operation on
-                // the current configurator
-                await this.configurator.changeFrame(frame, options);
-                this.frameData = frame;
-            } catch (error) {
-                // calls the registered callback handler for the
-                // error (default implementation is a simple re-throw)
-                this.onError(error);
-            }
-        });
-
-        this.$bus.bind("highlight_part", part => {
-            if (this.ignoreBus) return;
-            if (this.configurator && this.configurator.ready) {
-                this.configurator.highlight(part);
-            }
-        });
-
-        this.$bus.bind("lowlight_part", part => {
-            if (this.ignoreBus) return;
-            if (this.configurator && this.configurator.ready) {
-                this.configurator.lowlight(part);
-            }
-        });
-
-        this.resize(this.size, this.width, this.height);
+        this.bindConfigurator(this.$refs.configurator);
     },
     watch: {
         frame(value) {
@@ -510,6 +353,175 @@ export const Configurator = {
         }
     },
     methods: {
+        bindConfigurator(element, triggerPostConfig = false) {
+            this.loading = true;
+
+            setTimeout(() => {
+                this.holderTimedOut = true;
+            }, this.timeoutHolder);
+
+            this.configurator = this.ripeInstance.bindConfigurator(element, {
+                ...this.mergedOptions,
+                size: this.size,
+                width: this.width,
+                height: this.height,
+                type: this.configuratorMode
+            });
+            console.log("binded configurator", this.configurator);
+
+            this.configurator.bind("changed_frame", frame => {
+                // sets the frame changed flag only if there was a
+                // previous frame set and then updates the frame
+                // key to the new one (internal copy)
+                this.frameChanged = Boolean(this.frameData);
+                this.frameData = frame;
+
+                // updates the value of the single frame view
+                // variable as the new view may have several frames
+                // or just one and the variable value may change
+                this.singleFrameView =
+                    (this.configurator.frames[this.configurator.view] || 1) === 1;
+
+                // only the visible instance of this component
+                // should be sending events it's considered to
+                // be the main/master one
+                if (this.elementDisplayed) {
+                    this.$store.commit("currentFrame", frame);
+                    this.$bus.trigger("changed_frame", this.configurator, frame);
+                }
+            });
+
+            this.configurator.bind("loaded", () => {
+                // updates the current frame in view with the one currently set
+                // in the configurator (to be used for data visibility purposes)
+                const frame = `${this.configurator.view}-${this.configurator.position}`;
+                this.frameData = frame;
+
+                // determines if the current view is a single frame view, meaning that
+                // no rotation operation is present for the view (static view)
+                this.singleFrameView =
+                    (this.configurator.frames[this.configurator.view] || 1) === 1;
+
+                // updates the local loading variable to the false value, indicating
+                // that the loading operation has just finished
+                this.loading = false;
+
+                // triggers the resize operation, as some pending resize operation
+                // may have been pilling up during the loading operation, during which
+                // is not possible to trigger resize operations
+                this.resize(this.size, this.width, this.height);
+
+                // updates the current frame in the store, this information can be used
+                // by listener to update their internal state
+                this.$store.commit("currentFrame", frame);
+            });
+
+            this.configurator.bind("highlighted_part", part => {
+                this.$bus.trigger("highlighted_part", this.configurator, part);
+            });
+
+            this.configurator.bind("lowlighted", () => {
+                this.$bus.trigger("lowlighted", this.configurator);
+            });
+
+            this.configurator.bind("ready", options => {
+                if (options?.origin && options.origin.includes("configurator")) {
+                    this.loading = false;
+                    this.configurator.resize();
+                }
+            });
+
+            this.$bus.bind("error", error => {
+                if (this.ignoreBus) return;
+                if (!this.loading) return;
+
+                this.loading = false;
+                this.loadingError = error;
+            });
+
+            this.$bus.bind("pre_config", () => {
+                if (this.ignoreBus) return;
+
+                this.loading = true;
+            });
+
+            this.$bus.bind("changed_frame", async (configurator, frame) => {
+                // in case the global bus should be ignore nothing is
+                // done as a consequence of a changed frame
+                if (this.ignoreBus) return;
+
+                // avoid infinite loop, by checking if the frame
+                // is the one we're currently on
+                if (this.frameData === frame) return;
+
+                // in case the configurator is not currently ready
+                // then avoids the operation (returns control flow)
+                if (!this.configurator || !this.configurator.ready) {
+                    return;
+                }
+
+                try {
+                    // triggers the async change frame operation on
+                    // the current configurator
+                    await this.configurator.changeFrame(frame, {
+                        type: null,
+                        duration: null
+                    });
+                } catch (error) {
+                    // calls the registered callback handler for the
+                    // error (default implementation is a simple re-throw)
+                    this.onError(error);
+                }
+            });
+
+            this.$bus.bind("show_frame", async (frame, options) => {
+                // in case the global bus should be ignore nothing is
+                // done as a consequence of a changed frame
+                if (this.ignoreBus) return;
+
+                // avoid infinite loop, by checking if the frame
+                // is the one we're currently on
+                if (this.frameData === frame) return;
+
+                // in case the configurator is not currently ready
+                // then avoids the operation (returns control flow)
+                if (!this.configurator || !this.configurator.ready) {
+                    return;
+                }
+
+                try {
+                    // triggers the async change frame operation on
+                    // the current configurator
+                    await this.configurator.changeFrame(frame, options);
+                    this.frameData = frame;
+                } catch (error) {
+                    // calls the registered callback handler for the
+                    // error (default implementation is a simple re-throw)
+                    this.onError(error);
+                }
+            });
+
+            this.$bus.bind("highlight_part", part => {
+                if (this.ignoreBus) return;
+                if (this.configurator && this.configurator.ready) {
+                    this.configurator.highlight(part);
+                }
+            });
+
+            this.$bus.bind("lowlight_part", part => {
+                if (this.ignoreBus) return;
+                if (this.configurator && this.configurator.ready) {
+                    this.configurator.lowlight(part);
+                }
+            });
+
+            this.resize(this.size, this.width, this.height);
+            if (this.configuratorMode === "csr") this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
+        },
+        unbindConfigurator() {
+            if (!this.configurator) return;
+            this.ripeInstance.unbindConfigurator(this.configurator);
+        },
         /**
          * Re-sizes the configurator according to the current
          * available container size (defined by parent).
@@ -531,7 +543,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        if (this.configurator) await this.ripeInstance.unbindConfigurator(this.configurator);
+        await this.unbindConfigurator();
         this.configurator = null;
     }
 };
