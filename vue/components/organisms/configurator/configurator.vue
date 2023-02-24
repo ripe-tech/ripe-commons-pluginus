@@ -515,7 +515,10 @@ export const Configurator = {
             });
 
             this.resize(this.size, this.width, this.height);
-            if (this.configuratorMode === "csr") this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
+
+            if (this.configuratorMode === "csr") {
+                this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
+            }
         },
         unbindConfigurator() {
             if (!this.configurator) return;
