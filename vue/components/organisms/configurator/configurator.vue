@@ -5,7 +5,10 @@
                 <loader class="loader" v-bind:loader="'ball-scale-multiple'" />
             </slot>
         </div>
-        <div class="configurator-wrapper">
+        <div
+            class="configurator-wrapper"
+            v-bind:class="{ loading: loading, 'loading-error': Boolean(loadingError) }"
+        >
             <div class="config" ref="configurator" />
             <div class="error" v-if="modelError && !loadingError">
                 Error loading model {{ model }} from brand {{ brand }}<br />
