@@ -353,7 +353,7 @@ export const Configurator = {
         }
     },
     methods: {
-        bindConfigurator(element, triggerPostConfig = false) {
+        bindConfigurator(element) {
             this.loading = true;
 
             setTimeout(() => {
