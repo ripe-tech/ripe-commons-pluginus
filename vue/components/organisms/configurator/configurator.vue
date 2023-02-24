@@ -212,7 +212,7 @@ export const Configurator = {
          * The rendering mode of the configurator.
          * (eg. "prc" or "csr")
          */
-        configuratorMode: {
+        configuratorType: {
             type: String,
             default: undefined
         },
@@ -365,7 +365,7 @@ export const Configurator = {
                 size: this.size,
                 width: this.width,
                 height: this.height,
-                type: this.configuratorMode
+                type: this.configuratorType
             });
 
             this.configurator.bind("changed_frame", frame => {
@@ -516,7 +516,7 @@ export const Configurator = {
 
             this.resize(this.size, this.width, this.height);
 
-            if (this.configuratorMode === "csr") {
+            if (this.configuratorType === "csr") {
                 this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
             }
         },
