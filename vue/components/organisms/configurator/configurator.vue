@@ -7,6 +7,10 @@
         </div>
         <div class="configurator-wrapper">
             <div class="config" ref="configurator" />
+            <div class="error" v-if="modelError && !loadingError">
+                Error loading model {{ model }} from brand {{ brand }}<br />
+                {{ errorMessage ? errorMessage : "" }}
+            </div>
             <div class="holder" v-bind:class="{ disappear: hideHolder }">
                 <div class="holder-label">
                     {{ locale("ripe_commons.holder.holder.label") }}
