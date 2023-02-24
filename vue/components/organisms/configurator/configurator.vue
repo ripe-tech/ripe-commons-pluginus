@@ -520,9 +520,9 @@ export const Configurator = {
                 this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
             }
         },
-        unbindConfigurator() {
-            if (!this.configurator) return;
-            this.ripeInstance.unbindConfigurator(this.configurator);
+        unbindConfigurator(configurator) {
+            if (!configurator) return;
+            this.ripeInstance.unbindConfigurator(configurator);
         },
         /**
          * Re-sizes the configurator according to the current
@@ -545,7 +545,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        await this.unbindConfigurator();
+        await this.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
 };
