@@ -367,7 +367,6 @@ export const Configurator = {
                 height: this.height,
                 type: this.configuratorMode
             });
-            console.log("binded configurator", this.configurator);
 
             this.configurator.bind("changed_frame", frame => {
                 // sets the frame changed flag only if there was a
