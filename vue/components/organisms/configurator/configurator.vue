@@ -527,9 +527,9 @@ export const Configurator = {
                 this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
             }
         },
-        unbindConfigurator(configurator) {
+        async unbindConfigurator(configurator) {
             if (!configurator) return;
-            this.ripeInstance.unbindConfigurator(configurator);
+            await this.ripeInstance.unbindConfigurator(configurator);
         },
         /**
          * Re-sizes the configurator according to the current
