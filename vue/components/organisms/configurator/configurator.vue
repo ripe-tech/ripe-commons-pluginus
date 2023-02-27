@@ -431,7 +431,7 @@ export const Configurator = {
             });
 
             this.configurator.bind("ready", options => {
-                if (options?.origin && options.origin.includes("configurator")) {
+                if (options?.origin?.startsWith("configurator")) {
                     this.loading = false;
                     this.configurator.resize();
                 }
