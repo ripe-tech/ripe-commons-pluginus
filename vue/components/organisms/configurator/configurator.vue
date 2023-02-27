@@ -523,7 +523,14 @@ export const Configurator = {
 
             this.resize(this.size, this.width, this.height);
 
-            if (this.configuratorType === "csr") {
+            // in case the ripe instance already loaded the config
+            // and the CSR configurator is not yet loaded
+            // re-trigger `post_config` event for the CSR configurator
+            if (
+                this.ripeInstance.loadedConfig &&
+                this.configuratorType === "csr" &&
+                this.configurator.loading
+            ) {
                 this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
             }
         },
