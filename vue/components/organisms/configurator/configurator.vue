@@ -357,6 +357,9 @@ export const Configurator = {
         },
         mergedOptions(value) {
             this.configurator.updateOptions(value);
+        },
+        configuratorType(currValue, prevValue) {
+            console.log("configuratorType changed. prevValue and currValue:", prevValue, currValue);
         }
     },
     methods: {
@@ -420,21 +423,6 @@ export const Configurator = {
                 // updates the current frame in the store, this information can be used
                 // by listener to update their internal state
                 this.$store.commit("currentFrame", frame);
-            });
-
-            this.configurator.bind("highlighted_part", part => {
-                this.$bus.trigger("highlighted_part", this.configurator, part);
-            });
-
-            this.configurator.bind("lowlighted", () => {
-                this.$bus.trigger("lowlighted", this.configurator);
-            });
-
-            this.configurator.bind("ready", options => {
-                if (options?.origin?.startsWith("configurator")) {
-                    this.loading = false;
-                    this.configurator.resize();
-                }
             });
 
             this.$bus.bind("error", error => {
@@ -507,19 +495,36 @@ export const Configurator = {
                 }
             });
 
-            this.$bus.bind("highlight_part", part => {
-                if (this.ignoreBus) return;
-                if (this.configurator && this.configurator.ready) {
-                    this.configurator.highlight(part);
-                }
-            });
+            if (this.configuratorType === "prc") {
+                this.configurator.bind("highlighted_part", part => {
+                    this.$bus.trigger("highlighted_part", this.configurator, part);
+                });
 
-            this.$bus.bind("lowlight_part", part => {
-                if (this.ignoreBus) return;
-                if (this.configurator && this.configurator.ready) {
-                    this.configurator.lowlight(part);
-                }
-            });
+                this.configurator.bind("lowlighted", () => {
+                    this.$bus.trigger("lowlighted", this.configurator);
+                });
+
+                this.$bus.bind("highlight_part", part => {
+                    if (this.ignoreBus) return;
+                    if (this.configurator && this.configurator.ready) {
+                        this.configurator.highlight(part);
+                    }
+                });
+
+                this.$bus.bind("lowlight_part", part => {
+                    if (this.ignoreBus) return;
+                    if (this.configurator && this.configurator.ready) {
+                        this.configurator.lowlight(part);
+                    }
+                });
+            } else if (this.configuratorType === "csr") {
+                this.configurator.bind("ready", options => {
+                    if (options?.origin?.startsWith("configurator")) {
+                        this.loading = false;
+                        this.configurator.resize();
+                    }
+                });
+            }
 
             this.resize(this.size, this.width, this.height);
 
@@ -537,6 +542,7 @@ export const Configurator = {
         async unbindConfigurator(configurator) {
             if (!configurator) return;
             await this.ripeInstance.unbindConfigurator(configurator);
+            if (this.configuratorType === "csr") await configurator.deinit();
         },
         /**
          * Re-sizes the configurator according to the current
@@ -559,6 +565,7 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
+        console.log("destroyed configurator");
         await this.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
