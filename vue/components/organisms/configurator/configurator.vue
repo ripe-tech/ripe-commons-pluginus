@@ -357,9 +357,6 @@ export const Configurator = {
         },
         mergedOptions(value) {
             this.configurator.updateOptions(value);
-        },
-        configuratorType(currValue, prevValue) {
-            console.log("configuratorType changed. prevValue and currValue:", prevValue, currValue);
         }
     },
     methods: {
@@ -565,7 +562,6 @@ export const Configurator = {
         }
     },
     destroyed: async function() {
-        console.log("destroyed configurator");
         await this.unbindConfigurator(this.configurator);
         this.configurator = null;
     }
