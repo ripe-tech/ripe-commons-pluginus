@@ -531,6 +531,7 @@ export const Configurator = {
             if (
                 this.ripeInstance.loadedConfig &&
                 this.configuratorType === "csr" &&
+                this.ripeInstance.hasStrategy("csr") &&
                 this.configurator.loading
             ) {
                 this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
