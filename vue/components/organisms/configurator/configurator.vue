@@ -301,6 +301,7 @@ export const Configurator = {
         // and `post_config` event was missed
         // then re-trigger it
         if (this.loadingCsrConfigurator) {
+            // trigger `post_config` asynchronously
             this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
         }
 
