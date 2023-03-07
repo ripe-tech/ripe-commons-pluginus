@@ -510,7 +510,7 @@ export const Configurator = {
             });
 
             if (this.configuratorType === "prc") this.bindConfiguratorEventsPrc();
-            if (this.configuratorType === "csr") this.bindConfiguratorEventsCsr();
+            else if (this.configuratorType === "csr") this.bindConfiguratorEventsCsr();
         },
         bindConfiguratorEventsPrc() {
             this.configurator.bind("highlighted_part", part => {
