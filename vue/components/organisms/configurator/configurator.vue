@@ -235,6 +235,12 @@ export const Configurator = {
         }
     },
     computed: {
+        loadingCsrConfigurator() {
+            if (!this.ripeInstance.loadedConfig) return false;
+            if (this.configuratorType !== "csr") return false;
+            if (!this.ripeInstance.hasStrategy("csr")) return false;
+            return this.configurator.loading;
+        },
         elementDisplayed() {
             if (!this.configurator) {
                 return false;
@@ -291,6 +297,15 @@ export const Configurator = {
     },
     mounted: function() {
         this.bindConfigurator(this.$refs.configurator);
+
+        // in case CSR configurator is stil loading
+        // and `post_config` event was missed
+        // then re-trigger it
+        if (this.loadingCsrConfigurator) {
+            this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
+        }
+
+        this.resize(this.size, this.width, this.height);
     },
     watch: {
         frame(value) {
@@ -375,6 +390,9 @@ export const Configurator = {
                 type: this.configuratorType
             });
 
+            this.bindConfiguratorEvents();
+        },
+        bindConfiguratorEvents() {
             this.configurator.bind("changed_frame", frame => {
                 // sets the frame changed flag only if there was a
                 // previous frame set and then updates the frame
@@ -492,55 +510,43 @@ export const Configurator = {
                 }
             });
 
-            if (this.configuratorType === "prc") {
-                this.configurator.bind("highlighted_part", part => {
-                    this.$bus.trigger("highlighted_part", this.configurator, part);
-                });
+            if (this.configuratorType === "prc") this.bindConfiguratorEventsPrc();
+            if (this.configuratorType === "csr") this.bindConfiguratorEventsCsr();
+        },
+        bindConfiguratorEventsPrc() {
+            this.configurator.bind("highlighted_part", part => {
+                this.$bus.trigger("highlighted_part", this.configurator, part);
+            });
 
-                this.configurator.bind("lowlighted", () => {
-                    this.$bus.trigger("lowlighted", this.configurator);
-                });
+            this.configurator.bind("lowlighted", () => {
+                this.$bus.trigger("lowlighted", this.configurator);
+            });
 
-                this.$bus.bind("highlight_part", part => {
-                    if (this.ignoreBus) return;
-                    if (this.configurator && this.configurator.ready) {
-                        this.configurator.highlight(part);
-                    }
-                });
+            this.$bus.bind("highlight_part", part => {
+                if (this.ignoreBus) return;
+                if (this.configurator && this.configurator.ready) {
+                    this.configurator.highlight(part);
+                }
+            });
 
-                this.$bus.bind("lowlight_part", part => {
-                    if (this.ignoreBus) return;
-                    if (this.configurator && this.configurator.ready) {
-                        this.configurator.lowlight(part);
-                    }
-                });
-            } else if (this.configuratorType === "csr") {
-                this.configurator.bind("ready", options => {
-                    if (options?.origin?.startsWith("configurator")) {
-                        this.loading = false;
-                        this.configurator.resize();
-                    }
-                });
-            }
-
-            this.resize(this.size, this.width, this.height);
-
-            // in case the ripe instance already loaded the config
-            // and the CSR configurator is not yet loaded
-            // re-trigger `post_config` event for the CSR configurator
-            if (
-                this.ripeInstance.loadedConfig &&
-                this.configuratorType === "csr" &&
-                this.ripeInstance.hasStrategy("csr") &&
-                this.configurator.loading
-            ) {
-                this.ripeInstance.trigger("post_config", this.ripeInstance.loadedConfig);
-            }
+            this.$bus.bind("lowlight_part", part => {
+                if (this.ignoreBus) return;
+                if (this.configurator && this.configurator.ready) {
+                    this.configurator.lowlight(part);
+                }
+            });
+        },
+        bindConfiguratorEventsCsr() {
+            this.configurator.bind("ready", options => {
+                if (options?.origin?.startsWith("configurator")) {
+                    this.loading = false;
+                    this.configurator.resize();
+                }
+            });
         },
         async unbindConfigurator(configurator) {
             if (!configurator) return;
             await this.ripeInstance.unbindConfigurator(configurator);
-            if (this.configuratorType === "csr") await configurator.deinit();
         },
         /**
          * Re-sizes the configurator according to the current
