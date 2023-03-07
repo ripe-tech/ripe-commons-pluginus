@@ -236,7 +236,6 @@ export const Configurator = {
     },
     computed: {
         loadingCsrConfigurator() {
-            if (!this.ripeInstance.loadedConfig) return false;
             if (this.configuratorType !== "csr") return false;
             if (!this.ripeInstance.hasStrategy("csr")) return false;
             return this.configurator.loading;
