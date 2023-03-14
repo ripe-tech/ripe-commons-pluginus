@@ -2,7 +2,6 @@ dist: trusty
 language: node_js
 node_js:
   - "16"
-  - "18"
 install:
   - npm install
 script: npm run lint && npm run build && npm test
