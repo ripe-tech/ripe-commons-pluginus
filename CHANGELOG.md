@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Bump CI/CD node engine versions from 14 to 18 LTS
+* Remove Travis CI/CD workflow
 
 ### Fixed
 
