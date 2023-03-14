@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Bump CI/CD node engine versions from 14 to 18 LTS
 * Improve CSR deinitialization process to allow CSR model swapping - [ripe-sdk/#493](https://github.com/ripe-tech/ripe-sdk/issues/493)
+
 ## [0.31.0] - 2023-02-27
 
 ### Added
