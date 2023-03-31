@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-*
+* Update ripe-sdk to `3.0.0` - [ripe-sdk/#491](https://github.com/ripe-tech/ripe-sdk/issues/491)
 
 ### Fixed
 
