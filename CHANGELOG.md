@@ -13,12 +13,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Bump CI/CD node engine versions from 14 to 18 LTS
 * Remove Travis CI/CD workflow
 
 ### Fixed
 
 *
+
+## [0.31.2] - 2023-03-31
+
+### Changed
+
+* Update ripe-sdk to `3.0.0` - [ripe-sdk/#491](https://github.com/ripe-tech/ripe-sdk/issues/491)
+
+## [0.31.1] - 2023-03-14
+
+### Changed
+
+* Bump CI/CD node engine versions from 14 to 18 LTS
+* Improve CSR deinitialization process to allow CSR model swapping - [ripe-sdk/#493](https://github.com/ripe-tech/ripe-sdk/issues/493)
 
 ## [0.31.0] - 2023-02-27
 
@@ -42,17 +54,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.30.1] - 2022-11-10
 
-### Added
-
-*
-
 ### Changed
 
 * Bump to `ripe-sdk@2.32.0` version
-
-### Fixed
-
-*
 
 ## [0.30.0] - 2022-11-10
 
